@@ -174,7 +174,28 @@ body {
         font-size: 26px;
     }
 }
+.poem-navigation {
+    display: flex;
+    justify-content: space-between;
+    max-width: 650px;
+    margin: 70px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(120,105,85,.25);
+}
 
+.poem-navigation a {
+    color: #6f675d;
+    text-decoration: none;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    transition: color .3s ease;
+}
+
+.poem-navigation a:hover {
+    color: #243d56;
+}
+    
 </style>
 </head>
 
@@ -212,6 +233,13 @@ Seni böyle sessiz bırakan
     </div>
 
 </article>
+        <div class="poem-navigation">
+
+    <a href="#">← Önceki şiir</a>
+
+    <a href="#">Sonraki şiir →</a>
+
+</div>
 
         <div class="footer">
             ŞİİR NEFESTİR
