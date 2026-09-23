@@ -1,1 +1,245 @@
+<!DOCTYPE html>
 
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kırılgan Bir Şiirim Şimdi | Şiir Nefestir</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.7), transparent 35%),
+        linear-gradient(135deg, #d9d0c1, #eee8dc);
+    color: #332d27;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.page {
+    min-height: 100vh;
+    padding: 35px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.book-page {
+    width: min(900px, 100%);
+    min-height: 760px;
+    padding: 55px 10% 45px;
+    background: #f8f2e7;
+    box-shadow: 0 18px 45px rgba(40,30,20,.28);
+    position: relative;
+}
+
+.book-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(80,60,40,.025) 0,
+            rgba(80,60,40,.025) 1px,
+            transparent 1px,
+            transparent 5px
+        );
+}
+
+.back {
+    position: relative;
+    margin-bottom: 55px;
+}
+
+.back a {
+    color: #777064;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.back a:hover {
+    color: #243d56;
+}
+
+.poem {
+    position: relative;
+    max-width: 650px;
+    margin: auto;
+}
+
+.poem-number {
+    text-align: center;
+    color: #999083;
+    font-size: 13px;
+    letter-spacing: 4px;
+    margin-bottom: 18px;
+}
+
+.poem-title {
+    text-align: center;
+    color: #243d56;
+    font-weight: normal;
+    font-size: 32px;
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+.line {
+    width: 70px;
+    height: 1px;
+    background: #8c8172;
+    margin: 25px auto 45px;
+}
+
+.poem-date {
+    text-align: center;
+    color: #8a8176;
+    font-size: 13px;
+    margin-bottom: 40px;
+}
+
+.poem-text {
+    font-family: "Caveat", cursive;
+    color: #234f82;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1.9;
+    white-space: pre-line;
+    max-width: 680px;
+    margin: auto;
+    padding: 0 12px;
+
+    text-shadow:
+        0.3px 0.3px 0 rgba(20,55,90,.25),
+        -0.2px 0 rgba(20,55,90,.15);
+}
+
+.poem-navigation {
+    display: flex;
+    justify-content: space-between;
+    max-width: 650px;
+    margin: 70px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(120,105,85,.25);
+}
+
+.poem-navigation a {
+    color: #6f675d;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.poem-navigation a:hover {
+    color: #243d56;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 80px;
+    color: #999083;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 600px) {
+    .page {
+        padding: 0;
+    }
+
+    .book-page {
+        min-height: 100vh;
+        padding: 45px 8%;
+    }
+
+    .poem-text {
+        font-size: 21px;
+    }
+
+    .poem-title {
+        font-size: 27px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<main class="book-page">
+
+<div class="back">
+    <a href="siirler.html">← Önceki şiir</a>
+</div>
+
+<article class="poem">
+
+<div class="poem-number">
+    DENEME 2
+</div>
+
+<h1 class="poem-title">
+    Abbas
+</h1>
+
+<div class="line"></div>
+
+<div class="poem-date">
+    — Tarih eklenecek
+</div>
+
+<div class="poem-text">
+
+Haydi abbas, vakit tamam;
+Akşam diyordun işte oldu akşam.
+Kur bakalım çilingir soframızı;
+Dinsin artık bu kalp ağrısı.
+Şu ağacın gölgesinde olsun;
+Tam kenarında havuzun.
+Aya haber Sal çıksın bu gece;
+Görünsün şöyle gönlümce.
+Bas kırbacı sihirli seccadeye,
+Göster hükmettiğini mesafeye
+Ve zamana.
+Katıp tozu dumanı,
+Var git,
+Böyle ferman etti Cahit,
+Al getir ilk sevgiliyi Beşiktaş'tan;
+Yaşamak istiyorum gençliğimi yeni baştan.
+
+</div>
+
+</article>
+
+<div class="poem-navigation">
+
+<a href="siirler.html">← Önceki şiir</a>
+
+<a href="siir-3.html">Sonraki şiir →</a>
+
+</div>
+
+<div class="footer">
+    ŞİİR NEFESTİR
+</div>
+
+</main>
+
+</div>
+
+</body>
+</html>
