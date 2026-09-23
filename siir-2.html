@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Şiirler | Şiir Nefestir</title>
-    
+<title>Deneme 2 | Şiir Nefestir</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
 
+<style>
 * {
     box-sizing: border-box;
 }
@@ -46,7 +46,6 @@ body {
     position: absolute;
     inset: 0;
     pointer-events: none;
-
     background:
         repeating-linear-gradient(
             0deg,
@@ -56,38 +55,7 @@ body {
             transparent 5px
         );
 }
-.poem-title {
-    text-align: center;
-    font-size: 30px;
-    font-weight: normal;
-    color: #243d56;
-    margin: 0 0 10px;
-    letter-spacing: 2px;
-}
 
-.poem-date {
-    text-align: center;
-    font-size: 13px;
-    color: #8a8176;
-    margin-bottom: 45px;
-}
-
-.poem-text {
-    font-family: "Caveat", cursive;
-    color: #234f82;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 1.9;
-    white-space: pre-line;
-    max-width: 680px;
-    margin: 10 auto;
-    padding: 0 12px;
-
-    text-shadow:
-        0.3px 0.3px 0 rgba(20,55,90,.25),
-        -0.2px 0 rgba(20,55,90,.15);
-}
-}
 .back {
     position: relative;
     text-align: left;
@@ -128,6 +96,13 @@ body {
     margin: 0;
 }
 
+.poem-date {
+    text-align: center;
+    font-size: 13px;
+    color: #8a8176;
+    margin: 18px 0 45px;
+}
+
 .line {
     width: 70px;
     height: 1px;
@@ -135,45 +110,21 @@ body {
     margin: 25px auto 45px;
 }
 
+.poem-text {
+    font-family: "Caveat", cursive;
+    color: #234f82;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.9;
+    white-space: pre-line;
+    max-width: 680px;
+    margin: 10px auto;
+    padding: 0 12px;
+    text-shadow:
+        0.3px 0.3px 0 rgba(20,55,90,.25),
+        -0.2px 0 rgba(20,55,90,.15);
 }
 
-.date {
-    text-align: right;
-    margin-top: 55px;
-    color: #888075;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
-
-.footer {
-    position: relative;
-    text-align: center;
-    margin-top: 80px;
-    color: #999083;
-    font-size: 12px;
-    letter-spacing: 2px;
-}
-
-@media(max-width:600px) {
-
-    .page {
-        padding: 0;
-    }
-
-    .book-page {
-        min-height: 100vh;
-        padding: 45px 8%;
-    }
-
-    .poem-text {
-        font-size: 19px;
-        line-height: 1.9;
-    }
-
-    .poem-title {
-        font-size: 26px;
-    }
-}
 .poem-navigation {
     display: flex;
     justify-content: space-between;
@@ -195,7 +146,35 @@ body {
 .poem-navigation a:hover {
     color: #243d56;
 }
-    
+
+.footer {
+    position: relative;
+    text-align: center;
+    margin-top: 80px;
+    color: #999083;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+@media(max-width:600px) {
+    .page {
+        padding: 0;
+    }
+
+    .book-page {
+        min-height: 100vh;
+        padding: 45px 8%;
+    }
+
+    .poem-text {
+        font-size: 19px;
+        line-height: 1.9;
+    }
+
+    .poem-title {
+        font-size: 26px;
+    }
+}
 </style>
 </head>
 
@@ -209,37 +188,37 @@ body {
             <a href="index.html">← Ana sayfaya dön</a>
         </div>
 
-       <article class="poem">
+        <article class="poem">
 
-    <h1 class="poem-title">
-        Yoksam Düşlerinde
-    </h1>
+            <div class="poem-number">
+                DENEME 2
+            </div>
 
-    <div class="poem-date">
-        — Tarih eklenecek
-    </div>
+            <h1 class="poem-title">
+                Kırılgan
+            </h1>
 
-    <div class="poem-text">
+            <div class="poem-date">
+                — Tarih eklenecek
+            </div>
 
-Yoksam düşlerinde gecelerinde kayıpsam
+            <div class="line"></div>
 
-Bakışların hep donuk
-Bir şeyler eksikse içinde
+            <div class="poem-text">
+Kırılgan bir şiirim şimdi satır aralarında
 
-Belki de ben varımdır
-Belki de yokluğumdur
-Seni böyle sessiz bırakan
+belki ben henüz ölmemişimdir
+            </div>
 
-    </div>
+        </article>
 
-</article>
         <div class="poem-navigation">
 
-    <a href="siirler.html">← Önceki şiir</a>
+            <a href="siirler.html">← Önceki şiir</a>
 
-    <a href="#">Sonraki şiir →</a>
+            <a href="#">Sonraki şiir →</a>
 
-</div>
+        </div>
 
         <div class="footer">
             ŞİİR NEFESTİR
@@ -251,4 +230,3 @@ Seni böyle sessiz bırakan
 
 </body>
 </html>
-
