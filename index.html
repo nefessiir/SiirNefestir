@@ -15,78 +15,103 @@
 * {
     box-sizing: border-box;
     user-select: none;
+    -webkit-user-select: none;
 }
 
 html,
 body {
     margin: 0;
     width: 100%;
-    min-height: 100%;
+    height: 100%;
 }
 
 body {
     background:
-        radial-gradient(circle at 50% 20%, rgba(255,255,255,.12), transparent 35%),
-        linear-gradient(135deg, #24170e, #4a2d18 45%, #21140c);
-    font-family: "Libre Baskerville", Georgia, serif;
+        radial-gradient(circle at 50% 25%, rgba(255,220,170,.12), transparent 30%),
+        linear-gradient(135deg, #24170e, #4b2d18 48%, #1f1209);
+
     overflow: hidden;
+
+    font-family: "Libre Baskerville", Georgia, serif;
 }
 
-/* --------------------------------------------------
-   KİTAP ALANI
--------------------------------------------------- */
+/* ==================================================
+   KİTAP SAHNESİ
+================================================== */
 
 .book-stage {
     width: 100vw;
     height: 100vh;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    perspective: 2200px;
+
+    perspective: 2400px;
+
     padding: 20px;
 }
 
+/* ==================================================
+   DİKEY KİTAP
+================================================== */
+
 .book {
     position: relative;
-    width: min(900px, 94vw);
-    height: min(650px, 88vh);
+
+    width: min(570px, 88vw);
+    height: min(790px, 92vh);
+
     transform-style: preserve-3d;
+
+    filter: drop-shadow(0 25px 30px rgba(0,0,0,.45));
 }
 
-/* --------------------------------------------------
-   BÜTÜN SAYFALAR
--------------------------------------------------- */
+/* ==================================================
+   SAYFALAR
+================================================== */
 
 .page {
     position: absolute;
+
     inset: 0;
 
     background:
-        radial-gradient(circle at 20% 15%, rgba(255,255,255,.45), transparent 30%),
-        linear-gradient(110deg, #ead9a7, #f3e5b9 45%, #e7d39b);
+        radial-gradient(circle at 18% 12%, rgba(255,255,255,.48), transparent 30%),
+        linear-gradient(
+            110deg,
+            #e7d29b,
+            #f3e5b7 45%,
+            #e5cf94
+        );
 
-    border: 1px solid rgba(91,66,30,.35);
+    border: 1px solid rgba(90,65,30,.38);
 
     box-shadow:
-        inset 0 0 35px rgba(91,66,30,.15),
-        0 10px 30px rgba(0,0,0,.28);
+        inset 0 0 35px rgba(91,66,30,.13),
+        0 8px 20px rgba(0,0,0,.25);
 
     transform-origin: left center;
-    transform-style: preserve-3d;
 
-    transition:
-        transform .8s cubic-bezier(.22,.61,.36,1),
-        box-shadow .8s ease;
+    transform-style: preserve-3d;
 
     overflow: hidden;
 
     cursor: grab;
+
+    will-change: transform;
+
+    touch-action: none;
 }
 
 .page::before {
     content: "";
+
     position: absolute;
+
     inset: 0;
+
+    pointer-events: none;
 
     background:
         repeating-linear-gradient(
@@ -97,78 +122,107 @@ body {
             transparent 5px
         );
 
-    pointer-events: none;
+    z-index: 20;
 }
 
 .page.dragging {
     cursor: grabbing;
 }
 
-/* Sayfa çevrilmiş hali */
+/* ==================================================
+   SAYFA ARKASI
+================================================== */
 
-.page.flipped {
-    transform: rotateY(-180deg);
+.page-back {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            110deg,
+            #e5d09a,
+            #f0dfae,
+            #dfc88d
+        );
+
+    transform: rotateY(180deg);
+
+    backface-visibility: hidden;
 }
 
-/* --------------------------------------------------
+/* ==================================================
    KAPAK
--------------------------------------------------- */
+================================================== */
 
 .cover {
     z-index: 20;
 
     background:
-        radial-gradient(circle at 30% 20%, rgba(255,210,140,.14), transparent 28%),
-        linear-gradient(135deg,
-            #3a1f0e,
-            #70431f 30%,
-            #4a2914 55%,
-            #2c170b);
+        radial-gradient(circle at 30% 18%, rgba(255,210,140,.14), transparent 28%),
+        linear-gradient(
+            135deg,
+            #351b0b,
+            #70421e 32%,
+            #4b2812 60%,
+            #291508
+        );
 
-    border: 8px solid #291508;
+    border: 9px solid #241207;
 
     box-shadow:
-        inset 0 0 0 2px rgba(202,157,86,.35),
-        inset 0 0 35px rgba(0,0,0,.5),
-        0 20px 45px rgba(0,0,0,.5);
+        inset 0 0 0 2px rgba(204,158,87,.38),
+        inset 0 0 45px rgba(0,0,0,.55),
+        0 15px 35px rgba(0,0,0,.5);
 }
 
 .cover::after {
     content: "";
+
     position: absolute;
-    inset: 25px;
+
+    inset: 28px;
 
     border: 1px solid rgba(218,177,105,.55);
+
     pointer-events: none;
 }
 
 .cover-content {
     position: absolute;
-    inset: 60px;
+
+    inset: 60px 45px;
 
     display: flex;
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
 
     text-align: center;
-    color: #e5c58c;
 
-    transform: translateZ(2px);
+    color: #e5c58c;
 }
 
 .cover-small {
-    font-size: 13px;
+    font-size: 12px;
+
     letter-spacing: 5px;
-    margin-bottom: 35px;
-    opacity: .8;
+
+    margin-bottom: 38px;
+
+    opacity: .82;
 }
 
 .cover-title {
     font-family: "Caveat", cursive;
-    font-size: clamp(60px, 9vw, 100px);
+
+    font-size: clamp(62px, 13vw, 98px);
+
     font-weight: 600;
-    line-height: .9;
+
+    line-height: .82;
+
     letter-spacing: 3px;
 
     text-shadow:
@@ -176,33 +230,40 @@ body {
 }
 
 .cover-subtitle {
-    margin-top: 35px;
-    font-size: 14px;
-    letter-spacing: 4px;
+    margin-top: 38px;
+
+    font-size: 13px;
+
+    letter-spacing: 5px;
+
     opacity: .85;
 }
 
 .cover-hint {
     position: absolute;
-    bottom: 38px;
+
+    bottom: 25px;
 
     font-family: "Caveat", cursive;
-    font-size: 20px;
+
+    font-size: 19px;
+
     letter-spacing: 1px;
 
     opacity: .7;
 }
 
-/* --------------------------------------------------
+/* ==================================================
    SAYFA İÇERİĞİ
--------------------------------------------------- */
+================================================== */
 
 .page-content {
     position: relative;
+
     width: 100%;
     height: 100%;
 
-    padding: 65px 80px;
+    padding: 65px 58px;
 
     display: flex;
     flex-direction: column;
@@ -210,10 +271,14 @@ body {
 
 .page-number {
     text-align: center;
-    font-size: 11px;
+
+    font-size: 10px;
+
     letter-spacing: 4px;
+
     color: #8d7957;
-    margin-bottom: 25px;
+
+    margin-bottom: 28px;
 }
 
 .page-title {
@@ -222,71 +287,72 @@ body {
     color: #51422e;
 
     font-family: Georgia, serif;
-    font-size: 30px;
+
+    font-size: 28px;
+
     font-weight: normal;
 
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 
     margin: 0 0 18px;
 }
 
 .page-line {
     width: 65px;
+
     height: 1px;
 
     background: #927c59;
 
-    margin: 0 auto 38px;
+    margin: 0 auto 40px;
 }
 
-/* --------------------------------------------------
-   EL YAZISI
--------------------------------------------------- */
+/* ==================================================
+   MAVİ DİVİT MÜREKKEBİ
+================================================== */
 
 .handwriting {
     font-family: "Caveat", cursive;
 
     color: #164f82;
 
-    font-size: clamp(25px, 3vw, 32px);
+    font-size: clamp(27px, 5vw, 34px);
 
     line-height: 1.75;
 
     white-space: pre-line;
 
     text-shadow:
-        .4px .4px 0 rgba(15,55,90,.35),
+        .45px .45px 0 rgba(15,55,90,.35),
         -.2px 0 rgba(15,55,90,.12);
 
-    transform: rotate(-.4deg);
+    transform: rotate(-.35deg);
 }
 
 .handwriting.center {
     text-align: center;
 }
 
-.handwriting.small {
-    font-size: 25px;
-    line-height: 1.65;
-}
-
-/* --------------------------------------------------
+/* ==================================================
    HAKKINDA
--------------------------------------------------- */
+================================================== */
 
 .about {
-    max-width: 650px;
+    max-width: 450px;
+
     margin: auto;
 }
 
 .about p {
     font-family: "Caveat", cursive;
+
     color: #164f82;
 
     font-size: 27px;
-    line-height: 1.7;
 
-    margin: 0 0 25px;
+    line-height: 1.65;
+
+    margin: 0 0 24px;
 
     transform: rotate(-.3deg);
 }
@@ -298,41 +364,71 @@ body {
 
     color: #164f82;
 
-    font-size: 28px;
+    font-size: 29px;
 
     margin-top: 40px;
 }
 
-/* --------------------------------------------------
+/* ==================================================
    ALT BİLGİ
--------------------------------------------------- */
+================================================== */
 
 .page-footer {
     margin-top: auto;
 
     text-align: center;
 
-    font-size: 10px;
+    font-size: 9px;
+
     letter-spacing: 3px;
 
     color: #9a8765;
 }
 
-/* --------------------------------------------------
+/* ==================================================
+   SAYFA KIVRILMA GÖLGESİ
+================================================== */
+
+.page-curl-shadow {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 45%,
+            rgba(0,0,0,.08) 72%,
+            rgba(0,0,0,.28) 100%
+        );
+
+    transition: opacity .1s linear;
+
+    z-index: 30;
+}
+
+/* ==================================================
    KİTAP GÖLGESİ
--------------------------------------------------- */
+================================================== */
 
 .book-shadow {
     position: absolute;
 
     width: 90%;
-    height: 30px;
-
-    bottom: -20px;
+    height: 28px;
 
     left: 5%;
+    bottom: -20px;
 
-    background: rgba(0,0,0,.35);
+    background: rgba(0,0,0,.38);
 
     filter: blur(18px);
 
@@ -341,9 +437,9 @@ body {
     z-index: -1;
 }
 
-/* --------------------------------------------------
-   TELEFON / TABLET
--------------------------------------------------- */
+/* ==================================================
+   MOBİL
+================================================== */
 
 @media (max-width: 650px) {
 
@@ -352,20 +448,20 @@ body {
     }
 
     .book {
-        width: 96vw;
-        height: 88vh;
+        width: 92vw;
+        height: 90vh;
     }
 
     .page-content {
-        padding: 45px 35px;
+        padding: 48px 35px;
     }
 
     .page-title {
-        font-size: 25px;
+        font-size: 24px;
     }
 
     .handwriting {
-        font-size: 24px;
+        font-size: 25px;
         line-height: 1.7;
     }
 
@@ -374,17 +470,18 @@ body {
     }
 
     .cover-content {
-        inset: 40px 25px;
+        inset: 45px 25px;
     }
 
     .cover-small {
-        font-size: 10px;
+        font-size: 9px;
     }
 
     .cover-subtitle {
-        font-size: 11px;
-        letter-spacing: 2px;
+        font-size: 10px;
+        letter-spacing: 3px;
     }
+
 }
 
 </style>
@@ -398,7 +495,10 @@ body {
 
         <div class="book-shadow"></div>
 
-        <!-- KAPAK -->
+
+        <!-- ==================================================
+             KAPAK
+        ================================================== -->
 
         <section class="page cover">
 
@@ -422,10 +522,14 @@ body {
 
             </div>
 
+            <div class="page-curl-shadow"></div>
+
         </section>
 
 
-        <!-- İÇ KAPAK -->
+        <!-- ==================================================
+             İÇ KAPAK
+        ================================================== -->
 
         <section class="page">
 
@@ -442,18 +546,18 @@ body {
                 <div class="page-line"></div>
 
                 <div class="handwriting center">
-                    Bazı şiirler yazılmaz...
+Bazı şiirler yazılmaz...
 
-                    Yaşanır.
+Yaşanır.
 
-                    Sonra bir gün
-                    bir kâğıda bırakılır.
+Sonra bir gün
+bir kâğıda bırakılır.
 
-                    Belki yıllar sonra
-                    birileri okur.
+Belki yıllar sonra
+birileri okur.
 
-                    Ve o nefes
-                    yeniden alınır.
+Ve o nefes
+yeniden alınır.
                 </div>
 
                 <div class="page-footer">
@@ -462,10 +566,14 @@ body {
 
             </div>
 
+            <div class="page-curl-shadow"></div>
+
         </section>
 
 
-        <!-- HAKKINDA -->
+        <!-- ==================================================
+             HAKKINDA
+        ================================================== -->
 
         <section class="page">
 
@@ -484,24 +592,24 @@ body {
                 <div class="about">
 
                     <p>
-                        Bu kitap, yıllar boyunca içimde biriken
-                        ve kâğıda dökülen şiirlerden oluşuyor.
+Bu kitap, yıllar boyunca içimde biriken
+ve kâğıda dökülen şiirlerden oluşuyor.
                     </p>
 
                     <p>
-                        Belki büyük bir kitap değil.
-                        Belki kusursuz da değil.
+Belki büyük bir kitap değil.
+Belki kusursuz da değil.
                     </p>
 
                     <p>
-                        Ama benim sesim,
-                        benim nefesim,
-                        benim bıraktığım iz.
+Ama benim sesim,
+benim nefesim,
+benim bıraktığım iz.
                     </p>
 
                     <p>
-                        Bir gün bu sayfaları
-                        yeniden açacak olanlara...
+Bir gün bu sayfaları
+yeniden açacak olanlara...
                     </p>
 
                     <div class="about-signature">
@@ -516,10 +624,14 @@ body {
 
             </div>
 
+            <div class="page-curl-shadow"></div>
+
         </section>
 
 
-        <!-- DENEME 1 -->
+        <!-- ==================================================
+             DENEME 1
+        ================================================== -->
 
         <section class="page">
 
@@ -545,7 +657,6 @@ Bir şeyler eksikse içinde
 Belki de ben varımdır
 Belki de yokluğumdur
 Seni böyle sessiz bırakan
-
                 </div>
 
                 <div class="page-footer">
@@ -554,10 +665,14 @@ Seni böyle sessiz bırakan
 
             </div>
 
+            <div class="page-curl-shadow"></div>
+
         </section>
 
 
-        <!-- DENEME 2 -->
+        <!-- ==================================================
+             DENEME 2
+        ================================================== -->
 
         <section class="page">
 
@@ -578,7 +693,6 @@ Seni böyle sessiz bırakan
 Kırılgan bir şiirim şimdi...
 
 Belki de hataydı..
-
                 </div>
 
                 <div class="page-footer">
@@ -586,6 +700,8 @@ Belki de hataydı..
                 </div>
 
             </div>
+
+            <div class="page-curl-shadow"></div>
 
         </section>
 
@@ -596,21 +712,29 @@ Belki de hataydı..
 
 <script>
 
-/* --------------------------------------------------
+/* ==================================================
    KİTAP SAYFA SİSTEMİ
--------------------------------------------------- */
+================================================== */
 
-const pages = document.querySelectorAll(".page");
+const book = document.getElementById("book");
+
+const pages = Array.from(
+    document.querySelectorAll(".page")
+);
 
 let currentPage = 0;
+
+let dragging = false;
 
 let startX = 0;
 let currentX = 0;
 
-let dragging = false;
+let activePage = null;
+
+let pageWidth = 0;
 
 
-/* Sayfaların başlangıç sırası */
+/* Sayfaların sırası */
 
 pages.forEach((page, index) => {
 
@@ -619,57 +743,128 @@ pages.forEach((page, index) => {
 });
 
 
-/* --------------------------------------------------
-   SAYFA ÇEVİR
--------------------------------------------------- */
-
-function nextPage() {
-
-    if (currentPage >= pages.length - 1) return;
-
-    pages[currentPage].classList.add("flipped");
-
-    currentPage++;
-
-}
-
-
-function previousPage() {
-
-    if (currentPage <= 0) return;
-
-    currentPage--;
-
-    pages[currentPage].classList.remove("flipped");
-
-}
-
-
-/* --------------------------------------------------
-   MOUSE + DOKUNMATİK
--------------------------------------------------- */
-
-const book = document.getElementById("book");
-
+/* ==================================================
+   SAYFA ÇEVİRME BAŞLANGICI
+================================================== */
 
 book.addEventListener("pointerdown", function(event) {
 
+    if (event.pointerType === "mouse" && event.button !== 0) {
+        return;
+    }
+
+    pageWidth = book.getBoundingClientRect().width;
+
     startX = event.clientX;
-    currentX = event.clientX;
+
+    currentX = startX;
 
     dragging = true;
 
+    /*
+       İleri gidiyorsak mevcut sayfa,
+       geri gidiyorsak bir önceki sayfa tutulur.
+    */
+
+    if (currentPage < pages.length - 1) {
+
+        activePage = pages[currentPage];
+
+    } else {
+
+        activePage = pages[currentPage - 1];
+
+    }
+
+    if (!activePage) return;
+
+    activePage.classList.add("dragging");
+
+    activePage.setPointerCapture(event.pointerId);
+
 });
 
+
+/* ==================================================
+   PARMAK / MOUSE HAREKETİ
+================================================== */
 
 book.addEventListener("pointermove", function(event) {
 
-    if (!dragging) return;
+    if (!dragging || !activePage) return;
 
     currentX = event.clientX;
 
+    let distance = currentX - startX;
+
+    /*
+       Sola hareket = ileri sayfa
+       Sağa hareket = geri sayfa
+    */
+
+    let progress = Math.max(
+        -1,
+        Math.min(
+            1,
+            distance / pageWidth
+        )
+    );
+
+
+    /*
+       İLERİ SAYFA
+    */
+
+    if (distance < 0 && currentPage < pages.length - 1) {
+
+        let angle = progress * 180;
+
+        activePage.style.transform =
+            `rotateY(${angle}deg)`;
+
+        activePage.querySelector(
+            ".page-curl-shadow"
+        ).style.opacity =
+            Math.min(Math.abs(progress) * 1.4, 1);
+
+    }
+
+
+    /*
+       GERİ SAYFA
+    */
+
+    else if (distance > 0 && currentPage > 0) {
+
+        let previous = pages[currentPage - 1];
+
+        previous.classList.add("dragging");
+
+        let reverseProgress =
+            Math.max(
+                -1,
+                Math.min(
+                    1,
+                    distance / pageWidth
+                )
+            );
+
+        previous.style.transform =
+            `rotateY(${-180 + reverseProgress * 180}deg)`;
+
+        previous.querySelector(
+            ".page-curl-shadow"
+        ).style.opacity =
+            Math.min(Math.abs(reverseProgress) * 1.4, 1);
+
+    }
+
 });
 
+
+/* ==================================================
+   PARMAK / MOUSE BIRAKILDI
+================================================== */
 
 book.addEventListener("pointerup", function(event) {
 
@@ -677,57 +872,198 @@ book.addEventListener("pointerup", function(event) {
 
     dragging = false;
 
-    const distance = currentX - startX;
+    let distance = currentX - startX;
 
-    /* Sola sürükleme */
+    let threshold = pageWidth * 0.42;
 
-    if (distance < -80) {
 
-        nextPage();
+    /*
+       İLERİ
+    */
+
+    if (
+        distance < -threshold &&
+        currentPage < pages.length - 1
+    ) {
+
+        finishForward();
 
     }
 
-    /* Sağa sürükleme */
 
-    else if (distance > 80) {
+    /*
+       GERİ
+    */
 
-        previousPage();
+    else if (
+        distance > threshold &&
+        currentPage > 0
+    ) {
+
+        finishBackward();
+
+    }
+
+
+    /*
+       YETERİNCE ÇEVRİLMEDİ
+       GERİ DÖN
+    */
+
+    else {
+
+        cancelTurn();
 
     }
 
 });
 
+
+/* ==================================================
+   İLERİ SAYFA
+================================================== */
+
+function finishForward() {
+
+    const page = pages[currentPage];
+
+    page.style.transition =
+        "transform .45s cubic-bezier(.22,.61,.36,1)";
+
+    page.style.transform =
+        "rotateY(-180deg)";
+
+    page.querySelector(
+        ".page-curl-shadow"
+    ).style.opacity = "0";
+
+    setTimeout(function() {
+
+        page.classList.remove("dragging");
+
+        currentPage++;
+
+        page.style.transition = "";
+
+    }, 470);
+
+}
+
+
+/* ==================================================
+   GERİ SAYFA
+================================================== */
+
+function finishBackward() {
+
+    const previous = pages[currentPage - 1];
+
+    previous.style.transition =
+        "transform .45s cubic-bezier(.22,.61,.36,1)";
+
+    previous.style.transform =
+        "rotateY(0deg)";
+
+    previous.querySelector(
+        ".page-curl-shadow"
+    ).style.opacity = "0";
+
+    setTimeout(function() {
+
+        previous.classList.remove("dragging");
+
+        currentPage--;
+
+        previous.style.transition = "";
+
+    }, 470);
+
+}
+
+
+/* ==================================================
+   VAZGEÇİLEN HAREKET
+================================================== */
+
+function cancelTurn() {
+
+    const page = pages[currentPage];
+
+    page.style.transition =
+        "transform .35s ease";
+
+    page.style.transform =
+        "rotateY(0deg)";
+
+    page.querySelector(
+        ".page-curl-shadow"
+    ).style.opacity = "0";
+
+
+    if (currentPage > 0) {
+
+        const previous = pages[currentPage - 1];
+
+        previous.style.transition =
+            "transform .35s ease";
+
+        previous.style.transform =
+            "rotateY(-180deg)";
+
+        previous.querySelector(
+            ".page-curl-shadow"
+        ).style.opacity = "0";
+
+    }
+
+    setTimeout(function() {
+
+        pages.forEach(function(page) {
+
+            page.classList.remove("dragging");
+
+            page.style.transition = "";
+
+        });
+
+    }, 360);
+
+}
+
+
+/* ==================================================
+   İPTAL
+================================================== */
 
 book.addEventListener("pointercancel", function() {
 
     dragging = false;
 
+    cancelTurn();
+
 });
 
 
-/* --------------------------------------------------
-   MOBİLDE DİKEY KAYDIRMAYI ENGELLEME
--------------------------------------------------- */
-
-book.addEventListener("touchstart", function(event) {
-
-    startX = event.touches[0].clientX;
-
-}, { passive: true });
-
-
-/* --------------------------------------------------
-   KLAVYE DESTEĞİ
--------------------------------------------------- */
+/* ==================================================
+   KLAVYE
+================================================== */
 
 document.addEventListener("keydown", function(event) {
 
     if (event.key === "ArrowLeft") {
-        nextPage();
+
+        if (currentPage < pages.length - 1) {
+            finishForward();
+        }
+
     }
 
     if (event.key === "ArrowRight") {
-        previousPage();
+
+        if (currentPage > 0) {
+            finishBackward();
+        }
+
     }
 
 });
