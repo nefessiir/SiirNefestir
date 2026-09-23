@@ -129,16 +129,28 @@ background-position: center;
 .middle {
     position: absolute;
     left: 50%;
-    top: 0;
-
-    width: 4px;
-    height: 100%;
+    top: -1%;
+    width: 24px;
+    height: 102%;
 
     transform: translateX(-50%);
 
-    background: rgba(50,35,20,.25);
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(60,40,20,.22) 0%,
+            rgba(60,40,20,.12) 28%,
+            rgba(255,255,255,.18) 48%,
+            rgba(60,40,20,.10) 68%,
+            transparent 100%
+        );
+
+    filter: blur(1px);
 
     z-index: 20;
+
+    pointer-events: none;
+
 }
 
 /* SOL GÖRSEL */
