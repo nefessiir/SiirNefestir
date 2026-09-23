@@ -12,8 +12,7 @@
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     margin: 0;
     width: 100%;
     height: 100%;
@@ -32,24 +31,17 @@ body {
 
 #closedBook {
     position: absolute;
-
     width: 360px;
     height: 520px;
-
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
-
     cursor: pointer;
-
     transition: 1s;
 }
 
 #closedBook:hover {
-    transform:
-        translate(-50%, -50%)
-        scale(1.03);
+    transform: translate(-50%, -50%) scale(1.03);
 }
 
 .cover {
@@ -74,36 +66,29 @@ body {
 
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
     color: #f5ead8;
-
     text-align: center;
 }
 
 .cover h1 {
     font-size: 38px;
     font-weight: normal;
-
     letter-spacing: 3px;
-
     margin: 0 0 25px;
 }
 
 .cover p {
     font-size: 17px;
     line-height: 1.6;
-
     font-style: italic;
-
     margin: 0 30px;
 }
 
 .cover span {
     margin-top: 35px;
-
     font-size: 18px;
     letter-spacing: 2px;
 }
@@ -114,7 +99,6 @@ body {
    ========================================= */
 
 #book {
-
     display: none;
 
     position: absolute;
@@ -125,15 +109,12 @@ body {
     left: 50%;
     top: 50%;
 
-    transform:
-        translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 
     perspective: 1400px;
-
     transform-style: preserve-3d;
 
-    box-shadow:
-        0 30px 70px rgba(0,0,0,.5);
+    box-shadow: 0 30px 70px rgba(0,0,0,.5);
 }
 
 
@@ -142,19 +123,53 @@ body {
    ========================================= */
 
 .page {
-
     position: absolute;
-
     top: 0;
 
     width: 50%;
     height: 100%;
 
     background: #f3ead8;
-
     color: #34291e;
 
     overflow: hidden;
+}
+
+.left {
+    left: 0;
+    border-radius: 8px 0 0 8px;
+}
+
+.right {
+    right: 0;
+    border-radius: 0 8px 8px 0;
+}
+
+
+/* =========================================
+   COK SAYFALI, KABARIK ACIK KITAP
+   ========================================= */
+
+
+/* =========================================
+   ORTA CILT
+   ========================================= */
+
+.middle {
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 90px;
+    height: 100%;
+
+    transform: translateX(-50%);
+
+    z-index: 30;
+    pointer-events: none;
+
+    background: transparent;
 }
 
 
@@ -163,15 +178,20 @@ body {
    ========================================= */
 
 .page.left {
+    position: absolute;
 
     left: 0;
+    top: 0;
+
+    width: 50%;
+    height: 100%;
 
     transform-origin: right center;
 
     transform:
-        rotateY(4deg)
-        rotateX(-3deg)
-        translateY(5px);
+        rotateY(12deg)
+        rotateX(-9deg)
+        translateY(10px);
 
     border-radius:
         0
@@ -180,7 +200,6 @@ body {
         0;
 
     background:
-
         radial-gradient(
             ellipse 100px 75% at 100% 50%,
             rgba(255,255,255,.32) 0%,
@@ -188,16 +207,11 @@ body {
             rgba(80,55,35,.10) 58%,
             transparent 80%
         ),
-
         #f3ead8;
 
     box-shadow:
-
-        inset -22px 0 28px
-        rgba(70,45,25,.12),
-
-        0 14px 18px
-        rgba(50,35,20,.16);
+        inset -22px 0 28px rgba(70,45,25,.12),
+        0 14px 18px rgba(50,35,20,.16);
 
     z-index: 10;
 }
@@ -208,15 +222,20 @@ body {
    ========================================= */
 
 .page.right {
+    position: absolute;
 
     right: 0;
+    top: 0;
+
+    width: 50%;
+    height: 100%;
 
     transform-origin: left center;
 
     transform:
-        rotateY(-4deg)
-        rotateX(-3deg)
-        translateY(5px);
+        rotateY(-12deg)
+        rotateX(-9deg)
+        translateY(10px);
 
     border-radius:
         18px
@@ -225,7 +244,6 @@ body {
         28px;
 
     background:
-
         radial-gradient(
             ellipse 100px 75% at 0% 50%,
             rgba(255,255,255,.32) 0%,
@@ -233,27 +251,21 @@ body {
             rgba(80,55,35,.10) 58%,
             transparent 80%
         ),
-
         #f3ead8;
 
     box-shadow:
-
-        inset 22px 0 28px
-        rgba(70,45,25,.12),
-
-        0 14px 18px
-        rgba(50,35,20,.16);
+        inset 22px 0 28px rgba(70,45,25,.12),
+        0 14px 18px rgba(50,35,20,.16);
 
     z-index: 10;
 }
 
 
 /* =========================================
-   SOL SAYFA KALINLIGI
+   SOLDA COK SAYFA KALINLIGI
    ========================================= */
 
 .page.left::after {
-
     content: "";
 
     position: absolute;
@@ -264,22 +276,14 @@ body {
     width: 96%;
     height: 18px;
 
-    border-radius:
-        0
-        0
-        0
-        18px;
+    border-radius: 0 0 0 18px;
 
     background:
-
         repeating-linear-gradient(
             to bottom,
-
             #e8dcc5 0px,
             #e8dcc5 2px,
-
             #cfc0a5 3px,
-
             #f2e8d5 4px
         );
 
@@ -288,19 +292,17 @@ body {
         rotateX(-12deg);
 
     box-shadow:
-        0 5px 8px
-        rgba(50,35,20,.18);
+        0 5px 8px rgba(50,35,20,.18);
 
     z-index: -1;
 }
 
 
 /* =========================================
-   SAG SAYFA KALINLIGI
+   SAGDA COK SAYFA KALINLIGI
    ========================================= */
 
 .page.right::after {
-
     content: "";
 
     position: absolute;
@@ -311,22 +313,14 @@ body {
     width: 96%;
     height: 18px;
 
-    border-radius:
-        0
-        0
-        18px
-        0;
+    border-radius: 0 0 18px 0;
 
     background:
-
         repeating-linear-gradient(
             to bottom,
-
             #e8dcc5 0px,
             #e8dcc5 2px,
-
             #cfc0a5 3px,
-
             #f2e8d5 4px
         );
 
@@ -335,42 +329,17 @@ body {
         rotateX(-12deg);
 
     box-shadow:
-        0 5px 8px
-        rgba(50,35,20,.18);
+        0 5px 8px rgba(50,35,20,.18);
 
     z-index: -1;
 }
 
 
 /* =========================================
-   ORTA CILT
-   ========================================= */
-
-.middle {
-
-    position: absolute;
-
-    left: 50%;
-    top: 0;
-
-    width: 90px;
-    height: 100%;
-
-    transform:
-        translateX(-50%);
-
-    z-index: 30;
-
-    pointer-events: none;
-}
-
-
-/* =========================================
-   ORTA CILT SOL BOMBE
+   ORTA CILT - SOL KABARIKLIK
    ========================================= */
 
 .middle::before {
-
     content: "";
 
     position: absolute;
@@ -382,14 +351,10 @@ body {
     height: calc(100% + 4px);
 
     background:
-
         radial-gradient(
             ellipse 42px 75% at 100% 50%,
-
             rgba(55,38,25,.30),
-
             rgba(55,38,25,.12) 38%,
-
             transparent 74%
         );
 
@@ -400,11 +365,10 @@ body {
 
 
 /* =========================================
-   ORTA CILT SAG BOMBE
+   ORTA CILT - SAG KABARIKLIK
    ========================================= */
 
 .middle::after {
-
     content: "";
 
     position: absolute;
@@ -416,14 +380,10 @@ body {
     height: calc(100% + 4px);
 
     background:
-
         radial-gradient(
             ellipse 42px 75% at 0% 50%,
-
             rgba(55,38,25,.30),
-
             rgba(55,38,25,.12) 38%,
-
             transparent 74%
         );
 
@@ -438,38 +398,30 @@ body {
    ========================================= */
 
 .picture {
-
     width: 100%;
     height: 100%;
 
-    position: relative;
-
     background:
-
         linear-gradient(
             to bottom,
-
             rgba(30,20,10,.05),
             rgba(20,10,5,.45)
         ),
-
         linear-gradient(
             to bottom,
-
             #d98d58 0%,
             #edbd82 28%,
             #527c91 55%,
             #183f52 100%
         );
+
+    position: relative;
 }
 
 
-/* =========================================
-   GUNES
-   ========================================= */
+/* Gunes */
 
-.picture::before {
-
+.picture:before {
     content: "";
 
     position: absolute;
@@ -484,8 +436,7 @@ body {
     left: 50%;
     top: 30%;
 
-    transform:
-        translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 
     box-shadow:
         0 0 40px
@@ -493,12 +444,9 @@ body {
 }
 
 
-/* =========================================
-   DENIZ
-   ========================================= */
+/* Deniz */
 
-.picture::after {
-
+.picture:after {
     content: "";
 
     position: absolute;
@@ -510,27 +458,22 @@ body {
     height: 43%;
 
     background:
-
         repeating-linear-gradient(
             0deg,
-
             rgba(255,255,255,.13) 0px,
             rgba(255,255,255,.13) 2px,
-
             transparent 2px,
             transparent 15px
         ),
-
         #28566b;
 }
 
 
 /* =========================================
-   SOL SAYFA YAZISI
+   SOL GORSEL YAZISI
    ========================================= */
 
 .pictureText {
-
     position: absolute;
 
     left: 30px;
@@ -549,37 +492,30 @@ body {
 }
 
 .pictureText h2 {
-
     margin: 0 0 12px;
 
     font-size: 30px;
-
     font-weight: normal;
-
     letter-spacing: 2px;
 }
 
 .pictureText p {
-
     margin: 0;
 
     font-size: 16px;
-
     font-style: italic;
 }
 
 
 /* =========================================
-   SAG SAYFA ICINDEKILER
+   SAG SAYFA
    ========================================= */
 
 .content {
-
     padding: 55px;
 }
 
 .content h2 {
-
     text-align: center;
 
     font-weight: normal;
@@ -590,7 +526,6 @@ body {
 }
 
 .line {
-
     height: 1px;
 
     background:
@@ -600,7 +535,6 @@ body {
 }
 
 .item {
-
     display: flex;
 
     margin: 15px 0;
@@ -608,35 +542,27 @@ body {
     font-size: 17px;
 
     cursor: pointer;
-
-    transition:
-        transform .2s ease;
 }
 
 .item:hover {
-
-    transform:
-        translateX(5px);
+    transform: translateX(5px);
 }
 
 .dots {
-
     flex: 1;
 
     border-bottom:
         1px dotted #8b7964;
 
-    margin:
-        0 10px;
+    margin: 0 10px;
 }
 
 
 /* =========================================
-   CEVRILECEK SAYFA
+   SAYFA CEVIRME
    ========================================= */
 
 .flip-page {
-
     position: absolute;
 
     top: 0;
@@ -647,7 +573,7 @@ body {
 
     background: #f3ead8;
 
-    z-index: 40;
+    z-index: 10;
 
     transform-style: preserve-3d;
 
@@ -663,26 +589,18 @@ body {
 }
 
 .flip-page.flipping {
-
     transform:
-
         perspective(1800px)
         rotateY(-180deg)
-        rotateZ(.5deg);
+        rotateZ(0.5deg);
 
     box-shadow:
-
         -25px 10px 35px
         rgba(0,0,0,.35);
 }
 
-
-/* =========================================
-   CEVRILEN SAYFA ON
-   ========================================= */
-
-.flip-page .page-front {
-
+.flip-page .page-front,
+.flip-page .page-back {
     position: absolute;
 
     width: 100%;
@@ -691,22 +609,8 @@ body {
     backface-visibility: hidden;
 }
 
-
-/* =========================================
-   CEVRILEN SAYFA ARKA
-   ========================================= */
-
 .flip-page .page-back {
-
-    position: absolute;
-
-    width: 100%;
-    height: 100%;
-
-    backface-visibility: hidden;
-
-    transform:
-        rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
 
@@ -715,24 +619,20 @@ body {
    ========================================= */
 
 .controls {
-
     position: fixed;
 
     left: 50%;
+
     bottom: 25px;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
     display: none;
 
     gap: 15px;
-
-    z-index: 100;
 }
 
 button {
-
     background: #211b16;
 
     color: #f5ead8;
@@ -740,19 +640,15 @@ button {
     border:
         1px solid #74614d;
 
-    padding:
-        10px 20px;
+    padding: 10px 20px;
 
-    font-family:
-        Georgia, serif;
+    font-family: Georgia, serif;
 
     cursor: pointer;
 }
 
 button:hover {
-
-    background:
-        #46382b;
+    background: #46382b;
 }
 
 
@@ -763,31 +659,26 @@ button:hover {
 @media(max-width:700px) {
 
     #closedBook {
-
         width: 280px;
         height: 410px;
     }
 
     #book {
-
         height: 70vh;
     }
 
     .content {
-
-        padding:
-            30px 20px;
+        padding: 30px 20px;
     }
 
     .content h2 {
-
         font-size: 23px;
     }
 
     .item {
-
         font-size: 13px;
     }
+
 }
 
 </style>
@@ -797,9 +688,7 @@ button:hover {
 <body>
 
 
-<!-- =========================================
-     KAPALI KITAP
-     ========================================= -->
+<!-- KAPALI KITAP -->
 
 <div id="closedBook" onclick="openBook()">
 
@@ -819,9 +708,7 @@ button:hover {
 </div>
 
 
-<!-- =========================================
-     ACIK KITAP
-     ========================================= -->
+<!-- ACIK KITAP -->
 
 <div id="book">
 
@@ -857,7 +744,6 @@ button:hover {
             <h2>İçindekiler</h2>
 
             <div class="line"></div>
-
 
             <div class="item">
                 <span>Deneme 1</span>
@@ -912,14 +798,9 @@ button:hover {
     </div>
 
 
-    <!-- =====================================
-         CEVRILECEK SAYFA
-         ===================================== -->
+    <!-- CEVRILECEK SAYFA -->
 
     <div class="flip-page" id="flipPage">
-
-
-        <!-- ON YUZ -->
 
         <div class="page-front">
 
@@ -952,8 +833,6 @@ button:hover {
         </div>
 
 
-        <!-- ARKA YUZ -->
-
         <div class="page-back">
 
             <div class="content">
@@ -984,14 +863,9 @@ button:hover {
 </div>
 
 
-<!-- =========================================
-     KONTROLLER
-     ========================================= -->
+<!-- KONTROLLER -->
 
-<div
-    class="controls"
-    id="controls"
->
+<div class="controls" id="controls">
 
     <button onclick="previousPage()">
         ‹ Önceki
@@ -1006,30 +880,15 @@ button:hover {
 
 <script>
 
-
-/* =========================================
-   KITABI AC
-   ========================================= */
-
 function openBook() {
 
-    document.getElementById(
-        "closedBook"
-    ).style.display = "none";
+    document.getElementById("closedBook").style.display = "none";
 
-    document.getElementById(
-        "book"
-    ).style.display = "block";
+    document.getElementById("book").style.display = "block";
 
-    document.getElementById(
-        "controls"
-    ).style.display = "flex";
+    document.getElementById("controls").style.display = "flex";
 }
 
-
-/* =========================================
-   SONRAKI SAYFA
-   ========================================= */
 
 function nextPage() {
 
@@ -1040,10 +899,6 @@ function nextPage() {
 }
 
 
-/* =========================================
-   ONCEKI SAYFA
-   ========================================= */
-
 function previousPage() {
 
     const page =
@@ -1051,7 +906,6 @@ function previousPage() {
 
     page.classList.remove("flipping");
 }
-
 
 </script>
 
