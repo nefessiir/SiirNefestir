@@ -1,16 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Şiirler | Şiir Nefestir</title>
-    
+<title>Şairler Ağlamaz | Şiir Nefestir</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
 
+<style>
 * {
     box-sizing: border-box;
 }
@@ -29,13 +30,13 @@ body {
     padding: 35px 15px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .book-page {
     width: min(900px, 100%);
     min-height: 760px;
-    padding: 70px 10%;
+    padding: 55px 10% 45px;
     background: #f8f2e7;
     box-shadow: 0 18px 45px rgba(40,30,20,.28);
     position: relative;
@@ -46,7 +47,6 @@ body {
     position: absolute;
     inset: 0;
     pointer-events: none;
-
     background:
         repeating-linear-gradient(
             0deg,
@@ -56,41 +56,9 @@ body {
             transparent 5px
         );
 }
-.poem-title {
-    text-align: center;
-    font-size: 30px;
-    font-weight: normal;
-    color: #243d56;
-    margin: 0 0 10px;
-    letter-spacing: 2px;
-}
 
-.poem-date {
-    text-align: center;
-    font-size: 13px;
-    color: #8a8176;
-    margin-bottom: 45px;
-}
-
-.poem-text {
-    font-family: "Caveat", cursive;
-    color: #234f82;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 1.9;
-    white-space: pre-line;
-    max-width: 680px;
-    margin: 10 auto;
-    padding: 0 12px;
-
-    text-shadow:
-        0.3px 0.3px 0 rgba(20,55,90,.25),
-        -0.2px 0 rgba(20,55,90,.15);
-}
-}
 .back {
     position: relative;
-    text-align: left;
     margin-bottom: 55px;
 }
 
@@ -135,45 +103,29 @@ body {
     margin: 25px auto 45px;
 }
 
-}
-
-.date {
-    text-align: right;
-    margin-top: 55px;
-    color: #888075;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
-
-.footer {
-    position: relative;
+.poem-date {
     text-align: center;
-    margin-top: 80px;
-    color: #999083;
-    font-size: 12px;
-    letter-spacing: 2px;
+    color: #8a8176;
+    font-size: 13px;
+    margin-bottom: 40px;
 }
 
-@media(max-width:600px) {
+.poem-text {
+    font-family: "Caveat", cursive;
+    color: #234f82;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1.9;
+    white-space: pre-line;
+    max-width: 680px;
+    margin: auto;
+    padding: 0 12px;
 
-    .page {
-        padding: 0;
-    }
-
-    .book-page {
-        min-height: 100vh;
-        padding: 45px 8%;
-    }
-
-    .poem-text {
-        font-size: 19px;
-        line-height: 1.9;
-    }
-
-    .poem-title {
-        font-size: 26px;
-    }
+    text-shadow:
+        0.3px 0.3px 0 rgba(20,55,90,.25),
+        -0.2px 0 rgba(20,55,90,.15);
 }
+
 .poem-navigation {
     display: flex;
     justify-content: space-between;
@@ -186,40 +138,76 @@ body {
 .poem-navigation a {
     color: #6f675d;
     text-decoration: none;
-    font-family: Georgia, "Times New Roman", serif;
     font-size: 13px;
     letter-spacing: 1px;
-    transition: color .3s ease;
 }
 
 .poem-navigation a:hover {
     color: #243d56;
 }
-    
+
+.footer {
+    position: relative;
+    text-align: center;
+    margin-top: 80px;
+    color: #999083;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+@media (max-width: 600px) {
+
+    .page {
+        padding: 0;
+    }
+
+    .book-page {
+        min-height: 100vh;
+        padding: 45px 8%;
+    }
+
+    .poem-text {
+        font-size: 21px;
+        line-height: 1.9;
+    }
+
+    .poem-title {
+        font-size: 27px;
+    }
+}
 </style>
+
 </head>
 
 <body>
 
 <div class="page">
 
-    <main class="book-page">
+```
+<main class="book-page">
 
-        <div class="back">
-            <a href="index.html">← Ana sayfaya dön</a>
-        </div>
-
-       <article class="poem">
-
-    <h1 class="poem-title">
-        Yoksam Düşlerinde
-    </h1>
-
-    <div class="poem-date">
-        — Tarih eklenecek
+    <div class="back">
+        <a href="index.html">← Ana sayfaya dön</a>
     </div>
 
-    <div class="poem-text">
+    <article class="poem">
+
+        <div class="poem-number">
+            DENEME 1
+        </div>
+
+        <h1 class="poem-title">
+            Şairler Ağlamaz
+        </h1>
+
+        <div class="line"></div>
+
+        <div class="poem-date">
+            — Tarih eklenecek
+        </div>
+
+        <div class="poem-text">
+```
 
 Yoksam düşlerinde gecelerinde kayıpsam
 
@@ -228,24 +216,22 @@ Bir şeyler eksikse içinde
 
 Belki de ben varımdır
 Belki de yokluğumdur
-Seni böyle sessiz bırakan
+Seni böyle sessiz bırakan </div>
 
+```
+    </article>
+
+    <div class="poem-navigation">
+        <a href="index.html">← Ana sayfa</a>
+        <a href="siir-2.html">Sonraki şiir →</a>
     </div>
 
-</article>
-        <div class="poem-navigation">
+    <div class="footer">
+        ŞİİR NEFESTİR
+    </div>
 
-    <a href="#">← Önceki şiir</a>
-
-    <a href="siir-2.html">Sonraki şiir →</a>
-
-</div>
-
-        <div class="footer">
-            ŞİİR NEFESTİR
-        </div>
-
-    </main>
+</main>
+```
 
 </div>
 
