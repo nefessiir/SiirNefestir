@@ -300,13 +300,14 @@ background-position: center;
     background: #f3ead8;
     z-index: 10;
     transform-style: preserve-3d;
-    transition: transform 1.2s ease-in-out;
+    transition: transform 1.4s cubic-bezier(.45,.05,.35,1);
     transform-origin: left center;
     box-shadow: 0 0 20px rgba(0,0,0,.25);
 }
 
 .flip-page.flipping {
-    transform: rotateY(-180deg);
+    transform: perspective(1800px) rotateY(-180deg) rotateZ(0.5deg);
+    box-shadow: -25px 10px 35px rgba(0,0,0,.35);
 }
 
 .flip-page .page-front,
