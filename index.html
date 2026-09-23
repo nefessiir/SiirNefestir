@@ -289,6 +289,36 @@ background-position: center;
 
 /* BUTONLAR */
 
+        
+/* page flip */
+.flip-page {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #f3ead8;
+    z-index: 10;
+    transform-style: preserve-3d;
+    transition: transform 1.2s ease-in-out;
+    transform-origin: left center;
+    box-shadow: 0 0 20px rgba(0,0,0,.25);
+}
+
+.flip-page.flipping {
+    transform: rotateY(-180deg);
+}
+
+.flip-page .page-front,
+.flip-page .page-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.flip-page .page-back {
+    transform: rotateY(180deg);
+}
 .controls {
     position: fixed;
 
@@ -465,37 +495,7 @@ button:hover {
 
 </div>
 
-
 <!-- KONTROLLER -->
-/* page flip */
-.flip-page {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: #f3ead8;
-    z-index: 10;
-    transform-style: preserve-3d;
-    transition: transform 1.2s ease-in-out;
-    transform-origin: left center;
-    box-shadow: 0 0 20px rgba(0,0,0,.25);
-}
-
-.flip-page.flipping {
-    transform: rotateY(-180deg);
-}
-
-.flip-page .page-front,
-.flip-page .page-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-}
-
-.flip-page .page-back {
-    transform: rotateY(180deg);
-}
     
 <div class="controls" id="controls">
 
