@@ -14,72 +14,7 @@
 <style>
 * {
     box-sizing: border-box;
-}<script>
-const previousPage = "siirler.html";
-const nextPage = "siir-3.html";
-
-const bookPage = document.querySelector(".book-page");
-const pageFlip = document.querySelector(".page-flip");
-
-let startX = 0;
-let currentX = 0;
-let dragging = false;
-
-bookPage.addEventListener("pointerdown", function(e) {
-    startX = e.clientX;
-    currentX = startX;
-    dragging = true;
-
-    bookPage.classList.add("dragging");
-    bookPage.setPointerCapture(e.pointerId);
-});
-
-bookPage.addEventListener("pointermove", function(e) {
-    if (!dragging) return;
-
-    currentX = e.clientX;
-
-    const distance = currentX - startX;
-
-    if (Math.abs(distance) > 20) {
-        pageFlip.style.opacity = Math.min(Math.abs(distance) / 250, 1);
-    }
-});
-
-bookPage.addEventListener("pointerup", function(e) {
-    if (!dragging) return;
-
-    dragging = false;
-    bookPage.classList.remove("dragging");
-
-    const distance = currentX - startX;
-
-    if (distance < -100 && nextPage) {
-        pageFlip.style.transformOrigin = "left center";
-        pageFlip.classList.add("turning");
-
-        setTimeout(function() {
-            window.location.href = nextPage;
-        }, 500);
-
-    } else if (distance > 100 && previousPage) {
-        pageFlip.style.transformOrigin = "right center";
-        pageFlip.classList.add("turning");
-
-        setTimeout(function() {
-            window.location.href = previousPage;
-        }, 500);
-    } else {
-        pageFlip.style.opacity = "0";
-    }
-});
-
-bookPage.addEventListener("pointercancel", function() {
-    dragging = false;
-    bookPage.classList.remove("dragging");
-    pageFlip.style.opacity = "0";
-});
-</script>
+}
 
 body {
     margin: 0;
@@ -88,6 +23,7 @@ body {
         linear-gradient(135deg, #d9d0c1, #eee8dc);
     color: #332d27;
     font-family: Georgia, "Times New Roman", serif;
+    overflow-x: hidden;
 }
 
 .page {
@@ -105,6 +41,13 @@ body {
     background: #f8f2e7;
     box-shadow: 0 18px 45px rgba(40,30,20,.28);
     position: relative;
+    touch-action: pan-y;
+    cursor: grab;
+    overflow: hidden;
+}
+
+.book-page.dragging {
+    cursor: grabbing;
 }
 
 .book-page::before {
@@ -112,6 +55,7 @@ body {
     position: absolute;
     inset: 0;
     pointer-events: none;
+
     background:
         repeating-linear-gradient(
             0deg,
@@ -212,6 +156,7 @@ body {
 }
 
 .footer {
+    position: relative;
     text-align: center;
     margin-top: 80px;
     color: #999083;
@@ -219,7 +164,30 @@ body {
     letter-spacing: 2px;
 }
 
+/* Sayfa çevirme katmanı */
+
+.page-flip {
+    position: fixed;
+    inset: 0;
+    background: #f8f2e7;
+    z-index: 9999;
+    pointer-events: none;
+    transform-origin: left center;
+    transform: rotateY(90deg);
+    opacity: 0;
+    box-shadow: 15px 0 35px rgba(40,30,20,.25);
+}
+
+.page-flip.turning {
+    opacity: 1;
+    transform: rotateY(0deg);
+    transition:
+        transform .65s ease,
+        opacity .2s ease;
+}
+
 @media (max-width: 600px) {
+
     .page {
         padding: 0;
     }
@@ -231,38 +199,13 @@ body {
 
     .poem-text {
         font-size: 21px;
+        line-height: 1.9;
     }
 
     .poem-title {
         font-size: 27px;
     }
-}.page-flip {
-    position: fixed;
-    inset: 0;
-    background: #f8f2e7;
-    z-index: 9999;
-    pointer-events: none;
-    transform-origin: left center;
-    transform: rotateY(90deg);
-    opacity: 0;
-    transition: transform .65s ease, opacity .2s ease;
-    box-shadow: 15px 0 35px rgba(40,30,20,.25);
 }
-
-.page-flip.turning {
-    opacity: 1;
-    transform: rotateY(0deg);
-}
-
-.book-page {
-    touch-action: pan-y;
-    cursor: grab;
-}
-
-.book-page.dragging {
-    cursor: grabbing;
-}
-    
 </style>
 
 </head>
@@ -271,55 +214,126 @@ body {
 
 <div class="page">
 
-<main class="book-page">
+```
+<main class="book-page" id="bookPage">
 
-<div class="back">
-    <a href="siirler.html">← Önceki şiir</a>
-</div>
+    <div class="back">
+        <a href="siirler.html">← Önceki şiir</a>
+    </div>
 
-<article class="poem">
+    <article class="poem">
 
-<div class="poem-number">
-    DENEME 2
-</div>
+        <div class="poem-number">
+            DENEME 2
+        </div>
 
-<h1 class="poem-title">
-    Kırılgan Bir Şiirim Şimdi
-</h1>
+        <h1 class="poem-title">
+            Kırılgan Bir Şiirim Şimdi
+        </h1>
 
-<div class="line"></div>
+        <div class="line"></div>
 
-<div class="poem-date">
-    — Tarih eklenecek
-</div>
+        <div class="poem-date">
+            — Tarih eklenecek
+        </div>
 
-<div class="poem-text">
-Kırılgan bir şiirim şimdi...
+        <div class="poem-text">Kırılgan bir şiirim şimdi...
+```
 
-Belki de hataydı..
+Belki de hataydı..</div>
 
-</div>
+```
+    </article>
 
-</article>
+    <div class="poem-navigation">
 
-<div class="poem-navigation">
+        <a href="siirler.html">← Önceki şiir</a>
 
-<div class="poem-navigation">
-    <a href="siirler.html">← Önceki şiir</a>
-    <a href="siir-3.html">Sonraki şiir →</a>
-</div>
+        <a href="siir-3.html">Sonraki şiir →</a>
 
-<div class="page-flip"></div>
+    </div>
 
-</div>
-
-<div class="footer">
-    ŞİİR NEFESTİR
-</div>
+    <div class="footer">
+        ŞİİR NEFESTİR
+    </div>
 
 </main>
+```
 
 </div>
+
+<div class="page-flip" id="pageFlip"></div>
+
+<script>
+const previousPage = "siirler.html";
+const nextPage = "siir-3.html";
+
+const bookPage = document.getElementById("bookPage");
+const pageFlip = document.getElementById("pageFlip");
+
+let startX = 0;
+let currentX = 0;
+let dragging = false;
+
+bookPage.addEventListener("pointerdown", function(event) {
+
+    startX = event.clientX;
+    currentX = event.clientX;
+    dragging = true;
+
+    bookPage.classList.add("dragging");
+
+    bookPage.setPointerCapture(event.pointerId);
+});
+
+bookPage.addEventListener("pointermove", function(event) {
+
+    if (!dragging) return;
+
+    currentX = event.clientX;
+
+});
+
+bookPage.addEventListener("pointerup", function(event) {
+
+    if (!dragging) return;
+
+    dragging = false;
+
+    bookPage.classList.remove("dragging");
+
+    const distance = currentX - startX;
+
+    if (distance < -100 && nextPage) {
+
+        pageFlip.style.transformOrigin = "left center";
+        pageFlip.classList.add("turning");
+
+        setTimeout(function() {
+            window.location.href = nextPage;
+        }, 500);
+
+    } else if (distance > 100 && previousPage) {
+
+        pageFlip.style.transformOrigin = "right center";
+        pageFlip.classList.add("turning");
+
+        setTimeout(function() {
+            window.location.href = previousPage;
+        }, 500);
+    }
+
+});
+
+bookPage.addEventListener("pointercancel", function() {
+
+    dragging = false;
+
+    bookPage.classList.remove("dragging");
+
+});
+
+</script>
 
 </body>
 </html>
