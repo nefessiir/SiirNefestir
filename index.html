@@ -126,28 +126,103 @@ background-position: center;
     border-radius: 0 8px 8px 0;
 }
 
+/* ORTA CİLT - KABARIK AÇIK KİTAP */
+
 .middle {
     position: absolute;
     left: 50%;
-    top: -1%;
-    width: 24px;
-    height: 102%;
+    top: 0;
+
+    width: 110px;
+    height: 100%;
 
     transform: translateX(-50%);
 
+    z-index: 20;
+    pointer-events: none;
+
+    background: transparent;
+}
+
+
+/* SOL SAYFANIN ORTAYA DOĞRU BOMBESİ */
+
+.page.left {
     background:
         radial-gradient(
-            ellipse at center,
-            rgba(60,40,20,.22) 0%,
-            rgba(60,40,20,.12) 28%,
-            rgba(255,255,255,.18) 48%,
-            rgba(60,40,20,.10) 68%,
-            transparent 100%
+            ellipse 100px 75% at 100% 50%,
+            rgba(255,255,255,.30) 0%,
+            rgba(255,255,255,.16) 25%,
+            rgba(80,55,35,.10) 55%,
+            transparent 78%
+        ),
+        #f3ead8;
+}
+
+
+/* SAĞ SAYFANIN ORTAYA DOĞRU BOMBESİ */
+
+.page.right {
+    background:
+        radial-gradient(
+            ellipse 100px 75% at 0% 50%,
+            rgba(255,255,255,.30) 0%,
+            rgba(255,255,255,.16) 25%,
+            rgba(80,55,35,.10) 55%,
+            transparent 78%
+        ),
+        #f3ead8;
+}
+
+
+/* SOLDAKİ KIVRILMIŞ CİLT GÖLGESİ */
+
+.middle::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 55px;
+    height: 100%;
+
+    background:
+        radial-gradient(
+            ellipse 45px 70% at 100% 50%,
+            rgba(60,40,25,.28),
+            rgba(60,40,25,.10) 35%,
+            transparent 72%
         );
 
-    filter: blur(1px);
+    filter: blur(2px);
+}
 
-    z-index: 20;
+
+/* SAĞDAKİ KIVRILMIŞ CİLT GÖLGESİ */
+
+.middle::after {
+    content: "";
+
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+    width: 55px;
+    height: 100%;
+
+    background:
+        radial-gradient(
+            ellipse 45px 70% at 0% 50%,
+            rgba(60,40,25,.28),
+            rgba(60,40,25,.10) 35%,
+            transparent 72%
+        );
+
+    filter: blur(2px);
+}
 
     pointer-events: none;
 
