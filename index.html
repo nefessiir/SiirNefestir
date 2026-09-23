@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -607,5 +606,840 @@ body {
     text-align: center;
 }
 
-/* ===================================================*
+/* =========================================================
+   SES BUTONU
+========================================================= */
+
+.listen-button {
+    display: block;
+
+    margin: 20px auto 0;
+
+    padding: 9px 18px;
+
+    border: 1px solid rgba(70,45,25,.3);
+
+    background: rgba(255,255,255,.25);
+
+    color: #3d3024;
+
+    border-radius: 3px;
+
+    cursor: pointer;
+
+    font-family: Georgia, serif;
+}
+
+/* =========================================================
+   MOBİL
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .book {
+        width: 96vw;
+        height: 75vh;
+    }
+
+    .page-content {
+        padding: 30px 25px;
+    }
+
+    .contents-item {
+        font-size: 13px;
+        margin-bottom: 9px;
+    }
+
+    .poem {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .page-title {
+        font-size: 23px;
+    }
+
+    .visual-writing h2 {
+        font-size: 24px;
+    }
+
+    .visual-writing p {
+        font-size: 13px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="scene">
+
+    <!-- =====================================================
+         KAPALI KİTAP
+    ====================================================== -->
+
+    <div
+        class="closed-book"
+        id="closedBook"
+        onclick="openBook()"
+    >
+
+        <div class="book-cover">
+
+            <div class="cover-image"></div>
+
+            <div class="cover-writing">
+
+                <div class="cover-title">
+                    ŞİİR NEFESTİR
+                </div>
+
+                <div class="cover-subtitle">
+                    Kelimelerden kızıma,<br>
+                    insanlara ve hayata...
+                </div>
+
+                <div class="cover-author">
+                    Serdar
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         AÇIK KİTAP
+    ====================================================== -->
+
+    <div class="book" id="book">
+
+        <div class="page left-page" id="leftPage">
+        </div>
+
+        <div class="page right-page" id="rightPage">
+        </div>
+
+        <div class="book-spine"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     KONTROLLER
+========================================================= -->
+
+<div class="controls">
+
+    <button
+        class="control-button"
+        onclick="previousPage()"
+    >
+        ‹ Önceki
+    </button>
+
+    <div
+        class="page-counter"
+        id="pageCounter"
+    >
+        1 / 1
+    </div>
+
+    <button
+        class="control-button"
+        onclick="nextPage()"
+    >
+        Sonraki ›
+    </button>
+
+</div>
+
+
+<!-- =========================================================
+     SES
+========================================================= -->
+
+<audio id="poemAudio"></audio>
+
+
+<script>
+
+/* =========================================================
+   ŞİİRLER
+
+   Şimdilik sadece prototip şiirler.
+   Daha sonra gerçek şiirleri buraya bağlayacağız.
+========================================================= */
+
+const poems = [
+
+    {
+        number: 1,
+
+        title: "Deneme 1",
+
+        text:
+`Yoksam düşlerinde gecelerinde kayıpsam
+Bakışların hep donuk
+Belki de uzaklarda bir yerdeyim.
+
+Şairler ağlamaz derler...
+Ama bazen kelimeler
+insanın söyleyemediği her şeyi anlatır.
+
+Bekle…!
+Geliyorum!`,
+
+        date: "",
+
+        audio: "sesler/deneme1.mp3"
+    },
+
+
+    {
+        number: 2,
+
+        title: "Deneme 2",
+
+        text:
+`Kırılgan bir şiirim şimdi
+satır aralarında...
+
+Belki ben henüz ölmemişimdir.
+
+Belki bir kelimenin içinde
+saklı kalmışımdır.
+
+Belki de hâlâ
+bir yerlerde nefes alıyorumdur.`,
+
+        date: "",
+
+        audio: "sesler/deneme2.mp3"
+    }
+
+];
+
+
+/* =========================================================
+   SAYFA SİSTEMİ
+========================================================= */
+
+let pages = [];
+
+let currentPage = 0;
+
+let bookOpened = false;
+
+
+/* =========================================================
+   SAYFALARI OLUŞTUR
+========================================================= */
+
+function createPages() {
+
+    pages = [];
+
+
+    /* -----------------------------------------------------
+       SAYFA 1 — SOL GÖRSEL
+    ------------------------------------------------------ */
+
+    pages.push({
+
+        type: "visual"
+
+    });
+
+
+    /* -----------------------------------------------------
+       SAYFA 2 — İÇİNDEKİLER
+    ------------------------------------------------------ */
+
+    pages.push({
+
+        type: "contents",
+
+        start: 1
+
+    });
+
+
+    /* -----------------------------------------------------
+       İÇİNDEKİLER DEVAMI
+    ------------------------------------------------------ */
+
+    pages.push({
+
+        type: "contents",
+
+        start: 2
+
+    });
+
+
+    /* -----------------------------------------------------
+       BOŞ AYIRICI
+    ------------------------------------------------------ */
+
+    pages.push({
+
+        type: "empty"
+
+    });
+
+
+    /* -----------------------------------------------------
+       ŞİİRLER
+    ------------------------------------------------------ */
+
+    poems.forEach((poem, index) => {
+
+        /*
+           Şimdilik her şiiri iki sayfaya
+           ayırıyoruz.
+
+           Gerçek sistemde burada metnin
+           sayfa yüksekliğini ölçüp
+           otomatik böleceğiz.
+        */
+
+        pages.push({
+
+            type: "poem",
+
+            poemIndex: index,
+
+            part: 1
+
+        });
+
+
+        pages.push({
+
+            type: "poem",
+
+            poemIndex: index,
+
+            part: 2
+
+        });
+
+
+        /* Şiirler arasına boş sayfa */
+
+        pages.push({
+
+            type: "empty"
+
+        });
+
+    });
+
+}
+
+
+/* =========================================================
+   SAYFA HTML'İ
+========================================================= */
+
+function pageHTML(page) {
+
+    if (!page) {
+
+        return `
+            <div class="page-content"></div>
+        `;
+
+    }
+
+
+    /* -----------------------------------------------------
+       GÖRSEL
+    ------------------------------------------------------ */
+
+    if (page.type === "visual") {
+
+        return `
+
+            <div class="visual-page">
+
+                <div class="visual-image"></div>
+
+                <div class="visual-writing">
+
+                    <h2>Şiir Nefestir</h2>
+
+                    <p>
+                        Kelimelerden kızıma,
+                        insanlara ve hayata...
+                    </p>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* -----------------------------------------------------
+       İÇİNDEKİLER
+    ------------------------------------------------------ */
+
+    if (page.type === "contents") {
+
+        let html = `
+
+            <div class="page-content">
+
+                <h1 class="page-title">
+                    İçindekiler
+                </h1>
+
+                <div class="page-line"></div>
+
+                <div class="contents">
+        `;
+
+
+        let start = page.start || 1;
+
+        let end = Math.min(start + 10, poems.length + 1);
+
+
+        for (let i = start - 1; i < end - 1; i++) {
+
+            const poem = poems[i];
+
+            if (!poem) continue;
+
+
+            html += `
+
+                <div
+                    class="contents-item"
+                    onclick="goToPoem(${i})"
+                >
+
+                    <span class="contents-name">
+                        ${poem.title}
+                    </span>
+
+                    <span class="contents-dots"></span>
+
+                    <span>
+                        ${i + 5}
+                    </span>
+
+                </div>
+            `;
+
+        }
+
+
+        html += `
+
+                </div>
+
+            </div>
+
+        `;
+
+        return html;
+
+    }
+
+
+    /* -----------------------------------------------------
+       BOŞ SAYFA
+    ------------------------------------------------------ */
+
+    if (page.type === "empty") {
+
+        return `
+
+            <div class="empty-page">
+
+                <span></span>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* -----------------------------------------------------
+       ŞİİR
+    ------------------------------------------------------ */
+
+    if (page.type === "poem") {
+
+        const poem = poems[page.poemIndex];
+
+
+        if (!poem) {
+
+            return "";
+
+        }
+
+
+        return `
+
+            <div class="page-content">
+
+                <h2 class="poem-title">
+                    ${poem.title}
+                </h2>
+
+                <div class="poem">
+                    ${poem.text}
+                </div>
+
+                <button
+                    class="listen-button"
+                    onclick="playPoem(${page.poemIndex})"
+                >
+                    🎵 Şiiri Dinle
+                </button>
+
+                <div class="poem-page-number">
+                    ${page.part}
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   SAYFALARI GÖSTER
+========================================================= */
+
+function renderPages() {
+
+    const left = pages[currentPage];
+
+    const right = pages[currentPage + 1];
+
+
+    document.getElementById("leftPage").innerHTML =
+        pageHTML(left);
+
+    document.getElementById("rightPage").innerHTML =
+        pageHTML(right);
+
+
+    document.getElementById("pageCounter").textContent =
+        `${currentPage + 1} - ${Math.min(currentPage + 2, pages.length)}
+         / ${pages.length}`;
+
+}
+
+
+/* =========================================================
+   KİTABI AÇ
+========================================================= */
+
+function openBook() {
+
+    const closedBook =
+        document.getElementById("closedBook");
+
+    const book =
+        document.getElementById("book");
+
+
+    closedBook.classList.add("opening");
+
+
+    setTimeout(() => {
+
+        createPages();
+
+        currentPage = 0;
+
+        renderPages();
+
+        book.classList.add("visible");
+
+        bookOpened = true;
+
+    }, 700);
+
+}
+
+
+/* =========================================================
+   SONRAKİ SAYFA
+========================================================= */
+
+function nextPage() {
+
+    if (!bookOpened) return;
+
+
+    if (currentPage + 2 >= pages.length) {
+
+        return;
+
+    }
+
+
+    animateTurn(() => {
+
+        currentPage += 2;
+
+        renderPages();
+
+    });
+
+}
+
+
+/* =========================================================
+   ÖNCEKİ SAYFA
+========================================================= */
+
+function previousPage() {
+
+    if (!bookOpened) return;
+
+
+    if (currentPage <= 0) {
+
+        return;
+
+    }
+
+
+    currentPage -= 2;
+
+    renderPages();
+
+}
+
+
+/* =========================================================
+   GERÇEK SAYFA KIVRILMA ANİMASYONU
+========================================================= */
+
+function animateTurn(callback) {
+
+    const rightPage =
+        document.getElementById("rightPage");
+
+
+    const turning =
+        document.createElement("div");
+
+
+    turning.className = "turning-page";
+
+
+    turning.innerHTML = `
+
+        <div class="turning-front">
+
+            ${rightPage.innerHTML}
+
+        </div>
+
+        <div class="turning-back">
+
+            ${rightPage.innerHTML}
+
+        </div>
+
+    `;
+
+
+    document.getElementById("book")
+        .appendChild(turning);
+
+
+    requestAnimationFrame(() => {
+
+        turning.classList.add("flip");
+
+    });
+
+
+    setTimeout(() => {
+
+        turning.remove();
+
+        callback();
+
+    }, 1150);
+
+}
+
+
+/* =========================================================
+   İÇİNDEKİLERDEN ŞİİRE GİT
+========================================================= */
+
+function goToPoem(index) {
+
+    /*
+       Şiirin pages dizisindeki yerini buluyoruz.
+    */
+
+    const found =
+        pages.findIndex(page =>
+            page.type === "poem" &&
+            page.poemIndex === index
+        );
+
+
+    if (found === -1) return;
+
+
+    /*
+       Çift sayfa düzeni nedeniyle
+       başlangıcı çift sayıya getiriyoruz.
+    */
+
+    currentPage =
+        found % 2 === 0
+            ? found
+            : found - 1;
+
+
+    renderPages();
+
+}
+
+
+/* =========================================================
+   ŞİİR SESİ
+========================================================= */
+
+function playPoem(index) {
+
+    const poem = poems[index];
+
+    if (!poem) return;
+
+
+    const audio =
+        document.getElementById("poemAudio");
+
+
+    /*
+       Aynı şiirin sesi çalıyorsa durdur.
+    */
+
+    if (
+        audio.src &&
+        audio.src.includes(poem.audio) &&
+        !audio.paused
+    ) {
+
+        audio.pause();
+
+        return;
+
+    }
+
+
+    audio.pause();
+
+    audio.currentTime = 0;
+
+    audio.src = poem.audio;
+
+    audio.play().catch(() => {
+
+        alert(
+            "Bu şiire henüz ses dosyası eklenmedi."
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   ŞİİR DEĞİŞTİĞİNDE SESİ KONTROL ET
+========================================================= */
+
+function stopAudioIfPoemChanged() {
+
+    const audio =
+        document.getElementById("poemAudio");
+
+    if (!audio) return;
+
+}
+
+
+/* =========================================================
+   KLAVYE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (!bookOpened) {
+
+            if (
+                event.key === "Enter" ||
+                event.key === " "
+            ) {
+
+                openBook();
+
+            }
+
+            return;
+
+        }
+
+
+        if (event.key === "ArrowRight") {
+
+            nextPage();
+
+        }
+
+
+        if (event.key === "ArrowLeft") {
+
+            previousPage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   BAŞLANGIÇ
+========================================================= */
+
+createPages();
+
+</script>
+
+</body>
+</html>
 ```
