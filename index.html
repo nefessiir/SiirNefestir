@@ -2,20 +2,24 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 <title>Şiir Nefestir</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Playfair+Display:wght@400;500;600&display=swap');
 
 *{
     box-sizing:border-box;
-    user-select:none;
-    -webkit-user-select:none;
+    -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,
+body{
     margin:0;
     width:100%;
     height:100%;
@@ -23,259 +27,163 @@ html,body{
 }
 
 body{
-    font-family:"Playfair Display",serif;
-    background:#d98b67;
-}
-
-
-/* =====================================================
-   GÜN BATIMI + BAHAR
-===================================================== */
-
-.scene-bg{
-    position:fixed;
-    inset:0;
-    overflow:hidden;
+    font-family:'Playfair Display',serif;
+    color:#332c2a;
 
     background:
         linear-gradient(
             180deg,
-            #4c4050 0%,
-            #8c5b61 25%,
-            #d48668 49%,
-            #f0b477 67%,
-            #e7c48b 76%,
-            #9c8a61 100%
-        );
-}
-
-/* Güneş */
-
-.sun{
-    position:absolute;
-
-    width:260px;
-    height:260px;
-
-    left:50%;
-    top:48%;
-
-    transform:translate(-50%,-50%);
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            circle,
-            #fff0bd 0%,
-            #ffd889 48%,
-            #efa05f 70%,
-            transparent 72%
-        );
-
-    filter:blur(1px);
-}
-
-
-/* uzak ufuk */
-
-.horizon{
-    position:absolute;
-
-    left:-5%;
-    right:-5%;
-    bottom:0;
-
-    height:32%;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(76,62,43,.15),
-            #51482f 65%,
-            #30281d
+            #f7b46d 0%,
+            #ef8e69 35%,
+            #b75d72 68%,
+            #443d63 100%
         );
 }
 
 
-/* hafif tepeler */
-
-.hills{
-    position:absolute;
-
-    left:-10%;
-    right:-10%;
-    bottom:19%;
-
-    height:22%;
-
-    background:#635439;
-
-    clip-path:
-        polygon(
-            0 100%,
-            0 66%,
-            10% 55%,
-            20% 70%,
-            31% 45%,
-            40% 65%,
-            51% 42%,
-            61% 67%,
-            71% 48%,
-            82% 68%,
-            92% 51%,
-            100% 64%,
-            100% 100%
-        );
-}
-
-
-/* =====================================================
-   BAHAR DALLARI
-===================================================== */
-
-.branch{
-    position:absolute;
-
-    bottom:5%;
-    width:260px;
-    height:300px;
-
-    opacity:.78;
-}
-
-.branch.left{
-    left:-45px;
-    transform:rotate(-13deg);
-}
-
-.branch.right{
-    right:-45px;
-    transform:scaleX(-1) rotate(-13deg);
-}
-
-.branch::before{
-    content:"";
-
-    position:absolute;
-
-    left:105px;
-    bottom:0;
-
-    width:12px;
-    height:270px;
-
-    border-radius:50%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #493323,
-            #745338,
-            #3d291c
-        );
-
-    transform:rotate(-25deg);
-}
-
-.flower{
-    position:absolute;
-
-    width:17px;
-    height:17px;
-
-    border-radius:50%;
-
-    background:#f7d8c1;
-
-    box-shadow:
-        0 0 0 5px rgba(245,190,171,.25),
-        0 0 10px rgba(255,221,193,.5);
-}
-
-.f1{left:48px;bottom:190px}
-.f2{left:78px;bottom:235px}
-.f3{left:123px;bottom:180px}
-.f4{left:155px;bottom:230px}
-.f5{left:185px;bottom:150px}
-.f6{left:72px;bottom:125px}
-.f7{left:145px;bottom:110px}
-
-
-/* =====================================================
-   KİTAP SAHNESİ
-===================================================== */
+/* =========================
+   ARKA PLAN
+========================= */
 
 .scene{
-    position:relative;
-
-    width:100vw;
-    height:100vh;
+    position:fixed;
+    inset:0;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    perspective:2400px;
+    overflow:hidden;
 }
 
-
-/* =====================================================
-   KİTAP
-===================================================== */
-
-.book{
-    position:relative;
-
-    width:min(940px,94vw);
-    height:min(720px,88vh);
-
-    transform-style:preserve-3d;
-
-    filter:
-        drop-shadow(0 32px 30px rgba(47,28,18,.48));
-
-}
-
-
-/*
-   Kitabın iki yarısının altındaki
-   gerçek sayfa yığını
-*/
-
-.book::before{
+.scene:before{
     content:"";
 
     position:absolute;
+    inset:0;
 
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(255,241,180,.72),
+            transparent 24%
+        ),
+        linear-gradient(
+            180deg,
+            transparent 0 60%,
+            rgba(32,26,52,.28) 100%
+        );
+
+    pointer-events:none;
+}
+
+.sun{
+    position:absolute;
+
+    width:170px;
+    height:170px;
+
+    border-radius:50%;
+
+    background:rgba(255,224,150,.78);
+
+    top:11%;
     left:50%;
-    top:2%;
-
-    width:5px;
-    height:96%;
 
     transform:translateX(-50%);
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(61,36,20,.45),
-            rgba(255,244,207,.55),
-            rgba(78,45,24,.42)
-        );
-
     box-shadow:
-        0 0 7px rgba(45,25,13,.32);
+        0 0 80px rgba(255,225,145,.55);
+}
 
-    z-index:200;
+.hill{
+    position:absolute;
+    bottom:-13%;
+
+    border-radius:50% 50% 0 0;
+
+    background:rgba(56,52,76,.35);
+}
+
+.h1{
+    width:75vw;
+    height:30vh;
+    left:-15vw;
+}
+
+.h2{
+    width:90vw;
+    height:24vh;
+    right:-25vw;
+
+    background:rgba(61,47,69,.3);
+}
+
+.flowers{
+    position:absolute;
+
+    inset:auto 0 0;
+
+    height:22vh;
+
+    opacity:.5;
+
+    background:
+        radial-gradient(
+            circle at 12% 70%,
+            #f7c6d0 0 4px,
+            transparent 5px
+        ),
+        radial-gradient(
+            circle at 18% 58%,
+            #fff0d0 0 4px,
+            transparent 5px
+        ),
+        radial-gradient(
+            circle at 83% 66%,
+            #f7c6d0 0 5px,
+            transparent 6px
+        ),
+        radial-gradient(
+            circle at 89% 48%,
+            #fff0d0 0 4px,
+            transparent 5px
+        );
 }
 
 
-/* =====================================================
-   AÇIK KİTABIN SOL VE SAĞ SAYFA ALANI
-===================================================== */
+/* =========================
+   KİTAP
+========================= */
 
-.book-spread{
+.book-wrap{
+    position:relative;
+
+    width:min(1080px,94vw);
+    height:min(720px,84vh);
+
+    perspective:2400px;
+
+    filter:
+        drop-shadow(
+            0 24px 24px
+            rgba(35,23,38,.32)
+        );
+}
+
+.book{
+    position:absolute;
+    inset:0;
+
+    transform-style:preserve-3d;
+}
+
+
+/* =========================
+   SABİT AÇIK SAYFALAR
+========================= */
+
+.spread{
     position:absolute;
     inset:0;
 
@@ -284,88 +192,65 @@ body{
     transform-style:preserve-3d;
 }
 
-
-/* iki sayfanın ortak görünümü */
-
-.half{
+.page{
     position:relative;
 
     width:50%;
     height:100%;
 
+    padding:8% 8%;
+
     background:
-        radial-gradient(
-            ellipse at center,
-            rgba(255,250,220,.65),
-            transparent 70%
-        ),
         linear-gradient(
             90deg,
-            #d9bd7d,
-            #ead39a 48%,
-            #d8bc7b
+            #f7efd9,
+            #fffaf0 8%,
+            #fffdf5 90%,
+            #eadfc8
         );
 
     overflow:hidden;
+
+    box-shadow:
+        inset 0 0 18px
+        rgba(75,50,35,.08);
 }
-
-
-/* SOL SAYFA */
 
 .left-page{
-    border-radius:6px 0 0 6px;
-
-    box-shadow:
-        inset 8px 0 14px rgba(79,48,19,.12),
-        inset -7px 0 16px rgba(73,43,18,.28);
+    border-radius:8px 0 0 8px;
 }
-
-
-/* SAĞ SAYFA */
 
 .right-page{
-    border-radius:0 6px 6px 0;
-
-    box-shadow:
-        inset 7px 0 16px rgba(72,42,17,.27),
-        inset -8px 0 14px rgba(79,48,19,.12);
+    border-radius:0 8px 8px 0;
 }
 
-
-/* kağıt dokusu */
-
-.half::before{
+.page:after{
     content:"";
 
     position:absolute;
     inset:0;
 
-    opacity:.27;
-
     background:
         repeating-linear-gradient(
             0deg,
-            transparent 0,
-            transparent 5px,
-            rgba(96,63,29,.05) 6px
-        ),
-        repeating-linear-gradient(
-            90deg,
-            transparent 0,
-            transparent 10px,
-            rgba(96,63,29,.035) 11px
+            rgba(95,74,48,.018) 0,
+            rgba(95,74,48,.018) 1px,
+            transparent 1px,
+            transparent 5px
         );
 
     pointer-events:none;
 }
 
 
-/* =====================================================
-   ORTA CİLT OLUĞU
-===================================================== */
+/* =========================
+   ORTA CİLT
+========================= */
 
 .spine{
     position:absolute;
+
+    z-index:20;
 
     left:50%;
     top:0;
@@ -375,460 +260,388 @@ body{
 
     transform:translateX(-50%);
 
-    z-index:500;
-
-    pointer-events:none;
-
     background:
         linear-gradient(
             90deg,
-            rgba(69,41,19,.42),
-            rgba(111,75,36,.16) 27%,
-            rgba(255,244,205,.38) 50%,
-            rgba(89,51,22,.18) 72%,
-            rgba(53,30,14,.40)
+            rgba(68,45,35,.18),
+            rgba(255,255,255,.45),
+            rgba(68,45,35,.2)
         );
-
-    box-shadow:
-        0 0 10px rgba(52,29,14,.28);
-}
-
-
-/*
-   Çok ince bir gerçek cilt çizgisi
-*/
-
-.spine-line{
-    position:absolute;
-
-    left:50%;
-    top:1.5%;
-
-    height:97%;
-    width:1px;
-
-    transform:translateX(-50%);
-
-    background:rgba(70,39,17,.45);
-}
-
-
-/* =====================================================
-   SAYFA İÇERİĞİ
-===================================================== */
-
-.page-content{
-    position:absolute;
-
-    left:13%;
-    right:13%;
-    top:10%;
-    bottom:9%;
-
-    z-index:5;
-
-    display:flex;
-    flex-direction:column;
-}
-
-.page-title{
-    text-align:center;
-
-    font-size:23px;
-
-    line-height:1.2;
-
-    color:#4d3822;
-
-    margin-bottom:5px;
-}
-
-.page-date{
-    text-align:center;
-
-    font-size:11px;
-
-    color:#806b4d;
-
-    margin-bottom:23px;
-}
-
-
-/*
-   SABİT OKUNAKLI PUNTO
-*/
-
-.poem{
-    flex:1;
-
-    font-family:"Caveat",cursive;
-
-    font-size:24px;
-
-    line-height:1.45;
-
-    color:#173f77;
-
-    white-space:pre-wrap;
-
-    overflow:hidden;
-
-    text-align:left;
-}
-
-
-/* =====================================================
-   SAYFA NUMARASI
-===================================================== */
-
-.page-number{
-    position:absolute;
-
-    bottom:17px;
-    left:0;
-    right:0;
-
-    text-align:center;
-
-    font-size:10px;
-
-    color:rgba(77,53,29,.48);
-}
-
-
-/* =====================================================
-   ÇEVRİLEN YAPRAK
-===================================================== */
-
-.turn-page{
-    position:absolute;
-
-    top:0;
-    bottom:0;
-
-    left:50%;
-
-    width:50%;
-
-    z-index:400;
-
-    transform-origin:left center;
-
-    transform-style:preserve-3d;
-
-    background:
-        linear-gradient(
-            90deg,
-            #d9bd7d,
-            #ead39a 50%,
-            #d6b976
-        );
-
-    box-shadow:
-        inset 5px 0 12px rgba(68,39,17,.22);
-
-    overflow:hidden;
-
-    cursor:grab;
-
-    transition:
-        transform .72s cubic-bezier(.17,.72,.2,1);
-
-    border-radius:0 5px 5px 0;
-
-    touch-action:none;
-}
-
-.turn-page.dragging{
-    transition:none;
-    cursor:grabbing;
-}
-
-
-/* =====================================================
-   NARİN KÖŞE KIVRILMASI
-===================================================== */
-
-.corner-curl{
-    position:absolute;
-
-    right:0;
-    bottom:0;
-
-    /*
-       ÖNCEKİNE GÖRE ÇOK DAHA KÜÇÜK
-    */
-
-    width:26%;
-    height:25%;
-
-    z-index:30;
 
     pointer-events:none;
-
-    opacity:0;
-
-    background:
-        linear-gradient(
-            135deg,
-            transparent 40%,
-            rgba(80,49,21,.08) 48%,
-            rgba(255,251,225,.92) 60%,
-            rgba(202,169,105,.68) 75%,
-            rgba(92,57,22,.25) 100%
-        );
-
-    clip-path:
-        polygon(
-            100% 0,
-            100% 100%,
-            0 100%
-        );
-
-    transform-origin:right bottom;
-
-    filter:
-        drop-shadow(-5px -3px 5px rgba(55,31,12,.20));
 }
 
-
-/* ince kıvrım kenarı */
-
-.corner-curl::after{
+.spine:after{
     content:"";
 
     position:absolute;
 
-    right:2%;
-    bottom:3%;
+    left:7px;
+    top:0;
 
-    width:70%;
-    height:70%;
+    width:2px;
+    height:100%;
 
-    border-top:1px solid rgba(98,62,23,.25);
-    border-left:1px solid rgba(255,250,221,.6);
-
-    transform:skew(-7deg);
+    background:
+        rgba(61,43,36,.16);
 }
 
 
-/* =====================================================
+/* =========================
    KAPAK
-===================================================== */
+========================= */
 
 .cover{
     position:absolute;
 
-    inset:0;
+    z-index:100;
 
-    z-index:1000;
+    right:0;
+    top:0;
+
+    width:50%;
+    height:100%;
 
     transform-origin:left center;
 
     transform-style:preserve-3d;
 
-    border-radius:7px;
+    transition:
+        transform 1.15s
+        cubic-bezier(.2,.75,.25,1);
 
-    cursor:grab;
+    cursor:pointer;
+}
+
+.cover.open{
+    transform:rotateY(-180deg);
+}
+
+.cover-face{
+    position:absolute;
+    inset:0;
+
+    backface-visibility:hidden;
+
+    border-radius:4px 9px 9px 4px;
 
     background:
         linear-gradient(
-            135deg,
-            #573b36,
-            #9c6153 32%,
-            #d58b69 55%,
-            #7b5750 78%,
-            #403039
+            145deg,
+            #f7bd76,
+            #e78a68 45%,
+            #8b5672 100%
         );
 
     box-shadow:
-        inset 0 0 45px rgba(61,28,25,.35),
-        0 0 0 2px rgba(63,35,28,.45);
+        inset 0 0 0 2px
+        rgba(255,235,192,.22),
+
+        inset 12px 0 22px
+        rgba(255,255,255,.1);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+
+    text-align:center;
+
+    color:#fff7e9;
 }
 
-.cover:active{
+.cover-front{
+    font-family:'Playfair Display',serif;
+    letter-spacing:2px;
+}
+
+.cover-front h1{
+    font-size:clamp(32px,4vw,55px);
+    margin:0 0 12px;
+}
+
+.cover-front p{
+    font-size:16px;
+    letter-spacing:4px;
+    margin:0;
+}
+
+.cover-back{
+    transform:rotateY(180deg);
+
+    border-radius:9px 4px 4px 9px;
+}
+
+.cover-back:before{
+    content:"";
+
+    position:absolute;
+    inset:18px;
+
+    border:
+        1px solid
+        rgba(255,245,215,.3);
+
+    border-radius:4px;
+}
+
+
+/* =========================
+   HAKKINDA / İÇİNDEKİLER
+========================= */
+
+.page h2{
+    margin:0 0 18px;
+
+    font-size:
+        clamp(25px,3vw,37px);
+
+    font-weight:500;
+
+    color:#473632;
+}
+
+.page .date{
+    font-size:14px;
+    color:#8b7566;
+
+    margin-bottom:28px;
+}
+
+.about p,
+.contents li{
+    font-size:18px;
+    line-height:1.7;
+}
+
+.about p{
+    margin:0 0 18px;
+}
+
+.contents ol{
+    padding-left:28px;
+    margin:20px 0;
+}
+
+.contents li{
+    margin:10px 0;
+}
+
+.contents small{
+    color:#9b8577;
+}
+
+
+/* =========================
+   ŞİİR
+========================= */
+
+.poem{
+    font-family:'Caveat',cursive;
+
+    font-size:25px;
+    line-height:1.48;
+
+    white-space:pre-wrap;
+
+    color:#315c85;
+
+    text-align:left;
+}
+
+.poem-title{
+    font-family:'Playfair Display',serif;
+
+    font-size:24px;
+
+    color:#473632;
+
+    margin:0 0 6px;
+}
+
+.page-no{
+    position:absolute;
+
+    bottom:18px;
+    left:0;
+
+    width:100%;
+
+    text-align:center;
+
+    font:
+        14px
+        'Playfair Display',serif;
+
+    color:#9d8b78;
+}
+
+
+/* =========================
+   GERÇEK FİZİKSEL YAPRAK
+========================= */
+
+.leaf{
+    position:absolute;
+
+    z-index:40;
+
+    right:0;
+    top:0;
+
+    width:50%;
+    height:100%;
+
+    transform-style:preserve-3d;
+
+    transform-origin:left center;
+
+    transition:
+        transform
+        .65s
+        cubic-bezier(.2,.72,.22,1);
+
+    cursor:grab;
+}
+
+.leaf.dragging{
+    transition:none;
     cursor:grabbing;
 }
 
+.face{
+    position:absolute;
+    inset:0;
 
-/* Kapak üzerinde gün batımı */
+    backface-visibility:hidden;
 
-.cover::before{
+    overflow:hidden;
+
+    padding:8% 8%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #eee2ca,
+            #fffaf0 8%,
+            #fffdf6 90%,
+            #e5d8c0
+        );
+
+    border-radius:0 8px 8px 0;
+
+    box-shadow:
+        inset 0 0 16px
+        rgba(70,50,35,.08);
+}
+
+.face:after{
     content:"";
 
     position:absolute;
     inset:0;
 
-    border-radius:7px;
-
     background:
-        radial-gradient(
-            circle at 50% 62%,
-            rgba(255,224,157,.82) 0,
-            rgba(255,189,113,.52) 13%,
-            transparent 31%
-        ),
-        linear-gradient(
-            180deg,
-            rgba(66,52,65,.52),
-            rgba(180,105,84,.18) 45%,
-            rgba(80,59,48,.48)
+        repeating-linear-gradient(
+            0deg,
+            rgba(95,74,48,.018) 0,
+            rgba(95,74,48,.018) 1px,
+            transparent 1px,
+            transparent 5px
         );
 
     pointer-events:none;
 }
 
+.face.back{
+    transform:rotateY(180deg);
 
-/* Kapak çerçevesi */
+    border-radius:8px 0 0 8px;
 
-.cover-frame{
+    background:
+        linear-gradient(
+            90deg,
+            #fffdf6,
+            #fffaf0 92%,
+            #eee2ca
+        );
+}
+
+
+/* =========================
+   SADECE KÜÇÜK KÖŞE KIVRILMASI
+========================= */
+
+.leaf .corner{
     position:absolute;
 
-    inset:24px;
+    z-index:5;
 
-    border:1px solid rgba(255,222,177,.62);
+    right:0;
+    bottom:0;
 
-    border-radius:5px;
+    width:0;
+    height:0;
 
-    box-shadow:
-        inset 0 0 0 4px rgba(86,50,39,.18);
+    border-style:solid;
+
+    border-width:0;
+
+    border-color:
+        transparent
+        transparent
+        rgba(210,193,163,.8)
+        transparent;
+
+    filter:
+        drop-shadow(
+            -2px -2px 3px
+            rgba(50,35,25,.15)
+        );
+
+    pointer-events:none;
+}
+
+.leaf.dragging .corner{
+    width:52px;
+    height:52px;
+
+    border-width:
+        0
+        0
+        52px
+        52px;
 }
 
 
-/* Kapak yazısı */
-
-.cover-text{
-    position:absolute;
-    inset:0;
-
-    z-index:3;
-
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
-
-    text-align:center;
-
-    color:#fff0cf;
-
-    text-shadow:
-        0 2px 4px rgba(65,29,20,.55);
-}
-
-.cover-small{
-    font-size:12px;
-
-    letter-spacing:5px;
-
-    margin-bottom:25px;
-}
-
-.cover-title{
-    font-size:clamp(34px,5.5vw,56px);
-
-    letter-spacing:2px;
-}
-
-.cover-line{
-    width:135px;
-    height:1px;
-
-    background:#f1d49b;
-
-    margin:25px 0;
-}
-
-.cover-author{
-    font-family:"Caveat",cursive;
-
-    font-size:29px;
-}
-
-
-/* =====================================================
-   İÇ KAPAK
-===================================================== */
-
-.inner{
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    text-align:center;
-}
-
-.inner h2{
-    font-size:29px;
-    font-weight:400;
-
-    color:#5a442c;
-}
-
-
-/* =====================================================
-   HİNT
-===================================================== */
+/* =========================
+   ALT YAZI
+========================= */
 
 .hint{
-    position:fixed;
+    position:absolute;
 
-    left:0;
-    right:0;
-    bottom:22px;
+    z-index:150;
 
-    z-index:2000;
+    bottom:12px;
+    left:50%;
 
-    text-align:center;
+    transform:translateX(-50%);
 
-    color:rgba(255,240,207,.82);
+    font-size:13px;
 
-    font-size:12px;
+    color:
+        rgba(255,248,231,.8);
 
-    letter-spacing:.6px;
+    letter-spacing:.4px;
 
     pointer-events:none;
 
-    transition:opacity .6s;
+    transition:opacity .5s;
 }
 
 .hint.hide{
     opacity:0;
-}
-
-
-/* =====================================================
-   MOBİL
-===================================================== */
-
-@media(max-width:700px){
-
-    .book{
-        width:94vw;
-        height:72vh;
-    }
-
-    .poem{
-        font-size:20px;
-        line-height:1.4;
-    }
-
-    .page-title{
-        font-size:20px;
-    }
-
-    .page-content{
-        left:10%;
-        right:10%;
-        top:8%;
-    }
-
-    .branch{
-        opacity:.45;
-    }
-
 }
 
 </style>
@@ -837,556 +650,788 @@ body{
 
 <body>
 
-
-<!-- =====================================================
-     ARKA PLAN
-===================================================== -->
-
-<div class="scene-bg">
+<div class="scene">
 
     <div class="sun"></div>
 
-    <div class="hills"></div>
+    <div class="hill h1"></div>
+    <div class="hill h2"></div>
 
-    <div class="horizon"></div>
-
-    <div class="branch left">
-        <span class="flower f1"></span>
-        <span class="flower f2"></span>
-        <span class="flower f3"></span>
-        <span class="flower f4"></span>
-        <span class="flower f5"></span>
-        <span class="flower f6"></span>
-        <span class="flower f7"></span>
-    </div>
-
-    <div class="branch right">
-        <span class="flower f1"></span>
-        <span class="flower f2"></span>
-        <span class="flower f3"></span>
-        <span class="flower f4"></span>
-        <span class="flower f5"></span>
-        <span class="flower f6"></span>
-        <span class="flower f7"></span>
-    </div>
-
-</div>
+    <div class="flowers"></div>
 
 
-<!-- =====================================================
-     KİTAP
-===================================================== -->
+    <div class="book-wrap" id="bookWrap">
 
-<div class="scene">
-
-<div class="book" id="book">
+        <div class="book" id="book">
 
 
-    <!-- AÇIK KİTAP -->
+            <!-- =========================
+                 İLK AÇILMIŞ SAYFA
+            ========================== -->
 
-    <div class="book-spread">
+            <div class="spread">
 
-        <!-- SOL SAYFA -->
+                <!-- SAYFA 1 -->
 
-        <div class="half left-page">
+                <section class="page left-page about">
 
-            <div class="page-content">
+                    <h2>HAKKINDA</h2>
 
-                <div class="page-title">
-                    HAKKINDA
-                </div>
+                    <div class="date">
+                        Şiir Nefestir
+                    </div>
 
-                <div class="poem">
-Şiir Nefestir...
+                    <p>
+                        Burada bir ömür boyunca
+                        yazılmış şiirler var.
+                    </p>
 
-Bazı şeyler vardır,
-insan onları yaşarken
-sadece kendisi için yazdığını sanır.
+                    <p>
+                        Belki bir gün bir kitap olurlar.
+                    </p>
 
-Sonra yıllar geçer.
+                    <p>
+                        Şimdilik bu sayfalar,
+                        bir babanın kızına bırakmak
+                        istediği küçük bir iz.
+                    </p>
 
-Ve bir gün,
-geride bırakmak istediği
-en kıymetli şeyin
-kelimeler olduğunu anlar.
+                    <p
+                        style="
+                        font-family:'Caveat';
+                        font-size:25px;
+                        color:#315c85;
+                        margin-top:28px"
+                    >
+                        Şiir'e...
+                    </p>
 
-Bu sayfalar;
-yaşanmışlıkların,
-sessiz gecelerin,
-aşkların,
-ayrılıkların
-ve söylenemeyenlerin izidir.
-                </div>
+                    <div class="page-no">
+                        1
+                    </div>
+
+                </section>
+
+
+                <!-- SAYFA 2 -->
+
+                <section class="page right-page contents">
+
+                    <h2>İÇİNDEKİLER</h2>
+
+                    <ol>
+
+                        <li>
+                            Şairler Ağlamaz
+                            <small>— 3</small>
+                        </li>
+
+                        <li>
+                            Kırılgan Bir Şiirim Şimdi
+                            <small>— 4</small>
+                        </li>
+
+                        <li>
+                            Diğer şiirler
+                            <small>—</small>
+                        </li>
+
+                    </ol>
+
+                    <div class="page-no">
+                        2
+                    </div>
+
+                </section>
 
             </div>
 
-            <div class="page-number">
-                1
-            </div>
-
-        </div>
 
 
-        <!-- SAĞ SAYFA -->
+            <!-- =========================
+                 FİZİKSEL YAPRAK 1
+                 ÖN = 3
+                 ARKA = 4
+            ========================== -->
 
-        <div class="half right-page">
+            <div
+                class="leaf"
+                id="leaf1"
+                data-sheet="0"
+            >
 
-            <div class="page-content">
+                <!-- SAYFA 3 -->
 
-                <div class="page-title">
-                    Şairler Ağlamaz
-                </div>
+                <div class="face front">
 
-                <div class="page-date">
-                    — Tarih eklenecek —
-                </div>
+                    <div class="poem-title">
+                        Şairler Ağlamaz
+                    </div>
 
-                <div class="poem">
-Yoksam düşlerinde
-gecelerinde kayıpsam
+                    <div class="date">
+                        Tarih eklenecek
+                    </div>
+
+                    <div class="poem">Yoksam düşlerinde
+ge gecelerinde kayıpsam
 
 Bakışların hep donuk
 Bir şeyler eksikse içinde
 
 Belki de ben varımdır
 Belki de yokluğumdur
-Seni böyle sessiz bırakan
+Seni böyle sessiz bırakan</div>
+
+                    <div class="page-no">
+                        3
+                    </div>
+
                 </div>
 
+
+                <!-- SAYFA 4 -->
+
+                <div class="face back">
+
+                    <div class="poem-title">
+                        Şairler Ağlamaz
+                    </div>
+
+                    <div class="date">
+                        devam
+                    </div>
+
+                    <div class="poem">
+Bu sayfa şiirin
+devamı için ayrılmıştır.
+                    </div>
+
+                    <div class="page-no">
+                        4
+                    </div>
+
+                </div>
+
+
+                <div class="corner"></div>
+
             </div>
 
-            <div class="page-number">
-                2
+
+
+            <!-- =========================
+                 FİZİKSEL YAPRAK 2
+                 ÖN = 5
+                 ARKA = 6
+            ========================== -->
+
+            <div
+                class="leaf"
+                id="leaf2"
+                data-sheet="1"
+                style="
+                z-index:39;
+                visibility:hidden"
+            >
+
+                <!-- SAYFA 5 -->
+
+                <div class="face front">
+
+                    <div class="poem-title">
+                        Kırılgan Bir Şiirim Şimdi
+                    </div>
+
+                    <div class="date">
+                        Tarih eklenecek
+                    </div>
+
+                    <div class="poem">Kırılgan bir şiirim şimdi...
+
+Belki de hataydı..</div>
+
+                    <div class="page-no">
+                        5
+                    </div>
+
+                </div>
+
+
+                <!-- SAYFA 6 -->
+
+                <div class="face back">
+
+                    <div class="poem-title">
+                        Sonraki şiir
+                    </div>
+
+                    <div class="poem">
+Bu sayfa bir sonraki
+şiir için ayrılmıştır.
+                    </div>
+
+                    <div class="page-no">
+                        6
+                    </div>
+
+                </div>
+
+
+                <div class="corner"></div>
+
             </div>
+
 
         </div>
+
+
+        <!-- =========================
+             SERT KAPAK
+        ========================== -->
+
+        <div
+            class="cover"
+            id="cover"
+        >
+
+            <div class="cover-face cover-front">
+
+                <h1>
+                    ŞİİR NEFESTİR
+                </h1>
+
+                <p>
+                    bir ömürden kalanlar
+                </p>
+
+            </div>
+
+
+            <div
+                class="cover-face cover-back"
+            ></div>
+
+        </div>
+
 
     </div>
 
 
-    <!-- ORTA CİLT -->
-
-    <div class="spine">
-        <div class="spine-line"></div>
+    <div
+        class="hint"
+        id="hint"
+    >
+        Kapağı açmak için dokun •
+        Sayfayı alt köşesinden sürükle
     </div>
-
-
-    <!-- =================================================
-         ÇEVRİLECEK SAĞ YAPRAK
-    ================================================== -->
-
-    <div class="turn-page" id="turnPage">
-
-        <div class="page-content">
-
-            <div class="page-title">
-                Şairler Ağlamaz
-            </div>
-
-            <div class="page-date">
-                — Tarih eklenecek —
-            </div>
-
-            <div class="poem">
-Yoksam düşlerinde
-gecelerinde kayıpsam
-
-Bakışların hep donuk
-Bir şeyler eksikse içinde
-
-Belki de ben varımdır
-Belki de yokluğumdur
-Seni böyle sessiz bırakan
-            </div>
-
-        </div>
-
-        <div class="page-number">
-            2
-        </div>
-
-        <div class="corner-curl" id="cornerCurl"></div>
-
-    </div>
-
-
-    <!-- =================================================
-         KAPAK
-    ================================================== -->
-
-    <div class="cover" id="cover">
-
-        <div class="cover-frame"></div>
-
-        <div class="cover-text">
-
-            <div class="cover-small">
-                BİR HATIRA
-            </div>
-
-            <div class="cover-title">
-                ŞİİR NEFESTİR
-            </div>
-
-            <div class="cover-line"></div>
-
-            <div class="cover-author">
-                Serdar
-            </div>
-
-        </div>
-
-    </div>
-
 
 </div>
-</div>
 
-
-<div class="hint" id="hint">
-    Kapağı sağ alt köşesinden tutup sola doğru aç
-</div>
 
 
 <script>
 
-/* =====================================================
-   DEĞİŞKENLER
-===================================================== */
-
 const cover =
     document.getElementById("cover");
-
-const turnPage =
-    document.getElementById("turnPage");
-
-const cornerCurl =
-    document.getElementById("cornerCurl");
 
 const hint =
     document.getElementById("hint");
 
+const leaves = [
+    document.getElementById("leaf1"),
+    document.getElementById("leaf2")
+];
+
 let opened = false;
 
-let dragging = false;
+let current = 0;
 
-let startX = 0;
-let startY = 0;
+let drag = null;
 
 
-/* =====================================================
+/* =========================
    KAPAĞI AÇ
-===================================================== */
+========================= */
 
-cover.addEventListener("pointerdown",(e)=>{
+cover.addEventListener(
+    "pointerup",
+    () => {
 
-    dragging = true;
+        if(opened){
+            return;
+        }
 
-    startX = e.clientX;
-    startY = e.clientY;
+        opened = true;
 
-    cover.setPointerCapture(e.pointerId);
+        cover.classList.add("open");
 
-    cover.style.transition="none";
-
-});
-
-
-cover.addEventListener("pointermove",(e)=>{
-
-    if(!dragging) return;
-
-    const dx =
-        e.clientX - startX;
-
-    const width =
-        cover.offsetWidth;
-
-    let progress =
-        Math.max(
-            0,
-            Math.min(
-                1,
-                -dx / width
-            )
+        setTimeout(
+            () => {
+                hint.classList.add("hide");
+            },
+            900
         );
 
-    cover.style.transform =
-        `rotateY(${-180 * progress}deg)`;
-
-});
+    }
+);
 
 
-cover.addEventListener("pointerup",(e)=>{
+/* =========================
+   İLERİ SAYFA
+========================= */
 
-    if(!dragging) return;
+function bindLeaf(leaf,index){
 
-    dragging=false;
+    leaf.addEventListener(
+        "pointerdown",
+        event => {
 
-    const dx =
-        e.clientX-startX;
+            if(!opened){
+                return;
+            }
 
-    const width =
-        cover.offsetWidth;
+            if(index !== current){
+                return;
+            }
 
-    const progress =
-        Math.max(
-            0,
-            Math.min(
-                1,
-                -dx/width
-            )
+            const rect =
+                leaf.getBoundingClientRect();
+
+            const x =
+                event.clientX - rect.left;
+
+            const y =
+                event.clientY - rect.top;
+
+
+            /*
+              Sayfanın yalnızca
+              alt-sağ bölgesinden tutulabilir.
+            */
+
+            if(
+                x < rect.width * .62 ||
+                y < rect.height * .55
+            ){
+                return;
+            }
+
+
+            drag = {
+
+                leaf:leaf,
+
+                index:index,
+
+                startX:event.clientX,
+
+                startY:event.clientY,
+
+                rect:rect
+
+            };
+
+
+            leaf.classList.add("dragging");
+
+            leaf.setPointerCapture(
+                event.pointerId
+            );
+
+        }
+    );
+
+
+    leaf.addEventListener(
+        "pointermove",
+        event => {
+
+            if(
+                !drag ||
+                drag.leaf !== leaf
+            ){
+                return;
+            }
+
+
+            const dx =
+                drag.startX -
+                event.clientX;
+
+
+            let progress =
+                dx /
+                (drag.rect.width * .95);
+
+
+            progress =
+                Math.max(
+                    0,
+                    Math.min(
+                        1,
+                        progress
+                    )
+                );
+
+
+            /*
+              Yaprak yalnızca
+              kendi ekseninde döner.
+            */
+
+            leaf.style.transform =
+                `rotateY(${-180 * progress}deg)`;
+
+
+            /*
+              Küçük köşe kıvrımı
+            */
+
+            const corner =
+                leaf.querySelector(".corner");
+
+
+            const move =
+                Math.min(
+                    28,
+                    dx * .08
+                );
+
+
+            corner.style.transform =
+                `translate(${-move}px,${-move}px)`;
+
+        }
+    );
+
+
+    leaf.addEventListener(
+        "pointerup",
+        finish
+    );
+
+
+    leaf.addEventListener(
+        "pointercancel",
+        finish
+    );
+
+
+    function finish(event){
+
+        if(
+            !drag ||
+            drag.leaf !== leaf
+        ){
+            return;
+        }
+
+
+        const dx =
+            drag.startX -
+            event.clientX;
+
+
+        let progress =
+            dx /
+            (drag.rect.width * .95);
+
+
+        progress =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    progress
+                )
+            );
+
+
+        leaf.classList.remove(
+            "dragging"
         );
 
-    cover.style.transition =
-        "transform .8s cubic-bezier(.18,.72,.2,1)";
 
-    if(progress>.25){
+        drag = null;
 
-        cover.style.transform =
-            "rotateY(-180deg)";
 
-        opened=true;
+        /*
+          Yarısından fazla çevrildiyse
+          tamamen karşı tarafa düşer.
+        */
 
-        hint.classList.add("hide");
+        if(progress > .45){
 
-        setTimeout(()=>{
+            leaf.style.transform =
+                "rotateY(-180deg)";
 
-            cover.style.display="none";
+            current =
+                index + 1;
 
-        },820);
 
-    }else{
+            setTimeout(
+                () => {
 
-        cover.style.transform=
-            "rotateY(0deg)";
+                    if(
+                        current <
+                        leaves.length
+                    ){
+
+                        leaves[current]
+                            .style.visibility =
+                            "visible";
+                    }
+
+                },
+                620
+            );
+
+        }
+
+        else{
+
+            /*
+              Yarısından azsa
+              yerine geri döner.
+            */
+
+            leaf.style.transform =
+                "rotateY(0deg)";
+        }
 
     }
 
-});
+}
 
 
-/* =====================================================
-   SAYFAYI ÇEVİR
-===================================================== */
+/* =========================
+   YAPRAKLARI AKTİF ET
+========================= */
 
-turnPage.addEventListener("pointerdown",(e)=>{
+leaves.forEach(
+    (leaf,index) => {
 
-    if(!opened) return;
+        bindLeaf(
+            leaf,
+            index
+        );
 
-    const rect =
-        turnPage.getBoundingClientRect();
-
-    const x =
-        e.clientX-rect.left;
-
-    const y =
-        e.clientY-rect.top;
+    }
+);
 
 
-    /*
-       SADECE SAĞ ALT BÖLGEYE
-       BASILDIĞINDA KIVRILMA BAŞLAR.
+/* =========================
+   GERİ SAYFA
+========================= */
 
-       Böylece kontrol çok daha kolay.
-    */
-
-    const rightZone =
-        x > rect.width*.62;
-
-    const bottomZone =
-        y > rect.height*.58;
-
-    if(!rightZone || !bottomZone)
-        return;
+const wrap =
+    document.getElementById(
+        "bookWrap"
+    );
 
 
-    dragging=true;
+wrap.addEventListener(
+    "pointerdown",
+    event => {
 
-    startX=e.clientX;
-    startY=e.clientY;
+        if(!opened){
+            return;
+        }
 
-    turnPage.classList.add("dragging");
+        if(current === 0){
+            return;
+        }
 
-    turnPage.setPointerCapture(e.pointerId);
-
-});
-
-
-turnPage.addEventListener("pointermove",(e)=>{
-
-    if(!dragging) return;
-
-
-    const rect =
-        turnPage.getBoundingClientRect();
-
-    const width =
-        rect.width;
+        if(drag){
+            return;
+        }
 
 
-    const dx =
-        e.clientX-startX;
-
-    const dy =
-        e.clientY-startY;
+        const rect =
+            wrap.getBoundingClientRect();
 
 
-    /*
-       YAPRAĞIN HAREKETİ
-    */
+        /*
+          Sol alt taraftan tutulacak.
+        */
 
-    let progress =
-        Math.max(
-            0,
-            Math.min(
-                1,
-                -dx/(width*.82)
-            )
+        if(
+            event.clientX -
+            rect.left >
+            rect.width * .5
+        ){
+            return;
+        }
+
+
+        if(
+            event.clientY -
+            rect.top <
+            rect.height * .55
+        ){
+            return;
+        }
+
+
+        const leaf =
+            leaves[current - 1];
+
+
+        const leafRect =
+            leaf.getBoundingClientRect();
+
+
+        drag = {
+
+            leaf:leaf,
+
+            index:current - 1,
+
+            startX:event.clientX,
+
+            startY:event.clientY,
+
+            rect:leafRect,
+
+            back:true
+
+        };
+
+
+        leaf.classList.add(
+            "dragging"
         );
 
 
-    /*
-       ANA YAPRAK DÖNÜŞÜ
-    */
+        try{
 
-    const angle =
-        -180*progress;
+            wrap.setPointerCapture(
+                event.pointerId
+            );
+
+        }catch(error){}
+
+    }
+);
 
 
-    /*
-       Çok hafif dikey hareket.
-       Abartılı değil.
-    */
+wrap.addEventListener(
+    "pointermove",
+    event => {
 
-    const tilt =
-        Math.max(
-            -4,
-            Math.min(
-                4,
-                -dy/80
-            )
+        if(
+            !drag ||
+            !drag.back
+        ){
+            return;
+        }
+
+
+        const dx =
+            event.clientX -
+            drag.startX;
+
+
+        let progress =
+            dx /
+            (drag.rect.width * .95);
+
+
+        progress =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    progress
+                )
+            );
+
+
+        /*
+          180 dereceden
+          tekrar sıfıra gelir.
+        */
+
+        drag.leaf.style.transform =
+            `rotateY(${-180 + 180 * progress}deg)`;
+
+    }
+);
+
+
+wrap.addEventListener(
+    "pointerup",
+    event => {
+
+        if(
+            !drag ||
+            !drag.back
+        ){
+            return;
+        }
+
+
+        const dx =
+            event.clientX -
+            drag.startX;
+
+
+        let progress =
+            dx /
+            (drag.rect.width * .95);
+
+
+        progress =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    progress
+                )
+            );
+
+
+        const leaf =
+            drag.leaf;
+
+
+        leaf.classList.remove(
+            "dragging"
         );
 
 
-    turnPage.style.transform =
-        `rotateY(${angle}deg)
-         rotateX(${tilt}deg)`;
+        drag = null;
 
 
-    /*
-       KÜÇÜK SAĞ ALT KÖŞE KIVRILMASI
-    */
+        if(progress > .45){
 
-    cornerCurl.style.opacity =
-        Math.min(
-            1,
-            progress*2.3
-        );
+            leaf.style.transform =
+                "rotateY(0deg)";
 
 
-    cornerCurl.style.transform =
-        `rotate(${progress*-5}deg)
-         scale(${1+progress*.04})`;
-
-});
+            current--;
 
 
-turnPage.addEventListener("pointerup",(e)=>{
+            if(
+                current + 1 <
+                leaves.length
+            ){
 
-    if(!dragging) return;
+                leaves[current + 1]
+                    .style.visibility =
+                    "hidden";
+            }
 
-    dragging=false;
+        }
 
-    turnPage.classList.remove("dragging");
+        else{
 
-
-    const rect =
-        turnPage.getBoundingClientRect();
-
-    const width =
-        rect.width;
-
-    const dx =
-        e.clientX-startX;
-
-
-    const progress =
-        Math.max(
-            0,
-            Math.min(
-                1,
-                -dx/(width*.82)
-            )
-        );
-
-
-    turnPage.style.transition =
-        "transform .78s cubic-bezier(.18,.72,.2,1)";
-
-
-    /*
-       YARIYI GEÇERSE
-       SAYFA SOLA DÜŞER
-    */
-
-    if(progress>.45){
-
-        turnPage.style.transform =
-            "rotateY(-180deg)";
+            leaf.style.transform =
+                "rotateY(-180deg)";
+        }
 
     }
-
-    /*
-       YARIYA GELMEDİYSE
-       SAYFA GERİ GELİR
-    */
-
-    else{
-
-        turnPage.style.transform =
-            "rotateY(0deg)";
-
-    }
-
-
-    cornerCurl.style.opacity="0";
-
-    cornerCurl.style.transform=
-        "rotate(0deg) scale(1)";
-
-});
-
-
-/* =====================================================
-   KLAVYE
-===================================================== */
-
-document.addEventListener("keydown",(e)=>{
-
-    if(!opened) return;
-
-    if(e.key==="ArrowLeft"){
-
-        turnPage.style.transition=
-            "transform .8s cubic-bezier(.18,.72,.2,1)";
-
-        turnPage.style.transform=
-            "rotateY(-180deg)";
-
-    }
-
-    if(e.key==="ArrowRight"){
-
-        turnPage.style.transition=
-            "transform .8s cubic-bezier(.18,.72,.2,1)";
-
-        turnPage.style.transform=
-            "rotateY(0deg)";
-
-    }
-
-});
+);
 
 </script>
 
