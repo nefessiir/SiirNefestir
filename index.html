@@ -12,238 +12,124 @@
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     margin: 0;
-    padding: 0;
     width: 100%;
     height: 100%;
 }
 
 body {
-    background:
-        radial-gradient(circle at center, #62584c 0%, #352f29 55%, #211e1a 100%);
     overflow: hidden;
+    background: #302a24;
     font-family: Georgia, "Times New Roman", serif;
-    color: #2d241b;
 }
 
-/* =========================================================
-   ANA SAHNE
-========================================================= */
+/* KAPALI KİTAP */
 
-.scene {
-    width: 100vw;
-    height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    perspective: 2200px;
-}
-
-/* =========================================================
-   KAPALI KİTAP
-========================================================= */
-
-.closed-book {
+#closedBook {
     position: absolute;
-
-    width: min(520px, 72vw);
-    aspect-ratio: 0.70;
-
+    width: 360px;
+    height: 520px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     cursor: pointer;
-
-    transform-style: preserve-3d;
-
-    transition:
-        transform 1.3s cubic-bezier(.2,.8,.2,1),
-        opacity .8s ease;
+    transition: 1s;
 }
 
-.closed-book:hover {
-    transform:
-        rotateY(-5deg)
-        rotateX(2deg)
-        scale(1.015);
+#closedBook:hover {
+    transform: translate(-50%, -50%) scale(1.03);
 }
 
-.closed-book.opening {
-    transform:
-        rotateY(-75deg)
-        scale(.92)
-        translateX(-15%);
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Kitabın gövdesi */
-
-.book-cover {
-    position: absolute;
-    inset: 0;
-
-    border-radius: 5px 13px 13px 5px;
-
-    overflow: hidden;
+.cover {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px 18px 18px 8px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(255,255,255,.12),
-            transparent 25%,
-            rgba(0,0,0,.18)
-        ),
-        #403429;
+            #806044,
+            #493426 55%,
+            #291f19
+        );
 
     box-shadow:
-        0 30px 70px rgba(0,0,0,.55),
-        inset 4px 0 0 rgba(255,255,255,.06),
-        inset -5px 0 0 rgba(0,0,0,.25);
-
-    border: 1px solid rgba(255,255,255,.1);
-}
-
-/* Kapak içindeki görsel */
-
-.cover-image {
-    position: absolute;
-    inset: 0;
-
-    background-image:
-        linear-gradient(
-            to bottom,
-            rgba(0,0,0,.05),
-            rgba(0,0,0,.30)
-        ),
-        url("kapak-gorsel.jpg");
-
-    background-size: cover;
-    background-position: center;
-
-    opacity: .88;
-}
-
-/* Kapak yazıları */
-
-.cover-writing {
-    position: absolute;
-    inset: 0;
+        0 30px 60px rgba(0,0,0,.55),
+        inset 5px 0 10px rgba(255,255,255,.08);
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
+    color: #f5ead8;
     text-align: center;
-
-    padding: 40px;
-    color: #f8eee0;
-
-    text-shadow:
-        0 2px 4px rgba(0,0,0,.65),
-        0 0 15px rgba(0,0,0,.35);
 }
 
-.cover-title {
-    font-size: clamp(32px, 5vw, 55px);
-    letter-spacing: 4px;
+.cover h1 {
+    font-size: 38px;
     font-weight: normal;
-    margin-bottom: 20px;
+    letter-spacing: 3px;
+    margin: 0 0 25px;
 }
 
-.cover-subtitle {
-    font-size: clamp(15px, 2vw, 21px);
-    font-style: italic;
+.cover p {
+    font-size: 17px;
     line-height: 1.6;
-    max-width: 85%;
+    font-style: italic;
+    margin: 0 30px;
 }
 
-.cover-author {
+.cover span {
     margin-top: 35px;
-    font-size: 19px;
+    font-size: 18px;
     letter-spacing: 2px;
 }
 
-/* =========================================================
-   AÇIK KİTAP
-========================================================= */
+/* AÇIK KİTAP */
 
-.book {
-    position: relative;
+#book {
+    display: none;
+
+    position: absolute;
 
     width: min(1100px, 94vw);
     height: min(720px, 82vh);
 
-    display: flex;
+    left: 50%;
+    top: 50%;
 
-    transform-style: preserve-3d;
+    transform: translate(-50%, -50%);
 
-    opacity: 0;
-    pointer-events: none;
-
-    transition:
-        opacity 1s ease;
+    box-shadow: 0 30px 70px rgba(0,0,0,.5);
 }
-
-.book.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* =========================================================
-   SAYFALAR
-========================================================= */
 
 .page {
-    position: relative;
-
+    position: absolute;
+    top: 0;
     width: 50%;
     height: 100%;
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(90,65,40,.10),
-            transparent 10%,
-            transparent 90%,
-            rgba(90,65,40,.08)
-        ),
-        #f4ead7;
+    background: #f3ead8;
+
+    color: #34291e;
 
     overflow: hidden;
-
-    box-shadow:
-        0 15px 35px rgba(0,0,0,.35);
-
-    backface-visibility: hidden;
-
-    border-top: 1px solid rgba(70,45,20,.15);
-    border-bottom: 1px solid rgba(70,45,20,.15);
 }
 
-.left-page {
-    border-radius: 7px 0 0 7px;
-
-    box-shadow:
-        inset -18px 0 25px rgba(60,40,20,.12),
-        -8px 10px 25px rgba(0,0,0,.25);
+.left {
+    left: 0;
+    border-radius: 8px 0 0 8px;
 }
 
-.right-page {
-    border-radius: 0 7px 7px 0;
-
-    box-shadow:
-        inset 18px 0 25px rgba(60,40,20,.12),
-        8px 10px 25px rgba(0,0,0,.25);
+.right {
+    right: 0;
+    border-radius: 0 8px 8px 0;
 }
 
-/* Kitabın ortası */
-
-.book-spine {
+.middle {
     position: absolute;
-
     left: 50%;
     top: 0;
 
@@ -252,307 +138,158 @@ body {
 
     transform: translateX(-50%);
 
-    z-index: 50;
+    background: rgba(50,35,20,.25);
 
-    background:
-        linear-gradient(
-            to right,
-            rgba(0,0,0,.20),
-            rgba(255,255,255,.25),
-            rgba(0,0,0,.20)
-        );
-
-    pointer-events: none;
+    z-index: 20;
 }
 
-/* =========================================================
-   SAYFA İÇERİĞİ
-========================================================= */
+/* SOL GÖRSEL */
 
-.page-content {
+.picture {
     width: 100%;
     height: 100%;
 
-    padding: 55px 55px 45px;
-
-    overflow: hidden;
-}
-
-.page-title {
-    text-align: center;
-
-    font-size: 30px;
-    font-weight: normal;
-
-    margin: 0 0 35px;
-
-    letter-spacing: 2px;
-}
-
-.page-line {
-    height: 1px;
-
-    background: rgba(70,45,25,.25);
-
-    margin: 15px 0 25px;
-}
-
-/* =========================================================
-   SOL GÖRSEL SAYFA
-========================================================= */
-
-.visual-page {
-    padding: 0;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(30,20,10,.05),
+            rgba(20,10,5,.45)
+        ),
+        linear-gradient(
+            to bottom,
+            #d98d58 0%,
+            #edbd82 28%,
+            #527c91 55%,
+            #183f52 100%
+        );
 
     position: relative;
 }
 
-.visual-page::after {
+/* Güneş */
+
+.picture:before {
     content: "";
 
     position: absolute;
-    inset: 0;
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,.03),
-            transparent 50%,
-            rgba(0,0,0,.10)
-        );
+    width: 90px;
+    height: 90px;
 
-    pointer-events: none;
+    border-radius: 50%;
+
+    background: #ffd28b;
+
+    left: 50%;
+    top: 30%;
+
+    transform: translate(-50%, -50%);
+
+    box-shadow: 0 0 40px rgba(255,210,139,.6);
 }
 
-.visual-image {
-    width: 100%;
-    height: 100%;
+/* Deniz */
 
-    background-image:
-        linear-gradient(
-            to bottom,
-            rgba(0,0,0,.02),
-            rgba(0,0,0,.20)
-        ),
-        url("kapak-gorsel.jpg");
+.picture:after {
+    content: "";
 
-    background-size: cover;
-    background-position: center;
-}
-
-.visual-writing {
     position: absolute;
 
-    left: 8%;
-    right: 8%;
-    bottom: 10%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 43%;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.13) 0px,
+            rgba(255,255,255,.13) 2px,
+            transparent 2px,
+            transparent 15px
+        ),
+        #28566b;
+}
+
+.pictureText {
+    position: absolute;
+
+    left: 30px;
+    right: 30px;
+    bottom: 45px;
 
     text-align: center;
 
-    color: #fff7eb;
+    color: white;
 
-    text-shadow:
-        0 2px 5px rgba(0,0,0,.8),
-        0 0 15px rgba(0,0,0,.5);
+    z-index: 5;
+
+    text-shadow: 0 2px 7px rgba(0,0,0,.8);
 }
 
-.visual-writing h2 {
+.pictureText h2 {
     margin: 0 0 12px;
 
-    font-size: 32px;
+    font-size: 30px;
     font-weight: normal;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 }
 
-.visual-writing p {
+.pictureText p {
     margin: 0;
 
-    font-size: 17px;
+    font-size: 16px;
     font-style: italic;
 }
 
-/* =========================================================
-   İÇİNDEKİLER
-========================================================= */
+/* SAĞ SAYFA */
 
-.contents {
-    height: calc(100% - 75px);
-
-    overflow: hidden;
+.content {
+    padding: 55px;
 }
 
-.contents-item {
+.content h2 {
+    text-align: center;
+
+    font-weight: normal;
+
+    font-size: 30px;
+
+    margin: 0 0 35px;
+}
+
+.line {
+    height: 1px;
+
+    background: rgba(60,40,20,.3);
+
+    margin-bottom: 25px;
+}
+
+.item {
     display: flex;
 
-    align-items: baseline;
-
-    margin-bottom: 13px;
+    margin: 15px 0;
 
     font-size: 17px;
 
     cursor: pointer;
-
-    transition: transform .2s ease;
 }
 
-.contents-item:hover {
+.item:hover {
     transform: translateX(5px);
 }
 
-.contents-name {
-    white-space: nowrap;
-}
-
-.contents-dots {
+.dots {
     flex: 1;
 
-    border-bottom: 1px dotted rgba(70,45,25,.45);
+    border-bottom: 1px dotted #8b7964;
 
     margin: 0 10px;
 }
 
-/* =========================================================
-   ŞİİR
-========================================================= */
-
-.poem-title {
-    text-align: center;
-
-    font-size: 26px;
-
-    margin-bottom: 28px;
-
-    font-weight: normal;
-}
-
-.poem {
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
-    font-size: 17px;
-
-    line-height: 1.85;
-
-    white-space: pre-line;
-
-    height: calc(100% - 80px);
-
-    overflow: hidden;
-}
-
-.poem-page-number {
-    position: absolute;
-
-    bottom: 17px;
-
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    font-size: 13px;
-
-    opacity: .55;
-}
-
-/* =========================================================
-   BOŞ AYIRICI SAYFA
-========================================================= */
-
-.empty-page {
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 14px;
-
-    color: rgba(60,45,30,.3);
-
-    font-style: italic;
-}
-
-/* =========================================================
-   SAYFA ÇEVİRME ANİMASYONU
-========================================================= */
-
-.turning-page {
-    position: absolute;
-
-    top: 0;
-
-    width: 50%;
-    height: 100%;
-
-    z-index: 100;
-
-    transform-style: preserve-3d;
-
-    transform-origin: left center;
-
-    transition:
-        transform 1.15s cubic-bezier(.22,.61,.36,1),
-        box-shadow 1.15s ease;
-
-    pointer-events: none;
-}
-
-.turning-page.flip {
-    transform:
-        rotateY(-180deg)
-        translateZ(1px);
-
-    box-shadow:
-        -20px 10px 45px rgba(0,0,0,.38);
-}
-
-.turning-front,
-.turning-back {
-    position: absolute;
-
-    inset: 0;
-
-    backface-visibility: hidden;
-
-    background: #f4ead7;
-
-    overflow: hidden;
-}
-
-.turning-back {
-    transform: rotateY(180deg);
-}
-
-/* Sayfa kıvrım ışığı */
-
-.turning-page::after {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-
-    width: 45px;
-
-    right: 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(0,0,0,.16)
-        );
-
-    opacity: .5;
-
-    pointer-events: none;
-}
-
-/* =========================================================
-   KONTROLLER
-========================================================= */
+/* BUTONLAR */
 
 .controls {
     position: fixed;
@@ -562,148 +299,99 @@ body {
 
     transform: translateX(-50%);
 
-    display: flex;
+    display: none;
 
-    align-items: center;
-
-    gap: 14px;
-
-    z-index: 300;
+    gap: 15px;
 }
 
-.control-button {
-    border: 1px solid rgba(255,255,255,.25);
+button {
+    background: #211b16;
 
-    background: rgba(20,16,12,.65);
+    color: #f5ead8;
 
-    color: #f6ead7;
+    border: 1px solid #74614d;
 
-    padding: 11px 19px;
-
-    border-radius: 4px;
-
-    cursor: pointer;
+    padding: 10px 20px;
 
     font-family: Georgia, serif;
 
-    transition:
-        background .2s ease,
-        transform .2s ease;
-}
-
-.control-button:hover {
-    background: rgba(20,16,12,.9);
-    transform: translateY(-2px);
-}
-
-.page-counter {
-    color: #eadcc8;
-
-    font-size: 13px;
-
-    min-width: 90px;
-
-    text-align: center;
-}
-
-/* =========================================================
-   SES BUTONU
-========================================================= */
-
-.listen-button {
-    display: block;
-
-    margin: 20px auto 0;
-
-    padding: 9px 18px;
-
-    border: 1px solid rgba(70,45,25,.3);
-
-    background: rgba(255,255,255,.25);
-
-    color: #3d3024;
-
-    border-radius: 3px;
-
     cursor: pointer;
-
-    font-family: Georgia, serif;
 }
 
-/* =========================================================
-   MOBİL
-========================================================= */
+button:hover {
+    background: #46382b;
+}
 
-@media (max-width: 800px) {
+/* MOBİL */
 
-    .book {
-        width: 96vw;
-        height: 75vh;
+@media(max-width:700px) {
+
+    #closedBook {
+        width: 280px;
+        height: 410px;
     }
 
-    .page-content {
-        padding: 30px 25px;
+    #book {
+        height: 70vh;
     }
 
-    .contents-item {
-        font-size: 13px;
-        margin-bottom: 9px;
+    .content {
+        padding: 30px 20px;
     }
 
-    .poem {
-        font-size: 14px;
-        line-height: 1.65;
-    }
-
-    .page-title {
+    .content h2 {
         font-size: 23px;
     }
 
-    .visual-writing h2 {
-        font-size: 24px;
-    }
-
-    .visual-writing p {
+    .item {
         font-size: 13px;
     }
+
 }
 
 </style>
 </head>
 
-
 <body>
 
-<div class="scene">
+<!-- KAPALI KİTAP -->
 
-    <!-- =====================================================
-         KAPALI KİTAP
-    ====================================================== -->
+<div id="closedBook" onclick="openBook()">
 
-    <div
-        class="closed-book"
-        id="closedBook"
-        onclick="openBook()"
-    >
+    <div class="cover">
 
-        <div class="book-cover">
+        <h1>ŞİİR NEFESTİR</h1>
 
-            <div class="cover-image"></div>
+        <p>
+            Kelimelerden kızıma,<br>
+            insanlara ve hayata...
+        </p>
 
-            <div class="cover-writing">
+        <span>Serdar</span>
 
-                <div class="cover-title">
-                    ŞİİR NEFESTİR
-                </div>
+    </div>
 
-                <div class="cover-subtitle">
-                    Kelimelerden kızıma,<br>
+</div>
+
+
+<!-- AÇIK KİTAP -->
+
+<div id="book">
+
+    <!-- SOL SAYFA -->
+
+    <div class="page left">
+
+        <div class="picture">
+
+            <div class="pictureText">
+
+                <h2>Şiir Nefestir</h2>
+
+                <p>
+                    Kelimelerden kızıma,
                     insanlara ve hayata...
-                </div>
-
-                <div class="cover-author">
-                    Serdar
-                </div>
+                </p>
 
             </div>
 
@@ -712,734 +400,116 @@ body {
     </div>
 
 
-    <!-- =====================================================
-         AÇIK KİTAP
-    ====================================================== -->
+    <!-- SAĞ SAYFA -->
 
-    <div class="book" id="book">
+    <div class="page right">
 
-        <div class="page left-page" id="leftPage">
+        <div class="content">
+
+            <h2>İçindekiler</h2>
+
+            <div class="line"></div>
+
+            <div class="item">
+                <span>Deneme 1</span>
+                <span class="dots"></span>
+                <span>1</span>
+            </div>
+
+            <div class="item">
+                <span>Deneme 2</span>
+                <span class="dots"></span>
+                <span>2</span>
+            </div>
+
+            <div class="item">
+                <span>Deneme 3</span>
+                <span class="dots"></span>
+                <span>3</span>
+            </div>
+
+            <div class="item">
+                <span>Deneme 4</span>
+                <span class="dots"></span>
+                <span>4</span>
+            </div>
+
+            <div class="item">
+                <span>Deneme 5</span>
+                <span class="dots"></span>
+                <span>5</span>
+            </div>
+
+            <div class="item">
+                <span>Deneme 6</span>
+                <span class="dots"></span>
+                <span>6</span>
+            </div>
+
+            <div class="item">
+                <span>Deneme 7</span>
+                <span class="dots"></span>
+                <span>7</span>
+            </div>
+
+            <div class="item">
+                <span>Deneme 8</span>
+                <span class="dots"></span>
+                <span>8</span>
+            </div>
+
         </div>
-
-        <div class="page right-page" id="rightPage">
-        </div>
-
-        <div class="book-spine"></div>
 
     </div>
+
+
+    <div class="middle"></div>
 
 </div>
 
 
-<!-- =========================================================
-     KONTROLLER
-========================================================= -->
+<!-- KONTROLLER -->
 
-<div class="controls">
+<div class="controls" id="controls">
 
-    <button
-        class="control-button"
-        onclick="previousPage()"
-    >
+    <button onclick="previousPage()">
         ‹ Önceki
     </button>
 
-    <div
-        class="page-counter"
-        id="pageCounter"
-    >
-        1 / 1
-    </div>
-
-    <button
-        class="control-button"
-        onclick="nextPage()"
-    >
+    <button onclick="nextPage()">
         Sonraki ›
     </button>
 
 </div>
 
 
-<!-- =========================================================
-     SES
-========================================================= -->
-
-<audio id="poemAudio"></audio>
-
-
 <script>
-
-/* =========================================================
-   ŞİİRLER
-
-   Şimdilik sadece prototip şiirler.
-   Daha sonra gerçek şiirleri buraya bağlayacağız.
-========================================================= */
-
-const poems = [
-
-    {
-        number: 1,
-
-        title: "Deneme 1",
-
-        text:
-`Yoksam düşlerinde gecelerinde kayıpsam
-Bakışların hep donuk
-Belki de uzaklarda bir yerdeyim.
-
-Şairler ağlamaz derler...
-Ama bazen kelimeler
-insanın söyleyemediği her şeyi anlatır.
-
-Bekle…!
-Geliyorum!`,
-
-        date: "",
-
-        audio: "sesler/deneme1.mp3"
-    },
-
-
-    {
-        number: 2,
-
-        title: "Deneme 2",
-
-        text:
-`Kırılgan bir şiirim şimdi
-satır aralarında...
-
-Belki ben henüz ölmemişimdir.
-
-Belki bir kelimenin içinde
-saklı kalmışımdır.
-
-Belki de hâlâ
-bir yerlerde nefes alıyorumdur.`,
-
-        date: "",
-
-        audio: "sesler/deneme2.mp3"
-    }
-
-];
-
-
-/* =========================================================
-   SAYFA SİSTEMİ
-========================================================= */
-
-let pages = [];
-
-let currentPage = 0;
-
-let bookOpened = false;
-
-
-/* =========================================================
-   SAYFALARI OLUŞTUR
-========================================================= */
-
-function createPages() {
-
-    pages = [];
-
-
-    /* -----------------------------------------------------
-       SAYFA 1 — SOL GÖRSEL
-    ------------------------------------------------------ */
-
-    pages.push({
-
-        type: "visual"
-
-    });
-
-
-    /* -----------------------------------------------------
-       SAYFA 2 — İÇİNDEKİLER
-    ------------------------------------------------------ */
-
-    pages.push({
-
-        type: "contents",
-
-        start: 1
-
-    });
-
-
-    /* -----------------------------------------------------
-       İÇİNDEKİLER DEVAMI
-    ------------------------------------------------------ */
-
-    pages.push({
-
-        type: "contents",
-
-        start: 2
-
-    });
-
-
-    /* -----------------------------------------------------
-       BOŞ AYIRICI
-    ------------------------------------------------------ */
-
-    pages.push({
-
-        type: "empty"
-
-    });
-
-
-    /* -----------------------------------------------------
-       ŞİİRLER
-    ------------------------------------------------------ */
-
-    poems.forEach((poem, index) => {
-
-        /*
-           Şimdilik her şiiri iki sayfaya
-           ayırıyoruz.
-
-           Gerçek sistemde burada metnin
-           sayfa yüksekliğini ölçüp
-           otomatik böleceğiz.
-        */
-
-        pages.push({
-
-            type: "poem",
-
-            poemIndex: index,
-
-            part: 1
-
-        });
-
-
-        pages.push({
-
-            type: "poem",
-
-            poemIndex: index,
-
-            part: 2
-
-        });
-
-
-        /* Şiirler arasına boş sayfa */
-
-        pages.push({
-
-            type: "empty"
-
-        });
-
-    });
-
-}
-
-
-/* =========================================================
-   SAYFA HTML'İ
-========================================================= */
-
-function pageHTML(page) {
-
-    if (!page) {
-
-        return `
-            <div class="page-content"></div>
-        `;
-
-    }
-
-
-    /* -----------------------------------------------------
-       GÖRSEL
-    ------------------------------------------------------ */
-
-    if (page.type === "visual") {
-
-        return `
-
-            <div class="visual-page">
-
-                <div class="visual-image"></div>
-
-                <div class="visual-writing">
-
-                    <h2>Şiir Nefestir</h2>
-
-                    <p>
-                        Kelimelerden kızıma,
-                        insanlara ve hayata...
-                    </p>
-
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* -----------------------------------------------------
-       İÇİNDEKİLER
-    ------------------------------------------------------ */
-
-    if (page.type === "contents") {
-
-        let html = `
-
-            <div class="page-content">
-
-                <h1 class="page-title">
-                    İçindekiler
-                </h1>
-
-                <div class="page-line"></div>
-
-                <div class="contents">
-        `;
-
-
-        let start = page.start || 1;
-
-        let end = Math.min(start + 10, poems.length + 1);
-
-
-        for (let i = start - 1; i < end - 1; i++) {
-
-            const poem = poems[i];
-
-            if (!poem) continue;
-
-
-            html += `
-
-                <div
-                    class="contents-item"
-                    onclick="goToPoem(${i})"
-                >
-
-                    <span class="contents-name">
-                        ${poem.title}
-                    </span>
-
-                    <span class="contents-dots"></span>
-
-                    <span>
-                        ${i + 5}
-                    </span>
-
-                </div>
-            `;
-
-        }
-
-
-        html += `
-
-                </div>
-
-            </div>
-
-        `;
-
-        return html;
-
-    }
-
-
-    /* -----------------------------------------------------
-       BOŞ SAYFA
-    ------------------------------------------------------ */
-
-    if (page.type === "empty") {
-
-        return `
-
-            <div class="empty-page">
-
-                <span></span>
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* -----------------------------------------------------
-       ŞİİR
-    ------------------------------------------------------ */
-
-    if (page.type === "poem") {
-
-        const poem = poems[page.poemIndex];
-
-
-        if (!poem) {
-
-            return "";
-
-        }
-
-
-        return `
-
-            <div class="page-content">
-
-                <h2 class="poem-title">
-                    ${poem.title}
-                </h2>
-
-                <div class="poem">
-                    ${poem.text}
-                </div>
-
-                <button
-                    class="listen-button"
-                    onclick="playPoem(${page.poemIndex})"
-                >
-                    🎵 Şiiri Dinle
-                </button>
-
-                <div class="poem-page-number">
-                    ${page.part}
-                </div>
-
-            </div>
-
-        `;
-
-    }
-
-
-    return "";
-
-}
-
-
-/* =========================================================
-   SAYFALARI GÖSTER
-========================================================= */
-
-function renderPages() {
-
-    const left = pages[currentPage];
-
-    const right = pages[currentPage + 1];
-
-
-    document.getElementById("leftPage").innerHTML =
-        pageHTML(left);
-
-    document.getElementById("rightPage").innerHTML =
-        pageHTML(right);
-
-
-    document.getElementById("pageCounter").textContent =
-        `${currentPage + 1} - ${Math.min(currentPage + 2, pages.length)}
-         / ${pages.length}`;
-
-}
-
-
-/* =========================================================
-   KİTABI AÇ
-========================================================= */
 
 function openBook() {
 
-    const closedBook =
-        document.getElementById("closedBook");
+    document.getElementById("closedBook").style.display = "none";
 
-    const book =
-        document.getElementById("book");
+    document.getElementById("book").style.display = "block";
 
-
-    closedBook.classList.add("opening");
-
-
-    setTimeout(() => {
-
-        createPages();
-
-        currentPage = 0;
-
-        renderPages();
-
-        book.classList.add("visible");
-
-        bookOpened = true;
-
-    }, 700);
+    document.getElementById("controls").style.display = "flex";
 
 }
 
-
-/* =========================================================
-   SONRAKİ SAYFA
-========================================================= */
 
 function nextPage() {
 
-    if (!bookOpened) return;
-
-
-    if (currentPage + 2 >= pages.length) {
-
-        return;
-
-    }
-
-
-    animateTurn(() => {
-
-        currentPage += 2;
-
-        renderPages();
-
-    });
+    alert("Bir sonraki aşamada gerçek kitap sayfası çevirme efektini buraya ekleyeceğiz.");
 
 }
 
-
-/* =========================================================
-   ÖNCEKİ SAYFA
-========================================================= */
 
 function previousPage() {
 
-    if (!bookOpened) return;
-
-
-    if (currentPage <= 0) {
-
-        return;
-
-    }
-
-
-    currentPage -= 2;
-
-    renderPages();
+    alert("Bir sonraki aşamada gerçek kitap sayfası çevirme efektini buraya ekleyeceğiz.");
 
 }
-
-
-/* =========================================================
-   GERÇEK SAYFA KIVRILMA ANİMASYONU
-========================================================= */
-
-function animateTurn(callback) {
-
-    const rightPage =
-        document.getElementById("rightPage");
-
-
-    const turning =
-        document.createElement("div");
-
-
-    turning.className = "turning-page";
-
-
-    turning.innerHTML = `
-
-        <div class="turning-front">
-
-            ${rightPage.innerHTML}
-
-        </div>
-
-        <div class="turning-back">
-
-            ${rightPage.innerHTML}
-
-        </div>
-
-    `;
-
-
-    document.getElementById("book")
-        .appendChild(turning);
-
-
-    requestAnimationFrame(() => {
-
-        turning.classList.add("flip");
-
-    });
-
-
-    setTimeout(() => {
-
-        turning.remove();
-
-        callback();
-
-    }, 1150);
-
-}
-
-
-/* =========================================================
-   İÇİNDEKİLERDEN ŞİİRE GİT
-========================================================= */
-
-function goToPoem(index) {
-
-    /*
-       Şiirin pages dizisindeki yerini buluyoruz.
-    */
-
-    const found =
-        pages.findIndex(page =>
-            page.type === "poem" &&
-            page.poemIndex === index
-        );
-
-
-    if (found === -1) return;
-
-
-    /*
-       Çift sayfa düzeni nedeniyle
-       başlangıcı çift sayıya getiriyoruz.
-    */
-
-    currentPage =
-        found % 2 === 0
-            ? found
-            : found - 1;
-
-
-    renderPages();
-
-}
-
-
-/* =========================================================
-   ŞİİR SESİ
-========================================================= */
-
-function playPoem(index) {
-
-    const poem = poems[index];
-
-    if (!poem) return;
-
-
-    const audio =
-        document.getElementById("poemAudio");
-
-
-    /*
-       Aynı şiirin sesi çalıyorsa durdur.
-    */
-
-    if (
-        audio.src &&
-        audio.src.includes(poem.audio) &&
-        !audio.paused
-    ) {
-
-        audio.pause();
-
-        return;
-
-    }
-
-
-    audio.pause();
-
-    audio.currentTime = 0;
-
-    audio.src = poem.audio;
-
-    audio.play().catch(() => {
-
-        alert(
-            "Bu şiire henüz ses dosyası eklenmedi."
-        );
-
-    });
-
-}
-
-
-/* =========================================================
-   ŞİİR DEĞİŞTİĞİNDE SESİ KONTROL ET
-========================================================= */
-
-function stopAudioIfPoemChanged() {
-
-    const audio =
-        document.getElementById("poemAudio");
-
-    if (!audio) return;
-
-}
-
-
-/* =========================================================
-   KLAVYE
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (!bookOpened) {
-
-            if (
-                event.key === "Enter" ||
-                event.key === " "
-            ) {
-
-                openBook();
-
-            }
-
-            return;
-
-        }
-
-
-        if (event.key === "ArrowRight") {
-
-            nextPage();
-
-        }
-
-
-        if (event.key === "ArrowLeft") {
-
-            previousPage();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   BAŞLANGIÇ
-========================================================= */
-
-createPages();
 
 </script>
 
 </body>
 </html>
-```
