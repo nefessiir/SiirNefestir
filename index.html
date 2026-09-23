@@ -574,14 +574,18 @@ function openBook() {
 
 function nextPage() {
 
-    alert("Bir sonraki aşamada gerçek kitap sayfası çevirme efektini buraya ekleyeceğiz.");
+    const page = document.getElementById("flipPage");
+
+    page.classList.add("flipping");
 
 }
 
 
 function previousPage() {
 
-    alert("Bir sonraki aşamada gerçek kitap sayfası çevirme efektini buraya ekleyeceğiz.");
+    const page = document.getElementById("flipPage");
+
+    page.classList.remove("flipping");
 
 }
 
