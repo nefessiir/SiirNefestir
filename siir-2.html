@@ -14,7 +14,72 @@
 <style>
 * {
     box-sizing: border-box;
-}
+}<script>
+const previousPage = "siirler.html";
+const nextPage = "siir-3.html";
+
+const bookPage = document.querySelector(".book-page");
+const pageFlip = document.querySelector(".page-flip");
+
+let startX = 0;
+let currentX = 0;
+let dragging = false;
+
+bookPage.addEventListener("pointerdown", function(e) {
+    startX = e.clientX;
+    currentX = startX;
+    dragging = true;
+
+    bookPage.classList.add("dragging");
+    bookPage.setPointerCapture(e.pointerId);
+});
+
+bookPage.addEventListener("pointermove", function(e) {
+    if (!dragging) return;
+
+    currentX = e.clientX;
+
+    const distance = currentX - startX;
+
+    if (Math.abs(distance) > 20) {
+        pageFlip.style.opacity = Math.min(Math.abs(distance) / 250, 1);
+    }
+});
+
+bookPage.addEventListener("pointerup", function(e) {
+    if (!dragging) return;
+
+    dragging = false;
+    bookPage.classList.remove("dragging");
+
+    const distance = currentX - startX;
+
+    if (distance < -100 && nextPage) {
+        pageFlip.style.transformOrigin = "left center";
+        pageFlip.classList.add("turning");
+
+        setTimeout(function() {
+            window.location.href = nextPage;
+        }, 500);
+
+    } else if (distance > 100 && previousPage) {
+        pageFlip.style.transformOrigin = "right center";
+        pageFlip.classList.add("turning");
+
+        setTimeout(function() {
+            window.location.href = previousPage;
+        }, 500);
+    } else {
+        pageFlip.style.opacity = "0";
+    }
+});
+
+bookPage.addEventListener("pointercancel", function() {
+    dragging = false;
+    bookPage.classList.remove("dragging");
+    pageFlip.style.opacity = "0";
+});
+</script>
 
 body {
     margin: 0;
@@ -171,7 +236,33 @@ body {
     .poem-title {
         font-size: 27px;
     }
+}.page-flip {
+    position: fixed;
+    inset: 0;
+    background: #f8f2e7;
+    z-index: 9999;
+    pointer-events: none;
+    transform-origin: left center;
+    transform: rotateY(90deg);
+    opacity: 0;
+    transition: transform .65s ease, opacity .2s ease;
+    box-shadow: 15px 0 35px rgba(40,30,20,.25);
 }
+
+.page-flip.turning {
+    opacity: 1;
+    transform: rotateY(0deg);
+}
+
+.book-page {
+    touch-action: pan-y;
+    cursor: grab;
+}
+
+.book-page.dragging {
+    cursor: grabbing;
+}
+    
 </style>
 
 </head>
@@ -213,9 +304,12 @@ Belki de hataydı..
 
 <div class="poem-navigation">
 
-<a href="siirler.html">← Önceki şiir</a>
+<div class="poem-navigation">
+    <a href="siirler.html">← Önceki şiir</a>
+    <a href="siir-3.html">Sonraki şiir →</a>
+</div>
 
-<a href="siir-3.html">Sonraki şiir →</a>
+<div class="page-flip"></div>
 
 </div>
 
