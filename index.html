@@ -1,6 +1,16 @@
-/* =========================================
-   TAM EKRAN DUZELTMESI
-   ========================================= */
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Şiir Nefestir</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
 
 html,
 body {
@@ -8,78 +18,662 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 body {
-    position: relative;
+    overflow: hidden;
+    background: #111;
+    font-family: Georgia, "Times New Roman", serif;
 }
 
-/* Ana tasarim alani */
-.container,
-.main-container,
-.page,
-.scene,
-.app {
+
+/* =========================================
+   ANA SAHNE
+   ========================================= */
+
+.scene {
+    position: relative;
     width: 100vw;
     height: 100vh;
-    max-width: 100vw;
-    max-height: 100vh;
     overflow: hidden;
 }
 
-/* Arka planin ekrani tasmasini engelle */
-body::before {
-    max-width: 100vw;
-    max-height: 100vh;
+
+/* =========================================
+   ARKA PLAN
+   ========================================= */
+
+.background {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-image: url("arkaplan.jpeg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    z-index: 1;
 }
 
-/* Ekran kuculdugunda sag ve sol elemanlarin kaybolmasini engelle */
-img {
-    max-width: 100%;
-}
 
-/* Alt kisim ekranin disina cikmasin */
-.equalizer,
-.eq,
-.equalizer-container {
-    max-width: 100vw;
-}
+/*
+   Arka planin fazla buyumesini engellemek icin
+   ekran oranina gore hafif ayarlama.
+*/
 
-/* Sesli dinle butonu ekran disina tasmasin */
-.listen,
-.listen-button,
-.audio-button {
-    max-width: calc(100vw - 20px);
-}
-
-/* Mobil ve kucuk ekranlar */
-@media (max-width: 900px) {
-    .container,
-    .main-container,
-    .page,
-    .scene,
-    .app {
-        transform: scale(0.92);
-        transform-origin: center center;
-        width: 108.7vw;
-        height: 108.7vh;
-        margin-left: -4.35vw;
-        margin-top: -4.35vh;
+@media (min-aspect-ratio: 2/1) {
+    .background {
+        background-size: 100% 100%;
     }
 }
 
-@media (max-height: 700px) {
-    .container,
-    .main-container,
-    .page,
-    .scene,
-    .app {
-        transform: scale(0.88);
-        transform-origin: center center;
-        width: 113.64vw;
-        height: 113.64vh;
-        margin-left: -6.82vw;
-        margin-top: -6.82vh;
-    }
+
+/* =========================================
+   HAFIF KARARTMA
+   ========================================= */
+
+.background-shade {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.08);
+
+    z-index: 2;
+    pointer-events: none;
 }
+
+
+/* =========================================
+   ICERIK
+   ========================================= */
+
+.content {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 10;
+}
+
+
+/* =========================================
+   SOL MUM
+   ========================================= */
+
+.candle-area {
+    position: absolute;
+
+    left: 2.5vw;
+    bottom: 8vh;
+
+    width: clamp(80px, 9vw, 150px);
+
+    z-index: 20;
+}
+
+.candle-area img {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    object-fit: contain;
+}
+
+
+/* =========================================
+   SIIR ALANI
+   ========================================= */
+
+.poem-area {
+    position: absolute;
+
+    left: 50%;
+    top: 48%;
+
+    transform: translate(-50%, -50%);
+
+    width: min(58vw, 850px);
+    max-height: 72vh;
+
+    overflow: hidden;
+
+    text-align: center;
+
+    padding: 20px 30px;
+
+    z-index: 15;
+}
+
+
+.poem-title {
+    margin: 0 0 22px 0;
+
+    font-size: clamp(24px, 2.3vw, 40px);
+
+    font-weight: normal;
+
+    color: #1d2830;
+
+    text-shadow:
+        0 1px 1px rgba(255,255,255,0.45);
+}
+
+
+.poem-text {
+    margin: 0;
+
+    font-size: clamp(17px, 1.35vw, 25px);
+
+    line-height: 1.7;
+
+    color: #18252c;
+
+    white-space: pre-line;
+}
+
+
+/* =========================================
+   SESLI DINLE BUTONU
+   ========================================= */
+
+.listen-area {
+    position: absolute;
+
+    right: 2.8vw;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    z-index: 30;
+}
+
+
+.listen-button {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    min-width: 145px;
+
+    padding: 12px 18px;
+
+    border: 1px solid rgba(50, 50, 50, 0.35);
+    border-radius: 30px;
+
+    background: rgba(255,255,255,0.38);
+
+    color: #18252c;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 16px;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(3px);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.listen-button:hover {
+    background: rgba(255,255,255,0.58);
+
+    transform: scale(1.04);
+}
+
+
+.listen-icon {
+    font-size: 19px;
+}
+
+
+/* =========================================
+   ALT EKOLAYZER
+   ========================================= */
+
+.equalizer-area {
+    position: absolute;
+
+    left: 50%;
+    bottom: 3.2vh;
+
+    transform: translateX(-50%);
+
+    width: min(42vw, 560px);
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    z-index: 25;
+}
+
+
+.bar {
+    width: 4px;
+    height: 14px;
+
+    border-radius: 3px;
+
+    background: rgba(25, 35, 40, 0.58);
+
+    animation: equalizer 1s ease-in-out infinite alternate;
+}
+
+
+.bar:nth-child(1) {
+    animation-delay: -0.2s;
+}
+
+.bar:nth-child(2) {
+    animation-delay: -0.5s;
+}
+
+.bar:nth-child(3) {
+    animation-delay: -0.8s;
+}
+
+.bar:nth-child(4) {
+    animation-delay: -0.3s;
+}
+
+.bar:nth-child(5) {
+    animation-delay: -0.7s;
+}
+
+.bar:nth-child(6) {
+    animation-delay: -0.1s;
+}
+
+.bar:nth-child(7) {
+    animation-delay: -0.9s;
+}
+
+.bar:nth-child(8) {
+    animation-delay: -0.4s;
+}
+
+.bar:nth-child(9) {
+    animation-delay: -0.6s;
+}
+
+.bar:nth-child(10) {
+    animation-delay: -0.2s;
+}
+
+.bar:nth-child(11) {
+    animation-delay: -0.8s;
+}
+
+.bar:nth-child(12) {
+    animation-delay: -0.4s;
+}
+
+.bar:nth-child(13) {
+    animation-delay: -0.7s;
+}
+
+.bar:nth-child(14) {
+    animation-delay: -0.1s;
+}
+
+.bar:nth-child(15) {
+    animation-delay: -0.5s;
+}
+
+
+@keyframes equalizer {
+
+    from {
+        height: 8px;
+    }
+
+    to {
+        height: 38px;
+    }
+
+}
+
+
+/* =========================================
+   ALT BASLIK / IMZA
+   ========================================= */
+
+.signature {
+    position: absolute;
+
+    left: 50%;
+    bottom: 1.2vh;
+
+    transform: translateX(-50%);
+
+    font-size: 12px;
+
+    color: rgba(25, 35, 40, 0.55);
+
+    z-index: 20;
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1100px) {
+
+    .poem-area {
+        width: 55vw;
+    }
+
+    .listen-area {
+        right: 1.5vw;
+    }
+
+    .candle-area {
+        left: 1.5vw;
+    }
+
+}
+
+
+/* =========================================
+   KUCUK EKRAN
+   ========================================= */
+
+@media (max-width: 800px) {
+
+    .background {
+        background-position: center center;
+        background-size: cover;
+    }
+
+
+    .candle-area {
+        left: 1vw;
+        bottom: 10vh;
+
+        width: 70px;
+    }
+
+
+    .poem-area {
+        top: 46%;
+
+        width: 65vw;
+
+        padding: 10px;
+    }
+
+
+    .poem-title {
+        margin-bottom: 12px;
+    }
+
+
+    .poem-text {
+        line-height: 1.5;
+    }
+
+
+    .listen-area {
+        right: 1vw;
+        top: 44%;
+    }
+
+
+    .listen-button {
+        min-width: 110px;
+
+        padding: 9px 12px;
+
+        font-size: 13px;
+    }
+
+
+    .equalizer-area {
+        width: 50vw;
+        bottom: 4vh;
+    }
+
+}
+
+
+/* =========================================
+   COK KISA EKRAN
+   ========================================= */
+
+@media (max-height: 650px) {
+
+    .candle-area {
+        bottom: 7vh;
+    }
+
+
+    .poem-area {
+        top: 46%;
+
+        max-height: 64vh;
+    }
+
+
+    .poem-title {
+        margin-bottom: 10px;
+
+        font-size: clamp(20px, 2vw, 30px);
+    }
+
+
+    .poem-text {
+        font-size: clamp(15px, 1.2vw, 21px);
+
+        line-height: 1.45;
+    }
+
+
+    .listen-area {
+        top: 42%;
+    }
+
+
+    .equalizer-area {
+        bottom: 1vh;
+
+        height: 42px;
+    }
+
+
+    .signature {
+        display: none;
+    }
+
+}
+
+
+/* =========================================
+   COK DAR EKRAN
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .candle-area {
+        width: 55px;
+    }
+
+
+    .poem-area {
+        width: 68vw;
+    }
+
+
+    .listen-button {
+        min-width: 95px;
+
+        padding: 8px 10px;
+
+        font-size: 12px;
+    }
+
+
+    .equalizer-area {
+        width: 48vw;
+
+        gap: 3px;
+    }
+
+
+    .bar {
+        width: 3px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="scene">
+
+    <div class="background"></div>
+
+    <div class="background-shade"></div>
+
+
+    <div class="content">
+
+
+        <!-- SOL MUM -->
+
+        <div class="candle-area">
+
+            <!-- Buraya mevcut mum gorselinin dosya adini yaz -->
+            <img src="mum.png" alt="Mum">
+
+        </div>
+
+
+
+        <!-- SIIR -->
+
+        <main class="poem-area">
+
+            <h1 class="poem-title">
+                Şiir Nefestir
+            </h1>
+
+            <p class="poem-text">
+Yoksam düşlerinde
+gecelerinde kayıpsam
+
+Bakışların hep donuk
+                <!-- Buraya aktif siirin gelecek -->
+            </p>
+
+        </main>
+
+
+
+        <!-- SESLI DINLE -->
+
+        <div class="listen-area">
+
+            <button
+                class="listen-button"
+                type="button"
+                onclick="toggleAudio()">
+
+                <span class="listen-icon">🔊</span>
+
+                <span>Sesli Dinle</span>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- EKOLAYZER -->
+
+        <div class="equalizer-area">
+
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+
+        </div>
+
+
+        <div class="signature">
+            Şiir Nefestir
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+let audioPlaying = false;
+
+function toggleAudio() {
+
+    audioPlaying = !audioPlaying;
+
+    const button =
+        document.querySelector(".listen-button");
+
+    const icon =
+        document.querySelector(".listen-icon");
+
+    if (audioPlaying) {
+
+        icon.textContent = "⏸";
+
+        button.querySelector("span:last-child")
+            .textContent = "Durdur";
+
+    } else {
+
+        icon.textContent = "🔊";
+
+        button.querySelector("span:last-child")
+            .textContent = "Sesli Dinle";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
