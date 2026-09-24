@@ -149,6 +149,46 @@ body::before {
 
     -webkit-user-select:
         none;
+
+    backface-visibility:
+        hidden;
+}
+
+
+/* =====================================================
+   KAPAGIN IC YUZU
+   ===================================================== */
+
+#closedBook::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d2bb8d 0%,
+            #e6d4ad 70%,
+            #d8c49b 100%
+        );
+
+    border-radius:
+        8px 20px 20px 8px;
+
+    transform:
+        rotateY(180deg);
+
+    backface-visibility:
+        hidden;
+
+    pointer-events:
+        none;
 }
 
 
@@ -283,6 +323,18 @@ body.cover-open #openBook {
 
     margin-right:
         1px;
+}
+
+
+/* =====================================================
+   KAPAK ACILIRKEN SOL SAYFA GIZLI
+   ===================================================== */
+
+body.cover-opening .page.left,
+body.cover-open .page.left {
+
+    visibility:
+        hidden;
 }
 
 
