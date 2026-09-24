@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -27,19 +28,51 @@ body {
     align-items: center;
     justify-content: center;
 
+    position: relative;
+
     background:
         radial-gradient(
             ellipse at center,
-            #51463a 0%,
-            #302923 55%,
-            #1e1a17 100%
+            #40352d 0%,
+            #241e1a 55%,
+            #100e0c 100%
         );
 }
 
 
 /* =====================================================
+   DAGINIK SONBAHAR YAPRAKLARI
+   ===================================================== */
+
+body::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cg opacity='.78'%3E%3Cpath d='M70 75 C42 42 12 55 30 88 C42 108 64 112 87 98 C76 94 70 84 70 75Z' fill='%235b3020'/%3E%3Cpath d='M245 45 C218 12 183 30 200 65 C211 87 234 91 258 77 C247 70 242 58 245 45Z' fill='%23704427' transform='rotate(24 245 45)'/%3E%3Cpath d='M480 95 C450 60 415 80 432 115 C444 137 467 142 492 127 C481 119 476 108 480 95Z' fill='%234b271c' transform='rotate(-18 480 95)'/%3E%3Cpath d='M130 185 C99 150 66 170 83 205 C95 227 119 232 144 217 C133 210 127 198 130 185Z' fill='%23754827' transform='rotate(15 130 185)'/%3E%3Cpath d='M360 185 C332 151 297 170 314 205 C325 227 349 232 373 218 C362 210 357 199 360 185Z' fill='%23633720' transform='rotate(-30 360 185)'/%3E%3Cpath d='M530 280 C500 246 468 264 485 299 C497 320 520 325 545 311 C534 303 528 292 530 280Z' fill='%23794a25' transform='rotate(25 530 280)'/%3E%3Cpath d='M55 320 C25 286 -7 305 10 340 C21 361 44 367 68 352 C57 345 52 333 55 320Z' fill='%23552b1d' transform='rotate(-25 55 320)'/%3E%3Cpath d='M265 300 C235 265 203 284 220 319 C232 340 255 345 280 331 C269 324 263 313 265 300Z' fill='%236e4022' transform='rotate(18 265 300)'/%3E%3Cpath d='M150 455 C120 420 87 439 104 474 C116 495 139 500 164 486 C153 478 147 467 150 455Z' fill='%23754827' transform='rotate(-20 150 455)'/%3E%3Cpath d='M385 425 C355 390 323 409 340 444 C352 465 375 470 400 456 C389 449 383 438 385 425Z' fill='%235b3020' transform='rotate(32 385 425)'/%3E%3Cpath d='M520 500 C490 465 458 484 475 519 C487 540 510 545 535 531 C524 524 518 513 520 500Z' fill='%23704427' transform='rotate(-15 520 500)'/%3E%3Cpath d='M50 535 C20 500 -12 519 5 554 C17 575 40 580 64 566 C53 559 47 548 50 535Z' fill='%234b271c' transform='rotate(22 50 535)'/%3E%3C/g%3E%3C/svg%3E");
+
+    background-size:
+        600px 600px;
+
+    background-position:
+        center center;
+
+    opacity:
+        .82;
+
+    z-index:
+        0;
+}
+
+
+/* =====================================================
    KAPALI KITAP
-   3 CM YUKARI + 3 CM ASAGI
    ===================================================== */
 
 #closedBook {
@@ -59,6 +92,10 @@ body {
 
     transition:
         transform .35s ease;
+
+    position: relative;
+
+    z-index: 2;
 }
 
 
@@ -103,7 +140,7 @@ body {
 
         width: 86vw;
         height: calc(86vw * 1.445);
-        
+
         max-height: 88vh;
     }
 }
@@ -128,4 +165,4 @@ body {
 
 </body>
 </html>
-
+```
