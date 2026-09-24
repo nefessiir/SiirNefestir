@@ -7,456 +7,395 @@
 <title>Şiir Nefestir</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
 html,
 body {
-    margin: 0;
     width: 100%;
     height: 100%;
+    margin: 0;
 }
 
 body {
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at center,
+            #3a3029 0%,
+            #211c19 48%,
+            #100e0d 100%
+        );
+    font-family: Georgia, serif;
+}
 
-    margin: 0;
+/* =========================================================
+   ARKA PLAN YAPRAKLARI
+   ========================================================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg fill='%23705a45' opacity='.5'%3E%3Cellipse cx='55' cy='80' rx='12' ry='7' transform='rotate(-35 55 80)'/%3E%3Cellipse cx='330' cy='55' rx='11' ry='6' transform='rotate(28 330 55)'/%3E%3Cellipse cx='210' cy='160' rx='10' ry='6' transform='rotate(-18 210 160)'/%3E%3Cellipse cx='100' cy='300' rx='13' ry='7' transform='rotate(40 100 300)'/%3E%3Cellipse cx='360' cy='330' rx='12' ry='7' transform='rotate(-30 360 330)'/%3E%3C/g%3E%3C/svg%3E");
+
+    background-size: 420px 420px;
+}
+
+/* =========================================================
+   KAPALI KITAP
+   ========================================================= */
+
+#closedBook {
+    position: absolute;
+
+    width: 503px;
+    height: 709px;
+
+    left: calc(50% + 55px);
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 8px 20px 20px 8px;
 
     overflow: hidden;
 
-    display: flex;
+    box-shadow:
+        0 25px 55px rgba(0, 0, 0, 0.65),
+        0 8px 18px rgba(0, 0, 0, 0.45);
 
-    align-items: center;
-
-    justify-content: center;
-
-    position: relative;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            #40352d 0%,
-            #241e1a 55%,
-            #100e0c 100%
-        );
+    cursor: pointer;
+    z-index: 10;
 }
 
+#closedBook img {
+    width: 100%;
+    height: 100%;
 
-/* =====================================================
-   SONBAHAR YAPRAKLARI
-   ===================================================== */
+    display: block;
 
-body::before {
+    object-fit: fill;
+}
 
+/* =========================================================
+   AÇIK KITAP
+   ========================================================= */
+
+#openBook {
+    position: absolute;
+
+    width: min(1006px, 94vw);
+    aspect-ratio: 1006 / 709;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0.96);
+
+    display: none;
+
+    opacity: 0;
+
+    perspective: 1800px;
+
+    filter:
+        drop-shadow(0 30px 30px rgba(0, 0, 0, 0.55));
+
+    z-index: 5;
+}
+
+/* =========================================================
+   ANA KITAP GOVDESI
+   ========================================================= */
+
+.book-body {
+    position: absolute;
+    inset: 0;
+
+    overflow: visible;
+}
+
+/* =========================================================
+   SOL SAYFA
+   ========================================================= */
+
+.page.left {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 50%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d8c7a5 0%,
+            #eee3c7 65%,
+            #f6edda 100%
+        );
+
+    /*
+       Sol sayfanın ust ve alt kenarlari
+       merkezden disariya dogru yumusak bir yay olusturuyor.
+    */
+    clip-path: path(
+        "M 0 24
+         C 115 12, 205 18, 503 78
+         L 503 610
+         C 350 650, 170 685, 0 705
+         Z"
+    );
+
+    border-radius: 22px 0 0 28px;
+
+    box-shadow:
+        inset -20px 0 28px rgba(75, 53, 32, 0.18),
+        inset 0 2px 5px rgba(255,255,255,0.65);
+}
+
+/* =========================================================
+   SAG SAYFA
+   ========================================================= */
+
+.page.right {
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+    width: 50%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            270deg,
+            #d8c7a5 0%,
+            #eee3c7 65%,
+            #f6edda 100%
+        );
+
+    /*
+       Sol sayfanin tam aynasi.
+    */
+    clip-path: path(
+        "M 503 24
+         C 388 12, 298 18, 0 78
+         L 0 610
+         C 153 650, 333 685, 503 705
+         Z"
+    );
+
+    border-radius: 0 22px 28px 0;
+
+    box-shadow:
+        inset 20px 0 28px rgba(75, 53, 32, 0.18),
+        inset 0 2px 5px rgba(255,255,255,0.65);
+}
+
+/* =========================================================
+   SAYFA DOKUSU
+   ========================================================= */
+
+.page::after {
     content: "";
 
     position: absolute;
-
     inset: 0;
 
     pointer-events: none;
 
-    background-image:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cg opacity='.78'%3E%3Cpath d='M70 75 C42 42 12 55 30 88 C42 108 64 112 87 98 C76 94 70 84 70 75Z' fill='%235b3020'/%3E%3Cpath d='M245 45 C218 12 183 30 200 65 C211 87 234 91 258 77 C247 70 242 58 245 45Z' fill='%23704427' transform='rotate(24 245 45)'/%3E%3Cpath d='M480 95 C450 60 415 80 432 115 C444 137 467 142 492 127 C481 119 476 108 480 95Z' fill='%234b271c' transform='rotate(-18 480 95)'/%3E%3Cpath d='M130 185 C99 150 66 170 83 205 C95 227 119 232 144 217 C133 210 127 198 130 185Z' fill='%23754827' transform='rotate(15 130 185)'/%3E%3Cpath d='M360 185 C332 151 297 170 314 205 C325 227 349 232 373 218 C362 210 357 199 360 185Z' fill='%23633720' transform='rotate(-30 360 185)'/%3E%3Cpath d='M530 280 C500 246 468 264 485 299 C497 320 520 325 545 311 C534 303 528 292 530 280Z' fill='%23794a25' transform='rotate(25 530 280)'/%3E%3Cpath d='M55 320 C25 286 -7 305 10 340 C21 361 44 367 68 352 C57 345 52 333 55 320Z' fill='%23552b1d' transform='rotate(-25 55 320)'/%3E%3Cpath d='M265 300 C235 265 203 284 220 319 C232 340 255 345 280 331 C269 324 263 313 265 300Z' fill='%236e4022' transform='rotate(18 265 300)'/%3E%3Cpath d='M150 455 C120 420 87 439 104 474 C116 495 139 500 164 486 C153 478 147 467 150 455Z' fill='%23754827' transform='rotate(-20 150 455)'/%3E%3Cpath d='M385 425 C355 390 323 409 340 444 C352 465 375 470 400 456 C389 449 383 438 385 425Z' fill='%235b3020' transform='rotate(32 385 425)'/%3E%3Cpath d='M520 500 C490 465 458 484 475 519 C487 540 510 545 535 531 C524 524 518 513 520 500Z' fill='%23704427' transform='rotate(-15 520 500)'/%3E%3Cpath d='M50 535 C20 500 -12 519 5 554 C17 575 40 580 64 566 C53 559 47 548 50 535Z' fill='%234b271c' transform='rotate(22 50 535)'/%3E%3C/g%3E%3C/svg%3E");
-
-    background-size:
-        600px 600px;
-
-    background-position:
-        center;
-
-    opacity:
-        .82;
-
-    z-index:
-        0;
-}
-
-
-/* =====================================================
-   KAPALI KITAP
-   503 x 709
-   ===================================================== */
-
-#closedBook {
-
-    position: absolute;
-
-    width:
-        503px;
-
-    height:
-        709px;
-
-    left:
-        calc(50% + 55px);
-
-    top:
-        50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    cursor:
-        pointer;
-
-    border-radius:
-        8px 20px 20px 8px;
-
-    overflow:
-        hidden;
-
-    box-shadow:
-        0 35px 70px rgba(0,0,0,.58);
-
-    z-index:
-        10;
-}
-
-
-/* =====================================================
-   KAPAK GORSEL
-   ===================================================== */
-
-#closedBook img {
-
-    display:
-        block;
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    object-fit:
-        fill;
-
-    user-select:
-        none;
-
-    -webkit-user-drag:
-        none;
-
-    -webkit-user-select:
-        none;
-}
-
-
-/* =====================================================
-   ACILMIS KITAP
-   HER SAYFA = 503 x 709
-   TOPLAM = 1006 x 709
-   ===================================================== */
-
-#openBook {
-
-    position:
-        absolute;
-
-    left:
-        50%;
-
-    top:
-        50%;
-
-    width:
-        min(1006px, 94vw);
-
-    aspect-ratio:
-        1006 / 709;
-
-    transform:
-        translate(-50%, -50%)
-        scale(.96);
-
-    display:
-        none;
-
-    opacity:
-        0;
-
-    z-index:
-        5;
-
-    perspective:
-        1800px;
-}
-
-
-/* =====================================================
-   SAYFALAR
-   ===================================================== */
-
-.page {
-
-    position:
-        absolute;
-
-    top:
-        0;
-
-    width:
-        50%;
-
-    height:
-        100%;
-
-    overflow:
-        hidden;
-
-    background:
-        linear-gradient(
-            90deg,
-            #d9c49b 0%,
-            #ead9b5 45%,
-            #e3cfaa 100%
-        );
-
-    box-shadow:
-        0 18px 35px rgba(0,0,0,.28);
-}
-
-
-/* =====================================================
-   SOL SAYFA
-   ===================================================== */
-
-.page.left {
-
-    left:
-        0;
-
-    border-radius:
-        16px 0 0 16px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #d2bb8d 0%,
-            #e6d4ad 70%,
-            #d8c49b 100%
-        );
-
-    transform:
-        none;
-}
-
-
-/* =====================================================
-   SAG SAYFA
-   ===================================================== */
-
-.page.right {
-
-    right:
-        0;
-
-    border-radius:
-        0 16px 16px 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            #d8c49b 0%,
-            #e7d5ae 30%,
-            #d2bb8d 100%
-        );
-
-    transform:
-        none;
-}
-
-
-/* =====================================================
-   KAGIT DOKUSU
-   ===================================================== */
-
-.page::after {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    inset:
-        0;
-
-    pointer-events:
-        none;
+    opacity: 0.22;
 
     background:
         repeating-linear-gradient(
             0deg,
-            rgba(90,65,35,.025) 0px,
-            rgba(90,65,35,.025) 1px,
+            rgba(100, 75, 45, 0.06) 0px,
+            rgba(100, 75, 45, 0.06) 1px,
             transparent 1px,
             transparent 4px
         );
-
-    opacity:
-        .7;
 }
 
-
-/* =====================================================
-   ORTA CILT
-   ===================================================== */
+/* =========================================================
+   ORTA KITAP SIRTI
+   ========================================================= */
 
 .binding {
+    position: absolute;
 
-    position:
-        absolute;
+    left: 50%;
+    top: 18px;
 
-    left:
-        50%;
+    width: 30px;
+    height: 665px;
 
-    top:
-        0;
+    transform: translateX(-50%);
 
-    width:
-        24px;
+    z-index: 20;
 
-    height:
-        100%;
-
-    transform:
-        translateX(-50%);
+    border-radius: 50%;
 
     background:
         linear-gradient(
             90deg,
-            transparent,
-            rgba(70,45,20,.20),
-            rgba(255,255,255,.18),
-            rgba(70,45,20,.20),
-            transparent
+            rgba(75, 52, 31, 0.15) 0%,
+            rgba(75, 52, 31, 0.35) 30%,
+            rgba(255, 248, 225, 0.72) 50%,
+            rgba(75, 52, 31, 0.35) 70%,
+            rgba(75, 52, 31, 0.15) 100%
         );
 
     box-shadow:
-        0 0 18px
-        rgba(50,30,15,.22);
-
-    z-index:
-        20;
-
-    pointer-events:
-        none;
+        0 0 14px rgba(45, 30, 20, 0.25);
 }
 
+/* =========================================================
+   ALTTAKI KALIN SAYFA BLOĞU
+   ========================================================= */
 
-/* =====================================================
-   KAPAK TIKLANINCA ANINDA KAYBOLUR
-   ===================================================== */
+.book-thickness {
+    position: absolute;
+
+    left: 2%;
+    right: 2%;
+
+    bottom: -18px;
+
+    height: 42px;
+
+    z-index: -1;
+
+    border-radius: 0 0 48% 48%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #b7a17d 0%,
+            #d4c19c 22%,
+            #a88e69 58%,
+            #80684c 100%
+        );
+
+    box-shadow:
+        0 13px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* Sayfa çizgileri */
+
+.book-thickness::before {
+    content: "";
+
+    position: absolute;
+
+    left: 5%;
+    right: 5%;
+
+    top: 8px;
+
+    height: 2px;
+
+    background: rgba(255, 247, 221, 0.7);
+
+    box-shadow:
+        0 6px 0 rgba(255, 247, 221, 0.45),
+        0 12px 0 rgba(78, 57, 38, 0.18),
+        0 18px 0 rgba(255, 247, 221, 0.3);
+}
+
+/* =========================================================
+   ACILIS
+   ========================================================= */
 
 body.opening #closedBook {
-
-    display:
-        none;
+    display: none;
 }
 
-
-/* =====================================================
-   ACILMIS KITAP GORUNUR
-   ===================================================== */
-
 body.opening #openBook {
+    display: block;
 
-    display:
-        block;
-
-    opacity:
-        1;
+    opacity: 1;
 
     transform:
         translate(-50%, -50%)
         scale(1);
 }
 
-
-/* =====================================================
+/* =========================================================
    MOBIL
-   ===================================================== */
+   ========================================================= */
 
 @media (max-width: 700px) {
 
     #closedBook {
+        width: 86vw;
+        height: calc(86vw * 1.409);
 
-        width:
-            86vw;
+        left: calc(50% + 20px);
 
-        height:
-            calc(86vw * 1.409);
-
-        left:
-            calc(50% + 20px);
-
-        max-height:
-            88vh;
+        max-height: 88vh;
     }
 
     #openBook {
+        width: 96vw;
+    }
 
-        width:
-            96vw;
-
-        aspect-ratio:
-            1006 / 709;
+    .binding {
+        width: 20px;
     }
 }
-
 </style>
 </head>
 
-
 <body>
-
 
 <!-- =====================================================
      KAPALI KITAP
      ===================================================== -->
 
-<div
-    id="closedBook"
-    onclick="openBook()"
->
-
-    <img
-        src="kapak-gorsel.jpg"
-        alt="Şiir Nefestir"
-        draggable="false"
-    >
-
+<div id="closedBook" onclick="openBook()">
+    <img src="kapak-gorsel.jpg" alt="Şiir Nefestir">
 </div>
 
 
 <!-- =====================================================
-     ACILMIS KITAP
+     AÇIK KITAP
      ===================================================== -->
 
 <div id="openBook">
 
-    <div class="page left"></div>
+    <div class="book-body">
 
-    <div class="page right"></div>
+        <div class="page left"></div>
 
-    <div class="binding"></div>
+        <div class="page right"></div>
+
+        <div class="binding"></div>
+
+        <div class="book-thickness"></div>
+
+    </div>
 
 </div>
 
 
 <script>
-
 function openBook() {
-
     document.body.classList.add("opening");
-
 }
-
 </script>
-
 
 </body>
 </html>
