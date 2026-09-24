@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sayfa Cevirme Testi</title>
+<title>Sayfa Cevirme</title>
 
 <style>
 
@@ -18,8 +18,8 @@ body{
     height:100%;
     margin:0;
     overflow:hidden;
+    background:#242424;
     font-family:Arial,sans-serif;
-    background:#222;
 }
 
 body{
@@ -28,120 +28,127 @@ body{
     justify-content:center;
 }
 
-/* KITAP */
+/* =========================
+   KITAP
+========================= */
 
 .book{
     position:relative;
+
     width:min(92vw,1100px);
     height:min(72vh,700px);
-    perspective:2500px;
+
+    perspective:1800px;
+
+    transform-style:preserve-3d;
 }
 
-/* ORTA CILT */
+/* =========================
+   SOL SAYFA
+========================= */
+
+.page-left{
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:50%;
+    height:100%;
+
+    border-radius:22px 4px 4px 22px;
+
+    background:
+        radial-gradient(
+            ellipse at 35% 40%,
+            #fff8df 0%,
+            #ead6aa 72%,
+            #c5a473 100%
+        );
+
+    box-shadow:
+        -10px 12px 25px rgba(0,0,0,.35),
+        inset -18px 0 25px rgba(0,0,0,.10);
+
+    transform-origin:right center;
+
+    transform:
+        rotateY(4deg)
+        translateZ(-5px);
+}
+
+/* =========================
+   SAG SAYFA
+========================= */
+
+.page-right{
+    position:absolute;
+
+    left:50%;
+    top:0;
+
+    width:50%;
+    height:100%;
+
+    border-radius:4px 22px 22px 4px;
+
+    background:
+        radial-gradient(
+            ellipse at 65% 40%,
+            #fff9e5 0%,
+            #ead8ae 72%,
+            #c6a575 100%
+        );
+
+    box-shadow:
+        10px 12px 25px rgba(0,0,0,.35),
+        inset 18px 0 25px rgba(0,0,0,.10);
+
+    transform-origin:left center;
+
+    transform:
+        rotateY(-4deg)
+        translateZ(-5px);
+}
+
+/* =========================
+   CILT
+========================= */
 
 .binding{
     position:absolute;
+
     left:50%;
-    top:2%;
-    width:18px;
-    height:96%;
-    transform:translateX(-50%);
-    z-index:20;
+    top:0;
+
+    width:20px;
+    height:100%;
+
+    transform:
+        translateX(-50%)
+        translateZ(10px);
+
+    z-index:50;
+
+    pointer-events:none;
 
     background:
         linear-gradient(
             to right,
-            rgba(0,0,0,.35),
-            rgba(255,255,255,.15),
-            rgba(0,0,0,.35)
+            rgba(0,0,0,.45),
+            rgba(255,255,255,.20),
+            rgba(0,0,0,.40)
         );
 
     border-radius:50%;
-}
-
-/* SABIT SOL SAYFA */
-
-.page-left{
-    position:absolute;
-    left:0;
-    top:0;
-    width:50%;
-    height:100%;
-    overflow:hidden;
-
-    border-radius:22px 5px 5px 22px;
-
-    background:
-        radial-gradient(
-            ellipse at 40% 40%,
-            #f9f0d5 0%,
-            #e9d5a9 70%,
-            #c8aa76 100%
-        );
 
     box-shadow:
-        -12px 15px 30px rgba(0,0,0,.35),
-        inset -15px 0 25px rgba(0,0,0,.12);
-
-    transform:
-        rotateY(5deg)
-        translateZ(-10px);
-
-    transform-origin:right center;
+        0 0 12px rgba(0,0,0,.25);
 }
 
-/* SABIT SAG SAYFA */
-
-.page-right{
-    position:absolute;
-    left:50%;
-    top:0;
-    width:50%;
-    height:100%;
-    overflow:hidden;
-
-    border-radius:5px 22px 22px 5px;
-
-    background:
-        radial-gradient(
-            ellipse at 60% 40%,
-            #fff8df 0%,
-            #ead7ad 72%,
-            #c8aa76 100%
-        );
-
-    box-shadow:
-        12px 15px 30px rgba(0,0,0,.35),
-        inset 15px 0 25px rgba(0,0,0,.12);
-
-    transform:
-        rotateY(-5deg)
-        translateZ(-10px);
-
-    transform-origin:left center;
-}
-
-/* YAZI */
-
-.page-left::after{
-    content:"SOL SAYFA";
-    position:absolute;
-    left:40px;
-    top:40px;
-    color:#555;
-    font-size:20px;
-}
-
-.page-right::after{
-    content:"SAG SAYFA";
-    position:absolute;
-    right:40px;
-    top:40px;
-    color:#555;
-    font-size:20px;
-}
-
-/* CEVRILEN GERCEK SAYFA */
+/* =========================
+   CEVRILEN SAYFA
+========================= */
 
 .turn-page{
     position:absolute;
@@ -152,26 +159,39 @@ body{
     width:50%;
     height:100%;
 
-    z-index:30;
+    z-index:40;
 
     transform-style:preserve-3d;
+
+    /*
+       EN ONEMLI NOKTA
+
+       Sayfanin sol kenari
+       cilde sabit.
+    */
+
     transform-origin:left center;
 
     cursor:grab;
 
     touch-action:none;
+
+    will-change:transform;
 }
 
 .turn-page.dragging{
     cursor:grabbing;
 }
 
-/* SAYFA ON YUZ */
+/* =========================
+   ON YUZ
+========================= */
 
-.page-front,
-.page-back{
+.page-front{
     position:absolute;
-    inset:0;
+
+    left:0;
+    top:0;
 
     width:100%;
     height:100%;
@@ -181,82 +201,107 @@ body{
     backface-visibility:hidden;
     -webkit-backface-visibility:hidden;
 
+    border-radius:
+        3px
+        22px
+        22px
+        3px;
+
     background:
         radial-gradient(
-            ellipse at 55% 40%,
+            ellipse at 65% 40%,
             #fff9e5 0%,
-            #ead8ae 70%,
-            #c5a675 100%
+            #ead8ae 72%,
+            #c6a575 100%
         );
 
     box-shadow:
-        10px 15px 30px rgba(0,0,0,.35),
-        inset 12px 0 25px rgba(0,0,0,.12);
+        8px 10px 25px rgba(0,0,0,.25),
+        inset 15px 0 22px rgba(0,0,0,.08);
 }
 
-/* ON YUZ */
-
-.page-front{
-    border-radius:5px 22px 22px 5px;
-}
-
-/* ARKA YUZ */
+/* =========================
+   ARKA YUZ
+========================= */
 
 .page-back{
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+
     transform:rotateY(180deg);
 
-    border-radius:22px 5px 5px 22px;
+    border-radius:
+        22px
+        3px
+        3px
+        22px;
 
     background:
         radial-gradient(
-            ellipse at 45% 40%,
-            #f8efd5 0%,
-            #e4cfa0 70%,
-            #bd9b67 100%
+            ellipse at 35% 40%,
+            #fff6da 0%,
+            #e6d0a0 72%,
+            #bea06d 100%
         );
 
     box-shadow:
-        -10px 15px 30px rgba(0,0,0,.35),
-        inset -12px 0 25px rgba(0,0,0,.12);
+        -8px 10px 25px rgba(0,0,0,.25),
+        inset -15px 0 22px rgba(0,0,0,.08);
 }
 
-/* SAYFA ICERIGI */
+/* =========================
+   ICERIK
+========================= */
 
-.page-front .content{
+.page-front::before{
+    content:"SAG SAYFA";
+
     position:absolute;
-    inset:0;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    top:40px;
+    right:40px;
 
-    font-size:26px;
     color:#555;
+
+    font-size:20px;
 }
 
-.page-back .content{
+.page-back::before{
+    content:"SOL SAYFA";
+
     position:absolute;
-    inset:0;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    top:40px;
+    left:40px;
 
-    font-size:26px;
     color:#555;
+
+    font-size:20px;
 }
 
-/* KIVRIM GOLGESI */
+/* =========================
+   SAYFA KENAR GOLGESI
+========================= */
 
 .turn-page::after{
     content:"";
 
     position:absolute;
 
-    top:0;
     right:-2px;
+    top:0;
 
-    width:35px;
+    width:28px;
     height:100%;
 
     pointer-events:none;
@@ -264,47 +309,53 @@ body{
     background:
         linear-gradient(
             to left,
-            rgba(0,0,0,.28),
+            rgba(0,0,0,.22),
             rgba(0,0,0,.08),
             transparent
         );
 
-    filter:blur(5px);
+    filter:blur(4px);
 
     opacity:.8;
 }
 
-/* KOSE */
+/* =========================
+   ALT SAG KOSENIN ISARETI
+========================= */
 
 .corner{
     position:absolute;
 
-    right:12px;
-    bottom:12px;
+    right:8px;
+    bottom:8px;
 
-    width:65px;
-    height:65px;
+    width:70px;
+    height:70px;
 
-    border-radius:0 0 22px 0;
+    pointer-events:none;
+
+    border-radius:0 0 20px 0;
 
     background:
         linear-gradient(
             135deg,
-            transparent 48%,
-            rgba(0,0,0,.15) 50%,
-            rgba(255,255,255,.55) 65%,
-            transparent 70%
+            transparent 45%,
+            rgba(0,0,0,.12) 48%,
+            rgba(255,255,255,.50) 60%,
+            transparent 68%
         );
-
-    pointer-events:none;
 }
 
-/* BUTON */
+/* =========================
+   BUTONLAR
+========================= */
 
 .controls{
     position:fixed;
+
     bottom:25px;
     left:50%;
+
     transform:translateX(-50%);
 
     display:flex;
@@ -314,12 +365,13 @@ body{
 }
 
 button{
-    padding:12px 22px;
+    padding:11px 22px;
 
     border:0;
     border-radius:8px;
 
     background:#fff;
+
     color:#222;
 
     font-size:15px;
@@ -327,11 +379,9 @@ button{
     cursor:pointer;
 }
 
-button:hover{
-    background:#ddd;
-}
-
-/* TELEFON */
+/* =========================
+   MOBIL
+========================= */
 
 @media(max-width:700px){
 
@@ -340,15 +390,11 @@ button:hover{
         height:58vh;
     }
 
-    .page-left::after,
-    .page-right::after{
-        font-size:14px;
-    }
-
     button{
         padding:10px 15px;
         font-size:13px;
     }
+
 }
 
 </style>
@@ -362,156 +408,182 @@ button:hover{
 
     <div class="page-right"></div>
 
-    <div class="binding"></div>
-
     <div class="turn-page" id="turnPage">
 
         <div class="page-front">
-            <div class="content">
-                SAYFA
-            </div>
 
             <div class="corner"></div>
+
         </div>
 
-        <div class="page-back">
-            <div class="content">
-                ARKA SAYFA
-            </div>
-        </div>
+        <div class="page-back"></div>
 
     </div>
 
+    <div class="binding"></div>
+
 </div>
 
+
 <div class="controls">
-    <button id="prevBtn">← Geri</button>
-    <button id="nextBtn">İleri →</button>
+
+    <button id="prevBtn">
+        ← Geri
+    </button>
+
+    <button id="nextBtn">
+        İleri →
+    </button>
+
 </div>
+
 
 <script>
 
-const book = document.getElementById("book");
-const turnPage = document.getElementById("turnPage");
+const book =
+    document.getElementById("book");
 
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
+const turnPage =
+    document.getElementById("turnPage");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+const prevBtn =
+    document.getElementById("prevBtn");
+
 
 let progress = 0;
 
 let dragging = false;
+
 let startX = 0;
+
 let startProgress = 0;
 
-function clamp(value,min,max){
-    return Math.max(min,Math.min(max,value));
-}
 
-
-/* SAYFAYI HAREKET ETTIR */
+/* =========================
+   SAYFA HAREKETI
+========================= */
 
 function render(){
 
-    const p = progress;
-
     /*
-        0 = sagda
-        1 = solda
+        0  = tamamen sagda
+        1  = tamamen solda
     */
 
-    const angle = -180 * p;
+    const angle =
+        -180 * progress;
+
 
     /*
-        ORTA NOKTADA KIVRILMA
+        BURADA ARTIK:
+
+        translateY YOK
+        translateZ YOK
+        lift YOK
+
+        Yani sayfa ciltte
+        yukselip havalanmiyor.
     */
 
-    const curl = Math.sin(p * Math.PI);
 
     /*
-        SAYFAYI HAFIF YUKARI KALDIR
+        Ortada cok hafif
+        fiziksel egim.
+
+        Sayfa cilde bagli
+        kaldigi icin bu hareket
+        onu havaya ucurmuyor.
     */
 
-    const lift = -45 * curl;
+    const curve =
+        Math.sin(progress * Math.PI);
 
-    /*
-        DERINLIK
-    */
 
-    const depth = -80 * curl;
+    const rotateX =
+        curve * 2.5;
 
-    /*
-        SAYFANIN KIVRILMASI
-    */
 
-    const bend = 18 * curl;
+    const rotateZ =
+        curve * 1.2;
 
-    /*
-        HAFIF YATMA
-    */
-
-    const tilt = 5 * curl;
 
     turnPage.style.transform =
         `
-        translate3d(0px, ${lift}px, ${depth}px)
         rotateY(${angle}deg)
-        rotateX(${bend}deg)
-        rotateZ(${tilt}deg)
+        rotateX(${rotateX}deg)
+        rotateZ(${rotateZ}deg)
         `;
 
+
     /*
-        GOLGEYI ORTADA GUCLENDIR
+        Gölge sadece sayfa
+        orta konumdayken belirgin.
     */
 
+    const shadow =
+        0.12 + curve * 0.20;
+
+
     turnPage.style.filter =
-        `drop-shadow(${12 * curl}px ${18 * curl}px ${25 * curl}px rgba(0,0,0,.30))`;
-
+        `drop-shadow(
+            5px 8px 18px
+            rgba(0,0,0,${shadow})
+        )`;
 }
 
 
-/* SAYFAYI AC */
-
-function openPage(){
-
-    animateTo(1);
-}
-
-
-/* SAYFAYI KAPAT */
-
-function closePage(){
-
-    animateTo(0);
-}
-
-
-/* ANIMASYON */
+/* =========================
+   ANIMASYON
+========================= */
 
 function animateTo(target){
 
-    const from = progress;
+    const from =
+        progress;
 
-    const duration = 650;
+    const duration =
+        700;
 
-    const start = performance.now();
+    const start =
+        performance.now();
+
 
     function frame(now){
 
-        const elapsed = now - start;
+        const elapsed =
+            now - start;
 
-        const t = clamp(elapsed / duration,0,1);
+        let t =
+            elapsed / duration;
+
+
+        if(t > 1){
+            t = 1;
+        }
+
 
         /*
-            YUMUSAK HAREKET
+            Yumusak baslangic
+            ve bitis.
         */
 
         const eased =
-            1 - Math.pow(1 - t,3);
+            t < .5
+            ? 2 * t * t
+            : 1 - Math.pow(-2 * t + 2,2) / 2;
+
 
         progress =
-            from + (target - from) * eased;
+            from +
+            (target - from) *
+            eased;
+
 
         render();
+
 
         if(t < 1){
 
@@ -519,139 +591,197 @@ function animateTo(target){
 
         }else{
 
-            progress = target;
+            progress =
+                target;
 
             render();
         }
     }
 
+
     requestAnimationFrame(frame);
 }
 
 
-/* FARE BASLANGICI */
+/* =========================
+   FARE / PARMAK BASLANGICI
+========================= */
 
-turnPage.addEventListener("pointerdown",(e)=>{
+turnPage.addEventListener(
+    "pointerdown",
+    function(e){
 
-    dragging = true;
+        dragging = true;
 
-    startX = e.clientX;
+        startX =
+            e.clientX;
 
-    startProgress = progress;
+        startProgress =
+            progress;
 
-    turnPage.classList.add("dragging");
+        turnPage.classList.add(
+            "dragging"
+        );
 
-    turnPage.setPointerCapture(e.pointerId);
-
-});
-
-
-/* FARE HAREKETI */
-
-turnPage.addEventListener("pointermove",(e)=>{
-
-    if(!dragging) return;
-
-    const rect = book.getBoundingClientRect();
-
-    const halfWidth = rect.width / 2;
-
-    /*
-        SAGDAN SOLA = POZITIF
-    */
-
-    const distance =
-        startX - e.clientX;
-
-    const change =
-        distance / halfWidth;
-
-    progress =
-        clamp(startProgress + change,0,1);
-
-    render();
-
-});
+        turnPage.setPointerCapture(
+            e.pointerId
+        );
+    }
+);
 
 
-/* FARE BIRAK */
+/* =========================
+   SURUKLEME
+========================= */
 
-turnPage.addEventListener("pointerup",(e)=>{
+turnPage.addEventListener(
+    "pointermove",
+    function(e){
 
-    if(!dragging) return;
+        if(!dragging){
+            return;
+        }
 
-    dragging = false;
 
-    turnPage.classList.remove("dragging");
+        const rect =
+            book.getBoundingClientRect();
 
-    /*
-        YARIDAN FAZLA GECTIYSE
-        SOLA DUS
-    */
 
-    if(progress > .5){
+        const halfWidth =
+            rect.width / 2;
+
+
+        /*
+            Fare sola gittikce
+            progress artiyor.
+        */
+
+        const distance =
+            startX - e.clientX;
+
+
+        const change =
+            distance / halfWidth;
+
+
+        progress =
+            Math.max(
+                0,
+                Math.min(
+                    1,
+                    startProgress + change
+                )
+            );
+
+
+        render();
+    }
+);
+
+
+/* =========================
+   BIRAKMA
+========================= */
+
+turnPage.addEventListener(
+    "pointerup",
+    function(e){
+
+        if(!dragging){
+            return;
+        }
+
+
+        dragging = false;
+
+        turnPage.classList.remove(
+            "dragging"
+        );
+
+
+        if(progress >= .5){
+
+            animateTo(1);
+
+        }else{
+
+            animateTo(0);
+        }
+    }
+);
+
+
+/* =========================
+   IPTAL
+========================= */
+
+turnPage.addEventListener(
+    "pointercancel",
+    function(){
+
+        dragging = false;
+
+        turnPage.classList.remove(
+            "dragging"
+        );
+
+
+        animateTo(
+            progress >= .5
+            ? 1
+            : 0
+        );
+    }
+);
+
+
+/* =========================
+   BUTONLAR
+========================= */
+
+nextBtn.addEventListener(
+    "click",
+    function(){
 
         animateTo(1);
+    }
+);
 
-    }else{
+
+prevBtn.addEventListener(
+    "click",
+    function(){
 
         animateTo(0);
-
     }
-
-});
-
-
-/* FARE IPTAL */
-
-turnPage.addEventListener("pointercancel",()=>{
-
-    dragging = false;
-
-    turnPage.classList.remove("dragging");
-
-    animateTo(
-        progress > .5 ? 1 : 0
-    );
-
-});
+);
 
 
-/* BUTONLAR */
+/* =========================
+   KLAVYE
+========================= */
 
-nextBtn.addEventListener("click",()=>{
+document.addEventListener(
+    "keydown",
+    function(e){
 
-    openPage();
+        if(e.key === "ArrowLeft"){
 
-});
-
-prevBtn.addEventListener("click",()=>{
-
-    closePage();
-
-});
+            animateTo(1);
+        }
 
 
-/* KLAVYE */
+        if(e.key === "ArrowRight"){
 
-document.addEventListener("keydown",(e)=>{
-
-    if(e.key === "ArrowLeft"){
-
-        openPage();
-
+            animateTo(0);
+        }
     }
-
-    if(e.key === "ArrowRight"){
-
-        closePage();
-
-    }
-
-});
+);
 
 
-/* ILK DURUM */
+/* =========================
+   ILK DURUM
+========================= */
 
 render();
 
