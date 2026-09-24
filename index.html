@@ -75,23 +75,24 @@ body{
     aspect-ratio:.70;
 
     border-radius:
-        8px
-        16px
-        16px
-        8px;
+        7px
+        15px
+        15px
+        7px;
 
     background:
         linear-gradient(
             135deg,
-            #52311c,
-            #86552f 45%,
-            #3b2415
+            #432716 0%,
+            #704528 38%,
+            #8b5a32 52%,
+            #4a2b19 100%
         );
 
     box-shadow:
-        20px 25px 45px rgba(0,0,0,.55),
-        inset 8px 0 15px rgba(255,255,255,.08),
-        inset -10px 0 20px rgba(0,0,0,.25);
+        22px 28px 50px rgba(0,0,0,.62),
+        inset 7px 0 14px rgba(255,255,255,.08),
+        inset -12px 0 22px rgba(0,0,0,.30);
 
     display:flex;
     align-items:center;
@@ -106,68 +107,126 @@ body{
 
 
 /* =====================================================
+   KAPAK DIS CERCEVE
+===================================================== */
+
+.cover::before{
+    content:"";
+
+    position:absolute;
+
+    inset:18px;
+
+    border:
+        1px solid rgba(232,211,167,.35);
+
+    border-radius:4px;
+
+    pointer-events:none;
+}
+
+
+/* =====================================================
    KAPAK PENCERESI
 ===================================================== */
 
 .cover-window{
     position:absolute;
 
-    left:12%;
-    right:12%;
-    top:10%;
-    bottom:10%;
+    left:14%;
+    right:14%;
+    top:12%;
+    bottom:17%;
+
+    overflow:hidden;
 
     border:
-        2px solid rgba(232,211,167,.45);
+        5px solid #392116;
 
-    border-radius:4px;
+    border-radius:3px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #b96750 0%,
+            #e6a16e 38%,
+            #d8bd8b 50%,
+            #537481 51%,
+            #23495a 100%
+        );
 
     box-shadow:
-        inset 0 0 0 7px rgba(55,31,17,.45),
-        inset 0 0 30px rgba(0,0,0,.28),
-        0 0 12px rgba(0,0,0,.18);
+        inset 0 0 0 2px rgba(232,211,167,.55),
+        inset 0 0 25px rgba(0,0,0,.40),
+        0 4px 12px rgba(0,0,0,.38);
 
     pointer-events:none;
 }
 
 
-/* PENCERE IC CERCEVE */
+/* GUNES */
+
+.cover-window span{
+    position:absolute;
+
+    width:23%;
+    aspect-ratio:1;
+
+    left:53%;
+    top:37%;
+
+    transform:translate(-50%,-50%);
+
+    border-radius:50%;
+
+    background:#ffe1a0;
+
+    box-shadow:
+        0 0 25px rgba(255,225,160,.75);
+}
+
+
+/* PENCERE DIKEY CERCEVE */
 
 .cover-window::before{
     content:"";
 
     position:absolute;
 
-    left:50%;
     top:0;
     bottom:0;
+    left:50%;
 
-    width:2px;
+    width:3px;
 
     transform:translateX(-50%);
 
     background:
-        rgba(232,211,167,.35);
+        rgba(50,27,17,.78);
+
+    z-index:2;
 }
 
 
-/* YATAY PENCERE CERCEVESI */
+/* PENCERE YATAY CERCEVE */
 
 .cover-window::after{
     content:"";
 
     position:absolute;
 
-    top:50%;
     left:0;
     right:0;
+    top:50%;
 
-    height:2px;
+    height:3px;
 
     transform:translateY(-50%);
 
     background:
-        rgba(232,211,167,.35);
+        rgba(50,27,17,.78);
+
+    z-index:2;
 }
 
 
@@ -176,11 +235,15 @@ body{
 ===================================================== */
 
 .cover-content{
-    position:relative;
+    position:absolute;
 
-    z-index:2;
+    left:0;
+    right:0;
+    bottom:7%;
 
-    padding:25px;
+    z-index:5;
+
+    padding:0 25px;
 }
 
 .cover h1{
@@ -194,17 +257,17 @@ body{
     font-weight:normal;
 
     text-shadow:
-        0 2px 4px rgba(0,0,0,.35);
+        0 2px 4px rgba(0,0,0,.45);
 }
 
 .cover p{
-    margin-top:20px;
+    margin-top:16px;
 
     font-size:16px;
 
-    opacity:.8;
+    line-height:1.5;
 
-    line-height:1.6;
+    opacity:.82;
 }
 
 
@@ -216,25 +279,21 @@ body{
     position:relative;
 
     /*
-       KAPAK ORANI = 0.70
-
-       SOL SAYFA  = 0.70
-       SAG SAYFA  = 0.70
-
-       ACIK KITAP  = 1.40
+       HER SAYFA = 0.70
+       ACIK KITAP = 1.40
     */
 
     width:min(
-        92vw,
-        calc(72vh * 1.40),
-        1100px
+        94vw,
+        calc(84vh * 1.40),
+        1350px
     );
 
     aspect-ratio:1.40;
 
     height:auto;
 
-    perspective:2200px;
+    perspective:3200px;
 
     transform-style:preserve-3d;
 }
@@ -256,10 +315,10 @@ body{
     overflow:hidden;
 
     border-radius:
-        24px
+        28px
         5px
         5px
-        24px;
+        28px;
 
     background:
         radial-gradient(
@@ -270,19 +329,21 @@ body{
         );
 
     box-shadow:
-        -12px 15px 30px rgba(0,0,0,.35),
-        inset -18px 0 25px rgba(0,0,0,.12);
+        -14px 18px 35px rgba(0,0,0,.38),
+        inset -20px 0 28px rgba(0,0,0,.13);
 
     transform-origin:right center;
 
     transform:
-        rotateY(5deg)
-        translateZ(-8px);
+        rotateY(4deg)
+        translateZ(-5px);
+
+    z-index:10;
 }
 
 
 /* =====================================================
-   SOL SAYFA GORSEL ALANI
+   GUN BATIMI
 ===================================================== */
 
 .sunset{
@@ -354,8 +415,8 @@ body{
 
     border-radius:
         5px
-        24px
-        24px
+        28px
+        28px
         5px;
 
     background:
@@ -367,14 +428,16 @@ body{
         );
 
     box-shadow:
-        12px 15px 30px rgba(0,0,0,.35),
-        inset 18px 0 25px rgba(0,0,0,.12);
+        14px 18px 35px rgba(0,0,0,.38),
+        inset 20px 0 28px rgba(0,0,0,.13);
 
     transform-origin:left center;
 
     transform:
-        rotateY(-5deg)
-        translateZ(-8px);
+        rotateY(-4deg)
+        translateZ(-5px);
+
+    z-index:10;
 }
 
 
@@ -387,20 +450,20 @@ body{
     inset:0;
 
     padding:
-        clamp(25px,4vw,55px)
-        clamp(25px,5vw,65px);
+        clamp(30px,4vw,65px)
+        clamp(30px,4.5vw,75px);
 
     color:#463522;
 }
 
 .contents h2{
     margin:
-        0 0 28px;
+        0 0 30px;
 
     text-align:center;
 
     font-size:
-        clamp(24px,3vw,38px);
+        clamp(26px,3vw,40px);
 
     font-weight:normal;
 
@@ -409,10 +472,11 @@ body{
 
 .contents ol{
     margin:0;
+
     padding-left:30px;
 
     font-size:
-        clamp(16px,2vw,22px);
+        clamp(17px,1.8vw,23px);
 
     line-height:1.8;
 }
@@ -433,29 +497,29 @@ body{
     left:50%;
     top:0;
 
-    width:18px;
+    width:20px;
     height:100%;
 
     transform:
         translateX(-50%)
-        translateZ(15px);
+        translateZ(18px);
 
-    z-index:60;
+    z-index:80;
 
     pointer-events:none;
 
     background:
         linear-gradient(
             to right,
-            rgba(0,0,0,.42),
-            rgba(255,255,255,.18),
-            rgba(0,0,0,.42)
+            rgba(0,0,0,.48),
+            rgba(255,255,255,.20),
+            rgba(0,0,0,.48)
         );
 
     border-radius:50%;
 
     box-shadow:
-        0 0 12px rgba(0,0,0,.25);
+        0 0 14px rgba(0,0,0,.28);
 }
 
 
@@ -472,7 +536,7 @@ body{
     width:50%;
     height:100%;
 
-    z-index:50;
+    z-index:100;
 
     transform-style:preserve-3d;
 
@@ -484,6 +548,13 @@ body{
     touch-action:none;
 
     will-change:transform;
+
+    /*
+       Sayfa kesinlikle
+       cildin icinden gecmez.
+    */
+
+    isolation:isolate;
 }
 
 .turn-page.dragging{
@@ -507,8 +578,8 @@ body{
 
     border-radius:
         5px
-        24px
-        24px
+        28px
+        28px
         5px;
 
     background:
@@ -522,6 +593,8 @@ body{
     box-shadow:
         8px 12px 25px rgba(0,0,0,.25),
         inset 15px 0 22px rgba(0,0,0,.08);
+
+    z-index:2;
 }
 
 
@@ -539,13 +612,20 @@ body{
     backface-visibility:hidden;
     -webkit-backface-visibility:hidden;
 
-    transform:rotateY(180deg);
+    transform:
+        rotateY(180deg);
 
     border-radius:
-        24px
+        28px
         5px
         5px
-        24px;
+        28px;
+
+    /*
+       ONEMLI:
+       Arka yuz artik tamamen opak.
+       Alttaki gun batimi gorunmez.
+    */
 
     background:
         radial-gradient(
@@ -558,11 +638,13 @@ body{
     box-shadow:
         -8px 12px 25px rgba(0,0,0,.25),
         inset -15px 0 22px rgba(0,0,0,.08);
+
+    z-index:3;
 }
 
 
 /* =====================================================
-   SAYFA KIVRIM GOLGESI
+   SAYFA KIVRIM
 ===================================================== */
 
 .turn-page::after{
@@ -573,7 +655,7 @@ body{
     top:0;
     right:-1px;
 
-    width:30px;
+    width:32px;
     height:100%;
 
     pointer-events:none;
@@ -589,6 +671,8 @@ body{
     filter:blur(4px);
 
     opacity:.75;
+
+    z-index:10;
 }
 
 
@@ -628,15 +712,16 @@ body{
 .controls{
     position:fixed;
 
-    bottom:25px;
+    bottom:20px;
     left:50%;
 
     transform:translateX(-50%);
 
     display:flex;
+
     gap:10px;
 
-    z-index:100;
+    z-index:200;
 }
 
 button{
@@ -672,6 +757,10 @@ button:hover{
         height:auto;
     }
 
+    .cover{
+        width:min(82vw,420px);
+    }
+
     .contents{
         padding:
             25px 20px;
@@ -693,6 +782,23 @@ button:hover{
 
 }
 
+
+/* =====================================================
+   BUYUK PC EKRANLARI
+===================================================== */
+
+@media(min-width:1400px){
+
+    .book{
+        width:min(
+            94vw,
+            calc(86vh * 1.40),
+            1450px
+        );
+    }
+
+}
+
 </style>
 </head>
 
@@ -708,7 +814,11 @@ button:hover{
 
     <div class="cover">
 
-        <div class="cover-window"></div>
+        <div class="cover-window">
+
+            <span></span>
+
+        </div>
 
         <div class="cover-content">
 
@@ -874,6 +984,19 @@ function render(){
         -180 * progress;
 
 
+    /*
+       Onceki kodda rotateX
+       ve rotateZ sayfayi
+       fazla egiyordu.
+
+       Bu da sayfanin
+       iceri cekiliyormus gibi
+       gorunmesine neden oluyordu.
+
+       Simdi sadece cok hafif
+       fiziksel egim kullaniyoruz.
+    */
+
     const curve =
         Math.sin(
             progress * Math.PI
@@ -881,11 +1004,11 @@ function render(){
 
 
     const rotateX =
-        curve * 1.8;
+        curve * 0.45;
 
 
     const rotateZ =
-        curve * 0.8;
+        curve * 0.20;
 
 
     turnPage.style.transform =
@@ -896,15 +1019,19 @@ function render(){
         `;
 
 
+    /*
+       GOLGE
+    */
+
     const shadow =
-        .10 +
-        curve * .18;
+        .08 +
+        curve * .14;
 
 
     turnPage.style.filter =
         `
         drop-shadow(
-            4px 7px 16px
+            3px 6px 14px
             rgba(0,0,0,${shadow})
         )
         `;
@@ -1016,14 +1143,10 @@ turnPage.addEventListener(
         }
 
 
-        const book =
-            document.getElementById(
-                "book"
-            );
-
-
         const rect =
-            book.getBoundingClientRect();
+            document
+            .getElementById("book")
+            .getBoundingClientRect();
 
 
         const halfWidth =
