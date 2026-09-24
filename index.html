@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -71,6 +72,192 @@ body::before {
 
     z-index:
         0;
+}
+
+
+/* =====================================================
+   UST KONTROLLER
+   ===================================================== */
+
+#topControls {
+
+    position:
+        fixed;
+
+    top:
+        22px;
+
+    left:
+        22px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    z-index:
+        100;
+
+    pointer-events:
+        auto;
+}
+
+
+.controlButton {
+
+    width:
+        42px;
+
+    height:
+        42px;
+
+    border:
+        1px solid rgba(255,255,255,.22);
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(30,22,17,.48);
+
+    color:
+        rgba(245,232,204,.88);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        17px;
+
+    cursor:
+        pointer;
+
+    backdrop-filter:
+        blur(5px);
+
+    -webkit-backdrop-filter:
+        blur(5px);
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.22);
+
+    transition:
+        opacity .25s ease,
+        background .25s ease,
+        transform .25s ease;
+}
+
+.controlButton:hover {
+
+    background:
+        rgba(45,33,25,.72);
+
+    transform:
+        translateY(-1px);
+}
+
+
+.controlButton.disabled {
+
+    opacity:
+        .48;
+
+    cursor:
+        default;
+}
+
+.controlButton.disabled:hover {
+
+    transform:
+        none;
+
+    background:
+        rgba(30,22,17,.48);
+}
+
+
+/* =====================================================
+   ALT EKOLAYZIR
+   ===================================================== */
+
+#equalizer {
+
+    position:
+        fixed;
+
+    left:
+        50%;
+
+    bottom:
+        22px;
+
+    transform:
+        translateX(-50%);
+
+    width:
+        120px;
+
+    height:
+        34px;
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        center;
+
+    gap:
+        4px;
+
+    z-index:
+        100;
+
+    pointer-events:
+        none;
+
+    opacity:
+        .72;
+}
+
+
+.equalizer-bar {
+
+    width:
+        4px;
+
+    height:
+        8px;
+
+    min-height:
+        4px;
+
+    border-radius:
+        4px;
+
+    background:
+        rgba(225,204,165,.72);
+
+    box-shadow:
+        0 0 5px rgba(225,204,165,.18);
+
+    transform-origin:
+        bottom center;
+
+    transition:
+        height .08s linear;
 }
 
 
@@ -262,27 +449,40 @@ body.cover-open #openBook {
 
 .page {
 
-    position: absolute;
+    position:
+        absolute;
 
-    top: 0;
-    bottom: 0;
+    top:
+        0;
 
-    width: 50%;
-    height: 100%;
+    bottom:
+        0;
 
-    overflow: hidden;
+    width:
+        50%;
 
-    transform-style: preserve-3d;
+    height:
+        100%;
+
+    overflow:
+        hidden;
+
+    transform-style:
+        preserve-3d;
 
     box-shadow:
         0 18px 35px rgba(0,0,0,.28);
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
-    will-change: transform;
+    will-change:
+        transform;
 
-    pointer-events: auto;
+    pointer-events:
+        auto;
 }
+
 
 /* =====================================================
    SAYFA YUZLERI
@@ -352,14 +552,20 @@ body.cover-open #openBook {
 
 .page.left {
 
-    left: 0;
+    left:
+        0;
 
-    top: 1;
-    bottom: 0;
-    height: 95%;
+    top:
+        1px;
+
+    bottom:
+        0;
+
+    height:
+        95%;
 
     border-radius:
-        16px 16px 16px 16px;
+        16px;
 
     transform-origin:
         100% 50%;
@@ -373,6 +579,7 @@ body.cover-open #openBook {
     margin-right:
         1px;
 }
+
 
 /* =====================================================
    SOL SAYFA YUZLERI
@@ -389,7 +596,7 @@ body.cover-open #openBook {
         );
 
     border-radius:
-        16px 16px 16px 16px;
+        16px;
 }
 
 
@@ -411,14 +618,20 @@ body.cover-open .page.left {
 
 .page.right {
 
-    right: 0;
+    right:
+        0;
 
-    top: 0;
-    bottom: 0;
-    height: 100%;
+    top:
+        0;
+
+    bottom:
+        0;
+
+    height:
+        100%;
 
     border-radius:
-        16px 16px 16px 16px;
+        16px;
 
     transform-origin:
         0% 50%;
@@ -432,6 +645,7 @@ body.cover-open .page.left {
     margin-left:
         1px;
 }
+
 
 /* =====================================================
    SAG SAYFA YUZLERI
@@ -448,7 +662,7 @@ body.cover-open .page.left {
         );
 
     border-radius:
-        16px 16px 16px 16px;
+        16px;
 }
 
 
@@ -519,8 +733,7 @@ body.cover-open .page.left {
         );
 
     box-shadow:
-        0 0 18px
-        rgba(50,30,15,.22);
+        0 0 18px rgba(50,30,15,.22);
 
     z-index:
         20;
@@ -905,6 +1118,56 @@ body.cover-open #closedBook {
             1006 / 709;
     }
 
+    #topControls {
+
+        top:
+            14px;
+
+        left:
+            14px;
+
+        gap:
+            7px;
+    }
+
+    .controlButton {
+
+        width:
+            38px;
+
+        height:
+            38px;
+
+        font-size:
+            15px;
+    }
+
+    #equalizer {
+
+        bottom:
+            14px;
+
+        width:
+            100px;
+
+        height:
+            28px;
+    }
+
+}
+
+
+/* =====================================================
+   TAM EKRAN
+   ===================================================== */
+
+body.fullscreen-mode #topControls {
+
+    top:
+        18px;
+
+    left:
+        18px;
 }
 
 </style>
@@ -912,6 +1175,63 @@ body.cover-open #closedBook {
 
 
 <body>
+
+
+<!-- =====================================================
+     UST KONTROLLER
+     ===================================================== -->
+
+<div id="topControls">
+
+    <button
+        id="listenButton"
+        class="controlButton disabled"
+        type="button"
+        title="Sesli Dinle"
+        aria-label="Sesli Dinle"
+    >
+        ♫
+    </button>
+
+    <button
+        id="fullscreenButton"
+        class="controlButton"
+        type="button"
+        title="Tam Ekran"
+        aria-label="Tam Ekran"
+    >
+        ⛶
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     ALT EKOLAYZIR
+     ===================================================== -->
+
+<div
+    id="equalizer"
+    aria-hidden="true"
+>
+
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+    <span class="equalizer-bar"></span>
+
+</div>
 
 
 <!-- =====================================================
@@ -1220,7 +1540,201 @@ function turnLeftPage() {
 
 }
 
+
+/* =====================================================
+   TAM EKRAN
+   ===================================================== */
+
+const fullscreenButton =
+    document.getElementById(
+        "fullscreenButton"
+    );
+
+
+if (fullscreenButton) {
+
+    fullscreenButton.addEventListener(
+        "click",
+        function(event) {
+
+            event.stopPropagation();
+
+            if (!document.fullscreenElement) {
+
+                document.documentElement
+                    .requestFullscreen()
+                    .then(function() {
+
+                        document.body.classList.add(
+                            "fullscreen-mode"
+                        );
+
+                    })
+                    .catch(function() {});
+
+            } else {
+
+                document.exitFullscreen();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   TAM EKRAN DURUMU
+   ===================================================== */
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        if (document.fullscreenElement) {
+
+            document.body.classList.add(
+                "fullscreen-mode"
+            );
+
+        } else {
+
+            document.body.classList.remove(
+                "fullscreen-mode"
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   EKOLAYZIR
+   ===================================================== */
+
+const equalizerBars =
+    document.querySelectorAll(
+        ".equalizer-bar"
+    );
+
+
+/*
+   Su anda ses kaynagi bagli degil.
+
+   Ileride siir sesi bir audio elementine
+   baglandiginda AudioContext + AnalyserNode
+   kullanilarak bu fonksiyona gerçek ses verisi
+   aktarilabilir.
+*/
+
+
+function updateEqualizer(level) {
+
+    const safeLevel =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                level
+            )
+        );
+
+
+    equalizerBars.forEach(
+        function(bar, index) {
+
+            const center =
+                Math.abs(
+                    index -
+                    (equalizerBars.length - 1) / 2
+                );
+
+            const shape =
+                1 -
+                center /
+                ((equalizerBars.length - 1) / 2);
+
+            const variation =
+                0.75 +
+                Math.random() * 0.25;
+
+            const height =
+                5 +
+                (
+                    safeLevel *
+                    shape *
+                    27 *
+                    variation
+                );
+
+            bar.style.height =
+                height + "px";
+
+        }
+    );
+
+}
+
+
+/*
+   Simdilik cok hafif bekleme hareketi.
+
+   Gercek ses baglandiginda bu kisim
+   AudioAnalyser verisiyle degistirilecek.
+*/
+
+let idleTime = 0;
+
+function idleEqualizer() {
+
+    idleTime += 0.045;
+
+    const level =
+        0.12 +
+        (
+            Math.sin(idleTime) *
+            0.04
+        );
+
+    updateEqualizer(
+        level
+    );
+
+}
+
+
+setInterval(
+    idleEqualizer,
+    80
+);
+
+
+/* =====================================================
+   SESLI DINLE BUTONU
+   ===================================================== */
+
+/*
+   Bu buton su anda bilerek pasiftir.
+
+   Siirlerin ses kayitlari hazirlandiginda
+   burada audio oynatma sistemi devreye alinacak.
+
+   Ornegin ileride:
+
+   listenButton.disabled = false;
+
+   seklinde aktif hale getirilebilir.
+*/
+
+const listenButton =
+    document.getElementById(
+        "listenButton"
+    );
+
 </script>
 
 </body>
 </html>
+```
