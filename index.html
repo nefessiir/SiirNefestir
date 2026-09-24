@@ -21,33 +21,33 @@ body{
 }
 
 body{
-    background:#171717;
-    font-family:Georgia,serif;
+    background:#17120e;
     display:flex;
     align-items:center;
     justify-content:center;
+    font-family:Georgia,serif;
 }
 
-/* =========================
+
+/* =====================================================
    KAPALI KITAP
-========================= */
+===================================================== */
 
 .closed-book{
     position:fixed;
     inset:0;
+    z-index:100;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    z-index:100;
-
     background:
         radial-gradient(
             ellipse at center,
-            #46301f 0%,
-            #24180f 65%,
-            #120c08 100%
+            #4b3322 0%,
+            #25180e 65%,
+            #100a06 100%
         );
 
     cursor:pointer;
@@ -69,14 +69,18 @@ body{
     width:min(72vw,520px);
     aspect-ratio:.70;
 
-    border-radius:8px 16px 16px 8px;
+    border-radius:
+        8px
+        16px
+        16px
+        8px;
 
     background:
         linear-gradient(
             135deg,
-            #57351e,
-            #8b5a32 45%,
-            #422717
+            #52311c,
+            #86552f 45%,
+            #3b2415
         );
 
     box-shadow:
@@ -96,41 +100,39 @@ body{
 .cover h1{
     margin:0;
 
-    font-size:clamp(28px,5vw,52px);
+    font-size:
+        clamp(28px,5vw,52px);
 
     letter-spacing:4px;
-
     font-weight:normal;
 }
 
 .cover p{
     margin-top:20px;
-
     font-size:16px;
-
     opacity:.8;
 }
 
 
-/* =========================
+/* =====================================================
    KITAP
-========================= */
+===================================================== */
 
 .book{
     position:relative;
 
-    width:min(94vw,1200px);
+    width:min(92vw,1100px);
     height:min(72vh,700px);
 
-    perspective:1800px;
+    perspective:2200px;
 
     transform-style:preserve-3d;
 }
 
 
-/* =========================
-   SOL SAYFA
-========================= */
+/* =====================================================
+   SOL SABIT SAYFA
+===================================================== */
 
 .page-left{
     position:absolute;
@@ -143,46 +145,49 @@ body{
 
     overflow:hidden;
 
-    border-radius:22px 4px 4px 22px;
+    border-radius:
+        24px
+        5px
+        5px
+        24px;
 
     background:
         radial-gradient(
-            ellipse at 35% 40%,
-            #fff8df 0%,
-            #ead6aa 70%,
-            #c5a473 100%
+            ellipse at 40% 40%,
+            #fff7dc 0%,
+            #ead5a7 70%,
+            #c4a16d 100%
         );
 
     box-shadow:
-        -10px 12px 28px rgba(0,0,0,.35),
-        inset -18px 0 25px rgba(0,0,0,.10);
+        -12px 15px 30px rgba(0,0,0,.35),
+        inset -18px 0 25px rgba(0,0,0,.12);
 
     transform-origin:right center;
 
     transform:
-        rotateY(4deg)
-        translateZ(-5px);
+        rotateY(5deg)
+        translateZ(-8px);
 }
 
 
-/* =========================
-   GUN BATIMI / DENIZ
-========================= */
+/* =====================================================
+   SOL SAYFA GORSEL ALANI
+===================================================== */
 
 .sunset{
     position:absolute;
-
     inset:0;
 
     background:
         linear-gradient(
             to bottom,
-            #e99567 0%,
-            #efb47b 34%,
-            #e6c48e 49%,
-            #7895a1 50%,
-            #466f80 72%,
-            #1e4657 100%
+            #d98662 0%,
+            #edb27e 35%,
+            #e6c48d 49%,
+            #78929b 50%,
+            #456c7b 72%,
+            #1c4454 100%
         );
 }
 
@@ -191,20 +196,20 @@ body{
 
     position:absolute;
 
-    width:90px;
-    height:90px;
-
-    border-radius:50%;
+    width:88px;
+    height:88px;
 
     left:52%;
     top:39%;
 
     transform:translate(-50%,-50%);
 
-    background:#ffe3a1;
+    border-radius:50%;
+
+    background:#ffe2a0;
 
     box-shadow:
-        0 0 35px rgba(255,226,160,.75);
+        0 0 35px rgba(255,225,160,.75);
 }
 
 .sunset::after{
@@ -219,15 +224,12 @@ body{
     height:2px;
 
     background:rgba(255,240,190,.7);
-
-    box-shadow:
-        0 30px 15px rgba(255,225,160,.12);
 }
 
 
-/* =========================
-   SAG SAYFA
-========================= */
+/* =====================================================
+   SAG SABIT SAYFA
+===================================================== */
 
 .page-right{
     position:absolute;
@@ -240,35 +242,38 @@ body{
 
     overflow:hidden;
 
-    border-radius:4px 22px 22px 4px;
+    border-radius:
+        5px
+        24px
+        24px
+        5px;
 
     background:
         radial-gradient(
-            ellipse at 65% 40%,
+            ellipse at 60% 40%,
             #fff9e5 0%,
             #ead8ae 72%,
             #c6a575 100%
         );
 
     box-shadow:
-        10px 12px 28px rgba(0,0,0,.35),
-        inset 18px 0 25px rgba(0,0,0,.10);
+        12px 15px 30px rgba(0,0,0,.35),
+        inset 18px 0 25px rgba(0,0,0,.12);
 
     transform-origin:left center;
 
     transform:
-        rotateY(-4deg)
-        translateZ(-5px);
+        rotateY(-5deg)
+        translateZ(-8px);
 }
 
 
-/* =========================
-   SAG SAYFA ICERIK
-========================= */
+/* =====================================================
+   ICINDEKILER
+===================================================== */
 
 .contents{
     position:absolute;
-
     inset:0;
 
     padding:
@@ -280,9 +285,7 @@ body{
 
 .contents h2{
     margin:
-        0
-        0
-        30px;
+        0 0 28px;
 
     text-align:center;
 
@@ -305,13 +308,14 @@ body{
 }
 
 .contents li{
-    border-bottom:1px solid rgba(80,55,30,.18);
+    border-bottom:
+        1px solid rgba(80,55,30,.18);
 }
 
 
-/* =========================
+/* =====================================================
    CILT
-========================= */
+===================================================== */
 
 .binding{
     position:absolute;
@@ -319,23 +323,23 @@ body{
     left:50%;
     top:0;
 
-    width:20px;
+    width:18px;
     height:100%;
 
     transform:
         translateX(-50%)
-        translateZ(10px);
+        translateZ(15px);
 
-    z-index:50;
+    z-index:60;
 
     pointer-events:none;
 
     background:
         linear-gradient(
             to right,
-            rgba(0,0,0,.45),
-            rgba(255,255,255,.20),
-            rgba(0,0,0,.40)
+            rgba(0,0,0,.42),
+            rgba(255,255,255,.18),
+            rgba(0,0,0,.42)
         );
 
     border-radius:50%;
@@ -345,9 +349,9 @@ body{
 }
 
 
-/* =========================
+/* =====================================================
    CEVRILEN SAYFA
-========================= */
+===================================================== */
 
 .turn-page{
     position:absolute;
@@ -358,11 +362,19 @@ body{
     width:50%;
     height:100%;
 
-    z-index:40;
+    z-index:50;
 
     transform-style:preserve-3d;
 
-    transform-origin:left center;
+    /*
+       COK ONEMLI:
+
+       Sayfanin SOL kenari
+       tam olarak ciltte.
+    */
+
+    transform-origin:
+        left center;
 
     cursor:grab;
 
@@ -376,18 +388,14 @@ body{
 }
 
 
-/* =========================
-   SAYFA ON
-========================= */
+/* =====================================================
+   CEVRILEN SAYFA ON
+===================================================== */
 
 .page-front{
     position:absolute;
 
-    left:0;
-    top:0;
-
-    width:100%;
-    height:100%;
+    inset:0;
 
     overflow:hidden;
 
@@ -395,37 +403,33 @@ body{
     -webkit-backface-visibility:hidden;
 
     border-radius:
-        3px
-        22px
-        22px
-        3px;
+        5px
+        24px
+        24px
+        5px;
 
     background:
         radial-gradient(
-            ellipse at 65% 40%,
+            ellipse at 60% 40%,
             #fff9e5 0%,
             #ead8ae 72%,
             #c6a575 100%
         );
 
     box-shadow:
-        8px 10px 25px rgba(0,0,0,.25),
+        8px 12px 25px rgba(0,0,0,.25),
         inset 15px 0 22px rgba(0,0,0,.08);
 }
 
 
-/* =========================
-   SAYFA ARKA
-========================= */
+/* =====================================================
+   CEVRILEN SAYFA ARKA
+===================================================== */
 
 .page-back{
     position:absolute;
 
-    left:0;
-    top:0;
-
-    width:100%;
-    height:100%;
+    inset:0;
 
     overflow:hidden;
 
@@ -435,76 +439,38 @@ body{
     transform:rotateY(180deg);
 
     border-radius:
-        22px
-        3px
-        3px
-        22px;
+        24px
+        5px
+        5px
+        24px;
 
     background:
         radial-gradient(
-            ellipse at 35% 40%,
-            #fff6da 0%,
-            #e6d0a0 72%,
-            #bea06d 100%
+            ellipse at 40% 40%,
+            #fff5d9 0%,
+            #e5d0a0 72%,
+            #bd9c69 100%
         );
 
     box-shadow:
-        -8px 10px 25px rgba(0,0,0,.25),
+        -8px 12px 25px rgba(0,0,0,.25),
         inset -15px 0 22px rgba(0,0,0,.08);
 }
 
 
-/* =========================
-   SAYFA YAZISI
-========================= */
-
-.page-front::before{
-    content:"Şiir Nefestir";
-
-    position:absolute;
-
-    left:50%;
-    top:50%;
-
-    transform:translate(-50%,-50%);
-
-    font-size:
-        clamp(22px,3vw,38px);
-
-    color:#735c3e;
-
-    white-space:nowrap;
-}
-
-.page-back::before{
-    content:"Şiir";
-
-    position:absolute;
-
-    left:50%;
-    top:50%;
-
-    transform:translate(-50%,-50%);
-
-    font-size:32px;
-
-    color:#735c3e;
-}
-
-
-/* =========================
-   SAYFA GOLGESI
-========================= */
+/* =====================================================
+   SAYFA KIVRIM GOLGESI
+===================================================== */
 
 .turn-page::after{
     content:"";
 
     position:absolute;
 
-    right:-2px;
     top:0;
+    right:-1px;
 
-    width:28px;
+    width:30px;
     height:100%;
 
     pointer-events:none;
@@ -512,20 +478,20 @@ body{
     background:
         linear-gradient(
             to left,
-            rgba(0,0,0,.22),
-            rgba(0,0,0,.08),
+            rgba(0,0,0,.20),
+            rgba(0,0,0,.07),
             transparent
         );
 
     filter:blur(4px);
 
-    opacity:.8;
+    opacity:.75;
 }
 
 
-/* =========================
-   ALT KOSE
-========================= */
+/* =====================================================
+   ALT SAG KOSENIN ISARETI
+===================================================== */
 
 .corner{
     position:absolute;
@@ -533,12 +499,13 @@ body{
     right:8px;
     bottom:8px;
 
-    width:70px;
-    height:70px;
+    width:65px;
+    height:65px;
 
     pointer-events:none;
 
-    border-radius:0 0 20px 0;
+    border-radius:
+        0 0 20px 0;
 
     background:
         linear-gradient(
@@ -551,9 +518,9 @@ body{
 }
 
 
-/* =========================
-   KONTROLLER
-========================= */
+/* =====================================================
+   BUTONLAR
+===================================================== */
 
 .controls{
     position:fixed;
@@ -564,7 +531,6 @@ body{
     transform:translateX(-50%);
 
     display:flex;
-
     gap:10px;
 
     z-index:100;
@@ -574,11 +540,9 @@ button{
     padding:11px 22px;
 
     border:0;
-
     border-radius:8px;
 
     background:#fff;
-
     color:#222;
 
     font-size:15px;
@@ -591,9 +555,9 @@ button:hover{
 }
 
 
-/* =========================
+/* =====================================================
    MOBIL
-========================= */
+===================================================== */
 
 @media(max-width:700px){
 
@@ -603,11 +567,8 @@ button:hover{
     }
 
     .contents{
-        padding:25px 20px;
-    }
-
-    .contents h2{
-        margin-bottom:20px;
+        padding:
+            25px 20px;
     }
 
     .contents ol{
@@ -629,9 +590,9 @@ button:hover{
 <body>
 
 
-<!-- =========================
+<!-- =====================================================
      KAPALI KITAP
-========================= -->
+===================================================== -->
 
 <div class="closed-book" id="closedBook">
 
@@ -653,9 +614,9 @@ button:hover{
 </div>
 
 
-<!-- =========================
+<!-- =====================================================
      KITAP
-========================= -->
+===================================================== -->
 
 <div class="book" id="book">
 
@@ -702,7 +663,10 @@ button:hover{
 
     <!-- CEVRILEN SAYFA -->
 
-    <div class="turn-page" id="turnPage">
+    <div
+        class="turn-page"
+        id="turnPage"
+    >
 
         <div class="page-front">
 
@@ -714,13 +678,12 @@ button:hover{
 
     </div>
 
-
 </div>
 
 
-<!-- =========================
-     BUTONLAR
-========================= -->
+<!-- =====================================================
+     KONTROLLER
+===================================================== -->
 
 <div class="controls">
 
@@ -737,15 +700,12 @@ button:hover{
 
 <script>
 
-/* =========================
+/* =====================================================
    ELEMANLAR
-========================= */
+===================================================== */
 
 const closedBook =
     document.getElementById("closedBook");
-
-const book =
-    document.getElementById("book");
 
 const turnPage =
     document.getElementById("turnPage");
@@ -757,9 +717,9 @@ const prevBtn =
     document.getElementById("prevBtn");
 
 
-/* =========================
-   BASLANGIC
-========================= */
+/* =====================================================
+   DURUM
+===================================================== */
 
 let progress = 0;
 
@@ -770,38 +730,44 @@ let startX = 0;
 let startProgress = 0;
 
 
-/* =========================
-   KITABI AC
-========================= */
+/* =====================================================
+   KAPAGI AC
+===================================================== */
 
 closedBook.addEventListener(
     "click",
     function(){
 
-        closedBook.classList.add("hidden");
+        closedBook.classList.add(
+            "hidden"
+        );
 
     }
 );
 
 
-/* =========================
-   SAYFA HAREKETI
-========================= */
+/* =====================================================
+   SAYFAYI CIZ
+===================================================== */
 
 function render(){
+
+    /*
+       0   = sagda
+       1   = solda
+    */
 
     const angle =
         -180 * progress;
 
 
     /*
-        Sayfa artik yukari
-        kaldirilmiyor.
+       SADECE COK HAFIF
+       KIVRILMA.
 
-        Cilt sabit.
-
-        Sol kenar cilde
-        bagli kaliyor.
+       ARTIK SAYFAYI
+       HAVAYA KALDIRAN
+       translateX/Y/Z YOK.
     */
 
     const curve =
@@ -811,11 +777,11 @@ function render(){
 
 
     const rotateX =
-        curve * 2.5;
+        curve * 1.8;
 
 
     const rotateZ =
-        curve * 1.2;
+        curve * 0.8;
 
 
     turnPage.style.transform =
@@ -826,24 +792,28 @@ function render(){
         `;
 
 
+    /*
+       GOLGE
+    */
+
     const shadow =
-        .12 +
-        curve * .20;
+        .10 +
+        curve * .18;
 
 
     turnPage.style.filter =
         `
         drop-shadow(
-            5px 8px 18px
+            4px 7px 16px
             rgba(0,0,0,${shadow})
         )
         `;
 }
 
 
-/* =========================
+/* =====================================================
    ANIMASYON
-========================= */
+===================================================== */
 
 function animateTo(target){
 
@@ -851,7 +821,7 @@ function animateTo(target){
         progress;
 
     const duration =
-        700;
+        650;
 
     const start =
         performance.now();
@@ -859,12 +829,9 @@ function animateTo(target){
 
     function frame(now){
 
-        const elapsed =
-            now - start;
-
-
         let t =
-            elapsed / duration;
+            (now - start) /
+            duration;
 
 
         if(t > 1){
@@ -872,14 +839,16 @@ function animateTo(target){
         }
 
 
+        /*
+           YUMUSAK HAREKET
+        */
+
         const eased =
-            t < .5
-            ? 2 * t * t
-            : 1 -
-              Math.pow(
-                  -2 * t + 2,
-                  2
-              ) / 2;
+            1 -
+            Math.pow(
+                1 - t,
+                3
+            );
 
 
         progress =
@@ -893,7 +862,9 @@ function animateTo(target){
 
         if(t < 1){
 
-            requestAnimationFrame(frame);
+            requestAnimationFrame(
+                frame
+            );
 
         }else{
 
@@ -901,9 +872,7 @@ function animateTo(target){
                 target;
 
             render();
-
         }
-
     }
 
 
@@ -911,9 +880,9 @@ function animateTo(target){
 }
 
 
-/* =========================
-   FARE / PARMAK
-========================= */
+/* =====================================================
+   FARE / PARMAK BASLANGICI
+===================================================== */
 
 turnPage.addEventListener(
     "pointerdown",
@@ -934,14 +903,13 @@ turnPage.addEventListener(
         turnPage.setPointerCapture(
             e.pointerId
         );
-
     }
 );
 
 
-/* =========================
-   SURUKLEME
-========================= */
+/* =====================================================
+   SURUKLE
+===================================================== */
 
 turnPage.addEventListener(
     "pointermove",
@@ -952,6 +920,12 @@ turnPage.addEventListener(
         }
 
 
+        const book =
+            document.getElementById(
+                "book"
+            );
+
+
         const rect =
             book.getBoundingClientRect();
 
@@ -959,6 +933,11 @@ turnPage.addEventListener(
         const halfWidth =
             rect.width / 2;
 
+
+        /*
+           SOLA SURUKLEDIKCE
+           SAYFA SOLA GIDER.
+        */
 
         const distance =
             startX -
@@ -982,14 +961,13 @@ turnPage.addEventListener(
 
 
         render();
-
     }
 );
 
 
-/* =========================
+/* =====================================================
    BIRAK
-========================= */
+===================================================== */
 
 turnPage.addEventListener(
     "pointerup",
@@ -1001,7 +979,6 @@ turnPage.addEventListener(
 
 
         dragging = false;
-
 
         turnPage.classList.remove(
             "dragging"
@@ -1017,21 +994,19 @@ turnPage.addEventListener(
             animateTo(0);
 
         }
-
     }
 );
 
 
-/* =========================
+/* =====================================================
    IPTAL
-========================= */
+===================================================== */
 
 turnPage.addEventListener(
     "pointercancel",
     function(){
 
         dragging = false;
-
 
         turnPage.classList.remove(
             "dragging"
@@ -1043,14 +1018,13 @@ turnPage.addEventListener(
             ? 1
             : 0
         );
-
     }
 );
 
 
-/* =========================
+/* =====================================================
    BUTONLAR
-========================= */
+===================================================== */
 
 nextBtn.addEventListener(
     "click",
@@ -1072,9 +1046,9 @@ prevBtn.addEventListener(
 );
 
 
-/* =========================
+/* =====================================================
    KLAVYE
-========================= */
+===================================================== */
 
 document.addEventListener(
     "keydown",
@@ -1086,7 +1060,6 @@ document.addEventListener(
 
         }
 
-
         if(e.key === "ArrowRight"){
 
             animateTo(0);
@@ -1097,9 +1070,9 @@ document.addEventListener(
 );
 
 
-/* =========================
-   ILK DURUM
-========================= */
+/* =====================================================
+   BASLANGIC
+===================================================== */
 
 render();
 
