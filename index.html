@@ -257,7 +257,7 @@ body.cover-open #openBook {
 
 
 /* =====================================================
-   SAYFALAR
+   SAYFA ANA GOVDESI
    ===================================================== */
 
 .page {
@@ -277,6 +277,53 @@ body.cover-open #openBook {
     overflow:
         hidden;
 
+    transform-style:
+        preserve-3d;
+
+    box-shadow:
+        0 18px 35px rgba(0,0,0,.28);
+
+    cursor:
+        pointer;
+
+    will-change:
+        transform;
+
+    pointer-events:
+        auto;
+}
+
+
+/* =====================================================
+   SAYFA YUZLERI
+   ===================================================== */
+
+.page-face {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    overflow:
+        hidden;
+
+    backface-visibility:
+        hidden;
+
+    -webkit-backface-visibility:
+        hidden;
+
+    transform-style:
+        preserve-3d;
+
     background:
         linear-gradient(
             90deg,
@@ -284,12 +331,28 @@ body.cover-open #openBook {
             #ead9b5 45%,
             #e3cfaa 100%
         );
+}
 
-    box-shadow:
-        0 18px 35px rgba(0,0,0,.28);
 
-    transform-style:
-        preserve-3d;
+/* =====================================================
+   SAYFA ON YUZ
+   ===================================================== */
+
+.page-front {
+
+    transform:
+        rotateY(0deg);
+}
+
+
+/* =====================================================
+   SAYFA ARKA YUZ
+   ===================================================== */
+
+.page-back {
+
+    transform:
+        rotateY(180deg);
 }
 
 
@@ -305,14 +368,6 @@ body.cover-open #openBook {
     border-radius:
         16px 16px 16px 16px;
 
-    background:
-        linear-gradient(
-            90deg,
-            #d2bb8d 0%,
-            #e6d4ad 70%,
-            #d8c49b 100%
-        );
-
     transform-origin:
         100% 50%;
 
@@ -322,14 +377,27 @@ body.cover-open #openBook {
     z-index:
         4;
 
-    cursor:
-        pointer;
-
-    will-change:
-        transform;
-
     margin-right:
         1px;
+}
+
+
+/* =====================================================
+   SOL SAYFA YUZLERI
+   ===================================================== */
+
+.page.left .page-face {
+
+    background:
+        linear-gradient(
+            90deg,
+            #d2bb8d 0%,
+            #e6d4ad 70%,
+            #d8c49b 100%
+        );
+
+    border-radius:
+        16px 16px 16px 16px;
 }
 
 
@@ -354,11 +422,28 @@ body.cover-open .page.left {
     right:
         0;
 
+    border-radius:
+        16px 16px 16px 16px;
+
     transform-origin:
         0% 50%;
 
-    border-radius:
-        0 16px 16px 0;
+    transform:
+        translateX(-1px);
+
+    z-index:
+        4;
+
+    margin-left:
+        1px;
+}
+
+
+/* =====================================================
+   SAG SAYFA YUZLERI
+   ===================================================== */
+
+.page.right .page-face {
 
     background:
         linear-gradient(
@@ -368,20 +453,8 @@ body.cover-open .page.left {
             #d2bb8d 100%
         );
 
-    transform:
-        translateX(-1px);
-
-    z-index:
-        4;
-
-    cursor:
-        pointer;
-
-    will-change:
-        transform;
-
-    margin-left:
-        1px;
+    border-radius:
+        16px 16px 16px 16px;
 }
 
 
@@ -389,7 +462,7 @@ body.cover-open .page.left {
    KAGIT DOKUSU
    ===================================================== */
 
-.page::after {
+.page-face::after {
 
     content:
         "";
@@ -464,7 +537,7 @@ body.cover-open .page.left {
 
 
 /* =====================================================
-   SAG SAYFA DONUSU
+   SAG SAYFA 3D DONUSU
    ===================================================== */
 
 .page.right.turning {
@@ -539,7 +612,7 @@ body.cover-open .page.left {
 
 
 /* =====================================================
-   SOL SAYFA DONUSU
+   SOL SAYFA 3D DONUSU
    ===================================================== */
 
 .page.left.turning {
@@ -614,7 +687,7 @@ body.cover-open .page.left {
 
 
 /* =====================================================
-   DONMUS SAYFALAR
+   DONMUS SAG SAYFA
    ===================================================== */
 
 .page.right.turned {
@@ -630,6 +703,10 @@ body.cover-open .page.left {
         none;
 }
 
+
+/* =====================================================
+   DONMUS SOL SAYFA
+   ===================================================== */
 
 .page.left.turned {
 
@@ -865,15 +942,56 @@ body.cover-open #closedBook {
 
 <div id="openBook">
 
+
+    <!-- =================================================
+         SOL SAYFA
+         ================================================= -->
+
     <div
         class="page left"
         onclick="turnLeftPage()"
-    ></div>
+    >
+
+        <div class="page-face page-front">
+
+            <!-- SOL SAYFANIN ON YUZU -->
+
+        </div>
+
+
+        <div class="page-face page-back">
+
+            <!-- SOL SAYFANIN ARKA YUZU -->
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         SAG SAYFA
+         ================================================= -->
 
     <div
         class="page right"
         onclick="turnRightPage()"
-    ></div>
+    >
+
+        <div class="page-face page-front">
+
+            <!-- SAG SAYFANIN ON YUZU -->
+
+        </div>
+
+
+        <div class="page-face page-back">
+
+            <!-- SAG SAYFANIN ARKA YUZU -->
+
+        </div>
+
+    </div>
+
 
     <div class="binding"></div>
 
@@ -1021,7 +1139,9 @@ function turnRightPage() {
         return;
     }
 
-    page.classList.add("turning");
+    page.classList.add(
+        "turning"
+    );
 
     page.addEventListener(
         "animationend",
@@ -1034,9 +1154,13 @@ function turnRightPage() {
                 return;
             }
 
-            page.classList.remove("turning");
+            page.classList.remove(
+                "turning"
+            );
 
-            page.classList.add("turned");
+            page.classList.add(
+                "turned"
+            );
 
             page.removeEventListener(
                 "animationend",
@@ -1069,7 +1193,9 @@ function turnLeftPage() {
         return;
     }
 
-    page.classList.add("turning");
+    page.classList.add(
+        "turning"
+    );
 
     page.addEventListener(
         "animationend",
@@ -1082,9 +1208,13 @@ function turnLeftPage() {
                 return;
             }
 
-            page.classList.remove("turning");
+            page.classList.remove(
+                "turning"
+            );
 
-            page.classList.add("turned");
+            page.classList.add(
+                "turned"
+            );
 
             page.removeEventListener(
                 "animationend",
