@@ -20,11 +20,15 @@ body {
 }
 
 body {
+
     margin: 0;
+
     overflow: hidden;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     position: relative;
@@ -40,7 +44,7 @@ body {
 
 
 /* =====================================================
-   DAGINIK SONBAHAR YAPRAKLARI
+   SONBAHAR YAPRAKLARI
    ===================================================== */
 
 body::before {
@@ -60,7 +64,7 @@ body::before {
         600px 600px;
 
     background-position:
-        center center;
+        center;
 
     opacity:
         .82;
@@ -72,12 +76,21 @@ body::before {
 
 /* =====================================================
    KAPALI KITAP
+   SAG TARAFA HAFIF KAYDIRILMIS
    ===================================================== */
 
 #closedBook {
 
+    position: absolute;
+
     width: 503px;
     height: 709px;
+
+    left: calc(50% + 55px);
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%);
 
     cursor: pointer;
 
@@ -90,17 +103,16 @@ body::before {
         0 35px 70px rgba(0,0,0,.58);
 
     transition:
-        transform .35s ease;
+        transform .9s ease,
+        opacity .7s ease;
 
-    position: relative;
-
-    z-index: 2;
+    z-index:
+        10;
 }
 
 
 /* =====================================================
-   KAPAK GORSELI
-   FILL
+   KAPAK
    ===================================================== */
 
 #closedBook img {
@@ -113,19 +125,234 @@ body::before {
     object-fit: fill;
 
     user-select: none;
+
     -webkit-user-drag: none;
+
     -webkit-user-select: none;
 }
 
 
 /* =====================================================
-   HAFIF HOVER
+   ACILMIS KITAP
    ===================================================== */
 
-#closedBook:hover {
+#openBook {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: min(1120px, 94vw);
+
+    aspect-ratio:
+        1.40 / 1;
 
     transform:
-        scale(1.025);
+        translate(-50%, -50%)
+        scale(.96);
+
+    display: none;
+
+    opacity: 0;
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+
+    z-index:
+        5;
+
+    perspective:
+        1800px;
+}
+
+
+/* =====================================================
+   SAYFALAR
+   ===================================================== */
+
+.page {
+
+    position: absolute;
+
+    top: 0;
+
+    width: 50%;
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d9c49b 0%,
+            #ead9b5 45%,
+            #e3cfaa 100%
+        );
+
+    box-shadow:
+        0 18px 35px rgba(0,0,0,.28);
+}
+
+
+/* =====================================================
+   SOL SAYFA
+   ===================================================== */
+
+.page.left {
+
+    left: 0;
+
+    border-radius:
+        16px 0 0 16px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d2bb8d 0%,
+            #e6d4ad 70%,
+            #d8c49b 100%
+        );
+}
+
+
+/* =====================================================
+   SAG SAYFA
+   ===================================================== */
+
+.page.right {
+
+    right: 0;
+
+    border-radius:
+        0 16px 16px 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #d8c49b 0%,
+            #e7d5ae 30%,
+            #d2bb8d 100%
+        );
+}
+
+
+/* =====================================================
+   KAGIT DOKUSU
+   ===================================================== */
+
+.page::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(90,65,35,.025) 0px,
+            rgba(90,65,35,.025) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+
+    opacity:
+        .7;
+}
+
+
+/* =====================================================
+   ORTA CILT
+   ===================================================== */
+
+.binding {
+
+    position: absolute;
+
+    left: 50%;
+    top: 0;
+
+    width: 24px;
+    height: 100%;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(70,45,20,.20),
+            rgba(255,255,255,.18),
+            rgba(70,45,20,.20),
+            transparent
+        );
+
+    box-shadow:
+        0 0 18px
+        rgba(50,30,15,.22);
+
+    z-index:
+        20;
+
+    pointer-events:
+        none;
+}
+
+
+/* =====================================================
+   HAFIF SAYFA BOMBE
+   ===================================================== */
+
+.page.left {
+
+    transform:
+        perspective(1200px)
+        rotateY(2deg);
+}
+
+.page.right {
+
+    transform:
+        perspective(1200px)
+        rotateY(-2deg);
+}
+
+
+/* =====================================================
+   ACILMA ANIMASYONU
+   ===================================================== */
+
+body.opening #closedBook {
+
+    transform:
+        translate(
+            120px,
+            -50%
+        )
+        rotateY(-90deg);
+
+    opacity:
+        0;
+}
+
+
+body.opening #openBook {
+
+    display:
+        block;
+
+    opacity:
+        1;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1);
 }
 
 
@@ -137,10 +364,23 @@ body::before {
 
     #closedBook {
 
-        width: 86vw;
-        height: calc(86vw * 1.445);
+        width:
+            86vw;
 
-        max-height: 88vh;
+        height:
+            calc(86vw * 1.409);
+
+        left:
+            calc(50% + 20px);
+
+        max-height:
+            88vh;
+    }
+
+    #openBook {
+
+        width:
+            96vw;
     }
 }
 
@@ -151,7 +391,14 @@ body::before {
 <body>
 
 
-<div id="closedBook">
+<!-- =====================================================
+     KAPALI KITAP
+     ===================================================== -->
+
+<div
+    id="closedBook"
+    onclick="openBook()"
+>
 
     <img
         src="kapak-gorsel.jpg"
@@ -162,5 +409,36 @@ body::before {
 </div>
 
 
+<!-- =====================================================
+     ACILMIS KITAP
+     ===================================================== -->
+
+<div id="openBook">
+
+    <div class="page left"></div>
+
+    <div class="page right"></div>
+
+    <div class="binding"></div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   KITABI AC
+   ===================================================== */
+
+function openBook() {
+
+    document.body.classList.add("opening");
+
+}
+
+</script>
+
+
 </body>
 </html>
+
