@@ -76,7 +76,6 @@ body::before {
 
 /* =====================================================
    KAPALI KITAP
-   503 x 709
    ===================================================== */
 
 #closedBook {
@@ -146,8 +145,6 @@ body::before {
 
 /* =====================================================
    ACILMIS KITAP
-   HER SAYFA = 503 x 709
-   TOPLAM = 1006 x 709
    ===================================================== */
 
 #openBook {
@@ -262,11 +259,6 @@ body::before {
     right:
         0;
 
-    /*
-       Orta birlesim noktasini tam menteşe
-       olarak kullaniyoruz.
-    */
-
     transform-origin:
         0% 50%;
 
@@ -292,12 +284,6 @@ body::before {
 
     will-change:
         transform;
-
-    /*
-       Birlesim yerinde cok hafif bindirme.
-       Boylece donus sirasinda arka plan
-       gorunmez.
-    */
 
     margin-left:
         1px;
@@ -405,90 +391,63 @@ body::before {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(0deg)
-            rotateZ(0deg)
-            skewX(0deg);
+            rotateY(0deg);
     }
 
     12% {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(-10deg)
-            rotateZ(-1deg)
-            skewX(-1deg);
+            rotateY(-8deg);
     }
 
     25% {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(-32deg)
-            rotateZ(-2deg)
-            skewX(-2deg);
+            rotateY(-25deg);
     }
 
     40% {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(-62deg)
-            rotateZ(-3deg)
-            skewX(-3deg);
+            rotateY(-50deg);
     }
 
     55% {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(-92deg)
-            rotateZ(-2deg)
-            skewX(-2deg);
+            rotateY(-78deg);
     }
 
     70% {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(-120deg)
-            rotateZ(-1deg)
-            skewX(-1deg);
+            rotateY(-108deg);
     }
 
     84% {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(-150deg)
-            rotateZ(0deg)
-            skewX(0deg);
+            rotateY(-138deg);
     }
 
     94% {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(-171deg)
-            rotateZ(0deg)
-            skewX(0deg);
+            rotateY(-165deg);
     }
 
     100% {
 
         transform:
             translateX(-1px)
-            perspective(1800px)
-            rotateY(-180deg)
-            rotateZ(0deg)
-            skewX(0deg);
+            rotateY(-180deg);
     }
 }
 
@@ -536,7 +495,7 @@ body.opening #openBook {
 
     transform:
         translate(-50%, -50%)
-        scale(.82);
+        scale(.96);
 }
 
 
