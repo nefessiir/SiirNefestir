@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -22,453 +21,48 @@ body {
 }
 
 body {
-    overflow: hidden;
     background: #111;
+    overflow: hidden;
 }
 
 
-/* =========================================
-   ANA SAHNE
-   ========================================= */
+/* ARKA PLAN */
 
-.scene {
-    position: relative;
-
+.page {
     width: 100vw;
     height: 100vh;
 
-    overflow: hidden;
-}
-
-
-/* =========================================
-   KITAP / ARKA PLAN
-   ========================================= */
-
-.book {
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    /*
-       Gorselin orijinal oranini korur.
-       En-boy orani kesinlikle bozulmaz.
-    */
-
-    width: auto;
-    height: 94vh;
-
-    max-width: 94vw;
-
-    object-fit: contain;
-
-    display: block;
-
-    z-index: 1;
-}
-
-
-/* =========================================
-   ICERIK KATMANI
-   ========================================= */
-
-.content {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    z-index: 10;
-
-    pointer-events: none;
-}
-
-
-/* =========================================
-   SOL MUM
-   ========================================= */
-
-.candle {
-    position: absolute;
-
-    left: 3vw;
-    bottom: 7vh;
-
-    width: clamp(70px, 8vw, 130px);
-
-    height: auto;
-
-    z-index: 20;
-
-    pointer-events: auto;
-}
-
-
-/* =========================================
-   SIIR ALANI
-   ========================================= */
-
-.poem {
-    position: absolute;
-
-    left: 50%;
-    top: 48%;
-
-    transform: translate(-50%, -50%);
-
-    width: min(46vw, 700px);
-
-    max-height: 68vh;
-
-    overflow: hidden;
-
-    text-align: center;
-
-    color: #17232a;
-
-    z-index: 15;
-}
-
-.poem h1 {
-    margin: 0 0 18px 0;
-
-    font-size: clamp(24px, 2.2vw, 38px);
-
-    font-weight: normal;
-}
-
-.poem p {
-    margin: 0;
-
-    font-size: clamp(16px, 1.25vw, 23px);
-
-    line-height: 1.7;
-
-    white-space: pre-line;
-}
-
-
-/* =========================================
-   SESLI DINLE
-   ========================================= */
-
-.listen {
-    position: absolute;
-
-    right: 3vw;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    z-index: 30;
-
-    pointer-events: auto;
-}
-
-.listen button {
-    border: 1px solid rgba(40, 40, 40, 0.3);
-
-    border-radius: 30px;
-
-    padding: 11px 18px;
-
-    background: rgba(255,255,255,0.35);
-
-    color: #18252c;
-
-    font-family: Georgia, "Times New Roman", serif;
-
-    font-size: 15px;
-
-    cursor: pointer;
-}
-
-
-/* =========================================
-   EKOLAYZER
-   ========================================= */
-
-.equalizer {
-    position: absolute;
-
-    left: 50%;
-    bottom: 3vh;
-
-    transform: translateX(-50%);
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
 
-    gap: 4px;
-
-    width: 300px;
-    height: 45px;
-
-    z-index: 30;
+    overflow: hidden;
 }
 
-.equalizer span {
+.page img {
     display: block;
 
-    width: 4px;
-    height: 12px;
+    width: auto;
+    height: 100vh;
 
-    border-radius: 3px;
+    max-width: 100vw;
 
-    background: rgba(25, 35, 40, 0.6);
-
-    animation: sound 0.8s infinite alternate ease-in-out;
-}
-
-.equalizer span:nth-child(2) {
-    animation-delay: 0.1s;
-}
-
-.equalizer span:nth-child(3) {
-    animation-delay: 0.2s;
-}
-
-.equalizer span:nth-child(4) {
-    animation-delay: 0.3s;
-}
-
-.equalizer span:nth-child(5) {
-    animation-delay: 0.15s;
-}
-
-.equalizer span:nth-child(6) {
-    animation-delay: 0.25s;
-}
-
-.equalizer span:nth-child(7) {
-    animation-delay: 0.05s;
-}
-
-@keyframes sound {
-
-    from {
-        height: 8px;
-    }
-
-    to {
-        height: 32px;
-    }
-
-}
-
-
-/* =========================================
-   KUCUK EKRAN
-   ========================================= */
-
-@media (max-width: 900px) {
-
-    .book {
-        height: 91vh;
-        max-width: 91vw;
-    }
-
-    .candle {
-        left: 2vw;
-        bottom: 8vh;
-
-        width: 65px;
-    }
-
-    .poem {
-        width: 48vw;
-    }
-
-    .listen {
-        right: 2vw;
-    }
-
-    .listen button {
-        padding: 9px 13px;
-
-        font-size: 13px;
-    }
-
-}
-
-
-/* =========================================
-   KISA EKRAN
-   ========================================= */
-
-@media (max-height: 700px) {
-
-    .book {
-        height: 89vh;
-    }
-
-    .poem {
-        top: 47%;
-
-        max-height: 62vh;
-    }
-
-    .poem h1 {
-        margin-bottom: 10px;
-    }
-
-    .poem p {
-        line-height: 1.5;
-    }
-
-    .equalizer {
-        bottom: 1.5vh;
-    }
-
-}
-
-
-/* =========================================
-   COK DAR EKRAN
-   ========================================= */
-
-@media (max-width: 600px) {
-
-    .book {
-        height: 86vh;
-        max-width: 90vw;
-    }
-
-    .candle {
-        width: 50px;
-    }
-
-    .poem {
-        width: 52vw;
-    }
-
-    .listen button {
-        padding: 7px 10px;
-
-        font-size: 11px;
-    }
-
+    object-fit: contain;
 }
 
 </style>
 </head>
 
-
 <body>
 
-<div class="scene">
+<div class="page">
 
-    <!-- KITAP GORSELI -->
     <img
-        class="book"
         src="arkaplan.jpeg"
         alt="Şiir Nefestir"
     >
 
-
-    <div class="content">
-
-
-        <!-- SOL MUM -->
-
-        <img
-            class="candle"
-            src="mum.png"
-            alt="Mum"
-        >
-
-
-        <!-- SIIR -->
-
-        <div class="poem">
-
-            <h1>Şiir Nefestir</h1>
-
-            <p>
-Yoksam düşlerinde
-gecelerinde kayıpsam
-
-Bakışların hep donuk
-
-            </p>
-
-        </div>
-
-
-        <!-- SESLI DINLE -->
-
-        <div class="listen">
-
-            <button type="button" onclick="toggleAudio()">
-
-                <span id="audioIcon">🔊</span>
-
-                <span id="audioText">
-                    Sesli Dinle
-                </span>
-
-            </button>
-
-        </div>
-
-
-        <!-- EKOLAYZER -->
-
-        <div class="equalizer">
-
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-
-        </div>
-
-    </div>
-
 </div>
-
-
-<script>
-
-let playing = false;
-
-function toggleAudio() {
-
-    playing = !playing;
-
-    const icon =
-        document.getElementById("audioIcon");
-
-    const text =
-        document.getElementById("audioText");
-
-    if (playing) {
-
-        icon.textContent = "⏸";
-        text.textContent = "Durdur";
-
-    } else {
-
-        icon.textContent = "🔊";
-        text.textContent = "Sesli Dinle";
-
-    }
-
-}
-
-</script>
 
 </body>
 </html>
-
