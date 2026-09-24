@@ -63,6 +63,11 @@ body{
     pointer-events:none;
 }
 
+
+/* =====================================================
+   KAPAK
+===================================================== */
+
 .cover{
     position:relative;
 
@@ -95,6 +100,87 @@ body{
     color:#e8d3a7;
 
     text-align:center;
+
+    overflow:hidden;
+}
+
+
+/* =====================================================
+   KAPAK PENCERESI
+===================================================== */
+
+.cover-window{
+    position:absolute;
+
+    left:12%;
+    right:12%;
+    top:10%;
+    bottom:10%;
+
+    border:
+        2px solid rgba(232,211,167,.45);
+
+    border-radius:4px;
+
+    box-shadow:
+        inset 0 0 0 7px rgba(55,31,17,.45),
+        inset 0 0 30px rgba(0,0,0,.28),
+        0 0 12px rgba(0,0,0,.18);
+
+    pointer-events:none;
+}
+
+
+/* PENCERE IC CERCEVE */
+
+.cover-window::before{
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+    top:0;
+    bottom:0;
+
+    width:2px;
+
+    transform:translateX(-50%);
+
+    background:
+        rgba(232,211,167,.35);
+}
+
+
+/* YATAY PENCERE CERCEVESI */
+
+.cover-window::after{
+    content:"";
+
+    position:absolute;
+
+    top:50%;
+    left:0;
+    right:0;
+
+    height:2px;
+
+    transform:translateY(-50%);
+
+    background:
+        rgba(232,211,167,.35);
+}
+
+
+/* =====================================================
+   KAPAK YAZISI
+===================================================== */
+
+.cover-content{
+    position:relative;
+
+    z-index:2;
+
+    padding:25px;
 }
 
 .cover h1{
@@ -104,13 +190,21 @@ body{
         clamp(28px,5vw,52px);
 
     letter-spacing:4px;
+
     font-weight:normal;
+
+    text-shadow:
+        0 2px 4px rgba(0,0,0,.35);
 }
 
 .cover p{
     margin-top:20px;
+
     font-size:16px;
+
     opacity:.8;
+
+    line-height:1.6;
 }
 
 
@@ -121,8 +215,24 @@ body{
 .book{
     position:relative;
 
-    width:min(92vw,1100px);
-    height:min(72vh,700px);
+    /*
+       KAPAK ORANI = 0.70
+
+       SOL SAYFA  = 0.70
+       SAG SAYFA  = 0.70
+
+       ACIK KITAP  = 1.40
+    */
+
+    width:min(
+        92vw,
+        calc(72vh * 1.40),
+        1100px
+    );
+
+    aspect-ratio:1.40;
+
+    height:auto;
 
     perspective:2200px;
 
@@ -366,13 +476,6 @@ body{
 
     transform-style:preserve-3d;
 
-    /*
-       COK ONEMLI:
-
-       Sayfanin SOL kenari
-       tam olarak ciltte.
-    */
-
     transform-origin:
         left center;
 
@@ -563,7 +666,10 @@ button:hover{
 
     .book{
         width:96vw;
-        height:58vh;
+
+        aspect-ratio:1.40;
+
+        height:auto;
     }
 
     .contents{
@@ -573,14 +679,18 @@ button:hover{
 
     .contents ol{
         padding-left:24px;
+
         font-size:15px;
+
         line-height:1.65;
     }
 
     button{
         padding:10px 15px;
+
         font-size:13px;
     }
+
 }
 
 </style>
@@ -598,7 +708,9 @@ button:hover{
 
     <div class="cover">
 
-        <div>
+        <div class="cover-window"></div>
+
+        <div class="cover-content">
 
             <h1>ŞİİR NEFESTİR</h1>
 
@@ -700,6 +812,7 @@ button:hover{
 
 <script>
 
+
 /* =====================================================
    ELEMANLAR
 ===================================================== */
@@ -753,22 +866,13 @@ closedBook.addEventListener(
 function render(){
 
     /*
-       0   = sagda
-       1   = solda
+       0 = sagda
+       1 = solda
     */
 
     const angle =
         -180 * progress;
 
-
-    /*
-       SADECE COK HAFIF
-       KIVRILMA.
-
-       ARTIK SAYFAYI
-       HAVAYA KALDIRAN
-       translateX/Y/Z YOK.
-    */
 
     const curve =
         Math.sin(
@@ -791,10 +895,6 @@ function render(){
         rotateZ(${rotateZ}deg)
         `;
 
-
-    /*
-       GOLGE
-    */
 
     const shadow =
         .10 +
@@ -838,10 +938,6 @@ function animateTo(target){
             t = 1;
         }
 
-
-        /*
-           YUMUSAK HAREKET
-        */
 
         const eased =
             1 -
@@ -933,11 +1029,6 @@ turnPage.addEventListener(
         const halfWidth =
             rect.width / 2;
 
-
-        /*
-           SOLA SURUKLEDIKCE
-           SAYFA SOLA GIDER.
-        */
 
         const distance =
             startX -
