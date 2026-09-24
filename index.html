@@ -7,6 +7,7 @@
 <title>Şiir Nefestir</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -19,6 +20,7 @@ body {
 }
 
 body {
+    margin: 0;
     overflow: hidden;
 
     background:
@@ -115,11 +117,12 @@ body {
 }
 
 /* =========================================================
-   SOL IC SAYFA - GUN BATIMI
+   GUN BATIMI
    ========================================================= */
 
 .sunset {
     position: absolute;
+
     inset: 0;
 
     background:
@@ -325,85 +328,7 @@ body {
 }
 
 /* =========================================================
-   KAPAK
-   SADECE KAPALI KITAPTA GORUNUR
-   ========================================================= */
-
-.cover {
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 50%;
-    height: 100%;
-
-    z-index: 200;
-
-    overflow: hidden;
-
-    transform-origin: right center;
-
-    transform-style: preserve-3d;
-
-    border-radius:
-        8px 0 0 8px;
-
-    background: #3b2619;
-
-    box-shadow:
-        12px 15px 30px rgba(0,0,0,.35);
-
-    transition: none;
-}
-
-/*
-   GERCEK KAPAK GORSELI
-*/
-
-.cover-image {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    object-fit: cover;
-
-    object-position: center;
-
-    backface-visibility: hidden;
-}
-
-/*
-   KAPAGIN IC TARAFI
-   Acildiginda gorunen taraf budur.
-*/
-
-.cover-inside {
-    position: absolute;
-
-    inset: 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            #432918,
-            #65422a 50%,
-            #3b2417
-        );
-
-    transform:
-        rotateY(180deg);
-
-    backface-visibility: hidden;
-}
-
-/* =========================================================
-   DONEN IC SAYFA
+   DONEN SAYFA
    ========================================================= */
 
 .turn-page {
@@ -424,25 +349,16 @@ body {
     pointer-events: none;
 }
 
-.page-front,
-.page-back {
+/* =========================================================
+   SAYFANIN ON YUZU
+   ========================================================= */
+
+.page-front {
     position: absolute;
 
     inset: 0;
 
     overflow: hidden;
-
-    background: #f3e8d1;
-
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
-    border-radius:
-        0 18px 18px 0;
-}
-
-.page-front {
-    z-index: 2;
 
     background:
         linear-gradient(
@@ -453,27 +369,60 @@ body {
             rgba(0,0,0,.05)
         ),
         #f3e8d1;
-}
 
-.page-back {
-    z-index: 3;
+    border-radius:
+        0 18px 18px 0;
+
+    backface-visibility: hidden;
+
+    -webkit-backface-visibility: hidden;
 
     transform:
-        rotateY(180deg);
+        rotateY(0deg);
+
+    z-index: 2;
+}
+
+/* =========================================================
+   SAYFANIN ARKA YUZU
+
+   ONEMLI:
+   Burada YAZI YOK.
+   Boylece sayfa sola geldiginde ters yazilar gorunmez.
+   ========================================================= */
+
+.page-back {
+    position: absolute;
+
+    inset: 0;
+
+    overflow: hidden;
 
     background:
         linear-gradient(
             90deg,
-            rgba(0,0,0,.05),
-            transparent 10%,
-            transparent 90%,
-            rgba(0,0,0,.08)
+            rgba(0,0,0,.07),
+            transparent 12%,
+            transparent 88%,
+            rgba(0,0,0,.07)
         ),
         #f3e8d1;
+
+    border-radius:
+        18px 0 0 18px;
+
+    transform:
+        rotateY(180deg);
+
+    backface-visibility: hidden;
+
+    -webkit-backface-visibility: hidden;
+
+    z-index: 3;
 }
 
 /* =========================================================
-   DONEN SAYFA ICERIGI
+   DONEN SAYFA YAZISI
    ========================================================= */
 
 .page-title {
@@ -519,6 +468,60 @@ body {
 }
 
 /* =========================================================
+   KAPALI KITAP KAPAGI
+   ========================================================= */
+
+.closed-cover {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 500;
+
+    overflow: hidden;
+
+    background: #3b2619;
+
+    border-radius: 10px;
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transition:
+        opacity .35s ease,
+        visibility .35s ease;
+}
+
+.closed-cover img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+}
+
+/* =========================================================
+   KAPAK SADECE KAPALIYKEN
+   ========================================================= */
+
+.book.open .closed-cover {
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+}
+
+/* =========================================================
    TABLET
    ========================================================= */
 
@@ -526,11 +529,6 @@ body {
 
     .book {
         width: 96vw;
-        aspect-ratio: 1.40;
-    }
-
-    .page {
-        border-radius: 10px;
     }
 
     .binding {
@@ -547,6 +545,7 @@ body {
 
     .sailboat {
         transform: scale(.65);
+
         transform-origin: center;
     }
 }
@@ -571,9 +570,11 @@ body {
 
     .page-text {
         font-size: 11px;
+
         line-height: 1.5;
     }
 }
+
 </style>
 </head>
 
@@ -581,10 +582,13 @@ body {
 
 <div class="scene">
 
-    <div class="book" id="book">
+    <div
+        class="book"
+        id="book"
+    >
 
         <!-- =================================================
-             IC SOL SAYFA
+             SOL IC SAYFA
              ================================================= -->
 
         <div class="page page-left">
@@ -592,15 +596,19 @@ body {
             <div class="sunset"></div>
 
             <div class="sailboat">
+
                 <div class="mast"></div>
+
                 <div class="sail"></div>
+
                 <div class="hull"></div>
+
             </div>
 
         </div>
 
         <!-- =================================================
-             IC SAG SAYFA
+             SAG IC SAYFA
              ================================================= -->
 
         <div class="page page-right">
@@ -656,6 +664,7 @@ body {
             id="turnPage"
         >
 
+            <!-- ON YUZ -->
             <div class="page-front">
 
                 <div class="page-title">
@@ -669,6 +678,8 @@ body {
 
             </div>
 
+            <!-- ARKA YUZ
+                 YAZI YOK -->
             <div class="page-back"></div>
 
         </div>
@@ -680,22 +691,18 @@ body {
         <div class="binding"></div>
 
         <!-- =================================================
-             KAPAK
-             SADECE KAPALIYKEN GORSEL
+             KAPALI KITAP
              ================================================= -->
 
         <div
-            class="cover"
-            id="cover"
+            class="closed-cover"
+            id="closedCover"
         >
 
             <img
-                class="cover-image"
                 src="kapak-gorsel.jpg"
                 alt="Şiir Nefestir"
             >
-
-            <div class="cover-inside"></div>
 
         </div>
 
@@ -704,14 +711,16 @@ body {
 </div>
 
 <script>
-const book =
-    document.getElementById("book");
 
-const cover =
-    document.getElementById("cover");
+const book =
+    document.getElementById(
+        "book"
+    );
 
 const turnPage =
-    document.getElementById("turnPage");
+    document.getElementById(
+        "turnPage"
+    );
 
 let progress = 0;
 
@@ -722,21 +731,13 @@ let startX = 0;
 let startProgress = 0;
 
 /* =========================================================
-   RENDER
+   CIZ
    ========================================================= */
 
 function render() {
 
-    /*
-       Sayfanin donusu
-    */
-
     const angle =
         -180 * progress;
-
-    /*
-       Ortada hafif dalga
-    */
 
     const curve =
         Math.sin(
@@ -762,34 +763,37 @@ function render() {
         rotateZ +
         "deg)";
 
-    /*
-       Sayfa golgesi
-    */
-
     const shadow =
         0.08 +
         curve * 0.14;
 
     turnPage.style.filter =
         "drop-shadow(" +
-        "3px 6px 14px rgba(0,0,0," +
+        "3px 6px 14px " +
+        "rgba(0,0,0," +
         shadow +
-        "))";
+        ")" +
+        ")";
 
     /*
-       KAPAK HAREKETI
+       Kapak:
 
-       Kapak sadece kendi ekseninde doner.
-       Ic sayfalara karismaz.
+       0.00 = gorunur
+       0.01+ = tamamen gizli
     */
 
-    const coverAngle =
-        -180 * progress;
+    if (progress > 0.01) {
 
-    cover.style.transform =
-        "rotateY(" +
-        coverAngle +
-        "deg)";
+        book.classList.add(
+            "open"
+        );
+
+    } else {
+
+        book.classList.remove(
+            "open"
+        );
+    }
 }
 
 /* =========================================================
@@ -850,7 +854,7 @@ book.addEventListener(
 
 book.addEventListener(
     "pointerup",
-    function(event) {
+    function() {
 
         if (!dragging) {
             return;
@@ -863,7 +867,9 @@ book.addEventListener(
             ? 1
             : 0;
 
-        animateTo(progress);
+        animateTo(
+            progress
+        );
     }
 );
 
@@ -878,7 +884,9 @@ book.addEventListener(
             ? 1
             : 0;
 
-        animateTo(progress);
+        animateTo(
+            progress
+        );
     }
 );
 
@@ -886,7 +894,9 @@ book.addEventListener(
    ANIMASYON
    ========================================================= */
 
-function animateTo(target) {
+function animateTo(
+    target
+) {
 
     const start =
         progress;
@@ -954,6 +964,7 @@ function animateTo(target) {
 progress = 0;
 
 render();
+
 </script>
 
 </body>
