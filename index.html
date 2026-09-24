@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -1035,4 +1036,88 @@ function turnRightPage() {
 
     if (
         page.classList.contains("turning") ||
-```
+        page.classList.contains("turned")
+    ) {
+        return;
+    }
+
+    page.classList.add("turning");
+
+    page.addEventListener(
+        "animationend",
+        function handler(event) {
+
+            if (
+                event.animationName !==
+                "turnRightPage"
+            ) {
+                return;
+            }
+
+            page.classList.remove("turning");
+
+            page.classList.add("turned");
+
+            page.removeEventListener(
+                "animationend",
+                handler
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SOL SAYFA
+   ===================================================== */
+
+function turnLeftPage() {
+
+    const page =
+        document.querySelector(".page.left");
+
+    if (!page) {
+        return;
+    }
+
+    if (
+        page.classList.contains("turning") ||
+        page.classList.contains("turned")
+    ) {
+        return;
+    }
+
+    page.classList.add("turning");
+
+    page.addEventListener(
+        "animationend",
+        function handler(event) {
+
+            if (
+                event.animationName !==
+                "turnLeftPage"
+            ) {
+                return;
+            }
+
+            page.classList.remove("turning");
+
+            page.classList.add("turned");
+
+            page.removeEventListener(
+                "animationend",
+                handler
+            );
+
+        }
+    );
+
+}
+
+</script>
+
+</body>
+</html>
+
