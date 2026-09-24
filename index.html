@@ -21,8 +21,6 @@ body {
 
 body {
 
-    margin: 0;
-
     overflow: hidden;
 
     display: flex;
@@ -76,7 +74,6 @@ body::before {
 
 /* =====================================================
    KAPALI KITAP
-   SAG TARAFA HAFIF KAYDIRILMIS
    ===================================================== */
 
 #closedBook {
@@ -86,49 +83,65 @@ body::before {
     width: 503px;
     height: 709px;
 
-    left: calc(50% + 55px);
-    top: 50%;
+    left:
+        calc(50% + 55px);
+
+    top:
+        50%;
 
     transform:
         translate(-50%, -50%);
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
     border-radius:
         8px 20px 20px 8px;
 
-    overflow: hidden;
+    overflow:
+        hidden;
 
     box-shadow:
         0 35px 70px rgba(0,0,0,.58);
 
     transition:
-        transform .9s ease,
-        opacity .7s ease;
+        transform 1s ease,
+        opacity .8s ease;
 
     z-index:
         10;
+
+    transform-origin:
+        center center;
 }
 
 
 /* =====================================================
-   KAPAK
+   KAPAK GORSEL
    ===================================================== */
 
 #closedBook img {
 
-    display: block;
+    display:
+        block;
 
-    width: 100%;
-    height: 100%;
+    width:
+        100%;
 
-    object-fit: fill;
+    height:
+        100%;
 
-    user-select: none;
+    object-fit:
+        fill;
 
-    -webkit-user-drag: none;
+    user-select:
+        none;
 
-    -webkit-user-select: none;
+    -webkit-user-drag:
+        none;
+
+    -webkit-user-select:
+        none;
 }
 
 
@@ -138,12 +151,17 @@ body::before {
 
 #openBook {
 
-    position: absolute;
+    position:
+        absolute;
 
-    left: 50%;
-    top: 50%;
+    left:
+        50%;
 
-    width: min(1120px, 94vw);
+    top:
+        50%;
+
+    width:
+        min(1120px, 94vw);
 
     aspect-ratio:
         1.40 / 1;
@@ -152,9 +170,11 @@ body::before {
         translate(-50%, -50%)
         scale(.96);
 
-    display: none;
+    display:
+        none;
 
-    opacity: 0;
+    opacity:
+        0;
 
     transition:
         opacity .8s ease,
@@ -174,14 +194,20 @@ body::before {
 
 .page {
 
-    position: absolute;
+    position:
+        absolute;
 
-    top: 0;
+    top:
+        0;
 
-    width: 50%;
-    height: 100%;
+    width:
+        50%;
 
-    overflow: hidden;
+    height:
+        100%;
+
+    overflow:
+        hidden;
 
     background:
         linear-gradient(
@@ -202,7 +228,8 @@ body::before {
 
 .page.left {
 
-    left: 0;
+    left:
+        0;
 
     border-radius:
         16px 0 0 16px;
@@ -214,6 +241,13 @@ body::before {
             #e6d4ad 70%,
             #d8c49b 100%
         );
+
+    transform:
+        perspective(1200px)
+        rotateY(2deg);
+
+    transform-origin:
+        right center;
 }
 
 
@@ -223,7 +257,8 @@ body::before {
 
 .page.right {
 
-    right: 0;
+    right:
+        0;
 
     border-radius:
         0 16px 16px 0;
@@ -235,6 +270,10 @@ body::before {
             #e7d5ae 30%,
             #d2bb8d 100%
         );
+
+    transform:
+        perspective(1200px)
+        rotateY(-2deg);
 }
 
 
@@ -244,13 +283,17 @@ body::before {
 
 .page::after {
 
-    content: "";
+    content:
+        "";
 
-    position: absolute;
+    position:
+        absolute;
 
-    inset: 0;
+    inset:
+        0;
 
-    pointer-events: none;
+    pointer-events:
+        none;
 
     background:
         repeating-linear-gradient(
@@ -272,13 +315,20 @@ body::before {
 
 .binding {
 
-    position: absolute;
+    position:
+        absolute;
 
-    left: 50%;
-    top: 0;
+    left:
+        50%;
 
-    width: 24px;
-    height: 100%;
+    top:
+        0;
+
+    width:
+        24px;
+
+    height:
+        100%;
 
     transform:
         translateX(-50%);
@@ -294,8 +344,7 @@ body::before {
         );
 
     box-shadow:
-        0 0 18px
-        rgba(50,30,15,.22);
+        0 0 18px rgba(50,30,15,.22);
 
     z-index:
         20;
@@ -306,26 +355,8 @@ body::before {
 
 
 /* =====================================================
-   HAFIF SAYFA BOMBE
-   ===================================================== */
-
-.page.left {
-
-    transform:
-        perspective(1200px)
-        rotateY(2deg);
-}
-
-.page.right {
-
-    transform:
-        perspective(1200px)
-        rotateY(-2deg);
-}
-
-
-/* =====================================================
-   ACILMA ANIMASYONU
+   KAPAK ACILIRKEN
+   ORTAYA GELIP SOLA YATIYOR
    ===================================================== */
 
 body.opening #closedBook {
@@ -341,6 +372,24 @@ body.opening #closedBook {
     opacity:
         0;
 }
+
+
+/* =====================================================
+   SOL SAYFA DA HAFIF SOLA YATILIYOR
+   ===================================================== */
+
+body.opening .page.left {
+
+    transform:
+        perspective(1200px)
+        rotateY(7deg)
+        rotateZ(-4deg);
+}
+
+
+/* =====================================================
+   KITAP ACILIYOR
+   ===================================================== */
 
 body.opening #openBook {
 
@@ -441,4 +490,3 @@ function openBook() {
 
 </body>
 </html>
-
