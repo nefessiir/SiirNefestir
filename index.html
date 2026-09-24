@@ -127,7 +127,7 @@ body::before {
    KAPAK GORSEL
    ===================================================== */
 
-#closedBook img {
+##closedBook img {
 
     display:
         block;
@@ -150,8 +150,11 @@ body::before {
     -webkit-user-select:
         none;
 
-    backface-visibility:
-        hidden;
+    position:
+        relative;
+
+    z-index:
+        1;
 }
 
 
@@ -185,7 +188,13 @@ body::before {
         rotateY(180deg);
 
     backface-visibility:
-        hidden;
+        visible;
+
+    -webkit-backface-visibility:
+        visible;
+
+    z-index:
+        2;
 
     pointer-events:
         none;
@@ -787,6 +796,11 @@ body.cover-open .page.left {
    ===================================================== */
 
 body.cover-open #closedBook {
+    body.cover-open #closedBook img {
+
+    visibility:
+        hidden;
+}
 
     transform:
         translateY(-50%)
