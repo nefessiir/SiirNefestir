@@ -114,10 +114,6 @@ body::before {
 }
 
 
-/* =====================================================
-   KAPAK GORSEL
-   ===================================================== */
-
 #closedBook img {
 
     display:
@@ -242,11 +238,23 @@ body::before {
             #d8c49b 100%
         );
 
+    transform-origin:
+        100% 50%;
+
     transform:
-        none;
+        translateX(1px);
 
     z-index:
-        2;
+        4;
+
+    cursor:
+        pointer;
+
+    will-change:
+        transform;
+
+    margin-right:
+        1px;
 }
 
 
@@ -369,7 +377,7 @@ body::before {
 
 
 /* =====================================================
-   SAYFA DONUSU
+   SAGDAN SOLA SAYFA DONUSU
    ===================================================== */
 
 .page.right.turning {
@@ -453,7 +461,91 @@ body::before {
 
 
 /* =====================================================
-   DONMUS SAYFA
+   SOLDAN SAGA SAYFA DONUSU
+   ===================================================== */
+
+.page.left.turning {
+
+    pointer-events:
+        none;
+
+    animation:
+        turnLeftPage
+        1.75s
+        cubic-bezier(.20,.68,.28,1)
+        forwards;
+}
+
+
+@keyframes turnLeftPage {
+
+    0% {
+
+        transform:
+            translateX(1px)
+            rotateY(0deg);
+    }
+
+    12% {
+
+        transform:
+            translateX(1px)
+            rotateY(8deg);
+    }
+
+    25% {
+
+        transform:
+            translateX(1px)
+            rotateY(25deg);
+    }
+
+    40% {
+
+        transform:
+            translateX(1px)
+            rotateY(50deg);
+    }
+
+    55% {
+
+        transform:
+            translateX(1px)
+            rotateY(78deg);
+    }
+
+    70% {
+
+        transform:
+            translateX(1px)
+            rotateY(108deg);
+    }
+
+    84% {
+
+        transform:
+            translateX(1px)
+            rotateY(138deg);
+    }
+
+    94% {
+
+        transform:
+            translateX(1px)
+            rotateY(165deg);
+    }
+
+    100% {
+
+        transform:
+            translateX(1px)
+            rotateY(180deg);
+    }
+}
+
+
+/* =====================================================
+   DONMUS SAG SAYFA
    ===================================================== */
 
 .page.right.turned {
@@ -471,7 +563,25 @@ body::before {
 
 
 /* =====================================================
-   KAPAK TIKLANINCA ANINDA KAYBOLUR
+   DONMUS SOL SAYFA
+   ===================================================== */
+
+.page.left.turned {
+
+    transform:
+        translateX(1px)
+        rotateY(180deg);
+
+    z-index:
+        1;
+
+    pointer-events:
+        none;
+}
+
+
+/* =====================================================
+   KAPAK
    ===================================================== */
 
 body.opening #closedBook {
@@ -482,7 +592,7 @@ body.opening #closedBook {
 
 
 /* =====================================================
-   ACILMIS KITAP GORUNUR
+   ACILMIS KITAP
    ===================================================== */
 
 body.opening #openBook {
@@ -561,11 +671,14 @@ body.opening #openBook {
 
 <div id="openBook">
 
-    <div class="page left"></div>
+    <div
+        class="page left"
+        onclick="turnLeftPage()"
+    ></div>
 
     <div
         class="page right"
-        onclick="turnPage()"
+        onclick="turnRightPage()"
     ></div>
 
     <div class="binding"></div>
@@ -582,7 +695,11 @@ function openBook() {
 }
 
 
-function turnPage() {
+/* =====================================================
+   SAG SAYFAYI SOLA CEvir
+   ===================================================== */
+
+function turnRightPage() {
 
     const page =
         document.querySelector(".page.right");
@@ -607,6 +724,54 @@ function turnPage() {
             if (
                 event.animationName !==
                 "turnRightPage"
+            ) {
+                return;
+            }
+
+            page.classList.remove("turning");
+
+            page.classList.add("turned");
+
+            page.removeEventListener(
+                "animationend",
+                handler
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   SOL SAYFAYI SAGA CEvir
+   ===================================================== */
+
+function turnLeftPage() {
+
+    const page =
+        document.querySelector(".page.left");
+
+    if (!page) {
+        return;
+    }
+
+    if (
+        page.classList.contains("turning") ||
+        page.classList.contains("turned")
+    ) {
+        return;
+    }
+
+    page.classList.add("turning");
+
+    page.addEventListener(
+        "animationend",
+        function handler(event) {
+
+            if (
+                event.animationName !==
+                "turnLeftPage"
             ) {
                 return;
             }
