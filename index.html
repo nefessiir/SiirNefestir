@@ -94,21 +94,17 @@ body::before {
     top:
         50%;
 
-    /*
-       KAPAGIN SAG KENARI ORTA CILDE SABIT
-    */
-
     transform:
-        translate(-100%, -50%);
+        translateY(-50%);
 
     transform-origin:
-        100% 50%;
+        0% 50%;
 
     cursor:
         pointer;
 
     border-radius:
-        20px 8px 8px 20px;
+        8px 20px 20px 8px;
 
     overflow:
         hidden;
@@ -397,7 +393,8 @@ body.cover-open #openBook {
         );
 
     box-shadow:
-        0 0 18px rgba(50,30,15,.22);
+        0 0 18px
+        rgba(50,30,15,.22);
 
     z-index:
         20;
@@ -607,55 +604,55 @@ body.cover-open #openBook {
 
     0% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(0deg);
     }
 
     12% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-8deg);
     }
 
     25% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-25deg);
     }
 
     40% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-50deg);
     }
 
     55% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-78deg);
     }
 
     70% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-108deg);
     }
 
     84% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-138deg);
     }
 
     94% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-165deg);
     }
 
     100% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-180deg);
     }
 }
@@ -679,55 +676,55 @@ body.cover-open #openBook {
 
     0% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-180deg);
     }
 
     12% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-165deg);
     }
 
     25% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-138deg);
     }
 
     40% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-108deg);
     }
 
     55% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-78deg);
     }
 
     70% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-50deg);
     }
 
     84% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-25deg);
     }
 
     94% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(-8deg);
     }
 
     100% {
         transform:
-            translate(-100%, -50%)
+            translateY(-50%)
             rotateY(0deg);
     }
 }
@@ -740,7 +737,7 @@ body.cover-open #openBook {
 body.cover-open #closedBook {
 
     transform:
-        translate(-100%, -50%)
+        translateY(-50%)
         rotateY(-180deg);
 
     z-index:
@@ -757,10 +754,10 @@ body.cover-open #closedBook {
     #closedBook {
 
         width:
-            43vw;
+            86vw;
 
         height:
-            calc(43vw * 1.409);
+            calc(86vw * 1.409);
 
         left:
             50%;
