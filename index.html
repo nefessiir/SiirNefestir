@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -107,7 +108,7 @@ body::before {
         8px 20px 20px 8px;
 
     overflow:
-        hidden;
+        visible;
 
     box-shadow:
         0 35px 70px rgba(0,0,0,.58);
@@ -124,10 +125,16 @@ body::before {
 
 
 /* =====================================================
-   KAPAK GORSEL
+   KAPAK ON YUZU
    ===================================================== */
 
 #closedBook img {
+
+    position:
+        absolute;
+
+    inset:
+        0;
 
     display:
         block;
@@ -152,11 +159,17 @@ body::before {
 
     backface-visibility:
         hidden;
+
+    border-radius:
+        8px 20px 20px 8px;
+
+    z-index:
+        2;
 }
 
 
 /* =====================================================
-   KAPAGIN IC YUZU
+   KAPAGIN ARKA YUZU
    ===================================================== */
 
 #closedBook::after {
@@ -170,13 +183,14 @@ body::before {
     inset:
         0;
 
+    width:
+        100%;
+
+    height:
+        100%;
+
     background:
-        linear-gradient(
-            90deg,
-            #d2bb8d 0%,
-            #e6d4ad 70%,
-            #d8c49b 100%
-        );
+        #f8f5ed;
 
     border-radius:
         8px 20px 20px 8px;
@@ -184,11 +198,22 @@ body::before {
     transform:
         rotateY(180deg);
 
+    transform-style:
+        preserve-3d;
+
     backface-visibility:
         hidden;
 
     pointer-events:
         none;
+
+    z-index:
+        1;
+
+    box-shadow:
+        inset
+        -8px 0 14px
+        rgba(80,60,35,.08);
 }
 
 
@@ -1011,87 +1036,4 @@ function turnRightPage() {
 
     if (
         page.classList.contains("turning") ||
-        page.classList.contains("turned")
-    ) {
-        return;
-    }
-
-    page.classList.add("turning");
-
-    page.addEventListener(
-        "animationend",
-        function handler(event) {
-
-            if (
-                event.animationName !==
-                "turnRightPage"
-            ) {
-                return;
-            }
-
-            page.classList.remove("turning");
-
-            page.classList.add("turned");
-
-            page.removeEventListener(
-                "animationend",
-                handler
-            );
-
-        }
-    );
-
-}
-
-
-/* =====================================================
-   SOL SAYFA
-   ===================================================== */
-
-function turnLeftPage() {
-
-    const page =
-        document.querySelector(".page.left");
-
-    if (!page) {
-        return;
-    }
-
-    if (
-        page.classList.contains("turning") ||
-        page.classList.contains("turned")
-    ) {
-        return;
-    }
-
-    page.classList.add("turning");
-
-    page.addEventListener(
-        "animationend",
-        function handler(event) {
-
-            if (
-                event.animationName !==
-                "turnLeftPage"
-            ) {
-                return;
-            }
-
-            page.classList.remove("turning");
-
-            page.classList.add("turned");
-
-            page.removeEventListener(
-                "animationend",
-                handler
-            );
-
-        }
-    );
-
-}
-
-</script>
-
-</body>
-</html>
+```
