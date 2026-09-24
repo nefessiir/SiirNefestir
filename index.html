@@ -7,8 +7,11 @@
 <title>Şiir Nefestir</title>
 
 <style>
+
 * {
     box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 html,
@@ -21,9 +24,14 @@ body {
 body {
     overflow: hidden;
     background:
-        radial-gradient(circle at center, #5a4637 0%, #2b211a 75%);
+        radial-gradient(
+            circle at center,
+            #5a4637 0%,
+            #2b211a 75%
+        );
     font-family: Georgia, "Times New Roman", serif;
 }
+
 
 /* =========================
    SAHNE
@@ -41,6 +49,7 @@ body {
     perspective-origin: center center;
 }
 
+
 /* =========================
    KITAP
 ========================= */
@@ -48,17 +57,28 @@ body {
 .book {
     position: relative;
 
-    width: min(94vw, calc(84vh * 1.60), 1500px);
+    /*
+       KAPAK DIKEY DIKDORTGEN
+    */
+    width: min(58vw, 700px);
+    height: min(84vh, 1000px);
 
-    aspect-ratio: 1.60;
+    aspect-ratio: auto;
 
     transform-style: preserve-3d;
 
-    user-select: none;
+    touch-action: none;
+
+    cursor: grab;
 }
 
+.book:active {
+    cursor: grabbing;
+}
+
+
 /* =========================
-   ACIK KITAP SAYFALARI
+   ACIK KITAP
 ========================= */
 
 .page {
@@ -75,6 +95,9 @@ body {
     box-shadow:
         0 12px 25px rgba(0,0,0,.18),
         inset 0 0 20px rgba(80,50,20,.08);
+
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .page-left {
@@ -82,8 +105,6 @@ body {
 
     border-radius:
         10px 0 0 10px;
-
-    transform-origin: right center;
 }
 
 .page-right {
@@ -91,90 +112,18 @@ body {
 
     border-radius:
         0 10px 10px 0;
-
-    transform-origin: left center;
 }
+
 
 /* =========================
    SOL SAYFA
+   GUN BATIMI YOK
 ========================= */
 
-.sunset {
-    position: absolute;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            to bottom,
-            #d98562 0%,
-            #e7a078 30%,
-            #e5b17f 50%,
-            #7d918d 51%,
-            #415d68 70%,
-            #1e3845 100%
-        );
+.page-left {
+    background: #f4ecd9;
 }
 
-.sunset::after {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    height: 42%;
-
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(255,255,255,.08),
-            rgba(0,0,0,.20)
-        );
-}
-
-.sailboat {
-    position: absolute;
-
-    left: 48%;
-    top: 54%;
-
-    width: 90px;
-    height: 55px;
-
-    transform: translate(-50%, -50%);
-}
-
-.sailboat::before {
-    content: "";
-
-    position: absolute;
-
-    left: 42px;
-    top: 0;
-
-    width: 3px;
-    height: 50px;
-
-    background: #241b16;
-}
-
-.sailboat::after {
-    content: "";
-
-    position: absolute;
-
-    left: 45px;
-    top: 4px;
-
-    width: 0;
-    height: 0;
-
-    border-top: 24px solid transparent;
-    border-bottom: 24px solid transparent;
-    border-right: 36px solid rgba(245,235,215,.92);
-}
 
 /* =========================
    SAG SAYFA
@@ -192,6 +141,8 @@ body {
     color: #493322;
 
     text-align: center;
+
+    pointer-events: none;
 }
 
 .contents h1 {
@@ -211,6 +162,7 @@ body {
 
     letter-spacing: .04em;
 }
+
 
 /* =========================
    CILT
@@ -244,6 +196,7 @@ body {
         0 0 15px rgba(0,0,0,.15);
 }
 
+
 /* =========================
    CEVRILEN SAYFA
 ========================= */
@@ -263,11 +216,20 @@ body {
 
     transform-style: preserve-3d;
 
-    pointer-events: none;
+    pointer-events: auto;
+
+    touch-action: none;
+
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-.page-front,
-.page-back {
+
+/* =========================
+   ON YUZ
+========================= */
+
+.page-front {
     position: absolute;
 
     inset: 0;
@@ -275,18 +237,10 @@ body {
     width: 100%;
     height: 100%;
 
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-
     overflow: hidden;
 
     background: #f4ecd9;
 
-    box-shadow:
-        0 10px 22px rgba(0,0,0,.16);
-}
-
-.page-front {
     padding: 10%;
 
     color: #493322;
@@ -295,6 +249,17 @@ body {
 
     border-radius:
         0 10px 10px 0;
+
+    /*
+       AYNALAMA YOK
+    */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .page-front h2 {
@@ -313,15 +278,50 @@ body {
     line-height: 1.8;
 }
 
-.page-back {
-    transform: rotateY(180deg);
-
-    background: #f4ecd9;
-}
 
 /* =========================
-   KAPAK
-   SADECE KAPALIYKEN GORUNUR
+   ARKA YUZ
+   TAMAMEN BOS
+========================= */
+
+.page-back {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: #f4ecd9;
+
+    /*
+       ARKA YUZDE HICBIR YAZI YOK
+    */
+
+    transform: rotateY(180deg);
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+/*
+   SAYFA CEVRILDIKTEN SONRA
+   ARKA YUZUN GORUNMESINI ENGELLE
+*/
+
+.turn-page {
+    backface-visibility: visible;
+}
+
+
+/* =========================
+   KAPALI KITAP KAPAGI
 ========================= */
 
 .closed-cover {
@@ -348,11 +348,16 @@ body {
     transition:
         opacity .35s ease,
         visibility .35s ease;
+
+    user-select: none;
+    -webkit-user-select: none;
 }
 
+
 /*
-   Kapak gorseli kitabın oranina
-   bire bir oturur.
+   KAPAK GORSELİ
+   DIKEY KAPAK ORANINI KORUYARAK
+   TAM KAPAK ALANINA SIGAR
 */
 
 .closed-cover img {
@@ -361,15 +366,20 @@ body {
 
     display: block;
 
-    /*
-       KIRPMA YOK
-       BOSLUK YOK
-       GORSEL KITABI TAM DOLDURUR
-    */
-    object-fit: fill;
+    object-fit: contain;
 
     object-position: center center;
+
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
 }
+
+
+/*
+   KITAP ACILINCA KAPAK TAMAMEN KAYBOLUR
+*/
 
 .book.open .closed-cover {
     opacity: 0;
@@ -379,8 +389,9 @@ body {
     pointer-events: none;
 }
 
+
 /* =========================
-   HAREKET
+   ACIK SAYFA HAFIF BOMBE
 ========================= */
 
 .book.open .page-left {
@@ -395,21 +406,6 @@ body {
         rotateY(2deg);
 }
 
-/* =========================
-   TABLET
-========================= */
-
-@media (max-width: 900px) {
-
-    .book {
-        width: 94vw;
-        aspect-ratio: 1.45;
-    }
-
-    .binding {
-        width: 22px;
-    }
-}
 
 /* =========================
    TELEFON
@@ -418,20 +414,18 @@ body {
 @media (max-width: 600px) {
 
     .book {
-        width: 96vw;
-        aspect-ratio: 1.35;
+        width: 88vw;
+        height: 82vh;
     }
 
     .binding {
         width: 16px;
     }
-
-    .contents {
-        padding: 8%;
-    }
 }
+
 </style>
 </head>
+
 
 <body>
 
@@ -439,14 +433,9 @@ body {
 
     <div class="book" id="book">
 
+
         <!-- SOL SAYFA -->
-        <div class="page page-left">
-
-            <div class="sunset"></div>
-
-            <div class="sailboat"></div>
-
-        </div>
+        <div class="page page-left"></div>
 
 
         <!-- SAG SAYFA -->
@@ -469,6 +458,7 @@ body {
         <!-- CEVRILEN SAYFA -->
         <div class="turn-page" id="turnPage">
 
+            <!-- ON YUZ -->
             <div class="page-front">
 
                 <h2>ŞİİR NEFESTİR</h2>
@@ -480,6 +470,8 @@ body {
 
             </div>
 
+
+            <!-- ARKA YUZ TAMAMEN BOS -->
             <div class="page-back"></div>
 
         </div>
@@ -489,12 +481,16 @@ body {
         <div class="binding"></div>
 
 
-        <!-- KAPALI KITAP KAPAGI -->
-        <div class="closed-cover" id="closedCover">
+        <!-- KAPALI KAPAK -->
+        <div
+            class="closed-cover"
+            id="closedCover"
+        >
 
             <img
                 src="kapak-gorsel.jpg"
                 alt="Şiir Nefestir"
+                draggable="false"
             >
 
         </div>
@@ -506,19 +502,30 @@ body {
 
 <script>
 
-const book = document.getElementById("book");
-const turnPage = document.getElementById("turnPage");
+const book =
+    document.getElementById("book");
+
+const turnPage =
+    document.getElementById("turnPage");
+
 
 let progress = 0;
 
 let startX = 0;
+
 let startProgress = 0;
 
 let dragging = false;
 
+
+/* =========================
+   SAYFAYI RENDER ET
+========================= */
+
 function render() {
 
-    const angle = -180 * progress;
+    const angle =
+        -180 * progress;
 
     const curve =
         Math.sin(progress * Math.PI);
@@ -529,18 +536,23 @@ function render() {
     const rotateZ =
         curve * 0.20;
 
+
     turnPage.style.transform =
         "rotateY(" + angle + "deg) " +
         "rotateX(" + rotateX + "deg) " +
         "rotateZ(" + rotateZ + "deg)";
 
+
     const shadow =
-        0.08 + curve * 0.14;
+        0.08 +
+        curve * 0.14;
+
 
     turnPage.style.filter =
         "drop-shadow(3px 6px 14px rgba(0,0,0," +
         shadow +
         "))";
+
 
     if (progress > 0.01) {
 
@@ -560,12 +572,15 @@ function render() {
 
 function animateTo(target) {
 
-    const start = progress;
+    const start =
+        progress;
 
-    const duration = 420;
+    const duration =
+        420;
 
     const startTime =
         performance.now();
+
 
     function step(now) {
 
@@ -573,72 +588,106 @@ function animateTo(target) {
             now - startTime;
 
         const t =
-            Math.min(elapsed / duration, 1);
+            Math.min(
+                elapsed / duration,
+                1
+            );
+
 
         const eased =
-            t < .5
+            t < 0.5
                 ? 2 * t * t
-                : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                : 1 -
+                  Math.pow(
+                      -2 * t + 2,
+                      2
+                  ) / 2;
+
 
         progress =
             start +
-            (target - start) * eased;
+            (target - start) *
+            eased;
+
 
         render();
+
 
         if (t < 1) {
 
             requestAnimationFrame(step);
 
         }
+
     }
+
 
     requestAnimationFrame(step);
 }
 
 
 /* =========================
-   MOUSE
+   MOUSE SAYFA CEVIRME
+   SADECE SAYFAYI KONTROL EDER
 ========================= */
 
-book.addEventListener(
+turnPage.addEventListener(
     "pointerdown",
     function(e) {
 
+        e.preventDefault();
+
         dragging = true;
 
-        startX = e.clientX;
+        startX =
+            e.clientX;
 
-        startProgress = progress;
+        startProgress =
+            progress;
 
-        book.setPointerCapture(e.pointerId);
+
+        turnPage.setPointerCapture(
+            e.pointerId
+        );
+
     }
 );
 
 
-book.addEventListener(
+turnPage.addEventListener(
     "pointermove",
     function(e) {
 
         if (!dragging) return;
 
+        e.preventDefault();
+
         const rect =
             book.getBoundingClientRect();
+
 
         const delta =
             startX - e.clientX;
 
+
         progress =
             startProgress +
-            delta / (rect.width * 0.5);
+            delta /
+            (rect.width * 0.5);
+
 
         progress =
             Math.max(
                 0,
-                Math.min(1, progress)
+                Math.min(
+                    1,
+                    progress
+                )
             );
 
+
         render();
+
     }
 );
 
@@ -647,13 +696,21 @@ function finishDrag(e) {
 
     if (!dragging) return;
 
+    e.preventDefault();
+
     dragging = false;
 
+
     try {
-        book.releasePointerCapture(e.pointerId);
+
+        turnPage.releasePointerCapture(
+            e.pointerId
+        );
+
     } catch (_) {}
 
-    if (progress > .5) {
+
+    if (progress > 0.5) {
 
         animateTo(1);
 
@@ -662,21 +719,42 @@ function finishDrag(e) {
         animateTo(0);
 
     }
+
 }
 
 
-book.addEventListener(
+turnPage.addEventListener(
     "pointerup",
     finishDrag
 );
 
-book.addEventListener(
+
+turnPage.addEventListener(
     "pointercancel",
     finishDrag
 );
 
 
-/* BASLANGIC */
+/* =========================
+   KAPAKTA MOUSE
+   SAYFA CEVIRMEYE GECMESIN
+========================= */
+
+closedCover.addEventListener(
+    "pointerdown",
+    function(e) {
+
+        e.preventDefault();
+
+        e.stopPropagation();
+
+    }
+);
+
+
+/* =========================
+   BASLANGIC
+========================= */
 
 render();
 
