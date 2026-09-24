@@ -31,7 +31,7 @@ body {
 }
 
 /* =========================================================
-   ARKA PLAN YAPRAKLARI
+   ARKA PLAN
    ========================================================= */
 
 body::before {
@@ -76,9 +76,7 @@ body::before {
 #closedBook img {
     width: 100%;
     height: 100%;
-
     display: block;
-
     object-fit: fill;
 }
 
@@ -100,10 +98,7 @@ body::before {
         scale(0.96);
 
     display: none;
-
     opacity: 0;
-
-    perspective: 1800px;
 
     filter:
         drop-shadow(0 30px 30px rgba(0, 0, 0, 0.55));
@@ -111,226 +106,60 @@ body::before {
     z-index: 5;
 }
 
-/* =========================================================
-   ANA KITAP GOVDESI
-   ========================================================= */
-
-.book-body {
-    position: absolute;
-    inset: 0;
-
-    overflow: visible;
-}
-
-/* =========================================================
-   SOL SAYFA
-   ========================================================= */
-
-.page.left {
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 50%;
-    height: 100%;
-
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            90deg,
-            #d8c7a5 0%,
-            #eee3c7 65%,
-            #f6edda 100%
-        );
-
-    /*
-       Sol sayfanın ust ve alt kenarlari
-       merkezden disariya dogru yumusak bir yay olusturuyor.
-    */
-    clip-path: path(
-        "M 0 24
-         C 115 12, 205 18, 503 78
-         L 503 610
-         C 350 650, 170 685, 0 705
-         Z"
-    );
-
-    border-radius: 22px 0 0 28px;
-
-    box-shadow:
-        inset -20px 0 28px rgba(75, 53, 32, 0.18),
-        inset 0 2px 5px rgba(255,255,255,0.65);
-}
-
-/* =========================================================
-   SAG SAYFA
-   ========================================================= */
-
-.page.right {
-    position: absolute;
-
-    right: 0;
-    top: 0;
-
-    width: 50%;
-    height: 100%;
-
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            270deg,
-            #d8c7a5 0%,
-            #eee3c7 65%,
-            #f6edda 100%
-        );
-
-    /*
-       Sol sayfanin tam aynasi.
-    */
-    clip-path: path(
-        "M 503 24
-         C 388 12, 298 18, 0 78
-         L 0 610
-         C 153 650, 333 685, 503 705
-         Z"
-    );
-
-    border-radius: 0 22px 28px 0;
-
-    box-shadow:
-        inset 20px 0 28px rgba(75, 53, 32, 0.18),
-        inset 0 2px 5px rgba(255,255,255,0.65);
-}
-
-/* =========================================================
-   SAYFA DOKUSU
-   ========================================================= */
-
-.page::after {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    pointer-events: none;
-
-    opacity: 0.22;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            rgba(100, 75, 45, 0.06) 0px,
-            rgba(100, 75, 45, 0.06) 1px,
-            transparent 1px,
-            transparent 4px
-        );
-}
-
-/* =========================================================
-   ORTA KITAP SIRTI
-   ========================================================= */
-
-.binding {
-    position: absolute;
-
-    left: 50%;
-    top: 18px;
-
-    width: 30px;
-    height: 665px;
-
-    transform: translateX(-50%);
-
-    z-index: 20;
-
-    border-radius: 50%;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(75, 52, 31, 0.15) 0%,
-            rgba(75, 52, 31, 0.35) 30%,
-            rgba(255, 248, 225, 0.72) 50%,
-            rgba(75, 52, 31, 0.35) 70%,
-            rgba(75, 52, 31, 0.15) 100%
-        );
-
-    box-shadow:
-        0 0 14px rgba(45, 30, 20, 0.25);
-}
-
-/* =========================================================
-   ALTTAKI KALIN SAYFA BLOĞU
-   ========================================================= */
-
-.book-thickness {
-    position: absolute;
-
-    left: 2%;
-    right: 2%;
-
-    bottom: -18px;
-
-    height: 42px;
-
-    z-index: -1;
-
-    border-radius: 0 0 48% 48%;
-
-    background:
-        linear-gradient(
-            180deg,
-            #b7a17d 0%,
-            #d4c19c 22%,
-            #a88e69 58%,
-            #80684c 100%
-        );
-
-    box-shadow:
-        0 13px 18px rgba(0, 0, 0, 0.45);
-}
-
-/* Sayfa çizgileri */
-
-.book-thickness::before {
-    content: "";
-
-    position: absolute;
-
-    left: 5%;
-    right: 5%;
-
-    top: 8px;
-
-    height: 2px;
-
-    background: rgba(255, 247, 221, 0.7);
-
-    box-shadow:
-        0 6px 0 rgba(255, 247, 221, 0.45),
-        0 12px 0 rgba(78, 57, 38, 0.18),
-        0 18px 0 rgba(255, 247, 221, 0.3);
-}
-
-/* =========================================================
-   ACILIS
-   ========================================================= */
-
 body.opening #closedBook {
     display: none;
 }
 
 body.opening #openBook {
     display: block;
-
     opacity: 1;
 
     transform:
         translate(-50%, -50%)
         scale(1);
+}
+
+/* =========================================================
+   SVG KITAP
+   ========================================================= */
+
+.book-svg {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    overflow: visible;
+}
+
+/* =========================================================
+   SAYFA DOKUSU
+   ========================================================= */
+
+.page-texture {
+    opacity: 0.18;
+}
+
+/* =========================================================
+   ORTA SIRT
+   ========================================================= */
+
+.spine-shadow {
+    fill: url(#spineGradient);
+}
+
+/* =========================================================
+   ALT SAYFA KALINLIĞI
+   ========================================================= */
+
+.page-edge {
+    fill: url(#edgeGradient);
+}
+
+.page-line {
+    fill: none;
+    stroke: rgba(255, 247, 220, 0.42);
+    stroke-width: 1.2;
 }
 
 /* =========================================================
@@ -350,10 +179,6 @@ body.opening #openBook {
 
     #openBook {
         width: 96vw;
-    }
-
-    .binding {
-        width: 20px;
     }
 }
 </style>
@@ -376,17 +201,406 @@ body.opening #openBook {
 
 <div id="openBook">
 
-    <div class="book-body">
+    <svg
+        class="book-svg"
+        viewBox="0 0 1006 709"
+        preserveAspectRatio="xMidYMid meet"
+        xmlns="http://www.w3.org/2000/svg"
+    >
 
-        <div class="page left"></div>
+        <defs>
 
-        <div class="page right"></div>
+            <!-- Sol sayfa -->
+            <linearGradient
+                id="leftPageGradient"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="0"
+            >
+                <stop offset="0%" stop-color="#c9b38d"/>
+                <stop offset="55%" stop-color="#eadfca"/>
+                <stop offset="100%" stop-color="#f6eddc"/>
+            </linearGradient>
 
-        <div class="binding"></div>
+            <!-- Sağ sayfa -->
+            <linearGradient
+                id="rightPageGradient"
+                x1="1"
+                y1="0"
+                x2="0"
+                y2="0"
+            >
+                <stop offset="0%" stop-color="#c9b38d"/>
+                <stop offset="55%" stop-color="#eadfca"/>
+                <stop offset="100%" stop-color="#f6eddc"/>
+            </linearGradient>
 
-        <div class="book-thickness"></div>
+            <!-- Alt sayfa kalınlığı -->
+            <linearGradient
+                id="edgeGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+            >
+                <stop offset="0%" stop-color="#e0cfaa"/>
+                <stop offset="25%" stop-color="#c2aa82"/>
+                <stop offset="60%" stop-color="#a18763"/>
+                <stop offset="100%" stop-color="#725a40"/>
+            </linearGradient>
 
-    </div>
+            <!-- Orta sırt -->
+            <linearGradient
+                id="spineGradient"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="0"
+            >
+                <stop offset="0%" stop-color="rgba(70,45,28,0)"/>
+                <stop offset="35%" stop-color="rgba(70,45,28,0.20)"/>
+                <stop offset="50%" stop-color="rgba(255,247,220,0.65)"/>
+                <stop offset="65%" stop-color="rgba(70,45,28,0.20)"/>
+                <stop offset="100%" stop-color="rgba(70,45,28,0)"/>
+            </linearGradient>
+
+            <!-- Kağıt dokusu -->
+            <pattern
+                id="paperTexture"
+                width="8"
+                height="8"
+                patternUnits="userSpaceOnUse"
+            >
+                <path
+                    d="M0 1 H8
+                       M0 5 H8"
+                    stroke="#795f42"
+                    stroke-width="0.6"
+                    opacity="0.22"
+                />
+            </pattern>
+
+            <!-- Hafif gölge -->
+            <filter id="softShadow">
+                <feGaussianBlur
+                    stdDeviation="8"
+                />
+            </filter>
+
+        </defs>
+
+
+        <!-- =================================================
+             KITABIN ALT GÖLGESİ
+             ================================================= -->
+
+        <path
+            d="
+                M 65 638
+
+                C 180 662,
+                  320 680,
+                  503 686
+
+                C 686 680,
+                  826 662,
+                  941 638
+
+                L 932 679
+
+                C 800 699,
+                  655 707,
+                  503 709
+
+                C 351 707,
+                  206 699,
+                  74 679
+
+                Z
+            "
+            fill="rgba(0,0,0,0.28)"
+            filter="url(#softShadow)"
+        />
+
+
+        <!-- =================================================
+             SOL ALT SAYFA BLOĞU
+             ================================================= -->
+
+        <path
+            class="page-edge"
+            d="
+                M 503 544
+
+                C 430 565,
+                  342 590,
+                  245 604
+
+                C 165 616,
+                  94 615,
+                  48 601
+
+                L 56 659
+
+                C 120 678,
+                  194 682,
+                  274 675
+
+                C 363 668,
+                  440 650,
+                  503 633
+
+                Z
+            "
+        />
+
+
+        <!-- =================================================
+             SAG ALT SAYFA BLOĞU
+             ================================================= -->
+
+        <path
+            class="page-edge"
+            d="
+                M 503 544
+
+                C 576 565,
+                  664 590,
+                  761 604
+
+                C 841 616,
+                  912 615,
+                  958 601
+
+                L 950 659
+
+                C 886 678,
+                  812 682,
+                  732 675
+
+                C 643 668,
+                  566 650,
+                  503 633
+
+                Z
+            "
+        />
+
+
+        <!-- =================================================
+             SOL ANA SAYFA
+             ================================================= -->
+
+        <path
+            d="
+                M 503 72
+
+                C 438 61,
+                  354 67,
+                  270 84
+
+                C 188 101,
+                  110 127,
+                  45 158
+
+                C 33 164,
+                  28 175,
+                  30 190
+
+                C 37 282,
+                  45 392,
+                  52 490
+
+                C 55 526,
+                  65 548,
+                  88 558
+
+                C 145 583,
+                  220 583,
+                  298 571
+
+                C 376 559,
+                  445 542,
+                  503 520
+
+                Z
+            "
+            fill="url(#leftPageGradient)"
+        />
+
+
+        <!-- =================================================
+             SAG ANA SAYFA
+             ================================================= -->
+
+        <path
+            d="
+                M 503 72
+
+                C 568 61,
+                  652 67,
+                  736 84
+
+                C 818 101,
+                  896 127,
+                  961 158
+
+                C 973 164,
+                  978 175,
+                  976 190
+
+                C 969 282,
+                  961 392,
+                  954 490
+
+                C 951 526,
+                  941 548,
+                  918 558
+
+                C 861 583,
+                  786 583,
+                  708 571
+
+                C 630 559,
+                  561 542,
+                  503 520
+
+                Z
+            "
+            fill="url(#rightPageGradient)"
+        />
+
+
+        <!-- =================================================
+             SOL SAYFA DOKUSU
+             ================================================= -->
+
+        <path
+            d="
+                M 503 72
+                C 438 61,354 67,270 84
+                C 188 101,110 127,45 158
+                C 33 164,28 175,30 190
+                C 37 282,45 392,52 490
+                C 55 526,65 548,88 558
+                C 145 583,220 583,298 571
+                C 376 559,445 542,503 520
+                Z
+            "
+            fill="url(#paperTexture)"
+            class="page-texture"
+        />
+
+
+        <!-- =================================================
+             SAG SAYFA DOKUSU
+             ================================================= -->
+
+        <path
+            d="
+                M 503 72
+                C 568 61,652 67,736 84
+                C 818 101,896 127,961 158
+                C 973 164,978 175,976 190
+                C 969 282,961 392,954 490
+                C 951 526,941 548,918 558
+                C 861 583,786 583,708 571
+                C 630 559,561 542,503 520
+                Z
+            "
+            fill="url(#paperTexture)"
+            class="page-texture"
+        />
+
+
+        <!-- =================================================
+             SAYFA ALT CIZGILERI
+             ================================================= -->
+
+        <path
+            class="page-line"
+            d="
+                M 65 613
+                C 180 637,340 645,503 607
+            "
+        />
+
+        <path
+            class="page-line"
+            d="
+                M 941 613
+                C 826 637,666 645,503 607
+            "
+        />
+
+        <path
+            class="page-line"
+            d="
+                M 72 625
+                C 190 650,344 658,503 620
+            "
+        />
+
+        <path
+            class="page-line"
+            d="
+                M 934 625
+                C 816 650,662 658,503 620
+            "
+        />
+
+
+        <!-- =================================================
+             ORTA KITAP SIRTI
+             ================================================= -->
+
+        <path
+            class="spine-shadow"
+            d="
+                M 489 69
+
+                C 495 160,
+                  499 260,
+                  500 360
+
+                C 501 428,
+                  501 478,
+                  503 520
+
+                C 505 478,
+                  505 428,
+                  506 360
+
+                C 507 260,
+                  511 160,
+                  517 69
+
+                C 508 66,
+                  498 66,
+                  489 69
+
+                Z
+            "
+            opacity="0.75"
+        />
+
+
+        <!-- =================================================
+             ORTA HAFIF ISIK
+             ================================================= -->
+
+        <path
+            d="
+                M 499 75
+                C 500 180,501 310,503 515
+                C 505 310,506 180,507 75
+                Z
+            "
+            fill="rgba(255,250,230,0.35)"
+        />
+
+    </svg>
 
 </div>
 
