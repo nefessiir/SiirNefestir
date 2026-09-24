@@ -241,8 +241,10 @@ body::before {
 
     transform:
         none;
-}
 
+    z-index:
+        2;
+}
 
 
 /* =====================================================
@@ -267,7 +269,57 @@ body::before {
 
     transform:
         none;
+
+    transform-origin:
+        0% 50%;
+
+    z-index:
+        4;
+
+    cursor:
+        pointer;
+
+    will-change:
+        transform;
+
+    transition:
+        box-shadow .2s ease;
 }
+
+
+/* =====================================================
+   SAG SAYFANIN ARKA YUZU
+   ===================================================== */
+
+.page.right::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #cdb789 0%,
+            #dfcca4 48%,
+            #cfb98d 100%
+        );
+
+    opacity:
+        0;
+
+    pointer-events:
+        none;
+
+    z-index:
+        -1;
+}
+
 
 /* =====================================================
    KAGIT DOKUSU
@@ -344,6 +396,252 @@ body::before {
 
     pointer-events:
         none;
+}
+
+
+/* =====================================================
+   SAYFA CEVIRME GOLGESI
+   ===================================================== */
+
+.page.right {
+
+    box-shadow:
+        -5px 12px 25px rgba(0,0,0,.18),
+        0 18px 35px rgba(0,0,0,.28);
+}
+
+
+/* =====================================================
+   SAYFA CEVIRME
+   ===================================================== */
+
+.page.right.turning {
+
+    animation:
+        turnRightPage
+        1.75s
+        cubic-bezier(.20,.68,.28,1)
+        forwards;
+
+    cursor:
+        default;
+
+    pointer-events:
+        none;
+}
+
+
+/* =====================================================
+   DALGALI SAYFA HAREKETI
+   ===================================================== */
+
+@keyframes turnRightPage {
+
+    /* Baslangic */
+
+    0% {
+
+        transform:
+            perspective(1800px)
+            rotateY(0deg)
+            rotateZ(0deg)
+            skewX(0deg)
+            translate3d(0,0,0);
+
+        box-shadow:
+            -5px 12px 25px rgba(0,0,0,.18),
+            0 18px 35px rgba(0,0,0,.28);
+    }
+
+
+    /* Sayfa ortadan kalkmaya basliyor */
+
+    8% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-12deg)
+            rotateZ(-1deg)
+            skewX(-1deg)
+            translate3d(5px,-7px,0);
+
+        box-shadow:
+            -10px 20px 30px rgba(0,0,0,.23),
+            0 25px 40px rgba(0,0,0,.24);
+    }
+
+
+    /* Ilk dalga */
+
+    18% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-30deg)
+            rotateZ(-2deg)
+            skewX(-3deg)
+            translate3d(13px,-18px,0);
+
+        box-shadow:
+            -15px 28px 38px rgba(0,0,0,.28),
+            0 30px 45px rgba(0,0,0,.25);
+    }
+
+
+    /* Sayfa yukari kalkiyor */
+
+    30% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-58deg)
+            rotateZ(-4deg)
+            skewX(-5deg)
+            translate3d(24px,-27px,0);
+
+        box-shadow:
+            -20px 34px 42px rgba(0,0,0,.30),
+            0 35px 50px rgba(0,0,0,.25);
+    }
+
+
+    /* En yuksek nokta */
+
+    43% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-88deg)
+            rotateZ(-5deg)
+            skewX(-7deg)
+            translate3d(30px,-30px,0);
+
+        box-shadow:
+            -25px 40px 45px rgba(0,0,0,.34),
+            0 38px 55px rgba(0,0,0,.28);
+    }
+
+
+    /* Sola gecmeye basliyor */
+
+    55% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-115deg)
+            rotateZ(-4deg)
+            skewX(-5deg)
+            translate3d(26px,-21px,0);
+
+        box-shadow:
+            -20px 34px 42px rgba(0,0,0,.30),
+            0 32px 48px rgba(0,0,0,.25);
+    }
+
+
+    /* Dalga geri donuyor */
+
+    67% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-140deg)
+            rotateZ(-2deg)
+            skewX(-3deg)
+            translate3d(18px,-9px,0);
+
+        box-shadow:
+            -14px 27px 35px rgba(0,0,0,.25),
+            0 25px 40px rgba(0,0,0,.22);
+    }
+
+
+    /* Sol sayfanin uzerine geliyor */
+
+    78% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-160deg)
+            rotateZ(1deg)
+            skewX(-1deg)
+            translate3d(9px,2px,0);
+
+        box-shadow:
+            -9px 18px 27px rgba(0,0,0,.20),
+            0 18px 32px rgba(0,0,0,.18);
+    }
+
+
+    /* Dusmeden hemen once */
+
+    90% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-174deg)
+            rotateZ(1deg)
+            skewX(0deg)
+            translate3d(3px,6px,0);
+
+        box-shadow:
+            -5px 10px 20px rgba(0,0,0,.16),
+            0 12px 25px rgba(0,0,0,.14);
+    }
+
+
+    /* Sol tarafa yumusak dusus */
+
+    96% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-179deg)
+            rotateZ(0deg)
+            skewX(0deg)
+            translate3d(1px,3px,0);
+
+        box-shadow:
+            -2px 5px 12px rgba(0,0,0,.10),
+            0 8px 16px rgba(0,0,0,.10);
+    }
+
+
+    /* Son */
+
+    100% {
+
+        transform:
+            perspective(1800px)
+            rotateY(-180deg)
+            rotateZ(0deg)
+            skewX(0deg)
+            translate3d(0,0,0);
+
+        box-shadow:
+            0 3px 7px rgba(0,0,0,.08);
+    }
+}
+
+
+/* =====================================================
+   CEVRILMIS SAYFA
+   ===================================================== */
+
+.page.right.turned {
+
+    transform:
+        perspective(1800px)
+        rotateY(-180deg);
+
+    z-index:
+        1;
+
+    pointer-events:
+        none;
+
+    box-shadow:
+        0 3px 7px rgba(0,0,0,.08);
 }
 
 
@@ -440,7 +738,10 @@ body.opening #openBook {
 
     <div class="page left"></div>
 
-    <div class="page right"></div>
+    <div
+        class="page right"
+        onclick="turnPage()"
+    ></div>
 
     <div class="binding"></div>
 
@@ -449,9 +750,54 @@ body.opening #openBook {
 
 <script>
 
+/* =====================================================
+   KITABI AC
+   ===================================================== */
+
 function openBook() {
 
     document.body.classList.add("opening");
+
+}
+
+
+/* =====================================================
+   SAG SAYFAYI SOLA CEVIR
+   ===================================================== */
+
+function turnPage() {
+
+    const page = document.querySelector(".page.right");
+
+    if (!page) {
+        return;
+    }
+
+    if (
+        page.classList.contains("turning") ||
+        page.classList.contains("turned")
+    ) {
+        return;
+    }
+
+    page.classList.add("turning");
+
+    page.addEventListener(
+        "animationend",
+        function finishPageTurn() {
+
+            page.classList.remove("turning");
+
+            page.classList.add("turned");
+
+            page.removeEventListener(
+                "animationend",
+                finishPageTurn
+            );
+
+        },
+        { once: true }
+    );
 
 }
 
