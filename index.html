@@ -75,7 +75,7 @@ body::before {
 
 
 /* =====================================================
-   KAPALI KITAP
+   KAPAK
    ===================================================== */
 
 #closedBook {
@@ -97,6 +97,9 @@ body::before {
     transform:
         translate(-50%, -50%);
 
+    transform-origin:
+        0% 50%;
+
     cursor:
         pointer;
 
@@ -110,9 +113,19 @@ body::before {
         0 35px 70px rgba(0,0,0,.58);
 
     z-index:
-        10;
+        30;
+
+    will-change:
+        transform;
+
+    transform-style:
+        preserve-3d;
 }
 
+
+/* =====================================================
+   KAPAK GORSEL
+   ===================================================== */
 
 #closedBook img {
 
@@ -165,7 +178,7 @@ body::before {
         scale(.96);
 
     display:
-        none;
+        block;
 
     opacity:
         0;
@@ -178,6 +191,21 @@ body::before {
 
     transform-style:
         preserve-3d;
+
+    pointer-events:
+        none;
+}
+
+
+/* =====================================================
+   KAPAK ACILIRKEN KITAP GORUNUR
+   ===================================================== */
+
+body.cover-opening #openBook,
+body.cover-open #openBook {
+
+    opacity:
+        1;
 }
 
 
@@ -377,7 +405,7 @@ body::before {
 
 
 /* =====================================================
-   SAGDAN SOLA SAYFA DONUSU
+   SAGDAN SOLA SAYFA
    ===================================================== */
 
 .page.right.turning {
@@ -396,63 +424,54 @@ body::before {
 @keyframes turnRightPage {
 
     0% {
-
         transform:
             translateX(-1px)
             rotateY(0deg);
     }
 
     12% {
-
         transform:
             translateX(-1px)
             rotateY(-8deg);
     }
 
     25% {
-
         transform:
             translateX(-1px)
             rotateY(-25deg);
     }
 
     40% {
-
         transform:
             translateX(-1px)
             rotateY(-50deg);
     }
 
     55% {
-
         transform:
             translateX(-1px)
             rotateY(-78deg);
     }
 
     70% {
-
         transform:
             translateX(-1px)
             rotateY(-108deg);
     }
 
     84% {
-
         transform:
             translateX(-1px)
             rotateY(-138deg);
     }
 
     94% {
-
         transform:
             translateX(-1px)
             rotateY(-165deg);
     }
 
     100% {
-
         transform:
             translateX(-1px)
             rotateY(-180deg);
@@ -461,7 +480,7 @@ body::before {
 
 
 /* =====================================================
-   SOLDAN SAGA SAYFA DONUSU
+   SOLDAN SAGA SAYFA
    ===================================================== */
 
 .page.left.turning {
@@ -480,63 +499,54 @@ body::before {
 @keyframes turnLeftPage {
 
     0% {
-
         transform:
             translateX(1px)
             rotateY(0deg);
     }
 
     12% {
-
         transform:
             translateX(1px)
             rotateY(8deg);
     }
 
     25% {
-
         transform:
             translateX(1px)
             rotateY(25deg);
     }
 
     40% {
-
         transform:
             translateX(1px)
             rotateY(50deg);
     }
 
     55% {
-
         transform:
             translateX(1px)
             rotateY(78deg);
     }
 
     70% {
-
         transform:
             translateX(1px)
             rotateY(108deg);
     }
 
     84% {
-
         transform:
             translateX(1px)
             rotateY(138deg);
     }
 
     94% {
-
         transform:
             translateX(1px)
             rotateY(165deg);
     }
 
     100% {
-
         transform:
             translateX(1px)
             rotateY(180deg);
@@ -545,7 +555,7 @@ body::before {
 
 
 /* =====================================================
-   DONMUS SAG SAYFA
+   DONMUS SAYFALAR
    ===================================================== */
 
 .page.right.turned {
@@ -562,10 +572,6 @@ body::before {
 }
 
 
-/* =====================================================
-   DONMUS SOL SAYFA
-   ===================================================== */
-
 .page.left.turned {
 
     transform:
@@ -581,31 +587,182 @@ body::before {
 
 
 /* =====================================================
-   KAPAK
+   KAPAK ACILMA ANIMASYONU
    ===================================================== */
 
-body.opening #closedBook {
+#closedBook.cover-turning {
 
-    display:
-        none;
+    animation:
+        openCover
+        1.8s
+        cubic-bezier(.20,.68,.28,1)
+        forwards;
+}
+
+
+@keyframes openCover {
+
+    0% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(0deg);
+    }
+
+    12% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-8deg);
+    }
+
+    25% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-25deg);
+    }
+
+    40% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-50deg);
+    }
+
+    55% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-78deg);
+    }
+
+    70% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-108deg);
+    }
+
+    84% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-138deg);
+    }
+
+    94% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-165deg);
+    }
+
+    100% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-180deg);
+    }
 }
 
 
 /* =====================================================
-   ACILMIS KITAP
+   KAPAK KAPANMA ANIMASYONU
    ===================================================== */
 
-body.opening #openBook {
+#closedBook.cover-closing {
 
-    display:
-        block;
+    animation:
+        closeCover
+        1.8s
+        cubic-bezier(.20,.68,.28,1)
+        forwards;
+}
 
-    opacity:
-        1;
+
+@keyframes closeCover {
+
+    0% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-180deg);
+    }
+
+    12% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-165deg);
+    }
+
+    25% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-138deg);
+    }
+
+    40% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-108deg);
+    }
+
+    55% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-78deg);
+    }
+
+    70% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-50deg);
+    }
+
+    84% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-25deg);
+    }
+
+    94% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(-8deg);
+    }
+
+    100% {
+
+        transform:
+            translate(-50%, -50%)
+            rotateY(0deg);
+    }
+}
+
+
+/* =====================================================
+   KAPAK ACILDI
+   ===================================================== */
+
+body.cover-open #closedBook {
 
     transform:
         translate(-50%, -50%)
-        scale(.96);
+        rotateY(-180deg);
+
+    z-index:
+        3;
+
+    pointer-events:
+        auto;
 }
 
 
@@ -638,6 +795,7 @@ body.opening #openBook {
         aspect-ratio:
             1006 / 709;
     }
+
 }
 
 </style>
@@ -648,12 +806,12 @@ body.opening #openBook {
 
 
 <!-- =====================================================
-     KAPALI KITAP
+     KAPAK
      ===================================================== -->
 
 <div
     id="closedBook"
-    onclick="openBook()"
+    onclick="toggleCover()"
 >
 
     <img
@@ -688,15 +846,126 @@ body.opening #openBook {
 
 <script>
 
-function openBook() {
+/* =====================================================
+   KAPAK AC / KAPAT
+   ===================================================== */
 
-    document.body.classList.add("opening");
+function toggleCover() {
+
+    const cover =
+        document.getElementById("closedBook");
+
+    if (!cover) {
+        return;
+    }
+
+    if (
+        cover.classList.contains("cover-turning") ||
+        cover.classList.contains("cover-closing")
+    ) {
+        return;
+    }
+
+
+    if (
+        document.body.classList.contains("cover-open")
+    ) {
+
+        document.body.classList.add("cover-closing");
+
+        cover.classList.add("cover-closing");
+
+        cover.addEventListener(
+            "animationend",
+            closeCoverFinished,
+            {
+                once: true
+            }
+        );
+
+    } else {
+
+        document.body.classList.add("cover-opening");
+
+        cover.classList.add("cover-turning");
+
+        cover.addEventListener(
+            "animationend",
+            openCoverFinished,
+            {
+                once: true
+            }
+        );
+
+    }
 
 }
 
 
 /* =====================================================
-   SAG SAYFAYI SOLA CEvir
+   KAPAK ACILDI
+   ===================================================== */
+
+function openCoverFinished(event) {
+
+    if (
+        event.animationName !==
+        "openCover"
+    ) {
+        return;
+    }
+
+    const cover =
+        document.getElementById("closedBook");
+
+    cover.classList.remove(
+        "cover-turning"
+    );
+
+    document.body.classList.remove(
+        "cover-opening"
+    );
+
+    document.body.classList.add(
+        "cover-open"
+    );
+
+}
+
+
+/* =====================================================
+   KAPAK KAPANDI
+   ===================================================== */
+
+function closeCoverFinished(event) {
+
+    if (
+        event.animationName !==
+        "closeCover"
+    ) {
+        return;
+    }
+
+    const cover =
+        document.getElementById("closedBook");
+
+    cover.classList.remove(
+        "cover-closing"
+    );
+
+    document.body.classList.remove(
+        "cover-open"
+    );
+
+    document.body.classList.remove(
+        "cover-opening"
+    );
+
+}
+
+
+/* =====================================================
+   SAG SAYFA
    ===================================================== */
 
 function turnRightPage() {
@@ -744,7 +1013,7 @@ function turnRightPage() {
 
 
 /* =====================================================
-   SOL SAYFAYI SAGA CEvir
+   SOL SAYFA
    ===================================================== */
 
 function turnLeftPage() {
