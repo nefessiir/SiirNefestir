@@ -1,1 +1,85 @@
-<!DOCTYPE html> <html lang="tr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Şiir Nefestir</title> <style> * { box-sizing: border-box; } html, body { width: 100%; height: 100%; margin: 0; } body { overflow: hidden; background-image: url("arkaplan.jpeg"); background-size: cover; background-position: center; background-repeat: no-repeat; } </style> </head> <body> </body> </html>
+/* =========================================
+   TAM EKRAN DUZELTMESI
+   ========================================= */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    position: relative;
+}
+
+/* Ana tasarim alani */
+.container,
+.main-container,
+.page,
+.scene,
+.app {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+/* Arka planin ekrani tasmasini engelle */
+body::before {
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+/* Ekran kuculdugunda sag ve sol elemanlarin kaybolmasini engelle */
+img {
+    max-width: 100%;
+}
+
+/* Alt kisim ekranin disina cikmasin */
+.equalizer,
+.eq,
+.equalizer-container {
+    max-width: 100vw;
+}
+
+/* Sesli dinle butonu ekran disina tasmasin */
+.listen,
+.listen-button,
+.audio-button {
+    max-width: calc(100vw - 20px);
+}
+
+/* Mobil ve kucuk ekranlar */
+@media (max-width: 900px) {
+    .container,
+    .main-container,
+    .page,
+    .scene,
+    .app {
+        transform: scale(0.92);
+        transform-origin: center center;
+        width: 108.7vw;
+        height: 108.7vh;
+        margin-left: -4.35vw;
+        margin-top: -4.35vh;
+    }
+}
+
+@media (max-height: 700px) {
+    .container,
+    .main-container,
+    .page,
+    .scene,
+    .app {
+        transform: scale(0.88);
+        transform-origin: center center;
+        width: 113.64vw;
+        height: 113.64vh;
+        margin-left: -6.82vw;
+        margin-top: -6.82vh;
+    }
+}
