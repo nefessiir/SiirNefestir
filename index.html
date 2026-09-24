@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sayfa Cevirme</title>
+<title>Şiir Nefestir</title>
 
 <style>
 
@@ -18,15 +18,99 @@ body{
     height:100%;
     margin:0;
     overflow:hidden;
-    background:#242424;
-    font-family:Arial,sans-serif;
 }
 
 body{
+    background:#171717;
+    font-family:Georgia,serif;
     display:flex;
     align-items:center;
     justify-content:center;
 }
+
+/* =========================
+   KAPALI KITAP
+========================= */
+
+.closed-book{
+    position:fixed;
+    inset:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    z-index:100;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #46301f 0%,
+            #24180f 65%,
+            #120c08 100%
+        );
+
+    cursor:pointer;
+
+    transition:
+        opacity .8s ease,
+        visibility .8s ease;
+}
+
+.closed-book.hidden{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.cover{
+    position:relative;
+
+    width:min(72vw,520px);
+    aspect-ratio:.70;
+
+    border-radius:8px 16px 16px 8px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #57351e,
+            #8b5a32 45%,
+            #422717
+        );
+
+    box-shadow:
+        20px 25px 45px rgba(0,0,0,.55),
+        inset 8px 0 15px rgba(255,255,255,.08),
+        inset -10px 0 20px rgba(0,0,0,.25);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#e8d3a7;
+
+    text-align:center;
+}
+
+.cover h1{
+    margin:0;
+
+    font-size:clamp(28px,5vw,52px);
+
+    letter-spacing:4px;
+
+    font-weight:normal;
+}
+
+.cover p{
+    margin-top:20px;
+
+    font-size:16px;
+
+    opacity:.8;
+}
+
 
 /* =========================
    KITAP
@@ -35,13 +119,14 @@ body{
 .book{
     position:relative;
 
-    width:min(92vw,1100px);
+    width:min(94vw,1200px);
     height:min(72vh,700px);
 
     perspective:1800px;
 
     transform-style:preserve-3d;
 }
+
 
 /* =========================
    SOL SAYFA
@@ -56,18 +141,20 @@ body{
     width:50%;
     height:100%;
 
+    overflow:hidden;
+
     border-radius:22px 4px 4px 22px;
 
     background:
         radial-gradient(
             ellipse at 35% 40%,
             #fff8df 0%,
-            #ead6aa 72%,
+            #ead6aa 70%,
             #c5a473 100%
         );
 
     box-shadow:
-        -10px 12px 25px rgba(0,0,0,.35),
+        -10px 12px 28px rgba(0,0,0,.35),
         inset -18px 0 25px rgba(0,0,0,.10);
 
     transform-origin:right center;
@@ -76,6 +163,67 @@ body{
         rotateY(4deg)
         translateZ(-5px);
 }
+
+
+/* =========================
+   GUN BATIMI / DENIZ
+========================= */
+
+.sunset{
+    position:absolute;
+
+    inset:0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #e99567 0%,
+            #efb47b 34%,
+            #e6c48e 49%,
+            #7895a1 50%,
+            #466f80 72%,
+            #1e4657 100%
+        );
+}
+
+.sunset::before{
+    content:"";
+
+    position:absolute;
+
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    left:52%;
+    top:39%;
+
+    transform:translate(-50%,-50%);
+
+    background:#ffe3a1;
+
+    box-shadow:
+        0 0 35px rgba(255,226,160,.75);
+}
+
+.sunset::after{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    top:49%;
+
+    height:2px;
+
+    background:rgba(255,240,190,.7);
+
+    box-shadow:
+        0 30px 15px rgba(255,225,160,.12);
+}
+
 
 /* =========================
    SAG SAYFA
@@ -90,6 +238,8 @@ body{
     width:50%;
     height:100%;
 
+    overflow:hidden;
+
     border-radius:4px 22px 22px 4px;
 
     background:
@@ -101,7 +251,7 @@ body{
         );
 
     box-shadow:
-        10px 12px 25px rgba(0,0,0,.35),
+        10px 12px 28px rgba(0,0,0,.35),
         inset 18px 0 25px rgba(0,0,0,.10);
 
     transform-origin:left center;
@@ -110,6 +260,54 @@ body{
         rotateY(-4deg)
         translateZ(-5px);
 }
+
+
+/* =========================
+   SAG SAYFA ICERIK
+========================= */
+
+.contents{
+    position:absolute;
+
+    inset:0;
+
+    padding:
+        clamp(25px,4vw,55px)
+        clamp(25px,5vw,65px);
+
+    color:#463522;
+}
+
+.contents h2{
+    margin:
+        0
+        0
+        30px;
+
+    text-align:center;
+
+    font-size:
+        clamp(24px,3vw,38px);
+
+    font-weight:normal;
+
+    letter-spacing:2px;
+}
+
+.contents ol{
+    margin:0;
+    padding-left:30px;
+
+    font-size:
+        clamp(16px,2vw,22px);
+
+    line-height:1.8;
+}
+
+.contents li{
+    border-bottom:1px solid rgba(80,55,30,.18);
+}
+
 
 /* =========================
    CILT
@@ -146,6 +344,7 @@ body{
         0 0 12px rgba(0,0,0,.25);
 }
 
+
 /* =========================
    CEVRILEN SAYFA
 ========================= */
@@ -163,13 +362,6 @@ body{
 
     transform-style:preserve-3d;
 
-    /*
-       EN ONEMLI NOKTA
-
-       Sayfanin sol kenari
-       cilde sabit.
-    */
-
     transform-origin:left center;
 
     cursor:grab;
@@ -183,8 +375,9 @@ body{
     cursor:grabbing;
 }
 
+
 /* =========================
-   ON YUZ
+   SAYFA ON
 ========================= */
 
 .page-front{
@@ -220,8 +413,9 @@ body{
         inset 15px 0 22px rgba(0,0,0,.08);
 }
 
+
 /* =========================
-   ARKA YUZ
+   SAYFA ARKA
 ========================= */
 
 .page-back{
@@ -259,38 +453,47 @@ body{
         inset -15px 0 22px rgba(0,0,0,.08);
 }
 
+
 /* =========================
-   ICERIK
+   SAYFA YAZISI
 ========================= */
 
 .page-front::before{
-    content:"SAG SAYFA";
+    content:"Şiir Nefestir";
 
     position:absolute;
 
-    top:40px;
-    right:40px;
+    left:50%;
+    top:50%;
 
-    color:#555;
+    transform:translate(-50%,-50%);
 
-    font-size:20px;
+    font-size:
+        clamp(22px,3vw,38px);
+
+    color:#735c3e;
+
+    white-space:nowrap;
 }
 
 .page-back::before{
-    content:"SOL SAYFA";
+    content:"Şiir";
 
     position:absolute;
 
-    top:40px;
-    left:40px;
+    left:50%;
+    top:50%;
 
-    color:#555;
+    transform:translate(-50%,-50%);
 
-    font-size:20px;
+    font-size:32px;
+
+    color:#735c3e;
 }
 
+
 /* =========================
-   SAYFA KENAR GOLGESI
+   SAYFA GOLGESI
 ========================= */
 
 .turn-page::after{
@@ -319,8 +522,9 @@ body{
     opacity:.8;
 }
 
+
 /* =========================
-   ALT SAG KOSENIN ISARETI
+   ALT KOSE
 ========================= */
 
 .corner{
@@ -346,8 +550,9 @@ body{
         );
 }
 
+
 /* =========================
-   BUTONLAR
+   KONTROLLER
 ========================= */
 
 .controls{
@@ -359,6 +564,7 @@ body{
     transform:translateX(-50%);
 
     display:flex;
+
     gap:10px;
 
     z-index:100;
@@ -368,6 +574,7 @@ button{
     padding:11px 22px;
 
     border:0;
+
     border-radius:8px;
 
     background:#fff;
@@ -378,6 +585,11 @@ button{
 
     cursor:pointer;
 }
+
+button:hover{
+    background:#ddd;
+}
+
 
 /* =========================
    MOBIL
@@ -390,23 +602,105 @@ button{
         height:58vh;
     }
 
+    .contents{
+        padding:25px 20px;
+    }
+
+    .contents h2{
+        margin-bottom:20px;
+    }
+
+    .contents ol{
+        padding-left:24px;
+        font-size:15px;
+        line-height:1.65;
+    }
+
     button{
         padding:10px 15px;
         font-size:13px;
     }
-
 }
 
 </style>
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     KAPALI KITAP
+========================= -->
+
+<div class="closed-book" id="closedBook">
+
+    <div class="cover">
+
+        <div>
+
+            <h1>ŞİİR NEFESTİR</h1>
+
+            <p>
+                Kelimelerden kızıma,<br>
+                insanlara ve hayata...
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     KITAP
+========================= -->
 
 <div class="book" id="book">
 
-    <div class="page-left"></div>
 
-    <div class="page-right"></div>
+    <!-- SOL SAYFA -->
+
+    <div class="page-left">
+
+        <div class="sunset"></div>
+
+    </div>
+
+
+    <!-- SAG SAYFA -->
+
+    <div class="page-right">
+
+        <div class="contents">
+
+            <h2>İçindekiler</h2>
+
+            <ol>
+
+                <li>Deneme 1</li>
+                <li>Deneme 2</li>
+                <li>Deneme 3</li>
+                <li>Deneme 4</li>
+                <li>Deneme 5</li>
+                <li>Deneme 6</li>
+                <li>Deneme 7</li>
+                <li>Deneme 8</li>
+
+            </ol>
+
+        </div>
+
+    </div>
+
+
+    <!-- CILT -->
+
+    <div class="binding"></div>
+
+
+    <!-- CEVRILEN SAYFA -->
 
     <div class="turn-page" id="turnPage">
 
@@ -420,25 +714,35 @@ button{
 
     </div>
 
-    <div class="binding"></div>
 
 </div>
 
 
+<!-- =========================
+     BUTONLAR
+========================= -->
+
 <div class="controls">
 
     <button id="prevBtn">
-        ← Geri
+        ‹ Önceki
     </button>
 
     <button id="nextBtn">
-        İleri →
+        Sonraki ›
     </button>
 
 </div>
 
 
 <script>
+
+/* =========================
+   ELEMANLAR
+========================= */
+
+const closedBook =
+    document.getElementById("closedBook");
 
 const book =
     document.getElementById("book");
@@ -453,6 +757,10 @@ const prevBtn =
     document.getElementById("prevBtn");
 
 
+/* =========================
+   BASLANGIC
+========================= */
+
 let progress = 0;
 
 let dragging = false;
@@ -463,43 +771,43 @@ let startProgress = 0;
 
 
 /* =========================
+   KITABI AC
+========================= */
+
+closedBook.addEventListener(
+    "click",
+    function(){
+
+        closedBook.classList.add("hidden");
+
+    }
+);
+
+
+/* =========================
    SAYFA HAREKETI
 ========================= */
 
 function render(){
-
-    /*
-        0  = tamamen sagda
-        1  = tamamen solda
-    */
 
     const angle =
         -180 * progress;
 
 
     /*
-        BURADA ARTIK:
+        Sayfa artik yukari
+        kaldirilmiyor.
 
-        translateY YOK
-        translateZ YOK
-        lift YOK
+        Cilt sabit.
 
-        Yani sayfa ciltte
-        yukselip havalanmiyor.
-    */
-
-
-    /*
-        Ortada cok hafif
-        fiziksel egim.
-
-        Sayfa cilde bagli
-        kaldigi icin bu hareket
-        onu havaya ucurmuyor.
+        Sol kenar cilde
+        bagli kaliyor.
     */
 
     const curve =
-        Math.sin(progress * Math.PI);
+        Math.sin(
+            progress * Math.PI
+        );
 
 
     const rotateX =
@@ -518,20 +826,18 @@ function render(){
         `;
 
 
-    /*
-        Gölge sadece sayfa
-        orta konumdayken belirgin.
-    */
-
     const shadow =
-        0.12 + curve * 0.20;
+        .12 +
+        curve * .20;
 
 
     turnPage.style.filter =
-        `drop-shadow(
+        `
+        drop-shadow(
             5px 8px 18px
             rgba(0,0,0,${shadow})
-        )`;
+        )
+        `;
 }
 
 
@@ -556,6 +862,7 @@ function animateTo(target){
         const elapsed =
             now - start;
 
+
         let t =
             elapsed / duration;
 
@@ -565,15 +872,14 @@ function animateTo(target){
         }
 
 
-        /*
-            Yumusak baslangic
-            ve bitis.
-        */
-
         const eased =
             t < .5
             ? 2 * t * t
-            : 1 - Math.pow(-2 * t + 2,2) / 2;
+            : 1 -
+              Math.pow(
+                  -2 * t + 2,
+                  2
+              ) / 2;
 
 
         progress =
@@ -595,7 +901,9 @@ function animateTo(target){
                 target;
 
             render();
+
         }
+
     }
 
 
@@ -604,7 +912,7 @@ function animateTo(target){
 
 
 /* =========================
-   FARE / PARMAK BASLANGICI
+   FARE / PARMAK
 ========================= */
 
 turnPage.addEventListener(
@@ -626,6 +934,7 @@ turnPage.addEventListener(
         turnPage.setPointerCapture(
             e.pointerId
         );
+
     }
 );
 
@@ -651,17 +960,14 @@ turnPage.addEventListener(
             rect.width / 2;
 
 
-        /*
-            Fare sola gittikce
-            progress artiyor.
-        */
-
         const distance =
-            startX - e.clientX;
+            startX -
+            e.clientX;
 
 
         const change =
-            distance / halfWidth;
+            distance /
+            halfWidth;
 
 
         progress =
@@ -669,23 +975,25 @@ turnPage.addEventListener(
                 0,
                 Math.min(
                     1,
-                    startProgress + change
+                    startProgress +
+                    change
                 )
             );
 
 
         render();
+
     }
 );
 
 
 /* =========================
-   BIRAKMA
+   BIRAK
 ========================= */
 
 turnPage.addEventListener(
     "pointerup",
-    function(e){
+    function(){
 
         if(!dragging){
             return;
@@ -693,6 +1001,7 @@ turnPage.addEventListener(
 
 
         dragging = false;
+
 
         turnPage.classList.remove(
             "dragging"
@@ -706,7 +1015,9 @@ turnPage.addEventListener(
         }else{
 
             animateTo(0);
+
         }
+
     }
 );
 
@@ -721,6 +1032,7 @@ turnPage.addEventListener(
 
         dragging = false;
 
+
         turnPage.classList.remove(
             "dragging"
         );
@@ -731,6 +1043,7 @@ turnPage.addEventListener(
             ? 1
             : 0
         );
+
     }
 );
 
@@ -744,6 +1057,7 @@ nextBtn.addEventListener(
     function(){
 
         animateTo(1);
+
     }
 );
 
@@ -753,6 +1067,7 @@ prevBtn.addEventListener(
     function(){
 
         animateTo(0);
+
     }
 );
 
@@ -768,13 +1083,16 @@ document.addEventListener(
         if(e.key === "ArrowLeft"){
 
             animateTo(1);
+
         }
 
 
         if(e.key === "ArrowRight"){
 
             animateTo(0);
+
         }
+
     }
 );
 
