@@ -26,7 +26,7 @@ body {
 }
 
 
-/* ARKA PLAN */
+/* KITAP */
 
 .page {
     width: 100vw;
@@ -37,6 +37,8 @@ body {
     justify-content: center;
 
     overflow: hidden;
+
+    position: relative;
 }
 
 .page img {
@@ -50,6 +52,26 @@ body {
     object-fit: contain;
 }
 
+
+/* SOL SAYFA */
+
+.left-page {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 50%;
+    height: 100%;
+
+    background-image: url("arkaplan1.jpeg");
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: auto 100%;
+
+    z-index: 2;
+}
+
 </style>
 </head>
 
@@ -61,6 +83,8 @@ body {
         src="arkaplan1.jpeg"
         alt="Şiir Nefestir"
     >
+
+    <div class="left-page"></div>
 
 </div>
 
