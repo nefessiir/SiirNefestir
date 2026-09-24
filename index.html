@@ -7,39 +7,27 @@
 <title>Şiir Nefestir</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
 html,
 body {
+    margin: 0;
     width: 100%;
     height: 100%;
-    margin: 0;
 }
 
 body {
-    margin: 0;
     overflow: hidden;
-
     background:
-        radial-gradient(
-            circle at center,
-            #eee1c9 0%,
-            #d5bea0 48%,
-            #a88a68 100%
-        );
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
+        radial-gradient(circle at center, #5a4637 0%, #2b211a 75%);
+    font-family: Georgia, "Times New Roman", serif;
 }
 
-/* =========================================================
+/* =========================
    SAHNE
-   ========================================================= */
+========================= */
 
 .scene {
     width: 100vw;
@@ -49,97 +37,81 @@ body {
     align-items: center;
     justify-content: center;
 
-    perspective: 3200px;
+    perspective: 1800px;
+    perspective-origin: center center;
 }
 
-/* =========================================================
+/* =========================
    KITAP
-   ========================================================= */
+========================= */
 
 .book {
     position: relative;
 
-    width: min(
-        94vw,
-        calc(84vh * 1.40),
-        1450px
-    );
+    width: min(94vw, calc(84vh * 1.60), 1500px);
 
-    aspect-ratio: 1.40;
+    aspect-ratio: 1.60;
 
     transform-style: preserve-3d;
+
+    user-select: none;
 }
 
-/* =========================================================
-   IC SAYFALAR
-   ========================================================= */
+/* =========================
+   ACIK KITAP SAYFALARI
+========================= */
 
 .page {
     position: absolute;
 
     top: 0;
-
     width: 50%;
     height: 100%;
 
     overflow: hidden;
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,.09),
-            transparent 9%,
-            transparent 91%,
-            rgba(0,0,0,.06)
-        ),
-        #f3e8d1;
+    background: #f4ecd9;
 
     box-shadow:
-        0 12px 28px rgba(0,0,0,.22);
+        0 12px 25px rgba(0,0,0,.18),
+        inset 0 0 20px rgba(80,50,20,.08);
 }
 
 .page-left {
     left: 0;
 
     border-radius:
-        18px 0 0 18px;
+        10px 0 0 10px;
 
-    z-index: 10;
+    transform-origin: right center;
 }
 
 .page-right {
     right: 0;
 
     border-radius:
-        0 18px 18px 0;
+        0 10px 10px 0;
 
-    z-index: 10;
+    transform-origin: left center;
 }
 
-/* =========================================================
-   GUN BATIMI
-   ========================================================= */
+/* =========================
+   SOL SAYFA
+========================= */
 
 .sunset {
     position: absolute;
-
     inset: 0;
 
     background:
-        radial-gradient(
-            circle at 72% 62%,
-            rgba(255,224,146,.95) 0%,
-            rgba(255,190,105,.65) 8%,
-            transparent 24%
-        ),
         linear-gradient(
             to bottom,
-            #d68761 0%,
-            #e6a073 28%,
-            #efc08d 48%,
-            #6e919f 49%,
-            #486f7e 68%,
-            #263f4b 100%
+            #d98562 0%,
+            #e7a078 30%,
+            #e5b17f 50%,
+            #7d918d 51%,
+            #415d68 70%,
+            #1e3845 100%
         );
 }
 
@@ -152,85 +124,61 @@ body {
     right: 0;
     bottom: 0;
 
-    height: 51%;
+    height: 42%;
 
     background:
-        repeating-linear-gradient(
-            175deg,
-            rgba(255,255,255,.13) 0px,
-            rgba(255,255,255,.13) 2px,
-            transparent 2px,
-            transparent 12px
+        linear-gradient(
+            to bottom,
+            rgba(255,255,255,.08),
+            rgba(0,0,0,.20)
         );
-
-    opacity: .45;
 }
-
-/* =========================================================
-   YELKENLI
-   ========================================================= */
 
 .sailboat {
     position: absolute;
 
     left: 48%;
-    top: 58%;
+    top: 54%;
 
-    width: 80px;
+    width: 90px;
     height: 55px;
 
-    z-index: 3;
+    transform: translate(-50%, -50%);
 }
 
-.sailboat .mast {
+.sailboat::before {
+    content: "";
+
     position: absolute;
 
-    left: 39px;
+    left: 42px;
     top: 0;
 
-    width: 2px;
-    height: 48px;
+    width: 3px;
+    height: 50px;
 
-    background: #2e2a27;
+    background: #241b16;
 }
 
-.sailboat .sail {
+.sailboat::after {
+    content: "";
+
     position: absolute;
 
-    left: 4px;
-    top: 7px;
+    left: 45px;
+    top: 4px;
 
-    width: 36px;
-    height: 35px;
+    width: 0;
+    height: 0;
 
-    background: #eee4d0;
-
-    clip-path:
-        polygon(
-            100% 0,
-            100% 100%,
-            0 100%
-        );
+    border-top: 24px solid transparent;
+    border-bottom: 24px solid transparent;
+    border-right: 36px solid rgba(245,235,215,.92);
 }
 
-.sailboat .hull {
-    position: absolute;
-
-    left: 17px;
-    top: 42px;
-
-    width: 52px;
-    height: 9px;
-
-    background: #302823;
-
-    border-radius:
-        0 0 30px 30px;
-}
-
-/* =========================================================
-   ICINDEKILER
-   ========================================================= */
+/* =========================
+   SAG SAYFA
+========================= */
 
 .contents {
     position: absolute;
@@ -238,65 +186,35 @@ body {
     inset: 0;
 
     padding:
-        11%
-        10%
-        10%
-        12%;
+        9%
+        10%;
 
-    color: #3e2b20;
+    color: #493322;
+
+    text-align: center;
 }
 
 .contents h1 {
-    margin: 0 0 8% 0;
+    margin: 0 0 8%;
 
-    text-align: center;
+    font-size: clamp(24px, 3vw, 48px);
 
-    font-size:
-        clamp(
-            22px,
-            2.4vw,
-            38px
-        );
+    letter-spacing: .12em;
 
     font-weight: normal;
-
-    letter-spacing: 2px;
 }
 
-.contents-list {
-    display: flex;
-    flex-direction: column;
+.contents p {
+    margin: 4% 0;
 
-    gap: 12px;
+    font-size: clamp(15px, 1.5vw, 24px);
 
-    font-size:
-        clamp(
-            13px,
-            1.25vw,
-            21px
-        );
+    letter-spacing: .04em;
 }
 
-.contents-row {
-    display: flex;
-    align-items: baseline;
-
-    gap: 8px;
-}
-
-.contents-row .dots {
-    flex: 1;
-
-    border-bottom:
-        1px dotted rgba(62,43,32,.45);
-
-    transform:
-        translateY(-4px);
-}
-
-/* =========================================================
-   ORTA CILT
-   ========================================================= */
+/* =========================
+   CILT
+========================= */
 
 .binding {
     position: absolute;
@@ -307,8 +225,7 @@ body {
     width: 28px;
     height: 100%;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
     z-index: 80;
 
@@ -327,9 +244,9 @@ body {
         0 0 15px rgba(0,0,0,.15);
 }
 
-/* =========================================================
-   DONEN SAYFA
-   ========================================================= */
+/* =========================
+   CEVRILEN SAYFA
+========================= */
 
 .turn-page {
     position: absolute;
@@ -349,127 +266,63 @@ body {
     pointer-events: none;
 }
 
-/* =========================================================
-   SAYFANIN ON YUZU
-   ========================================================= */
-
-.page-front {
-    position: absolute;
-
-    inset: 0;
-
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,.10),
-            transparent 10%,
-            transparent 94%,
-            rgba(0,0,0,.05)
-        ),
-        #f3e8d1;
-
-    border-radius:
-        0 18px 18px 0;
-
-    backface-visibility: hidden;
-
-    -webkit-backface-visibility: hidden;
-
-    transform:
-        rotateY(0deg);
-
-    z-index: 2;
-}
-
-/* =========================================================
-   SAYFANIN ARKA YUZU
-
-   ONEMLI:
-   Burada YAZI YOK.
-   Boylece sayfa sola geldiginde ters yazilar gorunmez.
-   ========================================================= */
-
+.page-front,
 .page-back {
     position: absolute;
 
     inset: 0;
 
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,.07),
-            transparent 12%,
-            transparent 88%,
-            rgba(0,0,0,.07)
-        ),
-        #f3e8d1;
-
-    border-radius:
-        18px 0 0 18px;
-
-    transform:
-        rotateY(180deg);
+    width: 100%;
+    height: 100%;
 
     backface-visibility: hidden;
-
     -webkit-backface-visibility: hidden;
 
-    z-index: 3;
+    overflow: hidden;
+
+    background: #f4ecd9;
+
+    box-shadow:
+        0 10px 22px rgba(0,0,0,.16);
 }
 
-/* =========================================================
-   DONEN SAYFA YAZISI
-   ========================================================= */
+.page-front {
+    padding: 10%;
 
-.page-title {
-    position: absolute;
-
-    top: 12%;
-    left: 10%;
-    right: 10%;
+    color: #493322;
 
     text-align: center;
 
-    color: #4b3426;
+    border-radius:
+        0 10px 10px 0;
+}
 
-    font-size:
-        clamp(
-            20px,
-            2vw,
-            32px
-        );
+.page-front h2 {
+    margin: 10% 0 7%;
+
+    font-size: clamp(22px, 2.5vw, 40px);
 
     font-weight: normal;
 
-    letter-spacing: 1px;
+    letter-spacing: .08em;
 }
 
-.page-text {
-    position: absolute;
-
-    top: 23%;
-    left: 12%;
-    right: 12%;
-
-    color: #4b3426;
-
-    font-size:
-        clamp(
-            14px,
-            1.25vw,
-            21px
-        );
+.page-front p {
+    font-size: clamp(14px, 1.4vw, 21px);
 
     line-height: 1.8;
 }
 
-/* =========================================================
-   KAPALI KITAP KAPAGI
-   ========================================================= */
+.page-back {
+    transform: rotateY(180deg);
+
+    background: #f4ecd9;
+}
+
+/* =========================
+   KAPAK
+   SADECE KAPALIYKEN GORUNUR
+========================= */
 
 .closed-cover {
     position: absolute;
@@ -488,7 +341,6 @@ body {
     border-radius: 10px;
 
     opacity: 1;
-
     visibility: visible;
 
     pointer-events: auto;
@@ -498,20 +350,26 @@ body {
         visibility .35s ease;
 }
 
+/*
+   Kapak gorseli kitabın oranina
+   bire bir oturur.
+*/
+
 .closed-cover img {
     width: 100%;
     height: 100%;
 
     display: block;
 
-    object-fit: cover;
+    /*
+       KIRPMA YOK
+       BOSLUK YOK
+       GORSEL KITABI TAM DOLDURUR
+    */
+    object-fit: fill;
 
-    object-position: center;
+    object-position: center center;
 }
-
-/* =========================================================
-   KAPAK SADECE KAPALIYKEN
-   ========================================================= */
 
 .book.open .closed-cover {
     opacity: 0;
@@ -521,60 +379,57 @@ body {
     pointer-events: none;
 }
 
-/* =========================================================
-   TABLET
-   ========================================================= */
+/* =========================
+   HAREKET
+========================= */
 
-@media (max-width: 800px) {
+.book.open .page-left {
+    transform:
+        perspective(1600px)
+        rotateY(-2deg);
+}
+
+.book.open .page-right {
+    transform:
+        perspective(1600px)
+        rotateY(2deg);
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
 
     .book {
-        width: 96vw;
+        width: 94vw;
+        aspect-ratio: 1.45;
     }
 
     .binding {
-        width: 18px;
+        width: 22px;
+    }
+}
+
+/* =========================
+   TELEFON
+========================= */
+
+@media (max-width: 600px) {
+
+    .book {
+        width: 96vw;
+        aspect-ratio: 1.35;
+    }
+
+    .binding {
+        width: 16px;
     }
 
     .contents {
         padding: 8%;
     }
-
-    .contents-list {
-        gap: 7px;
-    }
-
-    .sailboat {
-        transform: scale(.65);
-
-        transform-origin: center;
-    }
 }
-
-/* =========================================================
-   TELEFON
-   ========================================================= */
-
-@media (max-width: 500px) {
-
-    .book {
-        width: 98vw;
-    }
-
-    .contents h1 {
-        font-size: 20px;
-    }
-
-    .contents-list {
-        font-size: 11px;
-    }
-
-    .page-text {
-        font-size: 11px;
-
-        line-height: 1.5;
-    }
-}
-
 </style>
 </head>
 
@@ -582,122 +437,60 @@ body {
 
 <div class="scene">
 
-    <div
-        class="book"
-        id="book"
-    >
+    <div class="book" id="book">
 
-        <!-- =================================================
-             SOL IC SAYFA
-             ================================================= -->
-
+        <!-- SOL SAYFA -->
         <div class="page page-left">
 
             <div class="sunset"></div>
 
-            <div class="sailboat">
-
-                <div class="mast"></div>
-
-                <div class="sail"></div>
-
-                <div class="hull"></div>
-
-            </div>
+            <div class="sailboat"></div>
 
         </div>
 
-        <!-- =================================================
-             SAG IC SAYFA
-             ================================================= -->
 
+        <!-- SAG SAYFA -->
         <div class="page page-right">
 
             <div class="contents">
 
                 <h1>İÇİNDEKİLER</h1>
 
-                <div class="contents-list">
-
-                    <div class="contents-row">
-                        <span>Şairler Ağlamaz</span>
-                        <span class="dots"></span>
-                        <span>01</span>
-                    </div>
-
-                    <div class="contents-row">
-                        <span>Kırılgan Bir Şiirim</span>
-                        <span class="dots"></span>
-                        <span>02</span>
-                    </div>
-
-                    <div class="contents-row">
-                        <span>Bir Çiçek Sevdim</span>
-                        <span class="dots"></span>
-                        <span>09</span>
-                    </div>
-
-                    <div class="contents-row">
-                        <span>Gidiyorum</span>
-                        <span class="dots"></span>
-                        <span>20</span>
-                    </div>
-
-                    <div class="contents-row">
-                        <span>Bir Anlık Mutluluk</span>
-                        <span class="dots"></span>
-                        <span>21</span>
-                    </div>
-
-                </div>
+                <p>Şairler Ağlamaz</p>
+                <p>Kırılgan Bir Şiirim</p>
+                <p>Gidiyorum</p>
+                <p>Bir Anlık Mutluluk</p>
 
             </div>
 
         </div>
 
-        <!-- =================================================
-             DONEN SAYFA
-             ================================================= -->
 
-        <div
-            class="turn-page"
-            id="turnPage"
-        >
+        <!-- CEVRILEN SAYFA -->
+        <div class="turn-page" id="turnPage">
 
-            <!-- ON YUZ -->
             <div class="page-front">
 
-                <div class="page-title">
-                    ŞİİR NEFESTİR
-                </div>
+                <h2>ŞİİR NEFESTİR</h2>
 
-                <div class="page-text">
-                    Bazı kelimeler söylenmek için değil,
-                    yıllar sonra yeniden bulunmak için yazılır.
-                </div>
+                <p>
+                    Bazı sözler söylenmez...<br>
+                    Yazılır.
+                </p>
 
             </div>
 
-            <!-- ARKA YUZ
-                 YAZI YOK -->
             <div class="page-back"></div>
 
         </div>
 
-        <!-- =================================================
-             ORTA CILT
-             ================================================= -->
 
+        <!-- CILT -->
         <div class="binding"></div>
 
-        <!-- =================================================
-             KAPALI KITAP
-             ================================================= -->
 
-        <div
-            class="closed-cover"
-            id="closedCover"
-        >
+        <!-- KAPALI KITAP KAPAGI -->
+        <div class="closed-cover" id="closedCover">
 
             <img
                 src="kapak-gorsel.jpg"
@@ -710,39 +503,25 @@ body {
 
 </div>
 
+
 <script>
 
-const book =
-    document.getElementById(
-        "book"
-    );
-
-const turnPage =
-    document.getElementById(
-        "turnPage"
-    );
+const book = document.getElementById("book");
+const turnPage = document.getElementById("turnPage");
 
 let progress = 0;
 
-let dragging = false;
-
 let startX = 0;
-
 let startProgress = 0;
 
-/* =========================================================
-   CIZ
-   ========================================================= */
+let dragging = false;
 
 function render() {
 
-    const angle =
-        -180 * progress;
+    const angle = -180 * progress;
 
     const curve =
-        Math.sin(
-            progress * Math.PI
-        );
+        Math.sin(progress * Math.PI);
 
     const rotateX =
         curve * 0.45;
@@ -751,217 +530,153 @@ function render() {
         curve * 0.20;
 
     turnPage.style.transform =
-        "rotateY(" +
-        angle +
-        "deg) " +
-
-        "rotateX(" +
-        rotateX +
-        "deg) " +
-
-        "rotateZ(" +
-        rotateZ +
-        "deg)";
+        "rotateY(" + angle + "deg) " +
+        "rotateX(" + rotateX + "deg) " +
+        "rotateZ(" + rotateZ + "deg)";
 
     const shadow =
-        0.08 +
-        curve * 0.14;
+        0.08 + curve * 0.14;
 
     turnPage.style.filter =
-        "drop-shadow(" +
-        "3px 6px 14px " +
-        "rgba(0,0,0," +
+        "drop-shadow(3px 6px 14px rgba(0,0,0," +
         shadow +
-        ")" +
-        ")";
-
-    /*
-       Kapak:
-
-       0.00 = gorunur
-       0.01+ = tamamen gizli
-    */
+        "))";
 
     if (progress > 0.01) {
 
-        book.classList.add(
-            "open"
-        );
+        book.classList.add("open");
 
     } else {
 
-        book.classList.remove(
-            "open"
-        );
+        book.classList.remove("open");
+
     }
 }
 
-/* =========================================================
-   FARE / DOKUNMATIK
-   ========================================================= */
 
-book.addEventListener(
-    "pointerdown",
-    function(event) {
-
-        dragging = true;
-
-        startX =
-            event.clientX;
-
-        startProgress =
-            progress;
-
-        book.setPointerCapture(
-            event.pointerId
-        );
-    }
-);
-
-book.addEventListener(
-    "pointermove",
-    function(event) {
-
-        if (!dragging) {
-            return;
-        }
-
-        const rect =
-            book.getBoundingClientRect();
-
-        const movement =
-            (
-                startX -
-                event.clientX
-            ) /
-            (
-                rect.width * 0.50
-            );
-
-        progress =
-            Math.max(
-                0,
-                Math.min(
-                    1,
-                    startProgress +
-                    movement
-                )
-            );
-
-        render();
-    }
-);
-
-book.addEventListener(
-    "pointerup",
-    function() {
-
-        if (!dragging) {
-            return;
-        }
-
-        dragging = false;
-
-        progress =
-            progress > 0.5
-            ? 1
-            : 0;
-
-        animateTo(
-            progress
-        );
-    }
-);
-
-book.addEventListener(
-    "pointercancel",
-    function() {
-
-        dragging = false;
-
-        progress =
-            progress > 0.5
-            ? 1
-            : 0;
-
-        animateTo(
-            progress
-        );
-    }
-);
-
-/* =========================================================
+/* =========================
    ANIMASYON
-   ========================================================= */
+========================= */
 
-function animateTo(
-    target
-) {
+function animateTo(target) {
 
-    const start =
-        progress;
+    const start = progress;
 
-    const duration =
-        550;
+    const duration = 420;
 
     const startTime =
         performance.now();
 
-    function animate(time) {
+    function step(now) {
 
         const elapsed =
-            time -
-            startTime;
+            now - startTime;
 
         const t =
-            Math.min(
-                1,
-                elapsed /
-                duration
-            );
+            Math.min(elapsed / duration, 1);
 
         const eased =
-            1 -
-            Math.pow(
-                1 - t,
-                3
-            );
+            t < .5
+                ? 2 * t * t
+                : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
         progress =
             start +
-            (
-                target -
-                start
-            ) *
-            eased;
+            (target - start) * eased;
 
         render();
 
         if (t < 1) {
 
-            requestAnimationFrame(
-                animate
-            );
+            requestAnimationFrame(step);
 
-        } else {
-
-            progress =
-                target;
-
-            render();
         }
     }
 
-    requestAnimationFrame(
-        animate
-    );
+    requestAnimationFrame(step);
 }
 
-/* =========================================================
-   BASLANGIC
-   ========================================================= */
 
-progress = 0;
+/* =========================
+   MOUSE
+========================= */
+
+book.addEventListener(
+    "pointerdown",
+    function(e) {
+
+        dragging = true;
+
+        startX = e.clientX;
+
+        startProgress = progress;
+
+        book.setPointerCapture(e.pointerId);
+    }
+);
+
+
+book.addEventListener(
+    "pointermove",
+    function(e) {
+
+        if (!dragging) return;
+
+        const rect =
+            book.getBoundingClientRect();
+
+        const delta =
+            startX - e.clientX;
+
+        progress =
+            startProgress +
+            delta / (rect.width * 0.5);
+
+        progress =
+            Math.max(
+                0,
+                Math.min(1, progress)
+            );
+
+        render();
+    }
+);
+
+
+function finishDrag(e) {
+
+    if (!dragging) return;
+
+    dragging = false;
+
+    try {
+        book.releasePointerCapture(e.pointerId);
+    } catch (_) {}
+
+    if (progress > .5) {
+
+        animateTo(1);
+
+    } else {
+
+        animateTo(0);
+
+    }
+}
+
+
+book.addEventListener(
+    "pointerup",
+    finishDrag
+);
+
+book.addEventListener(
+    "pointercancel",
+    finishDrag
+);
+
+
+/* BASLANGIC */
 
 render();
 
