@@ -75,12 +75,13 @@ body::before {
 
 
 /* =====================================================
-   KAPAK
+   KAPAK GOVDESI
    ===================================================== */
 
 #closedBook {
 
-    position: absolute;
+    position:
+        absolute;
 
     width:
         503px;
@@ -106,9 +107,6 @@ body::before {
     border-radius:
         8px 20px 20px 8px;
 
-    overflow:
-        hidden;
-
     box-shadow:
         0 35px 70px rgba(0,0,0,.58);
 
@@ -124,37 +122,43 @@ body::before {
 
 
 /* =====================================================
-   KAPAK GORSEL
+   KAPAGIN ON YUZU
    ===================================================== */
 
-#closedBook img {
+.cover-front {
 
-    display:
-        block;
+    position:
+        absolute;
 
-    width:
-        100%;
+    inset:
+        0;
 
-    height:
-        100%;
+    background-image:
+        url("kapak-gorsel.jpg");
 
-    object-fit:
-        fill;
+    background-size:
+        100% 100%;
 
-    user-select:
-        none;
+    background-position:
+        center;
 
-    -webkit-user-drag:
-        none;
+    background-repeat:
+        no-repeat;
 
-    -webkit-user-select:
-        none;
+    border-radius:
+        8px 20px 20px 8px;
 
     backface-visibility:
         hidden;
 
     -webkit-backface-visibility:
         hidden;
+
+    transform:
+        rotateY(0deg);
+
+    pointer-events:
+        none;
 }
 
 
@@ -162,10 +166,7 @@ body::before {
    KAPAGIN IC YUZU
    ===================================================== */
 
-#closedBook::after {
-
-    content:
-        "";
+.cover-inside {
 
     position:
         absolute;
@@ -851,11 +852,9 @@ body.cover-open #closedBook {
     onclick="toggleCover()"
 >
 
-    <img
-        src="kapak-gorsel.jpg"
-        alt="Şiir Nefestir"
-        draggable="false"
-    >
+    <div class="cover-front"></div>
+
+    <div class="cover-inside"></div>
 
 </div>
 
