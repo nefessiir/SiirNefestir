@@ -21,6 +21,8 @@ body {
 
 body {
 
+    margin: 0;
+
     overflow: hidden;
 
     display: flex;
@@ -104,20 +106,13 @@ body::before {
     box-shadow:
         0 35px 70px rgba(0,0,0,.58);
 
-    transition:
-        transform 1s ease,
-        opacity .8s ease;
-
     z-index:
         10;
-
-    transform-origin:
-        center center;
 }
 
 
 /* =====================================================
-   KAPAK GORSEL
+   KAPAK
    ===================================================== */
 
 #closedBook img {
@@ -171,14 +166,10 @@ body::before {
         scale(.96);
 
     display:
-        none;
+        block;
 
     opacity:
-        0;
-
-    transition:
-        opacity .8s ease,
-        transform .8s ease;
+        1;
 
     z-index:
         5;
@@ -245,9 +236,6 @@ body::before {
     transform:
         perspective(1200px)
         rotateY(2deg);
-
-    transform-origin:
-        right center;
 }
 
 
@@ -344,7 +332,8 @@ body::before {
         );
 
     box-shadow:
-        0 0 18px rgba(50,30,15,.22);
+        0 0 18px
+        rgba(50,30,15,.22);
 
     z-index:
         20;
@@ -355,53 +344,13 @@ body::before {
 
 
 /* =====================================================
-   KAPAK ACILIRKEN
-   ORTAYA GELIP SOLA YATIYOR
+   KAPAK TIKLANINCA ANINDA KAYBOLUR
    ===================================================== */
 
 body.opening #closedBook {
 
-    transform:
-        translate(
-            -260px,
-            -50%
-        )
-        rotateY(75deg)
-        rotateZ(-4deg);
-
-    opacity:
-        0;
-}
-
-
-/* =====================================================
-   SOL SAYFA DA HAFIF SOLA YATILIYOR
-   ===================================================== */
-
-body.opening .page.left {
-
-    transform:
-        perspective(1200px)
-        rotateY(7deg)
-        rotateZ(-4deg);
-}
-
-
-/* =====================================================
-   KITAP ACILIYOR
-   ===================================================== */
-
-body.opening #openBook {
-
     display:
-        block;
-
-    opacity:
-        1;
-
-    transform:
-        translate(-50%, -50%)
-        scale(1);
+        none;
 }
 
 
@@ -474,10 +423,6 @@ body.opening #openBook {
 
 
 <script>
-
-/* =====================================================
-   KITABI AC
-   ===================================================== */
 
 function openBook() {
 
