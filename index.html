@@ -76,14 +76,18 @@ body::before {
 
 /* =====================================================
    KAPALI KITAP
+   503 x 709
    ===================================================== */
 
 #closedBook {
 
     position: absolute;
 
-    width: 503px;
-    height: 709px;
+    width:
+        503px;
+
+    height:
+        709px;
 
     left:
         calc(50% + 55px);
@@ -112,7 +116,7 @@ body::before {
 
 
 /* =====================================================
-   KAPAK
+   KAPAK GORSEL
    ===================================================== */
 
 #closedBook img {
@@ -142,6 +146,8 @@ body::before {
 
 /* =====================================================
    ACILMIS KITAP
+   HER SAYFA = 503 x 709
+   TOPLAM = 1006 x 709
    ===================================================== */
 
 #openBook {
@@ -156,20 +162,20 @@ body::before {
         50%;
 
     width:
-        min(1120px, 94vw);
+        min(1006px, 94vw);
 
     aspect-ratio:
-        1.40 / 1;
+        1006 / 709;
 
     transform:
         translate(-50%, -50%)
         scale(.96);
 
     display:
-        block;
+        none;
 
     opacity:
-        1;
+        0;
 
     z-index:
         5;
@@ -355,6 +361,24 @@ body.opening #closedBook {
 
 
 /* =====================================================
+   ACILMIS KITAP GORUNUR
+   ===================================================== */
+
+body.opening #openBook {
+
+    display:
+        block;
+
+    opacity:
+        1;
+
+    transform:
+        translate(-50%, -50%)
+        scale(1);
+}
+
+
+/* =====================================================
    MOBIL
    ===================================================== */
 
@@ -379,6 +403,9 @@ body.opening #closedBook {
 
         width:
             96vw;
+
+        aspect-ratio:
+            1006 / 709;
     }
 }
 
