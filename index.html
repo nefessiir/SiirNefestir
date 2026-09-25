@@ -26,7 +26,7 @@ body {
 }
 
 
-/* ARKA PLAN */
+/* KITAP SAHNESI */
 
 .page {
     width: 100vw;
@@ -39,15 +39,59 @@ body {
     overflow: hidden;
 }
 
-.page img {
+
+/* ARKA PLAN VE SAYFA AYNI OLCEKTE */
+
+.book-stage {
+    position: relative;
+
+    width: min(100vw, 150vh);
+    height: min(100vh, 66.6667vw);
+
+    overflow: hidden;
+}
+
+
+/* ARKA PLAN */
+
+.book-background {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
     display: block;
 
-    width: auto;
-    height: 100vh;
+    object-fit: fill;
+}
 
-    max-width: 100vw;
 
-    object-fit: contain;
+/* BOS SAG SAYFA */
+
+.right-page {
+    position: absolute;
+
+    /*
+        Kaynak goruntudeki konum:
+        x = 750 / 1536
+        y = 155 / 1024
+
+        Boyut:
+        590 x 740
+    */
+
+    left: 48.828125%;
+    top: 15.136719%;
+
+    width: 38.411458%;
+    height: auto;
+
+    display: block;
+
+    pointer-events: none;
 }
 
 </style>
@@ -57,10 +101,21 @@ body {
 
 <div class="page">
 
-    <img
-        src="arkaplan0.jpeg"
-        alt="Şiir Nefestir"
-    >
+    <div class="book-stage">
+
+        <img
+            class="book-background"
+            src="arkaplan0.jpeg"
+            alt="Sair Nefestir"
+        >
+
+        <img
+            class="right-page"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
+
+    </div>
 
 </div>
 
