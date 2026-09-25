@@ -23,404 +23,229 @@ body {
 body {
     background: #111;
     overflow: hidden;
+    font-family: Georgia, "Times New Roman", serif;
 }
 
 
-/* KITAP SAHNESI */
+/* =========================================================
+   KITAP
+========================================================= */
+
+.book {
+    position: relative;
+
+    width: min(96vw, 1500px);
+    height: min(88vh, 900px);
+
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    perspective: 1600px;
+}
+
+
+/* =========================================================
+   SAYFALAR
+========================================================= */
 
 .page {
-    width: 100vw;
-    height: 100vh;
+    position: relative;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 100%;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,0.08),
+            transparent 12%,
+            transparent 88%,
+            rgba(0,0,0,0.06)
+        ),
+        #f4edda;
+
+    box-shadow:
+        inset 0 0 35px rgba(0,0,0,0.12);
+}
+
+
+/* Sol sayfanın iç kenarı */
+
+.left-page {
+    border-radius: 18px 0 0 18px;
+
+    box-shadow:
+        inset -18px 0 28px rgba(0,0,0,0.14),
+        inset 0 0 35px rgba(0,0,0,0.10);
+}
+
+
+/* Sağ sayfanın iç kenarı */
+
+.right-page {
+    border-radius: 0 18px 18px 0;
+
+    box-shadow:
+        inset 18px 0 28px rgba(0,0,0,0.14),
+        inset 0 0 35px rgba(0,0,0,0.10);
+}
+
+
+/* =========================================================
+   SAYFA İÇİ
+========================================================= */
+
+.page-content {
+    position: absolute;
+
+    top: 11%;
+    left: 12%;
+    right: 12%;
+    bottom: 11%;
 
     overflow: hidden;
 }
 
 
-/* KITAP */
+/* =========================================================
+   SIIR METNI
+========================================================= */
 
-.book-stage {
-    position: relative;
-
-    width: min(100vw, 150vh);
-    height: min(100vh, 66.6667vw);
-
-    overflow: visible;
-
-    perspective: 1800px;
-}
-
-
-/* ARKA PLAN */
-
-.book-background {
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
+.poem {
     width: 100%;
     height: 100%;
 
-    display: block;
-
-    object-fit: fill;
-
-    z-index: 1;
-}
-
-
-/* SAG SAYFA */
-
-.right-page {
-    position: absolute;
-
-    left: 48.828125%;
-    top: 13.2%;
-
-    width: 38.411458%;
-    height: auto;
-
-    display: block;
-
-    pointer-events: none;
-
-    z-index: 2;
-}
-
-
-/* SOL SAYFA */
-
-.left-page {
-    position: absolute;
-
-    left: 19%;
-    top: 13.2%;
-
-    width: 34%;
-    height: calc(100% - 27.5%);
-
-    display: block;
-
-    pointer-events: none;
-
-    transform: scaleX(-1);
-
-    z-index: 2;
-}
-
-
-/* SAGDA KALACAK BOS SAYFA */
-
-.right-page-cover {
-    position: absolute;
-
-    left: 48.828125%;
-    top: 13.2%;
-
-    width: 38.411458%;
-    height: auto;
-
-    display: none;
-
-    z-index: 3;
-
-    pointer-events: none;
-}
-
-
-/*
-==================================================
-DONEN SAYFA
-==================================================
-
-Donus ekseni sol sayfanin sag kenari:
-
-19% + 34% = 53%
-
-Bu eksen SABIT.
-*/
-
-.turning-page-wrap {
-    position: absolute;
-
-    left: 53%;
-    top: 13.2%;
-
-    width: 38.411458%;
-
-    height: auto;
-
-    display: none;
-
-    z-index: 5;
-
-    transform-origin: left center;
-
-    transform-style: preserve-3d;
-
-    pointer-events: none;
-
-    will-change: transform;
-}
-
-
-/*
-DONEN GORSEL
-
-Baslangicta:
-
-53% - 4.171875% = 48.828125%
-
-Yani tam olarak sag sayfanin baslangic noktasi.
-*/
-
-.turning-page {
-    position: relative;
-
-    left: -10.861%;
-
-    top: 0;
-
-    width: 100%;
-
-    height: auto;
-
-    display: block;
-
-    transform-origin: left center;
-
-    transform-style: preserve-3d;
-
-    backface-visibility: visible;
-
-    will-change: left, width;
-}
-
-
-/* OKLAR */
-
-.page-arrow {
-    position: absolute;
-
-    top: 50%;
-
-    width: 30px;
-    height: 50px;
-
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
 
-    color: rgba(255, 255, 255, 0.85);
+    color: #173c68;
 
-    font-family: Arial, sans-serif;
-    font-size: 38px;
-    font-weight: 300;
-    line-height: 1;
+    font-family:
+        "Segoe Print",
+        "Bradley Hand",
+        "Comic Sans MS",
+        cursive;
 
-    cursor: pointer;
-    user-select: none;
+    font-size: clamp(16px, 1.35vw, 24px);
 
-    z-index: 20;
+    line-height: 1.9;
+
+    white-space: pre-line;
+
+    opacity: 1;
+
+    transition:
+        opacity 900ms ease;
+}
+
+
+/*
+    Yeni şiir belirirken kullanılacak durum
+*/
+
+.poem.hidden {
+    opacity: 0;
+}
+
+
+/* =========================================================
+   OKLAR
+========================================================= */
+
+.next-button {
+    position: absolute;
+
+    right: -42px;
+    top: 50%;
 
     transform: translateY(-50%);
 
-    text-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.8);
+    width: 58px;
+    height: 58px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(244, 237, 218, 0.95);
+
+    color: #222;
+
+    font-size: 34px;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    box-shadow:
+        0 4px 18px rgba(0,0,0,0.35);
+
+    transition:
+        transform 200ms ease,
+        opacity 300ms ease;
 }
 
-.page-arrow:hover {
-    color: #fff;
+.next-button:hover {
+    transform:
+        translateY(-50%)
+        scale(1.08);
 }
 
-
-/* SOL OK */
-
-.prev-arrow {
-    left: 16%;
-
-    display: none;
-}
-
-
-/* SAG OK */
-
-.next-arrow {
-    left: 88%;
-}
-
-
-/*
-==================================================
-DONUS
-==================================================
-*/
-
-.turning-page-wrap.animate {
-    animation:
-        pageTurn
-        1.2s
-        cubic-bezier(0.22, 0.61, 0.36, 1)
-        forwards;
+.next-button:disabled {
+    opacity: 0.25;
+    cursor: default;
 }
 
 
-/*
-==================================================
-SAYFA OLCU / KONUM DONUSUMU
-==================================================
+/* =========================================================
+   KODDA HIZLARI BURADAN AYARLAYABILIRIZ
+========================================================= */
 
-Sayfa:
+@media (prefers-reduced-motion: reduce) {
 
-SAG:
-left  = 48.828125%
-width = 38.411458%
-
-SOL:
-left  = 19%
-width = 34%
-
-Donus ekseni:
-53%
-*/
-
-.turning-page-wrap.animate .turning-page {
-    animation:
-        pageShape
-        1.2s
-        cubic-bezier(0.22, 0.61, 0.36, 1)
-        forwards;
-}
-
-
-/*
-==================================================
-DONEN SAYFA
-==================================================
-*/
-
-@keyframes pageTurn {
-
-    0% {
-        transform:
-            rotateY(0deg);
+    .poem {
+        transition: none;
     }
 
-    15% {
-        transform:
-            rotateY(-28deg);
-    }
-
-    30% {
-        transform:
-            rotateY(-60deg);
-    }
-
-    45% {
-        transform:
-            rotateY(-92deg);
-    }
-
-    60% {
-        transform:
-            rotateY(-120deg);
-    }
-
-    75% {
-        transform:
-            rotateY(-148deg);
-    }
-
-    88% {
-        transform:
-            rotateY(-168deg);
-    }
-
-    100% {
-        transform:
-            rotateY(-180deg);
+    .next-button {
+        transition: none;
     }
 }
 
 
-/*
-==================================================
-SAYFANIN SAGDAN SOLA GECISI
-==================================================
-*/
+/* =========================================================
+   MOBIL
+========================================================= */
 
-@keyframes pageShape {
+@media (max-width: 800px) {
 
-    0% {
-
-        left: -10.861%;
-
-        width: 100%;
+    .book {
+        width: 94vw;
+        height: 82vh;
     }
 
-
-    15% {
-
-        left: -9%;
-
-        width: 99%;
+    .page-content {
+        left: 9%;
+        right: 9%;
     }
 
-
-    30% {
-
-        left: -7%;
-
-        width: 97%;
+    .poem {
+        font-size: 15px;
+        line-height: 1.7;
     }
 
+    .next-button {
+        right: -25px;
 
-    45% {
+        width: 48px;
+        height: 48px;
 
-        left: -5%;
-
-        width: 94%;
-    }
-
-
-    60% {
-
-        left: -3%;
-
-        width: 91%;
-    }
-
-
-    75% {
-
-        left: -1.5%;
-
-        width: 88%;
-    }
-
-
-    88% {
-
-        left: -0.5%;
-
-        width: 87%;
-    }
-
-
-    100% {
-
-        /*
-         * Sol sayfanin sag kenari
-         * tam olarak donus eksenine oturur.
-         */
-
-        left: 0;
-
-        width: 88.515%;
+        font-size: 28px;
     }
 }
 
@@ -430,162 +255,346 @@ SAYFANIN SAGDAN SOLA GECISI
 
 <body>
 
-<div class="page">
 
-    <div class="book-stage">
-
-
-        <!-- ARKA PLAN -->
-
-        <img
-            class="book-background"
-            src="arkaplan0.jpeg"
-            alt="Sair Nefestir"
-        >
+<div class="book">
 
 
-        <!-- SAGDA KALACAK BOS SAYFA -->
+    <!-- =====================================================
+         SOL SAYFA
+    ====================================================== -->
 
-        <img
-            class="right-page-cover"
-            src="sag_sayfa_bos.png"
-            alt=""
-        >
+    <section class="page left-page">
 
+        <div class="page-content">
 
-        <!-- SAG SAYFA -->
-
-        <img
-            class="right-page"
-            src="sag_sayfa_bos.png"
-            alt=""
-        >
-
-
-        <!-- SOL SAYFA -->
-
-        <img
-            class="left-page"
-            src="sag_sayfa_bos.png"
-            alt=""
-        >
-
-
-        <!-- SAG OK -->
-
-        <div
-            class="page-arrow next-arrow"
-            onclick="turnPage()"
-            aria-label="Sonraki sayfa"
-        >
-            ›
-        </div>
-
-
-        <!-- SOL OK -->
-
-        <div
-            class="page-arrow prev-arrow"
-            aria-label="Onceki sayfa"
-        >
-            ‹
-        </div>
-
-
-        <!-- DONEN SAYFA -->
-
-        <div
-            class="turning-page-wrap"
-            id="turningPageWrap"
-        >
-
-            <img
-                class="turning-page"
-                id="turningPage"
-                src="sag_sayfa_bos.png"
-                alt=""
-            >
+            <div
+                id="leftPoem"
+                class="poem"
+            ></div>
 
         </div>
 
+    </section>
 
-    </div>
+
+
+    <!-- =====================================================
+         SAG SAYFA
+    ====================================================== -->
+
+    <section class="page right-page">
+
+        <div class="page-content">
+
+            <div
+                id="rightPoem"
+                class="poem"
+            ></div>
+
+        </div>
+
+        <button
+            id="nextButton"
+            class="next-button"
+            type="button"
+            aria-label="Siirin devamini goster"
+        >
+            →
+        </button>
+
+    </section>
 
 </div>
 
 
+
 <script>
 
-function turnPage() {
+/* =========================================================
+   ANIMASYON AYARLARI
 
-    const turningPageWrap =
-        document.getElementById("turningPageWrap");
+   Bunlar kullaniciya gosterilmiyor.
+   Kitabin hissine gore biz belirliyoruz.
+========================================================= */
 
-    const rightPage =
-        document.querySelector(".right-page");
-
-    const leftPage =
-        document.querySelector(".left-page");
-
-    const rightPageCover =
-        document.querySelector(".right-page-cover");
-
-    const nextArrow =
-        document.querySelector(".next-arrow");
+const FADE_OUT_TIME = 900;
+const FADE_IN_TIME = 1000;
+const PAGE_PAUSE = 150;
 
 
-    if (
-        turningPageWrap.classList.contains("animate")
-    ) {
+/* =========================================================
+   SIIR
+
+   Buradaki metin daha sonra gercek siirle degistirilecek.
+
+   Her eleman bir "kitap gorunumu"nu temsil ediyor.
+
+   Yani:
+   0 = ilk sol + ilk sag
+   1 = sonraki sol + sonraki sag
+   2 = sonraki sol + sonraki sag
+   ...
+========================================================= */
+
+const poemPages = [
+
+    {
+        left: `
+Yoksam düşlerinde
+gecelerinde kayıpsam
+
+Bakışların hep donuk
+ve sessizse...
+        `,
+
+        right: `
+Belki de bir şiirin
+içinde saklıyım.
+
+Belki bir kelimenin
+sonunda bekliyorum.
+        `
+    },
+
+    {
+        left: `
+Belki bir gün
+okurken beni
+
+bir satırda
+rastlarsın kendine.
+        `,
+
+        right: `
+Ve anlarsın...
+
+Bazı insanlar
+gitmez aslında.
+
+Sadece
+şiire dönüşür.
+        `
+    },
+
+    {
+        left: `
+Sonra bir sayfa daha
+açarsın.
+
+Sessizce...
+        `,
+
+        right: `
+Ve ben yine
+orada olurum.
+
+Bekle...!
+
+Geliyorum!
+        `
+    }
+
+];
+
+
+/* =========================================================
+   ELEMANLAR
+========================================================= */
+
+const leftPoem =
+    document.getElementById("leftPoem");
+
+const rightPoem =
+    document.getElementById("rightPoem");
+
+const nextButton =
+    document.getElementById("nextButton");
+
+
+/* =========================================================
+   DURUM
+========================================================= */
+
+let currentPage = 0;
+
+let isAnimating = false;
+
+
+/* =========================================================
+   METNI GOSTER
+========================================================= */
+
+function showPage(index) {
+
+    const page = poemPages[index];
+
+    if (!page) {
         return;
     }
 
+    leftPoem.textContent =
+        page.left.trim();
 
-    /*
-     * Donen sayfayi tiklandiginda gorunur yap.
-     */
+    rightPoem.textContent =
+        page.right.trim();
 
-    turningPageWrap.style.display = "block";
-
-
-    nextArrow.style.pointerEvents = "none";
-
-
-    /*
-     * Donusu baslat.
-     */
-
-    turningPageWrap.classList.add("animate");
-
-
-    turningPageWrap.addEventListener(
-        "animationend",
-        function () {
-
-            /*
-             * Eski sol sayfayi gizle.
-             */
-
-            leftPage.style.display = "none";
-
-
-            /*
-             * Eski sag sayfayi gizle.
-             */
-
-            rightPage.style.display = "none";
-
-
-            /*
-             * Sag tarafta bos sayfa kalsin.
-             */
-
-            rightPageCover.style.display = "block";
-
-        },
-        { once: true }
-    );
+    leftPoem.classList.remove("hidden");
+    rightPoem.classList.remove("hidden");
 }
+
+
+/* =========================================================
+   ILK SAYFAYI GOSTER
+========================================================= */
+
+showPage(0);
+
+
+/* =========================================================
+   SON SAYFAYA GELDIGINDE OKU KAPAT
+========================================================= */
+
+function updateButton() {
+
+    if (currentPage >= poemPages.length - 1) {
+
+        nextButton.disabled = true;
+
+    } else {
+
+        nextButton.disabled = false;
+    }
+}
+
+updateButton();
+
+
+/* =========================================================
+   SONRAKI SIIR BOLUMU
+========================================================= */
+
+async function nextPoemPage() {
+
+    if (isAnimating) {
+        return;
+    }
+
+    if (currentPage >= poemPages.length - 1) {
+        return;
+    }
+
+    isAnimating = true;
+
+    nextButton.disabled = true;
+
+
+    /*
+        1
+        MEVCUT METINLER YAVASCA SILINIYOR
+    */
+
+    leftPoem.classList.add("hidden");
+    rightPoem.classList.add("hidden");
+
+
+    /*
+        Silinme animasyonunun tamamlanmasini bekle
+    */
+
+    await wait(FADE_OUT_TIME);
+
+
+    /*
+        2
+        YENI METNI HAZIRLA
+    */
+
+    currentPage++;
+
+    const nextPage =
+        poemPages[currentPage];
+
+
+    leftPoem.textContent =
+        nextPage.left.trim();
+
+    rightPoem.textContent =
+        nextPage.right.trim();
+
+
+    /*
+        3
+        Cok kisa bir nefes araligi
+    */
+
+    await wait(PAGE_PAUSE);
+
+
+    /*
+        4
+        YENI SIIR YAVASCA BELIRIYOR
+    */
+
+    leftPoem.classList.remove("hidden");
+    rightPoem.classList.remove("hidden");
+
+
+    await wait(FADE_IN_TIME);
+
+
+    /*
+        5
+        ANIMASYON BITTI
+    */
+
+    isAnimating = false;
+
+    updateButton();
+}
+
+
+/* =========================================================
+   BEKLEME
+========================================================= */
+
+function wait(ms) {
+
+    return new Promise(resolve => {
+
+        setTimeout(resolve, ms);
+
+    });
+}
+
+
+/* =========================================================
+   OK
+========================================================= */
+
+nextButton.addEventListener(
+    "click",
+    nextPoemPage
+);
+
+
+/* =========================================================
+   KLAVYE DESTEĞI
+
+   Sag ok tusu da ayni hareketi yapar.
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "ArrowRight") {
+
+            nextPoemPage();
+
+        }
+
+    }
+);
 
 </script>
 
