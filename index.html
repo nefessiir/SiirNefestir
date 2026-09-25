@@ -56,7 +56,7 @@ body {
 
 /* =========================================
    SAYFALAR
-   HICBIR KONUM / BOYUT DEGISMEDI
+   HICBIR KONUM / BOYUT DEGISTIRILMEDI
 ========================================= */
 
 .page {
@@ -161,11 +161,6 @@ body {
     pointer-events: none;
 
     z-index: 20;
-
-    /*
-       Sayfanin geometrik merkezine
-       gore sabitleniyor.
-    */
 
     left: 50%;
     top: 50%;
@@ -347,26 +342,26 @@ body {
 
 <div class="book-stage" id="bookStage">
 
-```
 <!-- UST KONTROLLER -->
 
 <div class="top-controls">
 
-    <button
-        class="control-button"
-        title="Sesli dinle">
-        🔊
-    </button>
+```
+<button
+    class="control-button"
+    title="Sesli dinle">
+    🔊
+</button>
 
-    <button
-        class="control-button"
-        title="Tam ekran"
-        onclick="toggleFullscreen()">
-        ⛶
-    </button>
+<button
+    class="control-button"
+    title="Tam ekran"
+    onclick="toggleFullscreen()">
+    ⛶
+</button>
+```
 
 </div>
-
 
 <!-- SOL SAYFA -->
 
@@ -374,23 +369,24 @@ body {
     class="page left-page"
     id="leftPage">
 
-    <div class="page-content">
+```
+<div class="page-content">
 
-        <div
-            class="poem"
-            id="leftPoem"></div>
-
-    </div>
-
-    <!-- SOL SAYFANIN SABIT TUY KALEMI -->
-
-    <img
-        src="yazan_kalem3.png"
-        class="page-quill"
-        alt="">
+    <div
+        class="poem"
+        id="leftPoem"></div>
 
 </div>
 
+<!-- SOL SAYFANIN SABIT TUY KALEMI -->
+
+<img
+    src="yazan_kalem3.png"
+    class="page-quill"
+    alt="">
+```
+
+</div>
 
 <!-- SAG SAYFA -->
 
@@ -398,63 +394,61 @@ body {
     class="page right-page"
     id="rightPage">
 
-    <div class="page-content">
+```
+<div class="page-content">
 
-        <div
-            class="poem"
-            id="rightPoem"></div>
-
-    </div>
-
-    <!-- SAG SAYFANIN SABIT TUY KALEMI -->
-
-    <img
-        src="yazan_kalem3.png"
-        class="page-quill"
-        alt="">
+    <div
+        class="poem"
+        id="rightPoem"></div>
 
 </div>
 
+<!-- SAG SAYFANIN SABIT TUY KALEMI -->
+
+<img
+    src="yazan_kalem3.png"
+    class="page-quill"
+    alt="">
+```
+
+</div>
 
 <!-- KOSENIN KALEM GORSELI -->
 
 <img
-    src="murekkep_kalem.png"
-    class="ink-quill"
-    alt="">
-
+ src="murekkep_kalem.png"
+ class="ink-quill"
+ alt="">
 
 <!-- OKLAR -->
 
 <button
-    class="nav-arrow left-arrow"
-    onclick="previousPage()">
-    ‹
-</button>
+ class="nav-arrow left-arrow"
+ onclick="previousPage()">
+‹ </button>
 
 <button
-    class="nav-arrow right-arrow"
-    onclick="nextPage()">
-    ›
-</button>
-
+ class="nav-arrow right-arrow"
+ onclick="nextPage()">
+› </button>
 
 <!-- EQUALIZER -->
 
 <div class="equalizer">
 
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
+```
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+```
 
 </div>
-```
 
 </div>
 
@@ -522,7 +516,7 @@ Geliyorum!`;
 
 
 /* =========================================
-   SAYFA GENISLIGINI OLCECEK ALAN
+   GENISLIK OLCECEK ALAN
 ========================================= */
 
 const measurePoem =
@@ -580,9 +574,9 @@ function measureTextWidth(text) {
 function getWrappedLines() {
 
     const availableWidth =
-        leftPoem
-            .getBoundingClientRect()
-            .width;
+        document.querySelector(
+            ".left-page .page-content"
+        ).getBoundingClientRect().width;
 
     const rawLines =
         poemText.split("\n");
@@ -660,6 +654,9 @@ function getWrappedLines() {
 
 /* =========================================
    SAYFALARA BOL
+   DUZELTILEN KISIM:
+   SIIR KUTUSUNUN DEGIL,
+   SAYFA ICERIGININ YUKSEKLIGI OLCULUYOR
 ========================================= */
 
 function buildPages() {
@@ -667,42 +664,63 @@ function buildPages() {
     const lines =
         getWrappedLines();
 
-    /*
-       Sayfanin gercek yuksekligine
-       gore satir sayisini buluyoruz.
-    */
+    const pageContent =
+        document.querySelector(
+            ".left-page .page-content"
+        );
+
+    const pageRect =
+        pageContent.getBoundingClientRect();
 
     const test =
         document.createElement("div");
 
-    test.className = "poem";
+    test.style.position =
+        "absolute";
 
     test.style.visibility =
         "hidden";
 
-    test.style.position =
-        "absolute";
+    test.style.pointerEvents =
+        "none";
 
     test.style.width =
-        leftPoem
-            .getBoundingClientRect()
-            .width + "px";
+        pageRect.width + "px";
+
+    test.style.fontFamily =
+        '"Caveat", cursive';
+
+    test.style.fontSize =
+        "11pt";
+
+    test.style.fontWeight =
+        "500";
+
+    test.style.lineHeight =
+        "1.55";
+
+    test.style.whiteSpace =
+        "pre-wrap";
+
+    test.textContent =
+        "A";
 
     document.body.appendChild(
         test
     );
 
     const lineHeight =
-        parseFloat(
-            getComputedStyle(
-                test
-            ).lineHeight
-        );
+        test.getBoundingClientRect().height;
+
+    test.remove();
+
+    /*
+       Sayfanin gercek kullanilabilir
+       yuksekligi burada hesaplaniyor.
+    */
 
     const pageHeight =
-        leftPoem
-            .getBoundingClientRect()
-            .height;
+        pageRect.height;
 
     const linesPerPage =
         Math.max(
@@ -712,8 +730,6 @@ function buildPages() {
                 lineHeight
             )
         );
-
-    test.remove();
 
     const pages = [];
 
@@ -827,12 +843,6 @@ function startBook() {
     rightPoem.textContent =
         "";
 
-    /*
-       Ilk durumda sol sayfa
-       bos bekler.
-       Ilk okta siir gorunur.
-    */
-
     leftPoem.style.opacity =
         "0";
 
@@ -855,7 +865,7 @@ async function nextPage() {
 
 
     /* -------------------------------------
-       1. DURUM:
+       1. DURUM
        ILK OK -> SOL SAYFA
     ------------------------------------- */
 
@@ -882,8 +892,8 @@ async function nextPage() {
 
 
     /* -------------------------------------
-       2. DURUM:
-       SAG SAYFA
+       2. DURUM
+       IKINCI OK -> SAG SAYFA
     ------------------------------------- */
 
     if (
@@ -912,11 +922,6 @@ async function nextPage() {
             return;
         }
 
-        /*
-           Sag sayfa yoksa
-           son sayfadayiz.
-        */
-
         stageState =
             "spread";
 
@@ -927,10 +932,9 @@ async function nextPage() {
 
 
     /* -------------------------------------
-       3. DURUM:
+       3. DURUM
        IKI SAYFA DOLU
-       IKISI BIRDEN KAYBOLUR
-       DEVAM SOLA GELIR
+       IKISI BIRDEN YAVASCA SILINIR
     ------------------------------------- */
 
     if (
@@ -940,7 +944,26 @@ async function nextPage() {
         fadeOut(leftPoem);
         fadeOut(rightPoem);
 
-        await wait(1900);
+        /*
+           1.8 saniye:
+           iki sayfanin tamamen
+           kaybolmasi
+        */
+
+        await wait(1800);
+
+        /*
+           Iki sayfa tamamen
+           kaybolduktan sonra
+           2 saniye BOS BEKLE.
+        */
+
+        await wait(2000);
+
+        /*
+           Simdi bir sonraki
+           sayfa cifti.
+        */
 
         pageIndex += 2;
 
@@ -952,10 +975,6 @@ async function nextPage() {
         rightPoem.textContent =
             "";
 
-        /*
-           Sag sayfa tekrar bos.
-        */
-
         rightPoem.style.opacity =
             "0";
 
@@ -964,17 +983,18 @@ async function nextPage() {
             pages.length
         ) {
 
+            /*
+               Yeni siir bolumu
+               tekrar SOL SAYFADA
+               yavasca gorunur.
+            */
+
             fadeIn(leftPoem);
 
             stageState =
                 "right";
 
         } else {
-
-            /*
-               Siir bittiyse iki sayfa
-               bos kalir.
-            */
 
             leftPoem.textContent =
                 "";
@@ -1017,7 +1037,7 @@ function previousPage() {
 
     /*
        Su asamada sol ok
-       sayfa akisini degistirmiyor.
+       akis degistirmiyor.
     */
 
 }
