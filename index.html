@@ -149,11 +149,6 @@ body {
 
     transform-origin: left center;
 
-    /*
-     * Sayfanin arka yuzunu gizlemiyoruz.
-     * Boylece 180 derece dondugunde kaybolmuyor.
-     */
-
     backface-visibility: visible;
 
     will-change:
@@ -411,11 +406,13 @@ function turnPage() {
 
 
             /*
-             * Donen sayfaya artik yeni konum vermiyoruz.
-             * Animasyonun son konumunda kalacak.
+             * ONEMLI:
+             *
+             * animate sinifini KALDIRMIYORUZ.
+             *
+             * Boylece sayfa animasyonun
+             * son karesinde sabit kaliyor.
              */
-
-            turningPage.classList.remove("animate");
 
         },
         { once: true }
