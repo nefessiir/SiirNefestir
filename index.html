@@ -7,7 +7,7 @@
 <title>Şiir Nefestir</title>
 
 <link
-    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap"
     rel="stylesheet"
 >
 
@@ -121,7 +121,6 @@ body {
 
     top: 23%;
     width: 25%;
-
     height: 61%;
 
     z-index: 5;
@@ -129,14 +128,14 @@ body {
     color: #174a82;
 
     font-family:
-        "Caveat",
+        "Kalam",
         "Segoe Print",
         "Bradley Hand",
         cursive;
 
     font-size: clamp(18px, 1.55vw, 27px);
 
-    font-weight: 500;
+    font-weight: 400;
 
     line-height: 1.85;
 
@@ -147,7 +146,7 @@ body {
     overflow: hidden;
 
     text-shadow:
-        0.25px 0.25px 0 rgba(23, 74, 130, 0.35);
+        0.2px 0.2px 0 rgba(23, 74, 130, 0.28);
 
     opacity: 1;
 
@@ -174,7 +173,7 @@ body {
 }
 
 
-/* SIIR KAYBOLURKEN */
+/* SAYFA GECISINDE SILINME */
 
 .poem-text.fade-out {
     opacity: 0;
@@ -225,7 +224,7 @@ body {
 }
 
 
-/* OK ANIMASYON SIRASINDA */
+/* ANIMASYON SIRASINDA OK KAPALI */
 
 .page-arrow.disabled {
     pointer-events: none;
@@ -365,13 +364,13 @@ const nextArrow =
    DURUM
    ========================================= */
 
-let poemIndex = 0;
-
 let pages = [];
 
 let currentSpread = 0;
 
 let isAnimating = false;
+
+let typingTimers = [];
 
 
 /* =========================================
@@ -410,9 +409,6 @@ function createMeasureElement(sourceElement) {
     measure.style.letterSpacing =
         styles.letterSpacing;
 
-    measure.style.whiteSpace =
-        styles.whiteSpace;
-
     measure.style.textShadow =
         styles.textShadow;
 
@@ -423,7 +419,7 @@ function createMeasureElement(sourceElement) {
 
 
 /* =========================================
-   BIR PARCANIN SAYFAYA SIGIP SIGMADIGI
+   SAYFAYA SIGIYOR MU
    ========================================= */
 
 function fitsOnPage(
@@ -432,7 +428,8 @@ function fitsOnPage(
     measureElement
 ) {
 
-    measureElement.textContent = text;
+    measureElement.textContent =
+        text;
 
     return (
         measureElement.scrollHeight <=
@@ -458,7 +455,11 @@ function paginatePoem(poem) {
     let currentText = "";
 
 
-    for (let i = 0; i < lines.length; i++) {
+    for (
+        let i = 0;
+        i < lines.length;
+        i++
+    ) {
 
         const line =
             lines[i];
@@ -468,10 +469,6 @@ function paginatePoem(poem) {
                 ? line
                 : currentText + "\n" + line;
 
-
-        /*
-         * Yeni satir sayfaya sigiyorsa ekle.
-         */
 
         if (
             fitsOnPage(
@@ -488,36 +485,25 @@ function paginatePoem(poem) {
         }
 
 
-        /*
-         * Sayfa doldu.
-         * Onceki parcayi kaydet.
-         */
-
         if (currentText !== "") {
 
             result.push(
                 currentText
             );
 
-            currentText = line;
+            currentText =
+                line;
 
         } else {
 
-            /*
-             * Tek bir satir normalden
-             * daha uzun olsa bile kaybolmasin.
-             */
-
-            result.push(line);
+            result.push(
+                line
+            );
 
             currentText = "";
         }
     }
 
-
-    /*
-     * Son kalan parcayi ekle.
-     */
 
     if (currentText !== "") {
 
@@ -541,21 +527,11 @@ function buildPages() {
 
     pages = [];
 
-
     poems.forEach(function(poem) {
 
         const chunks =
             paginatePoem(poem);
 
-
-        /*
-         * Her siir MUTLAKA sol sayfadan baslar.
-         *
-         * Ilk parca -> sol
-         * Ikinci parca -> sag
-         *
-         * Sonraki parcalar yeni spread'e gider.
-         */
 
         for (
             let i = 0;
@@ -569,10 +545,7 @@ function buildPages() {
                     chunks[i] || "",
 
                 right:
-                    chunks[i + 1] || "",
-
-                poemIndex:
-                    poems.indexOf(poem)
+                    chunks[i + 1] || ""
 
             });
         }
@@ -582,36 +555,147 @@ function buildPages() {
 
 
 /* =========================================
+   YAZMA ZAMANLAYICILARINI TEMIZLE
+   ========================================= */
+
+function clearTypingTimers() {
+
+    typingTimers.forEach(
+        function(timer) {
+
+            clearTimeout(timer);
+
+        }
+    );
+
+    typingTimers = [];
+}
+
+
+/* =========================================
+   KARAKTER KARAKTER YAZ
+   ========================================= */
+
+function typeText(
+    element,
+    text,
+    speed,
+    callback
+) {
+
+    element.textContent = "";
+
+    let index = 0;
+
+
+    function writeCharacter() {
+
+        if (index >= text.length) {
+
+            if (callback) {
+                callback();
+            }
+
+            return;
+        }
+
+
+        element.textContent +=
+            text.charAt(index);
+
+        index++;
+
+
+        const timer =
+            setTimeout(
+                writeCharacter,
+                speed
+            );
+
+        typingTimers.push(timer);
+    }
+
+
+    writeCharacter();
+}
+
+
+/* =========================================
+   SAYFAYI DAKTILO GIBI YAZ
+   ========================================= */
+
+function typeSpread(index) {
+
+    clearTypingTimers();
+
+
+    const spread =
+        pages[index];
+
+
+    leftPoem.textContent = "";
+
+    rightPoem.textContent = "";
+
+
+    /*
+     * ONCE SOL SAYFA YAZILIR
+     */
+
+    typeText(
+        leftPoem,
+        spread.left,
+        32,
+        function() {
+
+
+            /*
+             * SOL BITINCE SAG SAYFA
+             */
+
+            typeText(
+                rightPoem,
+                spread.right,
+                32,
+                function() {
+
+                    /*
+                     * IKISI DE BITTI.
+                     *
+                     * ARTIK HICBIR SEY
+                     * OTOMATIK OLARAK
+                     * DEGISEMEZ.
+                     *
+                     * OKUYUCU OKA BASACAK.
+                     */
+
+                }
+            );
+
+        }
+    );
+}
+
+
+/* =========================================
    SAYFAYI GOSTER
    ========================================= */
 
 function showSpread(index) {
 
-    if (
-        !pages[index]
-    ) {
+    if (!pages[index]) {
         return;
     }
 
-
-    leftPoem.textContent =
-        pages[index].left;
-
-    rightPoem.textContent =
-        pages[index].right;
+    typeSpread(index);
 }
 
 
 /* =========================================
-   ILK SAYFA
+   ILK ACILIS
    ========================================= */
 
 async function initializeBook() {
-
-    /*
-     * Web font tamamen yuklenmeden
-     * olcum yapmiyoruz.
-     */
 
     if (
         document.fonts &&
@@ -622,25 +706,24 @@ async function initializeBook() {
     }
 
 
-    /*
-     * Tarayicinin gercek boyutlari
-     * hesaplamasi icin bir frame bekle.
-     */
+    requestAnimationFrame(
+        function() {
 
-    requestAnimationFrame(function() {
+            buildPages();
 
-        buildPages();
+            currentSpread = 0;
 
-        currentSpread = 0;
+            showSpread(
+                currentSpread
+            );
 
-        showSpread(currentSpread);
-
-    });
+        }
+    );
 }
 
 
 /* =========================================
-   OK
+   OKA BASILINCA
    ========================================= */
 
 nextArrow.addEventListener(
@@ -651,11 +734,6 @@ nextArrow.addEventListener(
             return;
         }
 
-
-        /*
-         * Gidecek baska sayfa yoksa
-         * hicbir sey yapma.
-         */
 
         if (
             currentSpread >=
@@ -674,7 +752,15 @@ nextArrow.addEventListener(
 
 
         /*
-         * ONCE IKISINI DE YAVASCA YOK ET
+         * ONCE YAZMA ZAMANLAYICILARINI
+         * DURDUR.
+         */
+
+        clearTypingTimers();
+
+
+        /*
+         * SOL + SAG YAVASCA SILINSIN.
          */
 
         leftPoem.classList.add(
@@ -687,46 +773,98 @@ nextArrow.addEventListener(
 
 
         /*
-         * KAYBOLMA TAMAMLANDIGINDA
-         * YENI SAYFAYI YERLESTIR
+         * SILINME TAMAMLANDIGINDA
+         * YENI SAYFA BASLASIN.
          */
 
-        setTimeout(function() {
+        setTimeout(
+            function() {
 
-            currentSpread++;
+                currentSpread++;
 
-            showSpread(
-                currentSpread
-            );
-
-
-            /*
-             * SONRA TEKRAR GORUNUR YAP
-             */
-
-            leftPoem.classList.remove(
-                "fade-out"
-            );
-
-            rightPoem.classList.remove(
-                "fade-out"
-            );
-
-
-            setTimeout(function() {
-
-                isAnimating = false;
-
-                nextArrow.classList.remove(
-                    "disabled"
+                leftPoem.classList.remove(
+                    "fade-out"
                 );
 
-            }, 1200);
+                rightPoem.classList.remove(
+                    "fade-out"
+                );
 
-        }, 1200);
+
+                /*
+                 * YENI SIIR / DEVAM
+                 * SOL SAYFADAN BASLAR.
+                 */
+
+                typeSpread(
+                    currentSpread
+                );
+
+
+                /*
+                 * OK YENIDEN AKTIF.
+                 *
+                 * Burada daktilo yazisi
+                 * devam ederken ok tusu
+                 * kullanilabilir.
+                 *
+                 * Fakat kullanicinin metni
+                 * yarida kesmemesi icin
+                 * yazma bittikten sonra
+                 * aktif ediyoruz.
+                 */
+
+                waitForTypingToFinish(
+                    function() {
+
+                        isAnimating = false;
+
+                        nextArrow.classList.remove(
+                            "disabled"
+                        );
+
+                    }
+                );
+
+            },
+            1200
+        );
 
     }
 );
+
+
+/* =========================================
+   DAKTILO BITENE KADAR BEKLE
+   ========================================= */
+
+function waitForTypingToFinish(callback) {
+
+    const check =
+        setInterval(
+            function() {
+
+                /*
+                 * Aktif timer kalmadiysa
+                 * yazma bitmistir.
+                 */
+
+                if (
+                    typingTimers.length === 0
+                ) {
+
+                    clearInterval(check);
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+
+            },
+            100
+        );
+
+}
 
 
 /* =========================================
