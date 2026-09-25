@@ -97,7 +97,7 @@ body {
     top: 13.2%;
 
     width: 34%;
-    height: calc(100% - 27.5%);
+    height: 27.5%;
 
     display: block;
 
@@ -106,6 +106,73 @@ body {
     transform: scaleX(-1);
 
     z-index: 2;
+}
+
+
+/* SAYFA OKLARI */
+
+.page-arrow {
+    position: absolute;
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 45px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 42px;
+    font-family: Arial, sans-serif;
+
+    color: rgba(255, 255, 255, 0.75);
+
+    background: rgba(0, 0, 0, 0.18);
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    z-index: 10;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.page-arrow:hover {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.page-arrow:active {
+    transform: translateY(-50%) scale(0.94);
+}
+
+
+/* SAG OK */
+
+.next-arrow {
+    right: 1.5%;
+}
+
+
+/* SOL OK */
+
+.prev-arrow {
+    left: 1.5%;
+}
+
+
+/* ILK SAYFADA SOL OK GIZLI */
+
+.prev-arrow {
+    display: none;
 }
 
 </style>
@@ -139,9 +206,78 @@ body {
             alt=""
         >
 
+        <!-- SAG OK -->
+
+        <div
+            class="page-arrow next-arrow"
+            onclick="nextPage()"
+            aria-label="Sonraki sayfa"
+        >
+            →
+        </div>
+
+        <!-- SOL OK -->
+
+        <div
+            class="page-arrow prev-arrow"
+            onclick="prevPage()"
+            aria-label="Onceki sayfa"
+        >
+            ←
+        </div>
+
     </div>
 
 </div>
+
+
+<script>
+
+let currentPage = 1;
+
+
+/* SONRAKI SAYFA */
+
+function nextPage() {
+
+    currentPage++;
+
+    console.log("Sonraki sayfa:", currentPage);
+
+    updateArrows();
+}
+
+
+/* ONCEKI SAYFA */
+
+function prevPage() {
+
+    if (currentPage <= 1) {
+        return;
+    }
+
+    currentPage--;
+
+    console.log("Onceki sayfa:", currentPage);
+
+    updateArrows();
+}
+
+
+/* OKLARIN DURUMU */
+
+function updateArrows() {
+
+    const prevArrow = document.querySelector(".prev-arrow");
+
+    if (currentPage <= 1) {
+        prevArrow.style.display = "none";
+    } else {
+        prevArrow.style.display = "flex";
+    }
+}
+
+</script>
 
 </body>
 </html>
