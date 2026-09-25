@@ -72,7 +72,6 @@ body {
 
 
 /* SABIT SAG SAYFA */
-/* BURAYA DOKUNULMADI */
 
 .right-page {
     position: absolute;
@@ -91,12 +90,12 @@ body {
 }
 
 
-/* USTUNE GELECEK CEVRILEBILIR SAYFA */
+/* SOL SAYFA - SAG SAYFANIN AYNA KARSILIGI */
 
-.flip-page {
+.left-page {
     position: absolute;
 
-    left: 48.828125%;
+    right: 48.828125%;
     top: 13.2%;
 
     width: 38.411458%;
@@ -106,7 +105,9 @@ body {
 
     pointer-events: none;
 
-    z-index: 3;
+    transform: scaleX(-1);
+
+    z-index: 2;
 }
 
 </style>
@@ -134,10 +135,10 @@ body {
             alt=""
         >
 
-        <!-- CEVRILECEK UST SAYFA -->
+        <!-- SAG SAYFANIN SOLDAKI AYNA KARSILIGI -->
 
         <img
-            class="flip-page"
+            class="left-page"
             src="sag_sayfa_bos.png"
             alt=""
         >
