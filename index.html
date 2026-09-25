@@ -118,28 +118,32 @@ body {
    ARKA PLAN TUY KALEMLARI (SAYFA DOKUSU)
 ========================================= */
 
-/* Sağ Sayfa: Sol alttan sağ üste doğru büyütülen solgun tüy kalem */
+/* Sağ Sayfa: Ortalanmış ve sayfa sınırları içinde sabitlenmiş tüy kalem */
 .quill-bg-right {
     position: absolute;
-    width: 140%;
+    max-width: 85%;
+    max-height: 85%;
+    width: auto;
     height: auto;
-    bottom: -15%;
-    left: -20%;
-    transform: rotate(-35deg);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-35deg);
     opacity: 0.22;
     pointer-events: none;
     z-index: 1; /* Yazının altında */
     filter: sepia(0.3) contrast(0.9);
 }
 
-/* Sol Sayfa: Sağ alttan sol üste doğru simetrik solgun tüy kalem */
+/* Sol Sayfa: Ortalanmış ve sayfa sınırları içinde sabitlenmiş tüy kalem */
 .quill-bg-left {
     position: absolute;
-    width: 140%;
+    max-width: 85%;
+    max-height: 85%;
+    width: auto;
     height: auto;
-    bottom: -15%;
-    right: -20%;
-    transform: scaleX(-1) rotate(-35deg);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scaleX(-1) rotate(-35deg);
     opacity: 0.22;
     pointer-events: none;
     z-index: 1; /* Yazının altında */
@@ -273,7 +277,7 @@ body {
 
     <!-- SOL SAYFA -->
     <div class="page left-page" id="leftPage">
-        <!-- SOL SAYFA SOLGUN BACKGROUND KALEMI (Sağ alttan sol üste) -->
+        <!-- SOL SAYFA SOLGUN BACKGROUND KALEMI (Ortalanmış) -->
         <img src="yazan_kalem3.png" class="quill-bg-left" alt="">
         
         <div class="page-content">
@@ -283,7 +287,7 @@ body {
 
     <!-- SAG SAYFA -->
     <div class="page right-page" id="rightPage">
-        <!-- SAĞ SAYFA SOLGUN BACKGROUND KALEMI (Sol alttan sağ üste) -->
+        <!-- SAĞ SAYFA SOLGUN BACKGROUND KALEMI (Ortalanmış) -->
         <img src="yazan_kalem3.png" class="quill-bg-right" alt="">
 
         <div class="page-content">
@@ -558,7 +562,7 @@ async function nextPage() {
             leftPoem.textContent = pages[pageIndex].join("\n");
             rightPoem.textContent = "";
             fadeIn(leftPoem);
-            stageState = "right"; // Bir sonraki tıklamada sağ sayfa gelecek
+            stageState = "right";
             await wait(1800);
         } else {
             leftPoem.textContent = "";
