@@ -87,18 +87,37 @@ body {
 .poem {
     position: absolute;
 
-    top: 23%;
+    /*
+     * Alt bitis noktasi eski haliyle korunuyor.
+     * Baslangic yarim satir yukari alindi.
+     */
+
+    top: calc(23% - 0.5em);
 
     width: 25%;
-    height: 61%;
+
+    /*
+     * Alt sinir degismiyor.
+     * Top yukari alindigi icin yukseklik ayni miktarda artiyor.
+     */
+
+    height: calc(61% + 0.5em);
 
     overflow: hidden;
 
     font-family: "Caveat", cursive;
 
-    font-size: clamp(17px, 1.35vw, 23px);
+    /*
+     * 11 punto
+     */
+
+    font-size: 11pt;
 
     font-weight: 500;
+
+    /*
+     * Yeni puntoya uygun satir araligi
+     */
 
     line-height: 1.55;
 
@@ -126,7 +145,7 @@ body {
     left: 53%;
 }
 
-/* KALENIN YAZI YAZARKEN KULLANILAN HALI */
+/* YAZAN TUYLU KALEM */
 
 .writing-quill {
     position: absolute;
@@ -151,7 +170,7 @@ body {
         drop-shadow(0 1px 1px rgba(0,0,0,0.18));
 }
 
-/* SOL ALTTAKI MUREKKEP + KALEM */
+/* KOSENIN ALTINDAKI MUREKKEP + KALEM */
 
 .corner-quill {
     position: absolute;
@@ -290,7 +309,7 @@ body {
 }
 
 
-/* TELEFON / KUCUK EKRAN */
+/* KUCUK EKRAN */
 
 @media (max-width: 700px) {
 
@@ -394,12 +413,17 @@ Yaşamak istiyorum gençliğimi yeni baştan.`
    ELEMENTLER
    ========================================================= */
 
-const stage = document.getElementById("bookStage");
+const stage =
+    document.getElementById("bookStage");
 
-const leftPoem = document.getElementById("leftPoem");
-const rightPoem = document.getElementById("rightPoem");
+const leftPoem =
+    document.getElementById("leftPoem");
 
-const measurePoem = document.getElementById("measurePoem");
+const rightPoem =
+    document.getElementById("rightPoem");
+
+const measurePoem =
+    document.getElementById("measurePoem");
 
 const writingQuill =
     document.getElementById("writingQuill");
@@ -493,10 +517,6 @@ function getWrappedLines(text) {
 
     for (const paragraph of paragraphs) {
 
-        /*
-         * Bos satirlar korunuyor.
-         */
-
         if (paragraph.trim() === "") {
 
             result.push("");
@@ -522,11 +542,6 @@ function getWrappedLines(text) {
             const candidateHeight =
                 measurePoem.getBoundingClientRect().height;
 
-            /*
-             * Tek kelime bile alan disina cikiyorsa
-             * kelimeyi kendi satirina birakiyoruz.
-             */
-
             if (
                 currentLine !== "" &&
                 candidateHeight > getPageHeight()
@@ -543,6 +558,7 @@ function getWrappedLines(text) {
         }
 
         if (currentLine !== "") {
+
             result.push(currentLine);
         }
     }
@@ -562,7 +578,7 @@ function getPageHeight() {
 
 
 /* =========================================================
-   SATIRLARI GERCEK YUKSEKLIKLE SAYFALARA DAGIT
+   SATIRLARI SAYFALARA DAGIT
    ========================================================= */
 
 function splitLinesIntoPages(lines) {
@@ -586,11 +602,6 @@ function splitLinesIntoPages(lines) {
 
         const candidateHeight =
             measureTextHeight(candidateText);
-
-        /*
-         * Ilk satir bile sigmiyorsa yine de
-         * sayfaya koy.
-         */
 
         if (
             currentPage.length > 0 &&
@@ -636,10 +647,10 @@ function createPoemPages(text) {
 
 
 /* =========================================================
-   YAZI KALEMİNİ SON KARAKTERE GOTUR
+   KALEMI KELIMENIN BASINA GOTUR
    ========================================================= */
 
-function moveWritingQuill(element) {
+function moveWritingQuillToWordStart(element) {
 
     if (!element) {
 
@@ -665,27 +676,26 @@ function moveWritingQuill(element) {
         return;
     }
 
+    /*
+     * Kalem metnin sonuna degil,
+     * o anda yazilacak kelimenin
+     * baslangic noktasina konuluyor.
+     */
+
     const range =
         document.createRange();
 
-    const lastIndex =
+    const start =
         textNode.textContent.length;
-
-    if (lastIndex <= 0) {
-
-        writingQuill.style.opacity = "0";
-
-        return;
-    }
 
     range.setStart(
         textNode,
-        lastIndex - 1
+        start
     );
 
     range.setEnd(
         textNode,
-        lastIndex
+        start
     );
 
     const rect =
@@ -695,21 +705,22 @@ function moveWritingQuill(element) {
         stage.getBoundingClientRect();
 
     /*
-     * Kalemi yazinin hemen yanina getiriyoruz.
+     * Kalemin ucu kelimenin baslangicina
+     * yakin olacak.
      */
 
     writingQuill.style.left =
         (
-            rect.right -
+            rect.left -
             stageRect.left -
-            11
+            8
         ) + "px";
 
     writingQuill.style.top =
         (
-            rect.bottom -
+            rect.top -
             stageRect.top -
-            54
+            45
         ) + "px";
 
     writingQuill.style.opacity = "1";
@@ -717,22 +728,20 @@ function moveWritingQuill(element) {
 
 
 /* =========================================================
-   YAZMA
+   BIR KELIMEYI YAZ
    ========================================================= */
 
-function typeText(
+function typeWord(
     element,
-    text,
+    word,
     token
 ) {
 
     return new Promise(resolve => {
 
-        element.textContent = "";
-
         let index = 0;
 
-        function writeNext() {
+        function writeNextCharacter() {
 
             if (
                 token !== activeTypingToken
@@ -743,8 +752,16 @@ function typeText(
                 return;
             }
 
+            /*
+             * Kelimenin basinda kalemi tutuyoruz.
+             */
+
+            moveWritingQuillToWordStart(
+                element
+            );
+
             if (
-                index >= text.length
+                index >= word.length
             ) {
 
                 resolve(true);
@@ -753,20 +770,94 @@ function typeText(
             }
 
             element.textContent +=
-                text[index];
+                word[index];
 
             index++;
 
-            moveWritingQuill(element);
-
             setTimeout(
-                writeNext,
+                writeNextCharacter,
                 55
             );
         }
 
-        writeNext();
+        writeNextCharacter();
     });
+}
+
+
+/* =========================================================
+   METNI KELIME KELIME YAZ
+   ========================================================= */
+
+async function typeText(
+    element,
+    text,
+    token
+) {
+
+    element.textContent = "";
+
+    /*
+     * Metni kelime ve bosluklari koruyacak
+     * sekilde parcalayacagiz.
+     */
+
+    const parts =
+        text.match(/\S+\s*|\s+/g) || [];
+
+    for (const part of parts) {
+
+        if (
+            token !== activeTypingToken
+        ) {
+
+            return false;
+        }
+
+        /*
+         * Sadece bosluksa dogrudan ekle.
+         */
+
+        if (/^\s+$/.test(part)) {
+
+            element.textContent += part;
+
+            continue;
+        }
+
+        /*
+         * Kelimenin kendisini ayir.
+         */
+
+        const match =
+            part.match(/^(\S+)(\s*)$/);
+
+        if (!match) {
+            continue;
+        }
+
+        const word = match[1];
+        const spaces = match[2];
+
+        const finished =
+            await typeWord(
+                element,
+                word,
+                token
+            );
+
+        if (!finished) {
+            return false;
+        }
+
+        /*
+         * Kelime bittikten sonra bosluk ekle.
+         */
+
+        element.textContent += spaces;
+    }
+
+    return true;
 }
 
 
@@ -820,8 +911,7 @@ async function typeSpread() {
         poemPages[currentSpreadIndex + 1] || "";
 
     /*
-     * ONEMLI:
-     * Her spread MUTLAKA soldan baslar.
+     * Her spread soldan baslar.
      */
 
     const leftFinished =
@@ -836,7 +926,7 @@ async function typeSpread() {
     }
 
     /*
-     * Sol bittikten sonra saga geciyoruz.
+     * Sol bittikten sonra saga gec.
      */
 
     const rightFinished =
@@ -853,16 +943,11 @@ async function typeSpread() {
     writingQuill.style.opacity = "0";
 
     activeTypingFinished = true;
-
-    /*
-     * Bu spread'de saga kadar ilerlenmis demektir.
-     */
-
 }
 
 
 /* =========================================================
-   SIIRI BASLAT
+   SIIRI HAZIRLA
    ========================================================= */
 
 function prepareCurrentPoem() {
@@ -884,7 +969,7 @@ function prepareCurrentPoem() {
 
 
 /* =========================================================
-   SIIRI GOSTER
+   SIIRI BASLAT
    ========================================================= */
 
 async function startPoem(index) {
@@ -914,10 +999,6 @@ async function nextPage() {
         return;
     }
 
-    /*
-     * Yazim devam ediyorsa bekle.
-     */
-
     if (!activeTypingFinished) {
         return;
     }
@@ -934,7 +1015,7 @@ async function nextPage() {
 
 
     /*
-     * Bir sonraki spread var mi?
+     * Ayni siirin devam eden spread'i
      */
 
     if (
@@ -975,7 +1056,7 @@ async function nextPage() {
 
 
     /*
-     * Siir bittiyse sonraki siire gec.
+     * Siir bittiyse sonraki siir
      */
 
     if (
@@ -1011,7 +1092,6 @@ async function nextPage() {
 
         }, 550);
     }
-
 }
 
 
@@ -1026,7 +1106,7 @@ nextArrow.addEventListener(
 
 
 /* =========================================================
-   FONT HAZIR OLDUGUNDA BASLAT
+   BASLAT
    ========================================================= */
 
 async function initializeBook() {
@@ -1038,11 +1118,6 @@ async function initializeBook() {
 
         await document.fonts.ready;
     }
-
-    /*
-     * Tarayicinin sayfa boyutunu tamamen
-     * hesaplamasini bekliyoruz.
-     */
 
     requestAnimationFrame(() => {
 
