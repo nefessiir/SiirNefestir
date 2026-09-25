@@ -65,6 +65,8 @@ body {
 
     direction: ltr;
     unicode-bidi: normal;
+
+    background: transparent;
 }
 
 
@@ -109,15 +111,14 @@ body {
     width: 38.411458%;
     height: calc(100% - 27.5%);
 
-    background-image: url("sag_sayfa_bos.png");
-
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-
     overflow: hidden;
 
     direction: ltr;
     unicode-bidi: normal;
+
+    background-image: url("sag_sayfa_bos.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 
 
@@ -131,16 +132,6 @@ body {
     top: calc(23% - 0.5em);
 
     height: calc(61% + 0.5em);
-
-    /*
-       ONEMLI:
-       Eski kodda width %25 idi.
-       Bu nedenle metin cok dar bir alana
-       sikisiyordu ve kelimeler alt alta geliyordu.
-
-       Simdi sayfanin buyuk bir bolumunu
-       kullanmasini sagliyoruz.
-    */
 
     width: 72%;
 
@@ -230,8 +221,8 @@ body {
     opacity: 0;
 
     transition:
-        left 0.04s linear,
-        top 0.04s linear;
+        left 0.035s linear,
+        top 0.035s linear;
 }
 
 
@@ -338,6 +329,20 @@ body {
     100% {
         opacity: 1;
     }
+}
+
+
+/* =========================================================
+   BOS SAYFA
+   ========================================================= */
+
+.blank-page {
+    background-image: none !important;
+}
+
+
+.blank-page::before {
+    display: none !important;
 }
 
 
@@ -662,7 +667,7 @@ function prepareMeasureArea() {
 
 
 /* =========================================================
-   TEK SATIR GENISLIGINI OL
+   METIN GENISLIGI
    ========================================================= */
 
 function measureTextWidth(text) {
@@ -684,7 +689,7 @@ function measureTextWidth(text) {
 
 
 /* =========================================================
-   METIN YUKSEKLIGINI OL
+   METIN YUKSEKLIGI
    ========================================================= */
 
 function measureTextHeight(text) {
@@ -737,18 +742,6 @@ function getWrappedLines(text) {
                     ? currentLine + " " + word
                     : word;
 
-
-            /*
-               ESKI HATA BURADAYDI.
-
-               Daha once satirin YUKSEKLIGI,
-               "X" harfinin yuksekligiyle
-               karsilastiriliyordu.
-
-               Simdi gercek SATIR GENISLIGINI
-               sayfadaki kullanilabilir genislikle
-               karsilastiriyoruz.
-            */
 
             const testWidth =
                 measureTextWidth(testLine);
@@ -864,12 +857,11 @@ function createPoemPages(text) {
 
 
 /* =========================================================
-   YAZAN KALEM
+   KALEMI IMLECE TASIMA
    ========================================================= */
 
-function moveWritingQuillToCharacter(
-    element,
-    characterIndex
+function moveWritingQuillToCaret(
+    element
 ) {
 
     if (!element.textContent.length) {
@@ -886,16 +878,26 @@ function moveWritingQuillToCharacter(
     }
 
 
-    const safeIndex =
-        Math.min(
-            characterIndex,
-            textNode.textContent.length - 1
-        );
+    /*
+       Cok onemli:
 
+       Karakterin kendisini degil,
+       karakterin hemen sonrasindaki
+       IMLEC noktasini olusturuyoruz.
 
-    if (safeIndex < 0) {
-        return;
-    }
+       Boylece:
+
+       a | kalem
+       ab | kalem
+       abi | kalem
+       abi  | kalem
+       abi gel | kalem
+
+       seklinde ilerliyor.
+    */
+
+    const caretPosition =
+        textNode.textContent.length;
 
 
     const range =
@@ -904,16 +906,13 @@ function moveWritingQuillToCharacter(
 
     range.setStart(
         textNode,
-        safeIndex
+        caretPosition
     );
 
 
     range.setEnd(
         textNode,
-        Math.min(
-            safeIndex + 1,
-            textNode.textContent.length
-        )
+        caretPosition
     );
 
 
@@ -927,7 +926,6 @@ function moveWritingQuillToCharacter(
 
     if (
         !rect ||
-        rect.width === 0 ||
         rect.height === 0
     ) {
 
@@ -936,17 +934,17 @@ function moveWritingQuillToCharacter(
 
 
     /*
-       KALEM ARTIK HARFIN UZERINDE DEGIL,
-       YAZININ ONUNDE DURUYOR.
+       Imlecin bulundugu noktaya gore
+       kalemi biraz sola ve yukariya
+       yerlestiriyoruz.
 
-       rect.right kullanildigi icin
-       kalem yazilan karakterin biraz
-       onunde ilerliyor.
+       Kalemin ucu yazinin hemen
+       onunde kalacak.
     */
 
     writingQuill.style.left =
         (
-            rect.right -
+            rect.left -
             stageRect.left -
             3
         ) + "px";
@@ -1013,7 +1011,7 @@ function typeWord(
 
 
             /*
-               Karakteri once yaziyoruz.
+               Once karakteri yaz.
             */
 
             element.append(
@@ -1022,17 +1020,12 @@ function typeWord(
 
 
             /*
-               Sonra kalemi yeni yazilan
-               karakterin ONUNE tasiyoruz.
-
-               Boylece kalem sadece kelimenin
-               basinda degil, yazinin ilerleyisi
-               boyunca hareket ediyor.
+               Sonra kalemi TAM O ANDAKI
+               yeni yazinin onune tasiyoruz.
             */
 
-            moveWritingQuillToCharacter(
-                element,
-                element.textContent.length - 1
+            moveWritingQuillToCaret(
+                element
             );
 
 
@@ -1074,8 +1067,13 @@ async function typeText(
         "0";
 
 
+    /*
+       Kelime ve bosluklari ayri parcalar
+       halinde koruyoruz.
+    */
+
     const parts =
-        text.match(/\S+\s*|\s+/g) || [];
+        text.match(/\S+|\s+/g) || [];
 
 
     for (const part of parts) {
@@ -1088,40 +1086,53 @@ async function typeText(
         }
 
 
+        /*
+           BOSLUK
+
+           Bosluk da yazinin bir parcasi.
+           Bu nedenle boslugu ekledikten sonra
+           kalem bir sonraki konuma ilerliyor.
+        */
+
         if (
             /^\s+$/.test(part)
         ) {
 
-            element.append(
-                part
-            );
-
-
-            /*
-               Boslukta da kalem yeni yazinin
-               baslangicina dogru ilerlesin.
-            */
-
-            if (
-                element.textContent.length > 0
+            for (
+                let i = 0;
+                i < part.length;
+                i++
             ) {
 
-                moveWritingQuillToCharacter(
-                    element,
-                    element.textContent.length - 1
+                element.append(
+                    part[i]
+                );
+
+
+                moveWritingQuillToCaret(
+                    element
+                );
+
+
+                await new Promise(
+                    resolve =>
+                        setTimeout(
+                            resolve,
+                            20
+                        )
                 );
             }
 
 
-            await new Promise(
-                resolve =>
-                    setTimeout(
-                        resolve,
-                        20
-                    )
-            );
-
         } else {
+
+            /*
+               KELIME
+
+               Her karakter ayri ayri yaziliyor
+               ve her karakterden sonra kalem
+               yeniden konumlandiriliyor.
+            */
 
             await typeWord(
                 element,
@@ -1203,6 +1214,78 @@ async function typeSpread() {
 
     writingQuill.style.opacity =
         "0";
+}
+
+
+/* =========================================================
+   BOS SAYFAYA GEC
+   ========================================================= */
+
+async function showBlankPage() {
+
+    activeTypingFinished =
+        false;
+
+
+    writingQuill.style.opacity =
+        "0";
+
+
+    leftPoem.textContent =
+        "";
+
+    rightPoem.textContent =
+        "";
+
+
+    leftPage.classList.add(
+        "page-fade"
+    );
+
+    rightPage.classList.add(
+        "page-fade"
+    );
+
+
+    await new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                550
+            )
+    );
+
+
+    /*
+       Gizli gorselin tekrar ortaya cikmasini
+       engelliyoruz.
+
+       Artik sayfalar gercekten bos.
+    */
+
+    leftPage.classList.add(
+        "blank-page"
+    );
+
+    rightPage.classList.add(
+        "blank-page"
+    );
+
+
+    leftPage.classList.remove(
+        "page-fade"
+    );
+
+    rightPage.classList.remove(
+        "page-fade"
+    );
+
+
+    movingToNextPage =
+        false;
+
+    activeTypingFinished =
+        true;
 }
 
 
@@ -1323,6 +1406,20 @@ async function nextPage() {
             0;
 
 
+        /*
+           Yeni siire gecince blank-page
+           kaldiriliyor.
+        */
+
+        leftPage.classList.remove(
+            "blank-page"
+        );
+
+        rightPage.classList.remove(
+            "blank-page"
+        );
+
+
         poemPages =
             createPoemPages(
                 poems[
@@ -1352,11 +1449,13 @@ async function nextPage() {
 
 
     /* =====================================================
-       SON
+       BUTUN SIIRLER BITTI
+
+       Burada artik gizli resim ortaya cikmayacak.
+       Dogrudan bos sayfaya gececek.
        ===================================================== */
 
-    movingToNextPage =
-        false;
+    await showBlankPage();
 }
 
 
@@ -1365,6 +1464,15 @@ async function nextPage() {
    ========================================================= */
 
 async function startBook() {
+
+    leftPage.classList.remove(
+        "blank-page"
+    );
+
+    rightPage.classList.remove(
+        "blank-page"
+    );
+
 
     poemPages =
         createPoemPages(
