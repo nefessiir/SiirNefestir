@@ -137,7 +137,11 @@ body {
 .turning-page-wrap {
     position: absolute;
 
-    left: 48.828125%;
+    /*
+     * DONUS EKSENI ARTIK KITABIN TAM ORTASI
+     */
+
+    left: 50%;
     top: 13.2%;
 
     width: 38.411458%;
@@ -163,7 +167,12 @@ body {
 .turning-page {
     position: relative;
 
-    left: 0;
+    /*
+     * Sayfanin ilk goruntusu eski
+     * sag sayfa konumunda kalsin.
+     */
+
+    left: -3.05063%;
     top: 0;
 
     width: 100%;
@@ -247,7 +256,7 @@ body {
 
     0% {
         transform:
-            translateX(75px)
+            translateX(0)
             rotateY(0deg);
     }
 
