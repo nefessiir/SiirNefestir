@@ -525,7 +525,7 @@ async function nextPage() {
         leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
         fadeIn(leftPoem);
         stageState = "right";
-        await wait(1900);
+        await wait(1800);
         animating = false;
         return;
     }
@@ -536,7 +536,7 @@ async function nextPage() {
             rightPoem.textContent = pages[pageIndex + 1].join("\n");
             fadeIn(rightPoem);
             stageState = "spread";
-            await wait(1900);
+            await wait(1800);
             animating = false;
             return;
         }
@@ -545,30 +545,27 @@ async function nextPage() {
         return;
     }
 
-    /* 3. DURUM: IKI SAYFA DOLU -> SILINIP SONRAKI SAYFA CIFTINE GEC */
+    /* 3. DURUM: IKI SAYFA DOLU -> TEMIZLE VE DİREKT SONRAKİ SOL SAYFAYI GOSTER */
     if (stageState === "spread") {
         fadeOut(leftPoem);
         fadeOut(rightPoem);
 
-        await wait(1800); // Kaybolma süresi
-        await wait(2000); // Bekleme süresi
+        await wait(1800); // Eski metinlerin kaybolmasını bekle
 
         pageIndex += 2;
 
-        leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
-        rightPoem.textContent = "";
-        rightPoem.style.opacity = "0";
-
         if (pageIndex < pages.length) {
+            leftPoem.textContent = pages[pageIndex].join("\n");
+            rightPoem.textContent = "";
             fadeIn(leftPoem);
-            stageState = "right";
+            stageState = "right"; // Bir sonraki tıklamada sağ sayfa gelecek
+            await wait(1800);
         } else {
             leftPoem.textContent = "";
             rightPoem.textContent = "";
             stageState = "finished";
         }
 
-        await wait(1900);
         animating = false;
         return;
     }
@@ -617,7 +614,7 @@ async function previousPage() {
         if (pages[pageIndex + 1]) fadeIn(rightPoem);
 
         stageState = pages[pageIndex + 1] ? "spread" : "right";
-        await wait(1900);
+        await wait(1800);
         animating = false;
         return;
     }
