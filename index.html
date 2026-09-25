@@ -159,6 +159,7 @@ body {
 
 .left-poem {
     left: 23%;
+
     text-align: left;
 }
 
@@ -167,6 +168,7 @@ body {
 
 .right-poem {
     left: 53%;
+
     text-align: left;
 }
 
@@ -175,45 +177,6 @@ body {
 
 .poem-text.fade-out {
     opacity: 0;
-}
-
-
-/* =================================================
-   SOL ALTTAKI SABIT KALEM + MUREKKEP
-   3 CM SAG
-   4 CM YUKARI
-   ================================================= */
-
-.corner-quill { position: absolute; left: calc(1.5% + 2cm); bottom: calc(-1% + 2cm); width: 140px; z-index: 8; pointer-events: none; }
-    user-select: none;
-
-    opacity: 0.96;
-}
-
-
-/* =================================================
-   YAZIYI YAZAN ALTIN TUY KALEM
-   ================================================= */
-
-.writing-quill {
-    position: absolute;
-
-    width: 78px;
-    height: auto;
-
-    z-index: 10;
-
-    pointer-events: none;
-    user-select: none;
-
-    opacity: 0;
-
-    transform-origin: 8% 88%;
-
-    transition:
-        left 0.08s linear,
-        top 0.08s linear,
-        opacity 0.25s ease;
 }
 
 
@@ -337,6 +300,7 @@ body {
 
 .page-arrow.disabled {
     pointer-events: none;
+
     opacity: 0.35;
 }
 
@@ -391,25 +355,6 @@ body {
         <img
             class="left-page"
             src="sag_sayfa_bos.png"
-            alt=""
-        >
-
-
-        <!-- SOL ALTTA SABIT KALEM + MUREKKEP -->
-
-        <img
-            class="corner-quill"
-            src="murekkep_kalem.png"
-            alt=""
-        >
-
-
-        <!-- YAZIYI YAZAN ALTIN TUY KALEM -->
-
-        <img
-            id="writingQuill"
-            class="writing-quill"
-            src="yazan_kalem.png"
             alt=""
         >
 
@@ -486,9 +431,6 @@ const rightPoem =
 const nextArrow =
     document.getElementById("nextArrow");
 
-const writingQuill =
-    document.getElementById("writingQuill");
-
 
 /* =========================================
    DURUM
@@ -500,9 +442,7 @@ let currentSpread = 0;
 
 let isAnimating = false;
 
-let activeTypingToken = 0;
-
-let activeTypingFinished = true;
+let typingTimers = [];
 
 
 /* =========================================
@@ -687,90 +627,20 @@ function buildPages() {
 
 
 /* =========================================
-   KALEM POZISYONU
+   ZAMANLAYICILARI TEMIZLE
    ========================================= */
 
-function moveWritingQuill(element) {
+function clearTypingTimers() {
 
-    if (!element || !element.textContent) {
+    typingTimers.forEach(
+        function(timer) {
 
-        writingQuill.style.opacity =
-            "0";
+            clearTimeout(timer);
 
-        return;
-    }
-
-
-    const stage =
-        document.querySelector(
-            ".book-stage"
-        );
-
-
-    const stageRect =
-        stage.getBoundingClientRect();
-
-
-    const textNode =
-        element.firstChild;
-
-
-    if (!textNode) {
-        return;
-    }
-
-
-    const range =
-        document.createRange();
-
-
-    const lastIndex =
-        Math.max(
-            0,
-            textNode.length - 1
-        );
-
-
-    range.setStart(
-        textNode,
-        lastIndex
+        }
     );
 
-    range.setEnd(
-        textNode,
-        textNode.length
-    );
-
-
-    const rect =
-        range.getBoundingClientRect();
-
-
-    if (!rect.width && !rect.height) {
-        return;
-    }
-
-
-    const x =
-        rect.right -
-        stageRect.left -
-        5;
-
-
-    const y =
-        rect.bottom -
-        stageRect.top -
-        18;
-
-
-    writingQuill.style.left =
-        x + "px";
-
-    writingQuill.style.top =
-        y + "px";
-
-    writingQuill.style.opacity =
-        "0.95";
+    typingTimers = [];
 }
 
 
@@ -782,7 +652,6 @@ function typeText(
     element,
     text,
     speed,
-    token,
     callback
 ) {
 
@@ -792,13 +661,6 @@ function typeText(
 
 
     function writeCharacter() {
-
-        if (
-            token !== activeTypingToken
-        ) {
-            return;
-        }
-
 
         if (index >= text.length) {
 
@@ -816,30 +678,14 @@ function typeText(
         index++;
 
 
-        moveWritingQuill(
-            element
-        );
+        const timer =
+            setTimeout(
+                writeCharacter,
+                speed
+            );
 
-
-        setTimeout(
-            writeCharacter,
-            speed
-        );
+        typingTimers.push(timer);
     }
-
-
-    if (!text) {
-
-        if (callback) {
-            callback();
-        }
-
-        return;
-    }
-
-
-    writingQuill.style.opacity =
-        "0.95";
 
 
     writeCharacter();
@@ -852,13 +698,7 @@ function typeText(
 
 function typeSpread(index) {
 
-    activeTypingToken++;
-
-    const token =
-        activeTypingToken;
-
-    activeTypingFinished =
-        false;
+    clearTypingTimers();
 
 
     const spread =
@@ -870,25 +710,13 @@ function typeSpread(index) {
     rightPoem.textContent = "";
 
 
-    writingQuill.style.opacity =
-        "0";
-
-
     /* SOL SAYFA */
 
     typeText(
         leftPoem,
         spread.left,
         55,
-        token,
         function() {
-
-            if (
-                token !== activeTypingToken
-            ) {
-                return;
-            }
-
 
             /* SAG SAYFA */
 
@@ -896,21 +724,9 @@ function typeSpread(index) {
                 rightPoem,
                 spread.right,
                 55,
-                token,
                 function() {
 
-                    if (
-                        token !== activeTypingToken
-                    ) {
-                        return;
-                    }
-
-
-                    activeTypingFinished =
-                        true;
-
-                    writingQuill.style.opacity =
-                        "0";
+                    /* YAZI BITTI */
 
                 }
             );
@@ -931,6 +747,34 @@ function showSpread(index) {
     }
 
     typeSpread(index);
+}
+
+
+/* =========================================
+   DAKTILO BITISINI BEKLE
+   ========================================= */
+
+function waitForTypingToFinish(callback) {
+
+    const check =
+        setInterval(
+            function() {
+
+                if (
+                    typingTimers.length === 0
+                ) {
+
+                    clearInterval(check);
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+
+            },
+            100
+        );
+
 }
 
 
@@ -1007,15 +851,7 @@ nextArrow.addEventListener(
         );
 
 
-        /* AKTIF YAZIYI DURDUR */
-
-        activeTypingToken++;
-
-        activeTypingFinished =
-            true;
-
-        writingQuill.style.opacity =
-            "0";
+        clearTypingTimers();
 
 
         /* IKI SAYFA SILINSIN */
@@ -1053,31 +889,19 @@ nextArrow.addEventListener(
                 );
 
 
-                /* YAZININ TAMAMLANMASINI BEKLE */
+                /* YAZI BITINCE OK AKTIF */
 
-                const wait =
-                    setInterval(
-                        function() {
+                waitForTypingToFinish(
+                    function() {
 
-                            if (
-                                activeTypingFinished
-                            ) {
+                        isAnimating = false;
 
-                                clearInterval(
-                                    wait
-                                );
+                        nextArrow.classList.remove(
+                            "disabled"
+                        );
 
-                                isAnimating =
-                                    false;
-
-                                nextArrow.classList.remove(
-                                    "disabled"
-                                );
-                            }
-
-                        },
-                        100
-                    );
+                    }
+                );
 
             },
             1200
@@ -1097,4 +921,3 @@ initializeBook();
 
 </body>
 </html>
-```
