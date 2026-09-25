@@ -111,7 +111,7 @@ body {
 }
 
 
-/* SAG TARAFTA KALACAK BOS SAYFA */
+/* SAGDA KALACAK BOS SAYFA */
 
 .right-page-cover {
     position: absolute;
@@ -149,7 +149,12 @@ body {
 
     transform-origin: left center;
 
-    backface-visibility: hidden;
+    /*
+     * Sayfanin arka yuzunu gizlemiyoruz.
+     * Boylece 180 derece dondugunde kaybolmuyor.
+     */
+
+    backface-visibility: visible;
 
     will-change:
         left,
@@ -212,7 +217,7 @@ body {
 }
 
 
-/* DONUS */
+/* DONUS ANIMASYONU */
 
 .turning-page.animate {
     animation:
@@ -302,7 +307,7 @@ body {
             alt="Sair Nefestir"
         >
 
-        <!-- SAGDA KALAN BOS SAYFA -->
+        <!-- SAGDA KALACAK BOS SAYFA -->
 
         <img
             class="right-page-cover"
@@ -406,12 +411,8 @@ function turnPage() {
 
 
             /*
-             * BURADA ARTIK DONEN SAYFAYA
-             * YENIDEN LEFT / TOP / WIDTH / HEIGHT
-             * VERMIYORUZ.
-             *
-             * Animasyonun son konumunda
-             * oldugu gibi kaliyor.
+             * Donen sayfaya artik yeni konum vermiyoruz.
+             * Animasyonun son konumunda kalacak.
              */
 
             turningPage.classList.remove("animate");
