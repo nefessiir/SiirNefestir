@@ -23,580 +23,176 @@ body {
 body {
     background: #111;
     overflow: hidden;
-    font-family: Georgia, "Times New Roman", serif;
 }
 
 
-/* =========================================================
-   KITAP
-========================================================= */
-
-.book {
-    position: relative;
-
-    width: min(96vw, 1500px);
-    height: min(88vh, 900px);
-
-    margin: auto;
-    top: 50%;
-    transform: translateY(-50%);
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    perspective: 1600px;
-}
-
-
-/* =========================================================
-   SAYFALAR
-========================================================= */
+/* KITAP SAHNESI */
 
 .page {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+
+/* ARKA PLAN VE SAYFA AYNI OLCEKTE */
+
+.book-stage {
     position: relative;
 
-    height: 100%;
+    width: min(100vw, 150vh);
+    height: min(100vh, 66.6667vw);
 
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,0.08),
-            transparent 12%,
-            transparent 88%,
-            rgba(0,0,0,0.06)
-        ),
-        #f4edda;
-
-    box-shadow:
-        inset 0 0 35px rgba(0,0,0,0.12);
+    overflow: visible;
 }
 
 
-/* Sol sayfanın iç kenarı */
+/* ARKA PLAN */
 
-.left-page {
-    border-radius: 18px 0 0 18px;
-
-    box-shadow:
-        inset -18px 0 28px rgba(0,0,0,0.14),
-        inset 0 0 35px rgba(0,0,0,0.10);
-}
-
-
-/* Sağ sayfanın iç kenarı */
-
-.right-page {
-    border-radius: 0 18px 18px 0;
-
-    box-shadow:
-        inset 18px 0 28px rgba(0,0,0,0.14),
-        inset 0 0 35px rgba(0,0,0,0.10);
-}
-
-
-/* =========================================================
-   SAYFA İÇİ
-========================================================= */
-
-.page-content {
+.book-background {
     position: absolute;
 
-    top: 11%;
-    left: 12%;
-    right: 12%;
-    bottom: 11%;
+    left: 0;
+    top: 0;
 
-    overflow: hidden;
-}
-
-
-/* =========================================================
-   SIIR METNI
-========================================================= */
-
-.poem {
     width: 100%;
     height: 100%;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    display: block;
 
-    color: #173c68;
-
-    font-family:
-        "Segoe Print",
-        "Bradley Hand",
-        "Comic Sans MS",
-        cursive;
-
-    font-size: clamp(16px, 1.35vw, 24px);
-
-    line-height: 1.9;
-
-    white-space: pre-line;
-
-    opacity: 1;
-
-    transition:
-        opacity 900ms ease;
+    object-fit: fill;
 }
 
 
-/*
-    Yeni şiir belirirken kullanılacak durum
-*/
+/* SABIT SAG SAYFA */
 
-.poem.hidden {
-    opacity: 0;
-}
-
-
-/* =========================================================
-   OKLAR
-========================================================= */
-
-.next-button {
+.right-page {
     position: absolute;
 
-    right: -42px;
+    left: 48.828125%;
+    top: 13.2%;
+
+    width: 38.411458%;
+    height: auto;
+
+    display: block;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+
+/* SABIT SOL SAYFA */
+
+.left-page {
+    position: absolute;
+
+    left: 19%;
+    top: 13.2%;
+
+    width: 34%;
+    height: calc(100% - 27.5%);
+
+    display: block;
+
+    pointer-events: none;
+
+    transform: scaleX(-1);
+
+    z-index: 2;
+}
+
+
+/* SAG OK */
+
+.page-arrow {
+    position: absolute;
+
     top: 50%;
+    left: 88%;
 
-    transform: translateY(-50%);
+    width: 30px;
+    height: 50px;
 
-    width: 58px;
-    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    border: none;
-    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.85);
 
-    background: rgba(244, 237, 218, 0.95);
-
-    color: #222;
-
-    font-size: 34px;
+    font-family: Arial, sans-serif;
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1;
 
     cursor: pointer;
+    user-select: none;
 
     z-index: 20;
 
-    box-shadow:
-        0 4px 18px rgba(0,0,0,0.35);
+    transform: translateY(-50%);
+
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.8);
 
     transition:
-        transform 200ms ease,
-        opacity 300ms ease;
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
-.next-button:hover {
-    transform:
-        translateY(-50%)
-        scale(1.08);
-}
-
-.next-button:disabled {
-    opacity: 0.25;
-    cursor: default;
-}
-
-
-/* =========================================================
-   KODDA HIZLARI BURADAN AYARLAYABILIRIZ
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .poem {
-        transition: none;
-    }
-
-    .next-button {
-        transition: none;
-    }
-}
-
-
-/* =========================================================
-   MOBIL
-========================================================= */
-
-@media (max-width: 800px) {
-
-    .book {
-        width: 94vw;
-        height: 82vh;
-    }
-
-    .page-content {
-        left: 9%;
-        right: 9%;
-    }
-
-    .poem {
-        font-size: 15px;
-        line-height: 1.7;
-    }
-
-    .next-button {
-        right: -25px;
-
-        width: 48px;
-        height: 48px;
-
-        font-size: 28px;
-    }
+.page-arrow:hover {
+    color: #fff;
 }
 
 </style>
 </head>
 
-
 <body>
 
+<div class="page">
 
-<div class="book">
+    <div class="book-stage">
 
+        <img
+            class="book-background"
+            src="arkaplan0.jpeg"
+            alt="Sair Nefestir"
+        >
 
-    <!-- =====================================================
-         SOL SAYFA
-    ====================================================== -->
+        <!-- SABIT SAG SAYFA -->
 
-    <section class="page left-page">
+        <img
+            class="right-page"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
 
-        <div class="page-content">
+        <!-- SABIT SOL SAYFA -->
 
-            <div
-                id="leftPoem"
-                class="poem"
-            ></div>
+        <img
+            class="left-page"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
 
-        </div>
+        <!-- SAG OK -->
 
-    </section>
-
-
-
-    <!-- =====================================================
-         SAG SAYFA
-    ====================================================== -->
-
-    <section class="page right-page">
-
-        <div class="page-content">
-
-            <div
-                id="rightPoem"
-                class="poem"
-            ></div>
-
-        </div>
-
-        <button
-            id="nextButton"
-            class="next-button"
-            type="button"
+        <div
+            class="page-arrow next-arrow"
             aria-label="Siirin devamini goster"
         >
-            →
-        </button>
+            ›
+        </div>
 
-    </section>
+    </div>
 
 </div>
-
-
-
-<script>
-
-/* =========================================================
-   ANIMASYON AYARLARI
-
-   Bunlar kullaniciya gosterilmiyor.
-   Kitabin hissine gore biz belirliyoruz.
-========================================================= */
-
-const FADE_OUT_TIME = 900;
-const FADE_IN_TIME = 1000;
-const PAGE_PAUSE = 150;
-
-
-/* =========================================================
-   SIIR
-
-   Buradaki metin daha sonra gercek siirle degistirilecek.
-
-   Her eleman bir "kitap gorunumu"nu temsil ediyor.
-
-   Yani:
-   0 = ilk sol + ilk sag
-   1 = sonraki sol + sonraki sag
-   2 = sonraki sol + sonraki sag
-   ...
-========================================================= */
-
-const poemPages = [
-
-    {
-        left: `
-Yoksam düşlerinde
-gecelerinde kayıpsam
-
-Bakışların hep donuk
-ve sessizse...
-        `,
-
-        right: `
-Belki de bir şiirin
-içinde saklıyım.
-
-Belki bir kelimenin
-sonunda bekliyorum.
-        `
-    },
-
-    {
-        left: `
-Belki bir gün
-okurken beni
-
-bir satırda
-rastlarsın kendine.
-        `,
-
-        right: `
-Ve anlarsın...
-
-Bazı insanlar
-gitmez aslında.
-
-Sadece
-şiire dönüşür.
-        `
-    },
-
-    {
-        left: `
-Sonra bir sayfa daha
-açarsın.
-
-Sessizce...
-        `,
-
-        right: `
-Ve ben yine
-orada olurum.
-
-Bekle...!
-
-Geliyorum!
-        `
-    }
-
-];
-
-
-/* =========================================================
-   ELEMANLAR
-========================================================= */
-
-const leftPoem =
-    document.getElementById("leftPoem");
-
-const rightPoem =
-    document.getElementById("rightPoem");
-
-const nextButton =
-    document.getElementById("nextButton");
-
-
-/* =========================================================
-   DURUM
-========================================================= */
-
-let currentPage = 0;
-
-let isAnimating = false;
-
-
-/* =========================================================
-   METNI GOSTER
-========================================================= */
-
-function showPage(index) {
-
-    const page = poemPages[index];
-
-    if (!page) {
-        return;
-    }
-
-    leftPoem.textContent =
-        page.left.trim();
-
-    rightPoem.textContent =
-        page.right.trim();
-
-    leftPoem.classList.remove("hidden");
-    rightPoem.classList.remove("hidden");
-}
-
-
-/* =========================================================
-   ILK SAYFAYI GOSTER
-========================================================= */
-
-showPage(0);
-
-
-/* =========================================================
-   SON SAYFAYA GELDIGINDE OKU KAPAT
-========================================================= */
-
-function updateButton() {
-
-    if (currentPage >= poemPages.length - 1) {
-
-        nextButton.disabled = true;
-
-    } else {
-
-        nextButton.disabled = false;
-    }
-}
-
-updateButton();
-
-
-/* =========================================================
-   SONRAKI SIIR BOLUMU
-========================================================= */
-
-async function nextPoemPage() {
-
-    if (isAnimating) {
-        return;
-    }
-
-    if (currentPage >= poemPages.length - 1) {
-        return;
-    }
-
-    isAnimating = true;
-
-    nextButton.disabled = true;
-
-
-    /*
-        1
-        MEVCUT METINLER YAVASCA SILINIYOR
-    */
-
-    leftPoem.classList.add("hidden");
-    rightPoem.classList.add("hidden");
-
-
-    /*
-        Silinme animasyonunun tamamlanmasini bekle
-    */
-
-    await wait(FADE_OUT_TIME);
-
-
-    /*
-        2
-        YENI METNI HAZIRLA
-    */
-
-    currentPage++;
-
-    const nextPage =
-        poemPages[currentPage];
-
-
-    leftPoem.textContent =
-        nextPage.left.trim();
-
-    rightPoem.textContent =
-        nextPage.right.trim();
-
-
-    /*
-        3
-        Cok kisa bir nefes araligi
-    */
-
-    await wait(PAGE_PAUSE);
-
-
-    /*
-        4
-        YENI SIIR YAVASCA BELIRIYOR
-    */
-
-    leftPoem.classList.remove("hidden");
-    rightPoem.classList.remove("hidden");
-
-
-    await wait(FADE_IN_TIME);
-
-
-    /*
-        5
-        ANIMASYON BITTI
-    */
-
-    isAnimating = false;
-
-    updateButton();
-}
-
-
-/* =========================================================
-   BEKLEME
-========================================================= */
-
-function wait(ms) {
-
-    return new Promise(resolve => {
-
-        setTimeout(resolve, ms);
-
-    });
-}
-
-
-/* =========================================================
-   OK
-========================================================= */
-
-nextButton.addEventListener(
-    "click",
-    nextPoemPage
-);
-
-
-/* =========================================================
-   KLAVYE DESTEĞI
-
-   Sag ok tusu da ayni hareketi yapar.
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (event.key === "ArrowRight") {
-
-            nextPoemPage();
-
-        }
-
-    }
-);
-
-</script>
 
 </body>
 </html>
