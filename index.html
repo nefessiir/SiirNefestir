@@ -101,38 +101,29 @@ body {
 }
 
 /* =========================
-   TUY
+   SOL ALT TUY + MÜREKKEP
 ========================= */
 
-.quill {
+.corner-quill {
     position: absolute;
 
-    width: 34px;
-    height: 34px;
+    left: 18px;
+    bottom: 14px;
 
-    z-index: 10;
+    width: 155px;
+    height: auto;
+
+    z-index: 6;
 
     pointer-events: none;
 
-    opacity: 0;
+    opacity: 0.96;
 
-    transform-origin: 5px 29px;
-
-    transition:
-        left 0.055s linear,
-        top 0.055s linear,
-        opacity 0.2s ease;
-}
-
-.quill svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    overflow: visible;
+    user-select: none;
 }
 
 /* =========================
-   OK
+   SAG OK
 ========================= */
 
 .next-button {
@@ -196,6 +187,10 @@ body {
     }
 }
 
+/* =========================
+   SAYFA GECISI
+========================= */
+
 .fade-out {
     opacity: 0 !important;
 }
@@ -219,77 +214,16 @@ body {
     <div id="poemLeft" class="poem left"></div>
     <div id="poemRight" class="poem right"></div>
 
-    <!-- Zarif tuy -->
-    <div id="quill" class="quill">
-
-        <svg
-            viewBox="0 0 34 34"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-
-            <!-- Tüy -->
-            <path
-                d="
-                    M5 27
-                    C6 20 8 13 14 8
-                    C19 4 25 2 31 3
-                    C30 9 27 16 23 21
-                    C18 26 12 28 5 27
-                "
-                fill="#f3efe6"
-                stroke="#bcb5aa"
-                stroke-width="0.7"
-            />
-
-            <!-- Ana damar -->
-            <path
-                d="M5 27 C12 20 20 11 30 4"
-                fill="none"
-                stroke="#aaa399"
-                stroke-width="0.7"
-                stroke-linecap="round"
-            />
-
-            <!-- İnce tüy damarları -->
-            <path
-                d="M10 23 L9 17"
-                fill="none"
-                stroke="#b4ada2"
-                stroke-width="0.55"
-            />
-
-            <path
-                d="M14 20 L14 13"
-                fill="none"
-                stroke="#b4ada2"
-                stroke-width="0.55"
-            />
-
-            <path
-                d="M18 16 L19 10"
-                fill="none"
-                stroke="#b4ada2"
-                stroke-width="0.55"
-            />
-
-            <path
-                d="M22 12 L24 7"
-                fill="none"
-                stroke="#b4ada2"
-                stroke-width="0.55"
-            />
-
-            <!-- Çok küçük mürekkep ucu -->
-            <circle
-                cx="5"
-                cy="27"
-                r="1.15"
-                fill="#174a82"
-            />
-
-        </svg>
-
-    </div>
+    <!--
+        Dekoratif tüy kalem ve mürekkep.
+        Artık yazının yanında hareket etmiyor.
+        Sol alt köşede sabit duruyor.
+    -->
+    <img
+        class="corner-quill"
+        src="https://png.pngtree.com/png-clipart/20240701/original/pngtree-a-feather-pen-in-inkpot-png-image_15459541.png"
+        alt=""
+    >
 
     <button
         id="nextButton"
@@ -330,11 +264,14 @@ let currentSpread = 0;
 let typingInProgress = false;
 let isAnimating = false;
 
-const poemLeft = document.getElementById("poemLeft");
-const poemRight = document.getElementById("poemRight");
+const poemLeft =
+    document.getElementById("poemLeft");
 
-const quill = document.getElementById("quill");
-const nextButton = document.getElementById("nextButton");
+const poemRight =
+    document.getElementById("poemRight");
+
+const nextButton =
+    document.getElementById("nextButton");
 
 /* =========================
    METNI SAYFAYA SIGDIR
@@ -366,7 +303,10 @@ function splitPoem(text) {
 
         test.textContent = candidate;
 
-        if (test.scrollHeight <= test.clientHeight + 2) {
+        if (
+            test.scrollHeight <=
+            test.clientHeight + 2
+        ) {
 
             currentText = candidate;
 
@@ -381,6 +321,7 @@ function splitPoem(text) {
 
                 rightText += currentText;
                 currentText = piece;
+
             }
         }
     }
@@ -392,6 +333,7 @@ function splitPoem(text) {
     } else {
 
         rightText += currentText;
+
     }
 
     document.body.removeChild(test);
@@ -403,77 +345,14 @@ function splitPoem(text) {
 }
 
 /* =========================
-   TUYU YAZININ UCUNA GETIR
+   YAZI ANIMASYONU
 ========================= */
 
-function moveQuillToCharacter(element) {
-
-    const textNode = element.firstChild;
-
-    if (!textNode) return;
-
-    const text = textNode.textContent;
-
-    if (!text.length) return;
-
-    let index = text.length - 1;
-
-    /*
-       Son karakter bosluksa,
-       gorunen son karakteri bul.
-    */
-
-    while (
-        index >= 0 &&
-        /\s/.test(text[index])
-    ) {
-        index--;
-    }
-
-    if (index < 0) return;
-
-    const range = document.createRange();
-
-    range.setStart(textNode, index);
-    range.setEnd(textNode, index + 1);
-
-    const rect = range.getBoundingClientRect();
-
-    const stage =
-        document.querySelector(".book-stage")
-        .getBoundingClientRect();
-
-    /*
-       Tüyün mürekkep ucu:
-       SVG içindeki x=5, y=27.
-
-       Ucu doğrudan harfin
-       sağ-alt tarafına yaklaştırıyoruz.
-    */
-
-    const nibX = 5;
-    const nibY = 27;
-
-    const left =
-        rect.right -
-        stage.left -
-        nibX;
-
-    const top =
-        rect.bottom -
-        stage.top -
-        nibY -
-        2;
-
-    quill.style.left = left + "px";
-    quill.style.top = top + "px";
-}
-
-/* =========================
-   YAZ
-========================= */
-
-function typeText(element, text, callback) {
+function typeText(
+    element,
+    text,
+    callback
+) {
 
     element.textContent = "";
 
@@ -484,8 +363,6 @@ function typeText(element, text, callback) {
     }
 
     typingInProgress = true;
-
-    quill.style.opacity = "1";
 
     let index = 0;
 
@@ -501,10 +378,6 @@ function typeText(element, text, callback) {
         }
 
         element.textContent += text[index];
-
-        requestAnimationFrame(() => {
-            moveQuillToCharacter(element);
-        });
 
         index++;
 
@@ -523,14 +396,13 @@ function typeText(element, text, callback) {
 
 function typeSpread() {
 
-    const parts = splitPoem(
-        poems[currentPoem]
-    );
+    const parts =
+        splitPoem(
+            poems[currentPoem]
+        );
 
     poemLeft.textContent = "";
     poemRight.textContent = "";
-
-    quill.style.opacity = "0";
 
     typeText(
         poemLeft,
@@ -542,14 +414,9 @@ function typeSpread() {
                 typeText(
                     poemRight,
                     parts.right,
-                    () => {
-                        quill.style.opacity = "1";
-                    }
+                    () => {}
                 );
 
-            } else {
-
-                quill.style.opacity = "1";
             }
         }
     );
@@ -559,67 +426,94 @@ function typeSpread() {
    BASLANGIC
 ========================= */
 
-window.addEventListener("load", () => {
+window.addEventListener(
+    "load",
+    () => {
 
-    typeSpread();
+        typeSpread();
 
-});
+    }
+);
 
 /* =========================
    SAG OK
 ========================= */
 
-nextButton.addEventListener("click", () => {
+nextButton.addEventListener(
+    "click",
+    () => {
 
-    if (isAnimating || typingInProgress) {
-        return;
-    }
-
-    isAnimating = true;
-
-    nextButton.disabled = true;
-
-    nextButton.classList.remove("flash");
-
-    void nextButton.offsetWidth;
-
-    nextButton.classList.add("flash");
-
-    poemLeft.classList.add("fade-out");
-    poemRight.classList.add("fade-out");
-
-    quill.style.opacity = "0";
-
-    setTimeout(() => {
-
-        currentSpread++;
-
-        poemLeft.classList.remove("fade-out");
-        poemRight.classList.remove("fade-out");
-
-        typeSpread();
-
-        function waitForTyping() {
-
-            if (!typingInProgress) {
-
-                isAnimating = false;
-                nextButton.disabled = false;
-
-            } else {
-
-                setTimeout(
-                    waitForTyping,
-                    100
-                );
-            }
+        if (
+            isAnimating ||
+            typingInProgress
+        ) {
+            return;
         }
 
-        waitForTyping();
+        isAnimating = true;
 
-    }, 1200);
+        nextButton.disabled = true;
 
-});
+        nextButton.classList.remove(
+            "flash"
+        );
+
+        void nextButton.offsetWidth;
+
+        nextButton.classList.add(
+            "flash"
+        );
+
+        poemLeft.classList.add(
+            "fade-out"
+        );
+
+        poemRight.classList.add(
+            "fade-out"
+        );
+
+        setTimeout(
+            () => {
+
+                currentSpread++;
+
+                poemLeft.classList.remove(
+                    "fade-out"
+                );
+
+                poemRight.classList.remove(
+                    "fade-out"
+                );
+
+                typeSpread();
+
+                function waitForTyping() {
+
+                    if (
+                        !typingInProgress
+                    ) {
+
+                        isAnimating = false;
+
+                        nextButton.disabled = false;
+
+                    } else {
+
+                        setTimeout(
+                            waitForTyping,
+                            100
+                        );
+                    }
+                }
+
+                waitForTyping();
+
+            },
+            1200
+        );
+
+    }
+);
 
 </script>
 
