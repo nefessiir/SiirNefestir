@@ -6,9 +6,10 @@
 
 <title>Şiir Nefestir</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap"
+    rel="stylesheet"
+>
 
 <style>
 
@@ -29,211 +30,371 @@ body {
     overflow: hidden;
 }
 
-.book-stage {
-    position: relative;
+
+/* KITAP SAHNESI */
+
+.page {
     width: 100vw;
     height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     overflow: hidden;
 }
 
-.book-background {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
+
+/* ARKA PLAN VE SAYFA AYNI OLCEKTE */
+
+.book-stage {
+    position: relative;
+
+    width: min(100vw, 150vh);
+    height: min(100vh, 66.6667vw);
+
+    overflow: visible;
 }
 
-.page {
+
+/* ARKA PLAN */
+
+.book-background {
     position: absolute;
+
+    left: 0;
     top: 0;
-    width: 50%;
+
+    width: 100%;
     height: 100%;
-    background-image: url("sag_sayfa_bos.png");
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+
+    display: block;
+
+    object-fit: fill;
+}
+
+
+/* SABIT SAG SAYFA */
+
+.right-page {
+    position: absolute;
+
+    left: 48.828125%;
+    top: 13.2%;
+
+    width: 38.411458%;
+    height: auto;
+
+    display: block;
+
+    pointer-events: none;
+
     z-index: 2;
 }
 
-.page.left {
-    left: 0;
-    transform: scaleX(-1);
-}
 
-.page.right {
-    right: 0;
-}
+/* SABIT SOL SAYFA */
 
-/* =========================
-   SIIR
-========================= */
-
-.poem {
+.left-page {
     position: absolute;
+
+    left: 19%;
+    top: 13.2%;
+
+    width: 34%;
+    height: calc(100% - 27.5%);
+
+    display: block;
+
+    pointer-events: none;
+
+    transform: scaleX(-1);
+
+    z-index: 2;
+}
+
+
+/* SIIR METINLERI */
+
+.poem-text {
+    position: absolute;
+
     top: 23%;
     width: 25%;
     height: 61%;
 
-    font-family: "Caveat", cursive;
-    font-size: clamp(17px, 1.35vw, 23px);
-    font-weight: 500;
-    line-height: 1.55;
+    z-index: 5;
 
     color: #174a82;
 
-    white-space: pre-wrap;
+    font-family:
+        "Caveat",
+        "Segoe Print",
+        "Bradley Hand",
+        cursive;
+
+    font-size: clamp(17px, 1.35vw, 23px);
+
+    font-weight: 500;
+
+    line-height: 1.55;
+
+    letter-spacing: 0.01em;
+
+    white-space: pre-line;
+
     overflow: hidden;
 
-    z-index: 5;
+    text-shadow:
+        0.2px 0.2px 0 rgba(23, 74, 130, 0.22);
 
     opacity: 1;
 
-    transition: opacity 1.1s ease;
+    transition:
+        opacity 1.2s ease;
 }
 
-.poem.left {
+
+/* SOL SIIR */
+
+.left-poem {
     left: 23%;
+
+    text-align: left;
 }
 
-.poem.right {
+
+/* SAG SIIR */
+
+.right-poem {
     left: 53%;
+
+    text-align: left;
 }
 
-/* =========================
-   SOL ALT TUY + MÜREKKEP
-========================= */
 
-.corner-quill {
-    position: absolute;
+/* SAYFA GECISINDE SILINME */
 
-    left: 18px;
-    bottom: 14px;
-
-    width: 155px;
-    height: auto;
-
-    z-index: 6;
-
-    pointer-events: none;
-
-    opacity: 0.96;
-
-    user-select: none;
+.poem-text.fade-out {
+    opacity: 0;
 }
 
-/* =========================
-   SAG OK
-========================= */
 
-.next-button {
+/* SAG OK */
+
+.page-arrow {
     position: absolute;
 
-    right: 2.5%;
     top: 50%;
+    left: 88%;
 
-    transform: translateY(-50%);
+    width: 30px;
+    height: 50px;
 
-    width: 54px;
-    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    border: none;
-    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
 
-    color: rgba(255,255,255,0.55);
+    font-family: Arial, sans-serif;
 
-    font-size: 64px;
-    font-weight: 200;
-    line-height: 80px;
+    font-size: 38px;
+    font-weight: 300;
+
+    line-height: 1;
 
     cursor: pointer;
+    user-select: none;
 
     z-index: 20;
 
-    padding: 0;
+    transform: translateY(-50%);
+
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.8);
 
     transition:
-        color 0.2s ease,
-        transform 0.2s ease;
+        color 0.25s ease,
+        transform 0.25s ease,
+        text-shadow 0.25s ease;
 }
 
-.next-button:hover {
-    color: rgba(255,255,255,0.85);
-    transform: translateY(-50%) scale(1.05);
+
+/* OK UZERINE GELINCE */
+
+.page-arrow:hover {
+
+    color: rgba(255, 255, 255, 0.95);
+
+    transform:
+        translateY(-50%)
+        scale(1.08);
+
+    text-shadow:
+        0 0 7px rgba(255, 255, 255, 0.45),
+        0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
-.next-button.flash {
-    animation: arrowFlash 0.55s ease;
+
+/* OKA BASILDIGINDA PARLAMA */
+
+.page-arrow.flash {
+
+    animation:
+        arrowFlash 0.55s ease;
 }
+
 
 @keyframes arrowFlash {
 
     0% {
-        color: rgba(255,255,255,0.55);
-        text-shadow: none;
+
+        color:
+            rgba(255, 255, 255, 0.72);
+
+        text-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.8);
+
+        transform:
+            translateY(-50%)
+            scale(1);
+
     }
+
 
     35% {
-        color: white;
+
+        color: #ffffff;
+
         text-shadow:
-            0 0 8px rgba(255,255,255,0.9),
-            0 0 18px rgba(255,255,255,0.65),
-            0 0 30px rgba(255,255,255,0.35);
+            0 0 5px rgba(255, 255, 255, 0.65),
+            0 0 12px rgba(255, 255, 255, 0.45),
+            0 1px 4px rgba(0, 0, 0, 0.8);
+
+        transform:
+            translateY(-50%)
+            scale(1.16);
+
     }
+
 
     100% {
-        color: rgba(255,255,255,0.55);
-        text-shadow: none;
+
+        color:
+            rgba(255, 255, 255, 0.72);
+
+        text-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.8);
+
+        transform:
+            translateY(-50%)
+            scale(1);
+
     }
+
 }
 
-/* =========================
-   SAYFA GECISI
-========================= */
 
-.fade-out {
-    opacity: 0 !important;
+/* ANIMASYON SIRASINDA OK KAPALI */
+
+.page-arrow.disabled {
+    pointer-events: none;
+
+    opacity: 0.35;
+}
+
+
+/* GIZLI OLCUM ALANI */
+
+.measure-poem {
+    position: absolute;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    left: -99999px;
+    top: 0;
+
+    white-space: pre-line;
+
+    overflow: hidden;
 }
 
 </style>
 </head>
 
+
 <body>
 
-<div class="book-stage">
+<div class="page">
 
-    <img
-        src="arkaplan0.jpeg"
-        class="book-background"
-        alt=""
-    >
+    <div class="book-stage">
 
-    <div class="page left"></div>
-    <div class="page right"></div>
+        <!-- ARKA PLAN -->
 
-    <div id="poemLeft" class="poem left"></div>
-    <div id="poemRight" class="poem right"></div>
+        <img
+            class="book-background"
+            src="arkaplan0.jpeg"
+            alt="Sair Nefestir"
+        >
 
-    <!--
-        Dekoratif tüy kalem ve mürekkep.
-        Artık yazının yanında hareket etmiyor.
-        Sol alt köşede sabit duruyor.
-    -->
-    <img
-        class="corner-quill"
-        src="https://png.pngtree.com/png-clipart/20240701/original/pngtree-a-feather-pen-in-inkpot-png-image_15459541.png"
-        alt=""
-    >
 
-    <button
-        id="nextButton"
-        class="next-button"
-        aria-label="Sonraki"
-    >›</button>
+        <!-- SABIT SAG SAYFA -->
+
+        <img
+            class="right-page"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
+
+
+        <!-- SABIT SOL SAYFA -->
+
+        <img
+            class="left-page"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
+
+
+        <!-- SOL SIIR -->
+
+        <div
+            id="leftPoem"
+            class="poem-text left-poem"
+        ></div>
+
+
+        <!-- SAG SIIR -->
+
+        <div
+            id="rightPoem"
+            class="poem-text right-poem"
+        ></div>
+
+
+        <!-- SAG OK -->
+
+        <div
+            id="nextArrow"
+            class="page-arrow next-arrow"
+            aria-label="Siirin devamini goster"
+        >
+            ›
+        </div>
+
+    </div>
 
 </div>
 
+
 <script>
+
+/* =========================================
+   DEMO SIIR
+   ========================================= */
 
 const poems = [
 
@@ -256,257 +417,491 @@ Yaşamak istiyorum gençliğimi yeni baştan.`
 
 ];
 
-const typingSpeed = 55;
 
-let currentPoem = 0;
+/* =========================================
+   ELEMENTLER
+   ========================================= */
+
+const leftPoem =
+    document.getElementById("leftPoem");
+
+const rightPoem =
+    document.getElementById("rightPoem");
+
+const nextArrow =
+    document.getElementById("nextArrow");
+
+
+/* =========================================
+   DURUM
+   ========================================= */
+
+let pages = [];
+
 let currentSpread = 0;
 
-let typingInProgress = false;
 let isAnimating = false;
 
-const poemLeft =
-    document.getElementById("poemLeft");
+let typingTimers = [];
 
-const poemRight =
-    document.getElementById("poemRight");
 
-const nextButton =
-    document.getElementById("nextButton");
+/* =========================================
+   SAYFA OLCUMU
+   ========================================= */
 
-/* =========================
-   METNI SAYFAYA SIGDIR
-========================= */
+function createMeasureElement(sourceElement) {
 
-function splitPoem(text) {
+    const measure =
+        document.createElement("div");
 
-    const test = document.createElement("div");
+    measure.className =
+        "measure-poem";
 
-    test.className = "poem left";
+    const styles =
+        window.getComputedStyle(sourceElement);
 
-    test.style.visibility = "hidden";
-    test.style.position = "absolute";
-    test.style.left = "23%";
-    test.style.top = "23%";
+    measure.style.width =
+        styles.width;
 
-    document.body.appendChild(test);
+    measure.style.height =
+        styles.height;
 
-    const words = text.split(/(\s+)/);
+    measure.style.fontFamily =
+        styles.fontFamily;
 
-    let leftText = "";
-    let rightText = "";
+    measure.style.fontSize =
+        styles.fontSize;
+
+    measure.style.fontWeight =
+        styles.fontWeight;
+
+    measure.style.lineHeight =
+        styles.lineHeight;
+
+    measure.style.letterSpacing =
+        styles.letterSpacing;
+
+    measure.style.textShadow =
+        styles.textShadow;
+
+    document.body.appendChild(measure);
+
+    return measure;
+}
+
+
+/* =========================================
+   SAYFAYA SIGIYOR MU
+   ========================================= */
+
+function fitsOnPage(
+    text,
+    sourceElement,
+    measureElement
+) {
+
+    measureElement.textContent =
+        text;
+
+    return (
+        measureElement.scrollHeight <=
+        sourceElement.clientHeight + 1
+    );
+}
+
+
+/* =========================================
+   SIIRI SAYFALARA BOL
+   ========================================= */
+
+function paginatePoem(poem) {
+
+    const lines =
+        poem.split("\n");
+
+    const measure =
+        createMeasureElement(leftPoem);
+
+    const result = [];
+
     let currentText = "";
 
-    for (let i = 0; i < words.length; i++) {
 
-        const piece = words[i];
-        const candidate = currentText + piece;
+    for (
+        let i = 0;
+        i < lines.length;
+        i++
+    ) {
 
-        test.textContent = candidate;
+        const line =
+            lines[i];
+
+        const candidate =
+            currentText === ""
+                ? line
+                : currentText + "\n" + line;
+
 
         if (
-            test.scrollHeight <=
-            test.clientHeight + 2
+            fitsOnPage(
+                candidate,
+                leftPoem,
+                measure
+            )
         ) {
 
-            currentText = candidate;
+            currentText =
+                candidate;
+
+            continue;
+        }
+
+
+        if (currentText !== "") {
+
+            result.push(
+                currentText
+            );
+
+            currentText =
+                line;
 
         } else {
 
-            if (!leftText) {
+            result.push(
+                line
+            );
 
-                leftText = currentText;
-                currentText = piece;
-
-            } else {
-
-                rightText += currentText;
-                currentText = piece;
-
-            }
+            currentText = "";
         }
     }
 
-    if (!leftText) {
 
-        leftText = currentText;
+    if (currentText !== "") {
 
-    } else {
-
-        rightText += currentText;
-
+        result.push(
+            currentText
+        );
     }
 
-    document.body.removeChild(test);
 
-    return {
-        left: leftText,
-        right: rightText
-    };
+    measure.remove();
+
+    return result;
 }
 
-/* =========================
-   YAZI ANIMASYONU
-========================= */
+
+/* =========================================
+   BUTUN SIIRLERI SAYFALANDIR
+   ========================================= */
+
+function buildPages() {
+
+    pages = [];
+
+    poems.forEach(function(poem) {
+
+        const chunks =
+            paginatePoem(poem);
+
+
+        for (
+            let i = 0;
+            i < chunks.length;
+            i += 2
+        ) {
+
+            pages.push({
+
+                left:
+                    chunks[i] || "",
+
+                right:
+                    chunks[i + 1] || ""
+
+            });
+        }
+
+    });
+}
+
+
+/* =========================================
+   ZAMANLAYICILARI TEMIZLE
+   ========================================= */
+
+function clearTypingTimers() {
+
+    typingTimers.forEach(
+        function(timer) {
+
+            clearTimeout(timer);
+
+        }
+    );
+
+    typingTimers = [];
+}
+
+
+/* =========================================
+   DAKTILO YAZISI
+   ========================================= */
 
 function typeText(
     element,
     text,
+    speed,
     callback
 ) {
 
     element.textContent = "";
 
-    if (!text) {
-
-        callback();
-        return;
-    }
-
-    typingInProgress = true;
-
     let index = 0;
+
 
     function writeCharacter() {
 
         if (index >= text.length) {
 
-            typingInProgress = false;
-
-            callback();
+            if (callback) {
+                callback();
+            }
 
             return;
         }
 
-        element.textContent += text[index];
+
+        element.textContent +=
+            text.charAt(index);
 
         index++;
 
-        setTimeout(
-            writeCharacter,
-            typingSpeed
-        );
+
+        const timer =
+            setTimeout(
+                writeCharacter,
+                speed
+            );
+
+        typingTimers.push(timer);
     }
+
 
     writeCharacter();
 }
 
-/* =========================
-   YAYILIM
-========================= */
 
-function typeSpread() {
+/* =========================================
+   SAYFAYI DAKTILO GIBI YAZ
+   ========================================= */
 
-    const parts =
-        splitPoem(
-            poems[currentPoem]
-        );
+function typeSpread(index) {
 
-    poemLeft.textContent = "";
-    poemRight.textContent = "";
+    clearTypingTimers();
+
+
+    const spread =
+        pages[index];
+
+
+    leftPoem.textContent = "";
+
+    rightPoem.textContent = "";
+
+
+    /* SOL SAYFA */
 
     typeText(
-        poemLeft,
-        parts.left,
-        () => {
+        leftPoem,
+        spread.left,
+        55,
+        function() {
 
-            if (parts.right) {
+            /* SAG SAYFA */
 
-                typeText(
-                    poemRight,
-                    parts.right,
-                    () => {}
-                );
+            typeText(
+                rightPoem,
+                spread.right,
+                55,
+                function() {
 
-            }
+                    /* YAZI BITTI */
+
+                }
+            );
+
         }
     );
 }
 
-/* =========================
-   BASLANGIC
-========================= */
 
-window.addEventListener(
-    "load",
-    () => {
+/* =========================================
+   SAYFAYI GOSTER
+   ========================================= */
 
-        typeSpread();
+function showSpread(index) {
 
+    if (!pages[index]) {
+        return;
     }
-);
 
-/* =========================
-   SAG OK
-========================= */
+    typeSpread(index);
+}
 
-nextButton.addEventListener(
-    "click",
-    () => {
 
-        if (
-            isAnimating ||
-            typingInProgress
-        ) {
-            return;
-        }
+/* =========================================
+   DAKTILO BITISINI BEKLE
+   ========================================= */
 
-        isAnimating = true;
+function waitForTypingToFinish(callback) {
 
-        nextButton.disabled = true;
+    const check =
+        setInterval(
+            function() {
 
-        nextButton.classList.remove(
-            "flash"
-        );
+                if (
+                    typingTimers.length === 0
+                ) {
 
-        void nextButton.offsetWidth;
+                    clearInterval(check);
 
-        nextButton.classList.add(
-            "flash"
-        );
-
-        poemLeft.classList.add(
-            "fade-out"
-        );
-
-        poemRight.classList.add(
-            "fade-out"
-        );
-
-        setTimeout(
-            () => {
-
-                currentSpread++;
-
-                poemLeft.classList.remove(
-                    "fade-out"
-                );
-
-                poemRight.classList.remove(
-                    "fade-out"
-                );
-
-                typeSpread();
-
-                function waitForTyping() {
-
-                    if (
-                        !typingInProgress
-                    ) {
-
-                        isAnimating = false;
-
-                        nextButton.disabled = false;
-
-                    } else {
-
-                        setTimeout(
-                            waitForTyping,
-                            100
-                        );
+                    if (callback) {
+                        callback();
                     }
                 }
 
-                waitForTyping();
+            },
+            100
+        );
+
+}
+
+
+/* =========================================
+   ILK ACILIS
+   ========================================= */
+
+async function initializeBook() {
+
+    if (
+        document.fonts &&
+        document.fonts.ready
+    ) {
+
+        await document.fonts.ready;
+    }
+
+
+    requestAnimationFrame(
+        function() {
+
+            buildPages();
+
+            currentSpread = 0;
+
+            showSpread(
+                currentSpread
+            );
+
+        }
+    );
+}
+
+
+/* =========================================
+   OKA BASILINCA
+   ========================================= */
+
+nextArrow.addEventListener(
+    "click",
+    function() {
+
+        if (isAnimating) {
+            return;
+        }
+
+
+        if (
+            currentSpread >=
+            pages.length - 1
+        ) {
+
+            return;
+        }
+
+
+        /* OK PARLASIN */
+
+        nextArrow.classList.remove(
+            "flash"
+        );
+
+        void nextArrow.offsetWidth;
+
+        nextArrow.classList.add(
+            "flash"
+        );
+
+
+        isAnimating = true;
+
+        nextArrow.classList.add(
+            "disabled"
+        );
+
+
+        clearTypingTimers();
+
+
+        /* IKI SAYFA SILINSIN */
+
+        leftPoem.classList.add(
+            "fade-out"
+        );
+
+        rightPoem.classList.add(
+            "fade-out"
+        );
+
+
+        /* YENI SAYFA */
+
+        setTimeout(
+            function() {
+
+                currentSpread++;
+
+
+                leftPoem.classList.remove(
+                    "fade-out"
+                );
+
+                rightPoem.classList.remove(
+                    "fade-out"
+                );
+
+
+                /* DEVAM SOLDAN */
+
+                typeSpread(
+                    currentSpread
+                );
+
+
+                /* YAZI BITINCE OK AKTIF */
+
+                waitForTypingToFinish(
+                    function() {
+
+                        isAnimating = false;
+
+                        nextArrow.classList.remove(
+                            "disabled"
+                        );
+
+                    }
+                );
 
             },
             1200
@@ -514,6 +909,13 @@ nextButton.addEventListener(
 
     }
 );
+
+
+/* =========================================
+   BASLAT
+   ========================================= */
+
+initializeBook();
 
 </script>
 
