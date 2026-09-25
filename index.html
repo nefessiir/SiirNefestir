@@ -66,22 +66,16 @@ body {
     display: block;
 
     object-fit: fill;
+
+    z-index: 1;
 }
 
 
-/* BOS SAG SAYFA */
+/* SABIT SAG SAYFA */
+/* BURAYA DOKUNULMADI */
 
 .right-page {
     position: absolute;
-
-    /*
-        Kaynak goruntudeki konum:
-        x = 750 / 1536
-        y = 155 / 1024
-
-        Boyut:
-        590 x 740
-    */
 
     left: 48.828125%;
     top: 13.2%;
@@ -92,6 +86,27 @@ body {
     display: block;
 
     pointer-events: none;
+
+    z-index: 2;
+}
+
+
+/* USTUNE GELECEK CEVRILEBILIR SAYFA */
+
+.flip-page {
+    position: absolute;
+
+    left: 48.828125%;
+    top: 13.2%;
+
+    width: 38.411458%;
+    height: auto;
+
+    display: block;
+
+    pointer-events: none;
+
+    z-index: 3;
 }
 
 </style>
@@ -103,14 +118,26 @@ body {
 
     <div class="book-stage">
 
+        <!-- KITAP ARKA PLANI -->
+
         <img
             class="book-background"
             src="arkaplan0.jpeg"
             alt="Sair Nefestir"
         >
 
+        <!-- SABIT SAG SAYFA -->
+
         <img
             class="right-page"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
+
+        <!-- CEVRILECEK UST SAYFA -->
+
+        <img
+            class="flip-page"
             src="sag_sayfa_bos.png"
             alt=""
         >
