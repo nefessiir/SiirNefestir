@@ -56,7 +56,6 @@ body {
 
 /* =========================================
    SAYFALAR
-   HICBIR KONUM / BOYUT DEGISTIRILMEDI
 ========================================= */
 
 .page {
@@ -103,6 +102,8 @@ body {
     height: 78%;
 
     overflow: hidden;
+
+    z-index: 2;
 }
 
 .left-page .page-content {
@@ -145,30 +146,34 @@ body {
     opacity: 0;
 
     transition: opacity 1.8s ease;
+
+    z-index: 2;
 }
 
 
 /* =========================================
    SABIT TUY KALEM
+   SAYFA BOYUTUNDA
+   SILIK
+   YAZININ ALTINDA
 ========================================= */
 
 .page-quill {
     position: absolute;
 
-    width: 70px;
-    height: auto;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
 
     pointer-events: none;
 
-    z-index: 20;
+    z-index: 1;
 
-    left: 50%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -50%);
-
-    opacity: 0.95;
+    opacity: 0.13;
 }
 
 
@@ -654,9 +659,6 @@ function getWrappedLines() {
 
 /* =========================================
    SAYFALARA BOL
-   DUZELTILEN KISIM:
-   SIIR KUTUSUNUN DEGIL,
-   SAYFA ICERIGININ YUKSEKLIGI OLCULUYOR
 ========================================= */
 
 function buildPages() {
@@ -714,11 +716,6 @@ function buildPages() {
 
     test.remove();
 
-    /*
-       Sayfanin gercek kullanilabilir
-       yuksekligi burada hesaplaniyor.
-    */
-
     const pageHeight =
         pageRect.height;
 
@@ -762,23 +759,6 @@ let pageIndex = 0;
 let stageState = "left";
 
 let animating = false;
-
-
-/* =========================================
-   SAYFAYA METIN HAZIRLA
-========================================= */
-
-function preparePage(
-    element,
-    lines
-) {
-
-    element.textContent =
-        lines.join("\n");
-
-    element.style.opacity =
-        "0";
-}
 
 
 /* =========================================
@@ -855,249 +835,4 @@ function startBook() {
    SAG OK
 ========================================= */
 
-async function nextPage() {
-
-    if (animating) {
-        return;
-    }
-
-    animating = true;
-
-
-    /* -------------------------------------
-       1. DURUM
-       ILK OK -> SOL SAYFA
-    ------------------------------------- */
-
-    if (
-        stageState === "left"
-    ) {
-
-        leftPoem.textContent =
-            pages[pageIndex]
-                ? pages[pageIndex].join("\n")
-                : "";
-
-        fadeIn(leftPoem);
-
-        stageState =
-            "right";
-
-        await wait(1900);
-
-        animating = false;
-
-        return;
-    }
-
-
-    /* -------------------------------------
-       2. DURUM
-       IKINCI OK -> SAG SAYFA
-    ------------------------------------- */
-
-    if (
-        stageState === "right"
-    ) {
-
-        if (
-            pageIndex + 1 <
-            pages.length
-        ) {
-
-            rightPoem.textContent =
-                pages[
-                    pageIndex + 1
-                ].join("\n");
-
-            fadeIn(rightPoem);
-
-            stageState =
-                "spread";
-
-            await wait(1900);
-
-            animating = false;
-
-            return;
-        }
-
-        stageState =
-            "spread";
-
-        animating = false;
-
-        return;
-    }
-
-
-    /* -------------------------------------
-       3. DURUM
-       IKI SAYFA DOLU
-       IKISI BIRDEN YAVASCA SILINIR
-    ------------------------------------- */
-
-    if (
-        stageState === "spread"
-    ) {
-
-        fadeOut(leftPoem);
-        fadeOut(rightPoem);
-
-        /*
-           1.8 saniye:
-           iki sayfanin tamamen
-           kaybolmasi
-        */
-
-        await wait(1800);
-
-        /*
-           Iki sayfa tamamen
-           kaybolduktan sonra
-           2 saniye BOS BEKLE.
-        */
-
-        await wait(2000);
-
-        /*
-           Simdi bir sonraki
-           sayfa cifti.
-        */
-
-        pageIndex += 2;
-
-        leftPoem.textContent =
-            pages[pageIndex]
-                ? pages[pageIndex].join("\n")
-                : "";
-
-        rightPoem.textContent =
-            "";
-
-        rightPoem.style.opacity =
-            "0";
-
-        if (
-            pageIndex <
-            pages.length
-        ) {
-
-            /*
-               Yeni siir bolumu
-               tekrar SOL SAYFADA
-               yavasca gorunur.
-            */
-
-            fadeIn(leftPoem);
-
-            stageState =
-                "right";
-
-        } else {
-
-            leftPoem.textContent =
-                "";
-
-            rightPoem.textContent =
-                "";
-
-            stageState =
-                "finished";
-        }
-
-        await wait(1900);
-
-        animating = false;
-
-        return;
-    }
-
-
-    /* -------------------------------------
-       SIIR BITTI
-    ------------------------------------- */
-
-    if (
-        stageState === "finished"
-    ) {
-
-        animating = false;
-
-        return;
-    }
-}
-
-
-/* =========================================
-   SOL OK
-========================================= */
-
-function previousPage() {
-
-    /*
-       Su asamada sol ok
-       akis degistirmiyor.
-    */
-
-}
-
-
-/* =========================================
-   BEKLE
-========================================= */
-
-function wait(ms) {
-
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                ms
-            )
-    );
-}
-
-
-/* =========================================
-   TAM EKRAN
-========================================= */
-
-function toggleFullscreen() {
-
-    if (
-        !document.fullscreenElement
-    ) {
-
-        document.documentElement
-            .requestFullscreen()
-            .catch(() => {});
-
-    } else {
-
-        document
-            .exitFullscreen();
-    }
-}
-
-
-/* =========================================
-   BASLAT
-========================================= */
-
-window.addEventListener(
-    "load",
-    () => {
-
-        setTimeout(
-            startBook,
-            500
-        );
-
-    }
-);
-
-</script>
-
-</body>
-</html>
+async function next
