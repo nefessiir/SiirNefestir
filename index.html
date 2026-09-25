@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -179,17 +180,17 @@ opacity: 0;
 
 
 /* =================================================
-  SOL ALTTAKI SABIT KALEM + MUREKKEP
-  3 CM SAG
-  4 CM YUKARI
-  ================================================= */
+   SOL ALTTAKI SABIT KALEM + MUREKKEP
+   1 CM SOL
+   2 CM ASAGI
+   ================================================= */
 
 .corner-quill {
 position: absolute;
 
-left: calc(1.5% + 3cm);
+left: calc(1.5% + 2cm);
 
-bottom: calc(-1% + 4cm);
+bottom: calc(-1% + 2cm);
 
 width: 140px;
 height: auto;
@@ -204,8 +205,8 @@ opacity: 0.96;
 
 
 /* =================================================
-  YAZIYI YAZAN ALTIN TUY KALEM
-  ================================================= */
+   YAZIYI YAZAN ALTIN TUY KALEM
+   ================================================= */
 
 .writing-quill {
 position: absolute;
@@ -380,6 +381,7 @@ overflow: hidden;
 
 <div class="book-stage">
 
+
 <!-- ARKA PLAN -->
 
 <img
@@ -421,7 +423,103 @@ alt=""
 <img
 id="writingQuill"
 class="writing-quill"
-            src="yazan_kalem3.png"
-            
+src="yazan_kalem3.png"
 alt=""
 >
+
+
+<!-- SIIR ALANLARI -->
+
+<div
+id="leftPoem"
+class="poem-text left-poem"
+></div>
+
+
+<div
+id="rightPoem"
+class="poem-text right-poem"
+></div>
+
+
+<!-- GIZLI OLCUM ALANI -->
+
+<div
+id="measurePoem"
+class="measure-poem poem-text"
+></div>
+
+
+<!-- SAG OK -->
+
+<div
+id="pageArrow"
+class="page-arrow"
+>
+›
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+const poems = [
+
+`Haydi Abbas, vakit tamam;
+Akşam diyordun işte oldu akşam.
+Kur bakalım çilingir soframızı;
+Dinsin artık bu kalb ağrısı.
+Şu ağacın gölgesinde olsun;
+Tam kenarında havuzun.
+Aya haber sal çıksın bu gece;
+Görünsün şöyle gönlümce.
+Bas kırbacı sihirli seccadeye,
+Göster hükmettiğini mesafeye
+Ve zamana.
+Katıp tozu dumana,
+Var git,
+Böyle ferman etti Cahit,
+Al getir ilk sevgiliyi Beşiktaş'tan;
+Yaşamak istiyorum gençliğimi yeni baştan.`
+
+];
+
+
+/* =================================================
+   ELEMANLAR
+   ================================================= */
+
+const leftPoem =
+document.getElementById("leftPoem");
+
+const rightPoem =
+document.getElementById("rightPoem");
+
+const measurePoem =
+document.getElementById("measurePoem");
+
+const pageArrow =
+document.getElementById("pageArrow");
+
+const writingQuill =
+document.getElementById("writingQuill");
+
+
+/* =================================================
+   DURUM
+   ================================================= */
+
+let poemIndex = 0;
+
+let spreadParts = [];
+
+let currentPart = 0;
+
+let activeTypingToken = 0;
+
+let activeTyping
+```
