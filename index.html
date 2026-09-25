@@ -71,7 +71,7 @@ body {
 }
 
 
-/* SABIT SAG SAYFA */
+/* SAG SAYFA */
 
 .right-page {
     position: absolute;
@@ -111,7 +111,7 @@ body {
 }
 
 
-/* SAG SAYFANIN ALTINDA KALACAK BOS SAYFA */
+/* SAG TARAFTA KALACAK BOS SAYFA */
 
 .right-page-cover {
     position: absolute;
@@ -190,10 +190,6 @@ body {
 
     text-shadow:
         0 1px 3px rgba(0, 0, 0, 0.8);
-
-    transition:
-        color 0.2s ease,
-        transform 0.2s ease;
 }
 
 .page-arrow:hover {
@@ -216,17 +212,20 @@ body {
 }
 
 
-/* DONUS ANIMASYONU */
+/* DONUS */
 
 .turning-page.animate {
-    animation: pageTurn 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    animation:
+        pageTurn
+        1.2s
+        cubic-bezier(0.22, 0.61, 0.36, 1)
+        forwards;
 }
 
 
 @keyframes pageTurn {
 
     0% {
-
         left: 48.828125%;
         top: 13.2%;
 
@@ -238,9 +237,7 @@ body {
             scaleX(1);
     }
 
-
     25% {
-
         left: 43%;
         top: 13.2%;
 
@@ -252,9 +249,7 @@ body {
             scaleX(0.96);
     }
 
-
     50% {
-
         left: 35%;
         top: 13.2%;
 
@@ -266,9 +261,7 @@ body {
             scaleX(0.94);
     }
 
-
     75% {
-
         left: 26%;
         top: 13.2%;
 
@@ -280,9 +273,7 @@ body {
             scaleX(0.98);
     }
 
-
     100% {
-
         left: 19%;
         top: 13.2%;
 
@@ -311,7 +302,7 @@ body {
             alt="Sair Nefestir"
         >
 
-        <!-- SAGDAKI BOS SAYFA ALANI -->
+        <!-- SAGDA KALAN BOS SAYFA -->
 
         <img
             class="right-page-cover"
@@ -319,7 +310,7 @@ body {
             alt=""
         >
 
-        <!-- SABIT SAG SAYFA -->
+        <!-- SAG SAYFA -->
 
         <img
             class="right-page"
@@ -399,42 +390,29 @@ function turnPage() {
         "animationend",
         function () {
 
-            /*
-             * Donus bittikten sonra
-             * eski sol sayfayi gizle.
-             */
+            /* Eski sol sayfayi gizle */
 
             leftPage.style.display = "none";
 
 
-            /*
-             * Sag taraftaki eski sayfayi gizle.
-             */
+            /* Eski sag sayfayi gizle */
 
             rightPage.style.display = "none";
 
 
-            /*
-             * Sag tarafta bos sayfa
-             * sabit olarak kalsin.
-             */
+            /* Sag tarafta bos sayfa kalsin */
 
             rightPageCover.style.display = "block";
 
 
             /*
-             * Donen sayfayi artik
-             * sol sayfa konumunda tut.
+             * BURADA ARTIK DONEN SAYFAYA
+             * YENIDEN LEFT / TOP / WIDTH / HEIGHT
+             * VERMIYORUZ.
+             *
+             * Animasyonun son konumunda
+             * oldugu gibi kaliyor.
              */
-
-            turningPage.style.left = "19%";
-            turningPage.style.top = "13.2%";
-            turningPage.style.width = "34%";
-            turningPage.style.height =
-                "calc(100% - 27.5%)";
-
-            turningPage.style.transform =
-                "scaleX(-1)";
 
             turningPage.classList.remove("animate");
 
