@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -5,10 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Şiir Nefestir</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -27,20 +24,21 @@ body {
 body {
     background: #111;
     overflow: hidden;
-    font-family: Arial, sans-serif;
 }
 
 .book-stage {
     position: relative;
     width: 100vw;
     height: 100vh;
-    overflow: hidden;
 
     background-image: url("arkaplan0.jpeg");
     background-position: center center;
-    background-repeat: no-repeat;
     background-size: cover;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
 }
+
 
 /* SOL SAYFA */
 
@@ -63,6 +61,7 @@ body {
     z-index: 2;
 }
 
+
 /* SAG SAYFA */
 
 .right-page {
@@ -82,6 +81,7 @@ body {
     z-index: 2;
 }
 
+
 /* SAYFA ICERIGI */
 
 .page-content {
@@ -94,13 +94,12 @@ body {
     height: 78%;
 
     overflow: hidden;
-
-    z-index: 2;
 }
 
 .left-page .page-content {
     transform: scaleX(-1);
 }
+
 
 /* SIIR */
 
@@ -119,7 +118,6 @@ body {
 
     font-family: "Caveat", cursive;
     font-size: 11pt;
-    font-weight: 500;
 
     line-height: 1.55;
 
@@ -133,59 +131,36 @@ body {
     opacity: 0;
 
     transition: opacity 1.8s ease;
-
-    z-index: 3;
 }
 
-/*
-   TÜY KALEM
 
-   Sayfanin tamamini kaplar.
-   Siliktir.
-   Siirin arkasinda kalir.
-*/
+/* TUY KALEM */
 
 .page-quill {
     position: absolute;
 
-    left: 0;
-    top: 0;
+    left: 50%;
+    top: 50%;
 
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-
-    pointer-events: none;
-
-    opacity: 0.13;
-
-    z-index: 1;
-}
-
-/* SOL SAYFADAKI KALEM DE AYNI SEKILDE ARKADA */
-
-.left-page .page-quill {
-    transform: scaleX(-1);
-}
-
-/* MUREKKEP VE KALEM */
-
-.corner-ink {
-    position: absolute;
-
-    left: 8%;
-    bottom: 7%;
-
-    width: 90px;
+    width: 70px;
     height: auto;
 
-    opacity: 0.85;
+    transform: translate(-50%, -50%);
 
     pointer-events: none;
 
-    z-index: 4;
+    z-index: 20;
 }
+
+
+/* SOL SAYFADAKI TUY KALEM */
+
+.left-page .page-quill {
+    transform:
+        translate(-50%, -50%)
+        scaleX(-1);
+}
+
 
 /* OKLAR */
 
@@ -219,7 +194,7 @@ body {
         text-shadow 0.25s ease,
         transform 0.25s ease;
 
-    z-index: 20;
+    z-index: 30;
 }
 
 .arrow:hover {
@@ -240,7 +215,8 @@ body {
     right: 4%;
 }
 
-/* UST SOL KONTROLLER */
+
+/* UST KONTROLLER */
 
 .top-controls {
     position: absolute;
@@ -266,76 +242,13 @@ body {
     color: rgba(255,255,255,0.85);
 
     cursor: pointer;
-
-    font-size: 17px;
-
-    transition:
-        background 0.25s ease,
-        box-shadow 0.25s ease;
 }
 
-.control-button:hover {
-    background: rgba(255,255,255,0.12);
 
-    box-shadow:
-        0 0 10px rgba(255,255,255,0.35);
-}
+/* TEST SIIRI GIZLI */
 
-/* ALT EQUALIZER */
-
-.equalizer {
-    position: absolute;
-
-    left: 50%;
-    bottom: 3%;
-
-    transform: translateX(-50%);
-
-    display: flex;
-    align-items: flex-end;
-    gap: 4px;
-
-    height: 30px;
-
-    z-index: 30;
-}
-
-.equalizer span {
-    display: block;
-
-    width: 4px;
-    height: 8px;
-
-    border-radius: 3px;
-
-    background: rgba(255,255,255,0.5);
-}
-
-/* TELEFON */
-
-@media (max-width: 700px) {
-
-    .left-page {
-        left: 5%;
-        width: 45%;
-    }
-
-    .right-page {
-        left: 50%;
-        width: 45%;
-    }
-
-    .arrow {
-        font-size: 32px;
-    }
-
-    .arrow-left {
-        left: 1%;
-    }
-
-    .arrow-right {
-        right: 1%;
-    }
+#poemSource {
+    display: none;
 }
 
 </style>
@@ -345,11 +258,14 @@ body {
 
 <div class="book-stage">
 
+
     <!-- UST KONTROLLER -->
 
     <div class="top-controls">
 
-        <button class="control-button" title="Sesli dinle">
+        <button
+            class="control-button"
+            title="Sesli dinle">
             🔊
         </button>
 
@@ -367,13 +283,11 @@ body {
 
     <div class="left-page">
 
-        <!-- TÜY KALEM -->
         <img
             src="yazan_kalem3.png"
             class="page-quill"
             alt="">
 
-        <!-- SAYFA ICERIGI -->
         <div class="page-content">
 
             <div
@@ -383,11 +297,6 @@ body {
 
         </div>
 
-        <img
-            src="murekkep_kalem.png"
-            class="corner-ink"
-            alt="">
-
     </div>
 
 
@@ -395,13 +304,11 @@ body {
 
     <div class="right-page">
 
-        <!-- TÜY KALEM -->
         <img
             src="yazan_kalem3.png"
             class="page-quill"
             alt="">
 
-        <!-- SAYFA ICERIGI -->
         <div class="page-content">
 
             <div
@@ -410,11 +317,6 @@ body {
             </div>
 
         </div>
-
-        <img
-            src="murekkep_kalem.png"
-            class="corner-ink"
-            alt="">
 
     </div>
 
@@ -433,29 +335,12 @@ body {
         ›
     </button>
 
-
-    <!-- EQUALIZER -->
-
-    <div class="equalizer">
-
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-
-    </div>
-
 </div>
 
 
 <!-- TEST SIIRI -->
 
-<div
-    id="poemSource"
-    style="display:none;">
+<div id="poemSource">
 
 Yoksam düşlerinde
 Bakışların hep donuk
@@ -500,6 +385,7 @@ Geliyorum!
 
 <script>
 
+
 const leftPoem =
     document.getElementById("leftPoem");
 
@@ -515,9 +401,6 @@ const rightArrow =
 const leftArrow =
     document.getElementById("leftArrow");
 
-const fullscreenButton =
-    document.getElementById("fullscreenButton");
-
 
 let pages = [];
 
@@ -529,25 +412,29 @@ let busy = false;
 
 
 /* --------------------------------
-   SIIRI SAYFALARA BOL
+   SAYFALARI OLUSTUR
 -------------------------------- */
 
 function buildPages() {
 
     pages = [];
 
+
     const text =
         source.innerText
             .replace(/\r/g, "")
             .trim();
+
 
     const allLines =
         text.split("\n");
 
 
     /*
-       SAYFA BOYUTUNU BOS SIIR ELEMENTINDEN
-       DEGIL, GERCEK PAGE-CONTENT'TEN ALIYORUZ.
+       ONEMLI:
+       BOS POEM ELEMENTININ BOYUTUNU
+       DEGIL, GERCEK SAYFA ICERIGININ
+       BOYUTUNU ALIYORUZ.
     */
 
     const pageContent =
@@ -555,22 +442,24 @@ function buildPages() {
             ".left-page .page-content"
         );
 
+
     const pageRect =
         pageContent.getBoundingClientRect();
 
 
     /*
-       SATIR GENISLIGINI OLCEBILMEK ICIN
-       GIZLI TEST ALANI.
+       SATIR YUKSEKLIGINI OLC.
     */
 
     const test =
         document.createElement("div");
 
-    test.style.position = "absolute";
-    test.style.visibility = "hidden";
-    test.style.left = "0";
-    test.style.top = "0";
+
+    test.style.position =
+        "absolute";
+
+    test.style.visibility =
+        "hidden";
 
     test.style.width =
         pageRect.width + "px";
@@ -581,22 +470,15 @@ function buildPages() {
     test.style.fontSize =
         "11pt";
 
-    test.style.fontWeight =
-        "500";
-
     test.style.lineHeight =
         "1.55";
 
     test.style.whiteSpace =
         "pre-wrap";
 
-    test.style.wordBreak =
-        "normal";
+    test.innerText =
+        "Satir";
 
-    test.style.overflowWrap =
-        "normal";
-
-    test.innerText = "Satir";
 
     document.body.appendChild(test);
 
@@ -624,7 +506,7 @@ function buildPages() {
 
 
     /*
-       SIIRI PARCALARA AYIRIYORUZ.
+       SAYFALARA AYIR.
     */
 
     for (
@@ -656,14 +538,16 @@ function fadeIn(element) {
     element.style.transition =
         "opacity 1.8s ease";
 
-    element.style.opacity = "0";
+    element.style.opacity =
+        "0";
 
 
     requestAnimationFrame(() => {
 
         requestAnimationFrame(() => {
 
-            element.style.opacity = "1";
+            element.style.opacity =
+                "1";
 
         });
 
@@ -681,7 +565,8 @@ function fadeOut(element) {
     element.style.transition =
         "opacity 1.8s ease";
 
-    element.style.opacity = "0";
+    element.style.opacity =
+        "0";
 
 }
 
@@ -694,6 +579,7 @@ function startBook() {
 
     buildPages();
 
+
     pageIndex = 0;
 
     state = "left";
@@ -704,17 +590,14 @@ function startBook() {
     leftPoem.innerText =
         pages[0] || "";
 
+
     rightPoem.innerText =
         "";
 
 
-    /*
-       Ilk sayfa hazir bekler.
-       OK'a basildiginda gorunur.
-    */
-
     leftPoem.style.opacity =
         "0";
+
 
     rightPoem.style.opacity =
         "0";
@@ -732,12 +615,13 @@ function nextPage() {
         return;
     }
 
+
     if (!pages.length) {
         return;
     }
 
 
-    /* ILK BASIS */
+    /* ILK OK */
 
     if (state === "left") {
 
@@ -765,7 +649,7 @@ function nextPage() {
     }
 
 
-    /* IKINCI BASIS */
+    /* IKINCI OK */
 
     if (state === "right") {
 
@@ -779,22 +663,22 @@ function nextPage() {
             rightPoem.innerText =
                 pages[pageIndex + 1];
 
+
             fadeIn(rightPoem);
 
+
             state = "spread";
+
 
         } else {
 
-            /*
-               Devam sayfasi yoksa
-               dogrudan bitis asamasina gec.
-            */
-
             state = "spread";
+
 
             fadeOut(leftPoem);
 
             fadeOut(rightPoem);
+
 
             setTimeout(() => {
 
@@ -819,7 +703,7 @@ function nextPage() {
     }
 
 
-    /* UCUNCU BASIS */
+    /* UCUNCU OK */
 
     if (state === "spread") {
 
@@ -827,16 +711,16 @@ function nextPage() {
 
 
         /*
-           IKI SAYFADAKI YAZILAR
-           AYNI ANDA YAVASCA KAYBOLUR.
+           IKISI AYNI ANDA KAYBOLUR.
         */
 
         fadeOut(leftPoem);
+
         fadeOut(rightPoem);
 
 
         /*
-           YAZILAR TAMAMEN KAYBOLDUKTAN
+           KAYBOLMA TAMAMLANDIKTAN
            SONRA 2 SANIYE BEKLE.
         */
 
@@ -856,22 +740,26 @@ function nextPage() {
                 rightPoem.innerText =
                     "";
 
+
                 leftPoem.style.opacity =
                     "0";
 
                 rightPoem.style.opacity =
                     "0";
 
-                state = "finished";
 
-                busy = false;
+                state =
+                    "finished";
+
+                busy =
+                    false;
 
                 return;
             }
 
 
             /*
-               YENI DEVAM SOL SAYFAYA GELIR.
+               YENI PARCA SOL SAYFAYA.
             */
 
             leftPoem.innerText =
@@ -889,14 +777,11 @@ function nextPage() {
                 "0";
 
 
-            /*
-               FADE IN
-            */
-
             fadeIn(leftPoem);
 
 
-            state = "right";
+            state =
+                "right";
 
 
             setTimeout(() => {
@@ -913,7 +798,7 @@ function nextPage() {
     }
 
 
-    /* SIIR BITTI */
+    /* BITTI */
 
     if (state === "finished") {
 
@@ -930,24 +815,20 @@ function nextPage() {
 
 function previousPage() {
 
-    /*
-       Simdilik sol ok hareket etmiyor.
-       Sadece sag ok akis kontrol ediyor.
-    */
-
     return;
 
 }
 
 
 /* --------------------------------
-   BUTONLAR
+   EVENTLER
 -------------------------------- */
 
 rightArrow.addEventListener(
     "click",
     nextPage
 );
+
 
 leftArrow.addEventListener(
     "click",
@@ -959,24 +840,28 @@ leftArrow.addEventListener(
    TAM EKRAN
 -------------------------------- */
 
-fullscreenButton.addEventListener(
-    "click",
-    () => {
+document
+    .getElementById("fullscreenButton")
+    .addEventListener(
+        "click",
+        () => {
 
-        if (!document.fullscreenElement) {
+            if (
+                !document.fullscreenElement
+            ) {
 
-            document.documentElement
-                .requestFullscreen()
-                .catch(() => {});
+                document.documentElement
+                    .requestFullscreen()
+                    .catch(() => {});
 
-        } else {
+            } else {
 
-            document.exitFullscreen();
+                document.exitFullscreen();
+
+            }
 
         }
-
-    }
-);
+    );
 
 
 /* --------------------------------
