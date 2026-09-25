@@ -111,6 +111,25 @@ body {
 }
 
 
+/* SAG SAYFANIN ALTINDA KALACAK BOS SAYFA */
+
+.right-page-cover {
+    position: absolute;
+
+    left: 48.828125%;
+    top: 13.2%;
+
+    width: 38.411458%;
+    height: auto;
+
+    display: none;
+
+    z-index: 3;
+
+    pointer-events: none;
+}
+
+
 /* DONEN SAYFA */
 
 .turning-page {
@@ -292,6 +311,14 @@ body {
             alt="Sair Nefestir"
         >
 
+        <!-- SAGDAKI BOS SAYFA ALANI -->
+
+        <img
+            class="right-page-cover"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
+
         <!-- SABIT SAG SAYFA -->
 
         <img
@@ -351,6 +378,12 @@ function turnPage() {
     const rightPage =
         document.querySelector(".right-page");
 
+    const leftPage =
+        document.querySelector(".left-page");
+
+    const rightPageCover =
+        document.querySelector(".right-page-cover");
+
     const nextArrow =
         document.querySelector(".next-arrow");
 
@@ -366,7 +399,33 @@ function turnPage() {
         "animationend",
         function () {
 
+            /*
+             * Donus bittikten sonra
+             * eski sol sayfayi gizle.
+             */
+
+            leftPage.style.display = "none";
+
+
+            /*
+             * Sag taraftaki eski sayfayi gizle.
+             */
+
             rightPage.style.display = "none";
+
+
+            /*
+             * Sag tarafta bos sayfa
+             * sabit olarak kalsin.
+             */
+
+            rightPageCover.style.display = "block";
+
+
+            /*
+             * Donen sayfayi artik
+             * sol sayfa konumunda tut.
+             */
 
             turningPage.style.left = "19%";
             turningPage.style.top = "13.2%";
