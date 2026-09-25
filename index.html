@@ -109,58 +109,62 @@ body {
 }
 
 
-/* KITABIN YANINDAKI OKLAR */
+/* OKLAR */
 
 .page-arrow {
     position: absolute;
 
     top: 50%;
 
-    width: 34px;
-    height: 60px;
+    width: 30px;
+    height: 50px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    color: rgba(255, 255, 255, 0.72);
+    color: rgba(255, 255, 255, 0.85);
 
     font-family: Arial, sans-serif;
-    font-size: 34px;
+    font-size: 38px;
     font-weight: 300;
+    line-height: 1;
 
     cursor: pointer;
     user-select: none;
 
-    z-index: 10;
+    z-index: 20;
 
     transform: translateY(-50%);
 
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.8);
+
     transition:
-        color 0.25s ease,
-        transform 0.25s ease;
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .page-arrow:hover {
-    color: rgba(255, 255, 255, 1);
+    color: #fff;
 }
 
 
-/* SOL OK */
+/* SOL OK - KITABIN HEMEN SOLU */
 
 .prev-arrow {
-    left: -42px;
+    left: 16%;
 }
 
 
-/* SAG OK */
+/* SAG OK - KITABIN HEMEN SAGI */
 
 .next-arrow {
-    right: -42px;
+    left: 88%;
 }
 
 
-/* ILK SAYFADA SOL OK GORUNMESIN */
+/* ILK SAYFADA SOL OK GIZLI */
 
 .prev-arrow {
     display: none;
