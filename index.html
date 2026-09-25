@@ -31,7 +31,9 @@ body {
 }
 
 
-/* KITAP SAHNESI */
+/* =========================================
+   KITAP SAHNESI
+   ========================================= */
 
 .page {
     width: 100vw;
@@ -45,8 +47,6 @@ body {
 }
 
 
-/* ARKA PLAN VE SAYFA AYNI OLCEKTE */
-
 .book-stage {
     position: relative;
 
@@ -57,7 +57,9 @@ body {
 }
 
 
-/* ARKA PLAN */
+/* =========================================
+   ARKA PLAN
+   ========================================= */
 
 .book-background {
     position: absolute;
@@ -74,7 +76,9 @@ body {
 }
 
 
-/* SABIT SAG SAYFA */
+/* =========================================
+   SAG SAYFA
+   ========================================= */
 
 .right-page {
     position: absolute;
@@ -93,7 +97,9 @@ body {
 }
 
 
-/* SABIT SOL SAYFA */
+/* =========================================
+   SOL SAYFA
+   ========================================= */
 
 .left-page {
     position: absolute;
@@ -114,12 +120,15 @@ body {
 }
 
 
-/* SIIR METINLERI */
+/* =========================================
+   SIIR METINLERI
+   ========================================= */
 
 .poem-text {
     position: absolute;
 
     top: 23%;
+
     width: 25%;
     height: 61%;
 
@@ -133,7 +142,8 @@ body {
         "Bradley Hand",
         cursive;
 
-    font-size: clamp(17px, 1.35vw, 23px);
+    font-size:
+        clamp(17px, 1.35vw, 23px);
 
     font-weight: 500;
 
@@ -146,7 +156,8 @@ body {
     overflow: hidden;
 
     text-shadow:
-        0.2px 0.2px 0 rgba(23, 74, 130, 0.22);
+        0.2px 0.2px 0
+        rgba(23, 74, 130, 0.22);
 
     opacity: 1;
 
@@ -155,16 +166,12 @@ body {
 }
 
 
-/* SOL SIIR */
-
 .left-poem {
     left: 23%;
 
     text-align: left;
 }
 
-
-/* SAG SIIR */
 
 .right-poem {
     left: 53%;
@@ -173,14 +180,60 @@ body {
 }
 
 
-/* SAYFA GECISINDE SILINME */
-
 .poem-text.fade-out {
     opacity: 0;
 }
 
 
-/* SAG OK */
+/* =========================================
+   TUYLU KALEM
+   ========================================= */
+
+.quill {
+    position: absolute;
+
+    width: 58px;
+    height: 58px;
+
+    z-index: 10;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transform-origin: 82% 82%;
+
+    transition:
+        left 0.055s linear,
+        top 0.055s linear,
+        opacity 0.35s ease;
+}
+
+
+/*
+ * Kalemin kendisi SVG icinde.
+ * Zarif bir tuy ve ince mavi murekkep ucu.
+ */
+
+.quill svg {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    overflow: visible;
+
+    filter:
+        drop-shadow(
+            0 1px 1px
+            rgba(0, 0, 0, 0.28)
+        );
+}
+
+
+/* =========================================
+   OK
+   ========================================= */
 
 .page-arrow {
     position: absolute;
@@ -195,7 +248,8 @@ body {
     align-items: center;
     justify-content: center;
 
-    color: rgba(255, 255, 255, 0.72);
+    color:
+        rgba(255, 255, 255, 0.72);
 
     font-family: Arial, sans-serif;
 
@@ -209,10 +263,12 @@ body {
 
     z-index: 20;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     text-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.8);
+        0 1px 3px
+        rgba(0, 0, 0, 0.8);
 
     transition:
         color 0.25s ease,
@@ -221,23 +277,27 @@ body {
 }
 
 
-/* OK UZERINE GELINCE */
-
 .page-arrow:hover {
 
-    color: rgba(255, 255, 255, 0.95);
+    color:
+        rgba(255, 255, 255, 0.95);
 
     transform:
         translateY(-50%)
         scale(1.08);
 
     text-shadow:
-        0 0 7px rgba(255, 255, 255, 0.45),
-        0 1px 4px rgba(0, 0, 0, 0.8);
+        0 0 7px
+        rgba(255, 255, 255, 0.45),
+
+        0 1px 4px
+        rgba(0, 0, 0, 0.8);
 }
 
 
-/* OKA BASILDIGINDA PARLAMA */
+/* =========================================
+   OKA BASILDIGINDA PARLAMA
+   ========================================= */
 
 .page-arrow.flash {
 
@@ -254,12 +314,12 @@ body {
             rgba(255, 255, 255, 0.72);
 
         text-shadow:
-            0 1px 3px rgba(0, 0, 0, 0.8);
+            0 1px 3px
+            rgba(0, 0, 0, 0.8);
 
         transform:
             translateY(-50%)
             scale(1);
-
     }
 
 
@@ -268,14 +328,18 @@ body {
         color: #ffffff;
 
         text-shadow:
-            0 0 5px rgba(255, 255, 255, 0.65),
-            0 0 12px rgba(255, 255, 255, 0.45),
-            0 1px 4px rgba(0, 0, 0, 0.8);
+            0 0 5px
+            rgba(255, 255, 255, 0.65),
+
+            0 0 12px
+            rgba(255, 255, 255, 0.45),
+
+            0 1px 4px
+            rgba(0, 0, 0, 0.8);
 
         transform:
             translateY(-50%)
             scale(1.16);
-
     }
 
 
@@ -285,27 +349,28 @@ body {
             rgba(255, 255, 255, 0.72);
 
         text-shadow:
-            0 1px 3px rgba(0, 0, 0, 0.8);
+            0 1px 3px
+            rgba(0, 0, 0, 0.8);
 
         transform:
             translateY(-50%)
             scale(1);
-
     }
 
 }
 
 
-/* ANIMASYON SIRASINDA OK KAPALI */
-
 .page-arrow.disabled {
+
     pointer-events: none;
 
     opacity: 0.35;
 }
 
 
-/* GIZLI OLCUM ALANI */
+/* =========================================
+   GIZLI OLCUM ALANI
+   ========================================= */
 
 .measure-poem {
     position: absolute;
@@ -341,7 +406,7 @@ body {
         >
 
 
-        <!-- SABIT SAG SAYFA -->
+        <!-- SAG SAYFA -->
 
         <img
             class="right-page"
@@ -350,7 +415,7 @@ body {
         >
 
 
-        <!-- SABIT SOL SAYFA -->
+        <!-- SOL SAYFA -->
 
         <img
             class="left-page"
@@ -373,6 +438,105 @@ body {
             id="rightPoem"
             class="poem-text right-poem"
         ></div>
+
+
+        <!-- TUYLU DOLMA KALEM -->
+
+        <div
+            id="quill"
+            class="quill"
+        >
+
+            <svg
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+
+                <!-- Tuy govdesi -->
+
+                <path
+                    d="
+                    M20 76
+                    C25 52 39 28 75 10
+                    C79 8 83 9 84 12
+                    C84 38 67 62 38 75
+                    C31 78 25 79 20 76
+                    Z
+                    "
+                    fill="#eee9df"
+                    stroke="#9b968d"
+                    stroke-width="1.2"
+                />
+
+
+                <!-- Tuy damar -->
+
+                <path
+                    d="
+                    M23 76
+                    C39 57 57 36 82 12
+                    "
+                    fill="none"
+                    stroke="#77736c"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                />
+
+
+                <!-- Tuy cizgileri -->
+
+                <path
+                    d="
+                    M31 66 L25 55
+                    M38 59 L32 45
+                    M46 51 L40 37
+                    M54 43 L48 29
+                    M62 35 L57 23
+                    M70 27 L67 17
+                    "
+                    fill="none"
+                    stroke="#aaa59d"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                />
+
+
+                <!-- Kalem sap -->
+
+                <path
+                    d="
+                    M22 76
+                    C34 78 48 84 68 91
+                    "
+                    fill="none"
+                    stroke="#6c4932"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                />
+
+
+                <!-- Mavi murekkep ucu -->
+
+                <path
+                    d="
+                    M18 78
+                    L9 91
+                    L24 82
+                    Z
+                    "
+                    fill="#174a82"
+                />
+
+                <circle
+                    cx="12"
+                    cy="89"
+                    r="2.2"
+                    fill="#174a82"
+                />
+
+            </svg>
+
+        </div>
 
 
         <!-- SAG OK -->
@@ -431,6 +595,12 @@ const rightPoem =
 const nextArrow =
     document.getElementById("nextArrow");
 
+const quill =
+    document.getElementById("quill");
+
+const bookStage =
+    document.querySelector(".book-stage");
+
 
 /* =========================================
    DURUM
@@ -442,7 +612,7 @@ let currentSpread = 0;
 
 let isAnimating = false;
 
-let typingTimers = [];
+let typingInProgress = false;
 
 
 /* =========================================
@@ -458,7 +628,9 @@ function createMeasureElement(sourceElement) {
         "measure-poem";
 
     const styles =
-        window.getComputedStyle(sourceElement);
+        window.getComputedStyle(
+            sourceElement
+        );
 
     measure.style.width =
         styles.width;
@@ -484,7 +656,9 @@ function createMeasureElement(sourceElement) {
     measure.style.textShadow =
         styles.textShadow;
 
-    document.body.appendChild(measure);
+    document.body.appendChild(
+        measure
+    );
 
     return measure;
 }
@@ -520,7 +694,9 @@ function paginatePoem(poem) {
         poem.split("\n");
 
     const measure =
-        createMeasureElement(leftPoem);
+        createMeasureElement(
+            leftPoem
+        );
 
     const result = [];
 
@@ -599,59 +775,138 @@ function buildPages() {
 
     pages = [];
 
-    poems.forEach(function(poem) {
+    poems.forEach(
+        function(poem) {
 
-        const chunks =
-            paginatePoem(poem);
-
-
-        for (
-            let i = 0;
-            i < chunks.length;
-            i += 2
-        ) {
-
-            pages.push({
-
-                left:
-                    chunks[i] || "",
-
-                right:
-                    chunks[i + 1] || ""
-
-            });
-        }
-
-    });
-}
+            const chunks =
+                paginatePoem(poem);
 
 
-/* =========================================
-   ZAMANLAYICILARI TEMIZLE
-   ========================================= */
+            for (
+                let i = 0;
+                i < chunks.length;
+                i += 2
+            ) {
 
-function clearTypingTimers() {
+                pages.push({
 
-    typingTimers.forEach(
-        function(timer) {
+                    left:
+                        chunks[i] || "",
 
-            clearTimeout(timer);
+                    right:
+                        chunks[i + 1] || ""
+
+                });
+            }
 
         }
     );
-
-    typingTimers = [];
 }
 
 
 /* =========================================
-   DAKTILO YAZISI
+   TUYLU KALEMI GOSTER
+   ========================================= */
+
+function showQuill() {
+
+    quill.style.opacity = "1";
+}
+
+
+/* =========================================
+   TUYLU KALEMI GIZLE
+   ========================================= */
+
+function hideQuill() {
+
+    quill.style.opacity = "0";
+}
+
+
+/* =========================================
+   KALEMI KARAKTERIN UCUNA GOTUR
+   ========================================= */
+
+function moveQuillToCharacter(
+    element
+) {
+
+    if (
+        !element.firstChild ||
+        element.textContent.length === 0
+    ) {
+        return;
+    }
+
+
+    const textNode =
+        element.firstChild;
+
+    const length =
+        textNode.textContent.length;
+
+
+    /*
+     * Son karakterin konumunu bul.
+     */
+
+    const range =
+        document.createRange();
+
+    range.setStart(
+        textNode,
+        Math.max(
+            0,
+            length - 1
+        )
+    );
+
+    range.setEnd(
+        textNode,
+        length
+    );
+
+
+    const rect =
+        range.getBoundingClientRect();
+
+    const stageRect =
+        bookStage.getBoundingClientRect();
+
+
+    /*
+     * Kalemin murekkep ucunu
+     * karakterin sag-alt tarafina
+     * yerlestiriyoruz.
+     */
+
+    const x =
+        rect.right -
+        stageRect.left -
+        7;
+
+    const y =
+        rect.bottom -
+        stageRect.top -
+        4;
+
+
+    quill.style.left =
+        x + "px";
+
+    quill.style.top =
+        y + "px";
+}
+
+
+/* =========================================
+   DAKTILO / KALEM YAZISI
    ========================================= */
 
 function typeText(
     element,
     text,
-    speed,
     callback
 ) {
 
@@ -659,10 +914,18 @@ function typeText(
 
     let index = 0;
 
+    typingInProgress = true;
+
+    showQuill();
+
 
     function writeCharacter() {
 
-        if (index >= text.length) {
+        if (
+            index >= text.length
+        ) {
+
+            typingInProgress = false;
 
             if (callback) {
                 callback();
@@ -672,19 +935,35 @@ function typeText(
         }
 
 
+        /*
+         * Karakteri yaz.
+         */
+
         element.textContent +=
             text.charAt(index);
+
+
+        /*
+         * Kalemi yeni karaktere tasi.
+         */
+
+        moveQuillToCharacter(
+            element
+        );
+
 
         index++;
 
 
-        const timer =
-            setTimeout(
-                writeCharacter,
-                speed
-            );
+        /*
+         * Biraz agir,
+         * sakin ve siirsel yazim.
+         */
 
-        typingTimers.push(timer);
+        setTimeout(
+            writeCharacter,
+            55
+        );
     }
 
 
@@ -693,13 +972,10 @@ function typeText(
 
 
 /* =========================================
-   SAYFAYI DAKTILO GIBI YAZ
+   SAYFAYI DAKTILO + TUYLU KALEM ILE YAZ
    ========================================= */
 
 function typeSpread(index) {
-
-    clearTypingTimers();
-
 
     const spread =
         pages[index];
@@ -710,26 +986,45 @@ function typeSpread(index) {
     rightPoem.textContent = "";
 
 
-    /* SOL SAYFA */
+    /*
+     * Once sol sayfa.
+     */
 
     typeText(
         leftPoem,
         spread.left,
-        55,
         function() {
 
-            /* SAG SAYFA */
 
-            typeText(
-                rightPoem,
-                spread.right,
-                55,
-                function() {
+            /*
+             * Sol bittikten sonra
+             * sag sayfa.
+             */
 
-                    /* YAZI BITTI */
+            if (
+                spread.right !== ""
+            ) {
 
-                }
-            );
+                typeText(
+                    rightPoem,
+                    spread.right,
+                    function() {
+
+                        /*
+                         * Siir bittiginde
+                         * kalem son harfte kalir.
+                         */
+
+                        typingInProgress =
+                            false;
+                    }
+                );
+
+            } else {
+
+                typingInProgress =
+                    false;
+            }
 
         }
     );
@@ -737,45 +1032,134 @@ function typeSpread(index) {
 
 
 /* =========================================
-   SAYFAYI GOSTER
+   OKA BASILINCA
    ========================================= */
 
-function showSpread(index) {
+nextArrow.addEventListener(
+    "click",
+    function() {
 
-    if (!pages[index]) {
-        return;
-    }
-
-    typeSpread(index);
-}
+        if (isAnimating) {
+            return;
+        }
 
 
-/* =========================================
-   DAKTILO BITISINI BEKLE
-   ========================================= */
+        if (typingInProgress) {
+            return;
+        }
 
-function waitForTypingToFinish(callback) {
 
-    const check =
-        setInterval(
-            function() {
+        if (
+            currentSpread >=
+            pages.length - 1
+        ) {
+            return;
+        }
 
-                if (
-                    typingTimers.length === 0
-                ) {
 
-                    clearInterval(check);
+        /*
+         * OK PARLASIN
+         */
 
-                    if (callback) {
-                        callback();
-                    }
-                }
-
-            },
-            100
+        nextArrow.classList.remove(
+            "flash"
         );
 
-}
+        void nextArrow.offsetWidth;
+
+        nextArrow.classList.add(
+            "flash"
+        );
+
+
+        isAnimating = true;
+
+        nextArrow.classList.add(
+            "disabled"
+        );
+
+
+        /*
+         * Iki sayfa ve kalem
+         * birlikte kaybolsun.
+         */
+
+        leftPoem.classList.add(
+            "fade-out"
+        );
+
+        rightPoem.classList.add(
+            "fade-out"
+        );
+
+        hideQuill();
+
+
+        /*
+         * Kaybolma tamamlaninca
+         * yeni sayfaya gec.
+         */
+
+        setTimeout(
+            function() {
+
+                currentSpread++;
+
+
+                leftPoem.classList.remove(
+                    "fade-out"
+                );
+
+                rightPoem.classList.remove(
+                    "fade-out"
+                );
+
+
+                /*
+                 * Yeni devam yine
+                 * sol sayfadan baslar.
+                 */
+
+                typeSpread(
+                    currentSpread
+                );
+
+
+                /*
+                 * Daktilo bitince ok
+                 * yeniden aktif olur.
+                 */
+
+                const wait =
+                    setInterval(
+                        function() {
+
+                            if (
+                                !typingInProgress
+                            ) {
+
+                                clearInterval(
+                                    wait
+                                );
+
+                                isAnimating =
+                                    false;
+
+                                nextArrow.classList.remove(
+                                    "disabled"
+                                );
+                            }
+
+                        },
+                        100
+                    );
+
+            },
+            1200
+        );
+
+    }
+);
 
 
 /* =========================================
@@ -800,115 +1184,13 @@ async function initializeBook() {
 
             currentSpread = 0;
 
-            showSpread(
+            typeSpread(
                 currentSpread
             );
 
         }
     );
 }
-
-
-/* =========================================
-   OKA BASILINCA
-   ========================================= */
-
-nextArrow.addEventListener(
-    "click",
-    function() {
-
-        if (isAnimating) {
-            return;
-        }
-
-
-        if (
-            currentSpread >=
-            pages.length - 1
-        ) {
-
-            return;
-        }
-
-
-        /* OK PARLASIN */
-
-        nextArrow.classList.remove(
-            "flash"
-        );
-
-        void nextArrow.offsetWidth;
-
-        nextArrow.classList.add(
-            "flash"
-        );
-
-
-        isAnimating = true;
-
-        nextArrow.classList.add(
-            "disabled"
-        );
-
-
-        clearTypingTimers();
-
-
-        /* IKI SAYFA SILINSIN */
-
-        leftPoem.classList.add(
-            "fade-out"
-        );
-
-        rightPoem.classList.add(
-            "fade-out"
-        );
-
-
-        /* YENI SAYFA */
-
-        setTimeout(
-            function() {
-
-                currentSpread++;
-
-
-                leftPoem.classList.remove(
-                    "fade-out"
-                );
-
-                rightPoem.classList.remove(
-                    "fade-out"
-                );
-
-
-                /* DEVAM SOLDAN */
-
-                typeSpread(
-                    currentSpread
-                );
-
-
-                /* YAZI BITINCE OK AKTIF */
-
-                waitForTypingToFinish(
-                    function() {
-
-                        isAnimating = false;
-
-                        nextArrow.classList.remove(
-                            "disabled"
-                        );
-
-                    }
-                );
-
-            },
-            1200
-        );
-
-    }
-);
 
 
 /* =========================================
