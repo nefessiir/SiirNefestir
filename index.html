@@ -7,7 +7,7 @@
 <title>Şiir Nefestir</title>
 
 <link
-    href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Handlee&display=swap"
     rel="stylesheet"
 >
 
@@ -128,7 +128,7 @@ body {
     color: #174a82;
 
     font-family:
-        "Kalam",
+        "Handlee",
         "Segoe Print",
         "Bradley Hand",
         cursive;
@@ -137,7 +137,7 @@ body {
 
     font-weight: 400;
 
-    line-height: 1.85;
+    line-height: 1.55;
 
     letter-spacing: 0.01em;
 
@@ -146,7 +146,7 @@ body {
     overflow: hidden;
 
     text-shadow:
-        0.2px 0.2px 0 rgba(23, 74, 130, 0.28);
+        0.2px 0.2px 0 rgba(23, 74, 130, 0.22);
 
     opacity: 1;
 
@@ -180,7 +180,9 @@ body {
 }
 
 
-/* SAG OK */
+/* =========================================
+   SAG OK
+   ========================================= */
 
 .page-arrow {
     position: absolute;
@@ -195,7 +197,7 @@ body {
     align-items: center;
     justify-content: center;
 
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.72);
 
     font-family: Arial, sans-serif;
 
@@ -215,12 +217,86 @@ body {
         0 1px 3px rgba(0, 0, 0, 0.8);
 
     transition:
-        color 0.2s ease,
-        transform 0.2s ease;
+        color 0.25s ease,
+        transform 0.25s ease,
+        text-shadow 0.25s ease;
 }
 
+
+/* UZERINE GELINCE HAFIF CANLANSIN */
+
 .page-arrow:hover {
-    color: #fff;
+
+    color: rgba(255, 255, 255, 0.95);
+
+    transform:
+        translateY(-50%)
+        scale(1.08);
+
+    text-shadow:
+        0 0 7px rgba(255, 255, 255, 0.45),
+        0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+
+/* =========================================
+   OKA BASILDIGINDA PARLAMA
+   ========================================= */
+
+.page-arrow.flash {
+
+    animation:
+        arrowFlash 0.55s ease;
+}
+
+
+@keyframes arrowFlash {
+
+    0% {
+
+        color:
+            rgba(255, 255, 255, 0.72);
+
+        text-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.8);
+
+        transform:
+            translateY(-50%)
+            scale(1);
+
+    }
+
+
+    35% {
+
+        color: #ffffff;
+
+        text-shadow:
+            0 0 5px rgba(255, 255, 255, 0.65),
+            0 0 12px rgba(255, 255, 255, 0.45),
+            0 1px 4px rgba(0, 0, 0, 0.8);
+
+        transform:
+            translateY(-50%)
+            scale(1.16);
+
+    }
+
+
+    100% {
+
+        color:
+            rgba(255, 255, 255, 0.72);
+
+        text-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.8);
+
+        transform:
+            translateY(-50%)
+            scale(1);
+
+    }
+
 }
 
 
@@ -555,7 +631,7 @@ function buildPages() {
 
 
 /* =========================================
-   YAZMA ZAMANLAYICILARINI TEMIZLE
+   ZAMANLAYICILARI TEMIZLE
    ========================================= */
 
 function clearTypingTimers() {
@@ -573,7 +649,7 @@ function clearTypingTimers() {
 
 
 /* =========================================
-   KARAKTER KARAKTER YAZ
+   DAKTILO YAZISI
    ========================================= */
 
 function typeText(
@@ -639,13 +715,13 @@ function typeSpread(index) {
 
 
     /*
-     * ONCE SOL SAYFA YAZILIR
+     * SOL SAYFA
      */
 
     typeText(
         leftPoem,
         spread.left,
-        32,
+        55,
         function() {
 
 
@@ -656,17 +732,13 @@ function typeSpread(index) {
             typeText(
                 rightPoem,
                 spread.right,
-                32,
+                55,
                 function() {
 
                     /*
                      * IKISI DE BITTI.
                      *
-                     * ARTIK HICBIR SEY
-                     * OTOMATIK OLARAK
-                     * DEGISEMEZ.
-                     *
-                     * OKUYUCU OKA BASACAK.
+                     * BURADA SISTEM BEKLER.
                      */
 
                 }
@@ -688,6 +760,34 @@ function showSpread(index) {
     }
 
     typeSpread(index);
+}
+
+
+/* =========================================
+   DAKTILO BITISINI BEKLE
+   ========================================= */
+
+function waitForTypingToFinish(callback) {
+
+    const check =
+        setInterval(
+            function() {
+
+                if (
+                    typingTimers.length === 0
+                ) {
+
+                    clearInterval(check);
+
+                    if (callback) {
+                        callback();
+                    }
+                }
+
+            },
+            100
+        );
+
 }
 
 
@@ -744,6 +844,21 @@ nextArrow.addEventListener(
         }
 
 
+        /*
+         * OK PARLASIN
+         */
+
+        nextArrow.classList.remove(
+            "flash"
+        );
+
+        void nextArrow.offsetWidth;
+
+        nextArrow.classList.add(
+            "flash"
+        );
+
+
         isAnimating = true;
 
         nextArrow.classList.add(
@@ -752,15 +867,14 @@ nextArrow.addEventListener(
 
 
         /*
-         * ONCE YAZMA ZAMANLAYICILARINI
-         * DURDUR.
+         * DAKTILO TIMERLARINI TEMIZLE
          */
 
         clearTypingTimers();
 
 
         /*
-         * SOL + SAG YAVASCA SILINSIN.
+         * IKI SAYFA YAVASCA SILINSIN
          */
 
         leftPoem.classList.add(
@@ -773,8 +887,7 @@ nextArrow.addEventListener(
 
 
         /*
-         * SILINME TAMAMLANDIGINDA
-         * YENI SAYFA BASLASIN.
+         * SILINME BITINCE YENI SAYFA
          */
 
         setTimeout(
@@ -792,8 +905,7 @@ nextArrow.addEventListener(
 
 
                 /*
-                 * YENI SIIR / DEVAM
-                 * SOL SAYFADAN BASLAR.
+                 * DEVAM YINE SOLDAN
                  */
 
                 typeSpread(
@@ -802,16 +914,8 @@ nextArrow.addEventListener(
 
 
                 /*
-                 * OK YENIDEN AKTIF.
-                 *
-                 * Burada daktilo yazisi
-                 * devam ederken ok tusu
-                 * kullanilabilir.
-                 *
-                 * Fakat kullanicinin metni
-                 * yarida kesmemesi icin
-                 * yazma bittikten sonra
-                 * aktif ediyoruz.
+                 * YAZMA BITINCE OK
+                 * TEKRAR AKTIF
                  */
 
                 waitForTypingToFinish(
@@ -832,39 +936,6 @@ nextArrow.addEventListener(
 
     }
 );
-
-
-/* =========================================
-   DAKTILO BITENE KADAR BEKLE
-   ========================================= */
-
-function waitForTypingToFinish(callback) {
-
-    const check =
-        setInterval(
-            function() {
-
-                /*
-                 * Aktif timer kalmadiysa
-                 * yazma bitmistir.
-                 */
-
-                if (
-                    typingTimers.length === 0
-                ) {
-
-                    clearInterval(check);
-
-                    if (callback) {
-                        callback();
-                    }
-                }
-
-            },
-            100
-        );
-
-}
 
 
 /* =========================================
