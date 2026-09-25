@@ -7,7 +7,7 @@
 <title>Şiir Nefestir</title>
 
 <link
-    href="https://fonts.googleapis.com/css2?family=Handlee&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap"
     rel="stylesheet"
 >
 
@@ -128,14 +128,14 @@ body {
     color: #174a82;
 
     font-family:
-        "Handlee",
+        "Caveat",
         "Segoe Print",
         "Bradley Hand",
         cursive;
 
-    font-size: clamp(18px, 1.55vw, 27px);
+    font-size: clamp(17px, 1.35vw, 23px);
 
-    font-weight: 400;
+    font-weight: 500;
 
     line-height: 1.55;
 
@@ -180,9 +180,7 @@ body {
 }
 
 
-/* =========================================
-   SAG OK
-   ========================================= */
+/* SAG OK */
 
 .page-arrow {
     position: absolute;
@@ -223,7 +221,7 @@ body {
 }
 
 
-/* UZERINE GELINCE HAFIF CANLANSIN */
+/* OK UZERINE GELINCE */
 
 .page-arrow:hover {
 
@@ -239,9 +237,7 @@ body {
 }
 
 
-/* =========================================
-   OKA BASILDIGINDA PARLAMA
-   ========================================= */
+/* OKA BASILDIGINDA PARLAMA */
 
 .page-arrow.flash {
 
@@ -714,9 +710,7 @@ function typeSpread(index) {
     rightPoem.textContent = "";
 
 
-    /*
-     * SOL SAYFA
-     */
+    /* SOL SAYFA */
 
     typeText(
         leftPoem,
@@ -724,10 +718,7 @@ function typeSpread(index) {
         55,
         function() {
 
-
-            /*
-             * SOL BITINCE SAG SAYFA
-             */
+            /* SAG SAYFA */
 
             typeText(
                 rightPoem,
@@ -735,11 +726,7 @@ function typeSpread(index) {
                 55,
                 function() {
 
-                    /*
-                     * IKISI DE BITTI.
-                     *
-                     * BURADA SISTEM BEKLER.
-                     */
+                    /* YAZI BITTI */
 
                 }
             );
@@ -844,9 +831,7 @@ nextArrow.addEventListener(
         }
 
 
-        /*
-         * OK PARLASIN
-         */
+        /* OK PARLASIN */
 
         nextArrow.classList.remove(
             "flash"
@@ -866,16 +851,10 @@ nextArrow.addEventListener(
         );
 
 
-        /*
-         * DAKTILO TIMERLARINI TEMIZLE
-         */
-
         clearTypingTimers();
 
 
-        /*
-         * IKI SAYFA YAVASCA SILINSIN
-         */
+        /* IKI SAYFA SILINSIN */
 
         leftPoem.classList.add(
             "fade-out"
@@ -886,14 +865,13 @@ nextArrow.addEventListener(
         );
 
 
-        /*
-         * SILINME BITINCE YENI SAYFA
-         */
+        /* YENI SAYFA */
 
         setTimeout(
             function() {
 
                 currentSpread++;
+
 
                 leftPoem.classList.remove(
                     "fade-out"
@@ -904,19 +882,14 @@ nextArrow.addEventListener(
                 );
 
 
-                /*
-                 * DEVAM YINE SOLDAN
-                 */
+                /* DEVAM SOLDAN */
 
                 typeSpread(
                     currentSpread
                 );
 
 
-                /*
-                 * YAZMA BITINCE OK
-                 * TEKRAR AKTIF
-                 */
+                /* YAZI BITINCE OK AKTIF */
 
                 waitForTypingToFinish(
                     function() {
