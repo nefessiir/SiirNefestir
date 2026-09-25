@@ -28,6 +28,12 @@ body {
     overflow: hidden;
 }
 
+
+/* =========================================
+   KITAP ALANI
+   MEVCUT YAPI KORUNDU
+========================================= */
+
 .book-stage {
     position: relative;
 
@@ -48,9 +54,10 @@ body {
 }
 
 
-/* =========================
+/* =========================================
    SAYFALAR
-========================= */
+   HICBIR KONUM / BOYUT DEGISMEDI
+========================================= */
 
 .page {
     position: absolute;
@@ -82,9 +89,9 @@ body {
 }
 
 
-/* =========================
+/* =========================================
    SAYFA ICERIGI
-========================= */
+========================================= */
 
 .page-content {
     position: absolute;
@@ -103,9 +110,9 @@ body {
 }
 
 
-/* =========================
+/* =========================================
    SIIR
-========================= */
+========================================= */
 
 .poem {
     position: absolute;
@@ -128,34 +135,24 @@ body {
     line-height: 1.55;
 
     direction: ltr;
-
     text-align: left;
 
     white-space: pre-wrap;
 
     word-break: normal;
-
     overflow-wrap: normal;
+
+    opacity: 0;
+
+    transition: opacity 1.8s ease;
 }
 
 
-/*
-   Her karakter ayrı span.
-   Ancak span kendi başına yeni satır
-   oluşturmaz.
-*/
+/* =========================================
+   SABIT TUY KALEM
+========================================= */
 
-.poem-char {
-    display: inline;
-    white-space: pre;
-}
-
-
-/* =========================
-   YAZAN TUY KALEM
-========================= */
-
-.writing-quill {
+.page-quill {
     position: absolute;
 
     width: 70px;
@@ -163,28 +160,26 @@ body {
 
     pointer-events: none;
 
-    z-index: 30;
-
-    opacity: 0;
+    z-index: 20;
 
     /*
-       Kalemin ucu sağ-alt tarafta.
-       Bu nedenle konumlandırmayı buna göre
-       yapıyoruz.
+       Sayfanin geometrik merkezine
+       gore sabitleniyor.
     */
 
-    transform-origin: 50% 90%;
+    left: 50%;
+    top: 50%;
 
-    transition:
-        left 0.035s linear,
-        top 0.035s linear,
-        opacity 0.12s ease;
+    transform:
+        translate(-50%, -50%);
+
+    opacity: 0.95;
 }
 
 
-/* =========================
-   KORNER KALEM
-========================= */
+/* =========================================
+   KOSENIN KALEM / MUREKKEP GORSELI
+========================================= */
 
 .ink-quill {
     position: absolute;
@@ -201,9 +196,9 @@ body {
 }
 
 
-/* =========================
+/* =========================================
    OKLAR
-========================= */
+========================================= */
 
 .nav-arrow {
     position: absolute;
@@ -243,7 +238,9 @@ body {
         0 0 15px rgba(255,255,255,0.8),
         0 0 25px rgba(255,255,255,0.6);
 
-    transform: translateY(-50%) scale(1.08);
+    transform:
+        translateY(-50%)
+        scale(1.08);
 }
 
 .left-arrow {
@@ -255,9 +252,9 @@ body {
 }
 
 
-/* =========================
+/* =========================================
    UST KONTROLLER
-========================= */
+========================================= */
 
 .top-controls {
     position: absolute;
@@ -287,11 +284,6 @@ body {
     cursor: pointer;
 
     font-size: 18px;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        box-shadow 0.2s ease;
 }
 
 .control-button:hover {
@@ -304,9 +296,9 @@ body {
 }
 
 
-/* =========================
-   ESITLEYICI
-========================= */
+/* =========================================
+   EQUALIZER
+========================================= */
 
 .equalizer {
     position: absolute;
@@ -339,9 +331,9 @@ body {
 }
 
 
-/* =========================
+/* =========================================
    BOS SAYFA
-========================= */
+========================================= */
 
 .blank-page {
     background-image: url("sag_sayfa_bos.png") !important;
@@ -390,6 +382,13 @@ body {
 
     </div>
 
+    <!-- SOL SAYFANIN SABIT TUY KALEMI -->
+
+    <img
+        src="yazan_kalem3.png"
+        class="page-quill"
+        alt="">
+
 </div>
 
 
@@ -407,19 +406,17 @@ body {
 
     </div>
 
+    <!-- SAG SAYFANIN SABIT TUY KALEMI -->
+
+    <img
+        src="yazan_kalem3.png"
+        class="page-quill"
+        alt="">
+
 </div>
 
 
-<!-- YAZAN TUY KALEM -->
-
-<img
-    src="yazan_kalem3.png"
-    class="writing-quill"
-    id="writingQuill"
-    alt="">
-
-
-<!-- KORNER KALEM -->
+<!-- KOSENIN KALEM GORSELI -->
 
 <img
     src="murekkep_kalem.png"
@@ -442,7 +439,7 @@ body {
 </button>
 
 
-<!-- ESITLEYICI -->
+<!-- EQUALIZER -->
 
 <div class="equalizer">
 
@@ -463,19 +460,9 @@ body {
 
 <script>
 
-
 /* =========================================
    ELEMANLAR
 ========================================= */
-
-const stage =
-    document.getElementById("bookStage");
-
-const leftPage =
-    document.getElementById("leftPage");
-
-const rightPage =
-    document.getElementById("rightPage");
 
 const leftPoem =
     document.getElementById("leftPoem");
@@ -483,20 +470,18 @@ const leftPoem =
 const rightPoem =
     document.getElementById("rightPoem");
 
-const writingQuill =
-    document.getElementById("writingQuill");
+const leftPage =
+    document.getElementById("leftPage");
+
+const rightPage =
+    document.getElementById("rightPage");
 
 
 /* =========================================
-   UZUN TEST SIIRI
+   DENEME 1
 ========================================= */
 
-const poems = [
-
-{
-    title: "Deneme 1",
-
-    text:
+const poemText =
 `Yoksam düşlerinde
 Bakışların hep donuk
 Gözlerin uzaklarda
@@ -533,25 +518,11 @@ Bir gün hatırla beni
 Seni beklemek için vardım
 
 Bekle…!
-Geliyorum!`
-}
-
-];
+Geliyorum!`;
 
 
 /* =========================================
-   DURUM
-========================================= */
-
-let pages = [];
-
-let currentPageIndex = 0;
-
-let typingToken = 0;
-
-
-/* =========================================
-   YAZI GENISLIGI
+   SAYFA GENISLIGINI OLCECEK ALAN
 ========================================= */
 
 const measurePoem =
@@ -586,6 +557,10 @@ document.body.appendChild(
 );
 
 
+/* =========================================
+   GENISLIK OLCE
+========================================= */
+
 function measureTextWidth(text) {
 
     measurePoem.textContent =
@@ -598,21 +573,19 @@ function measureTextWidth(text) {
 
 
 /* =========================================
-   SATIRLARI OLUSTUR
+   SIIRI GERCEK SAYFA GENISLIGINE GORE
+   SATIRLARA AYIR
 ========================================= */
 
-function getWrappedLines(
-    text,
-    element
-) {
+function getWrappedLines() {
 
     const availableWidth =
-        element
+        leftPoem
             .getBoundingClientRect()
             .width;
 
     const rawLines =
-        text.split("\n");
+        poemText.split("\n");
 
     const result = [];
 
@@ -620,7 +593,9 @@ function getWrappedLines(
         const rawLine of rawLines
     ) {
 
-        if (rawLine === "") {
+        if (
+            rawLine.trim() === ""
+        ) {
 
             result.push("");
 
@@ -638,16 +613,15 @@ function getWrappedLines(
 
             const testLine =
                 currentLine
-                    ? currentLine + " " + word
+                    ? currentLine +
+                      " " +
+                      word
                     : word;
 
-            const testWidth =
+            if (
                 measureTextWidth(
                     testLine
-                );
-
-            if (
-                testWidth <=
+                ) <=
                 availableWidth
             ) {
 
@@ -656,12 +630,13 @@ function getWrappedLines(
 
             } else {
 
-                if (currentLine) {
+                if (
+                    currentLine
+                ) {
 
                     result.push(
                         currentLine
                     );
-
                 }
 
                 currentLine =
@@ -669,7 +644,9 @@ function getWrappedLines(
             }
         }
 
-        if (currentLine) {
+        if (
+            currentLine
+        ) {
 
             result.push(
                 currentLine
@@ -682,20 +659,63 @@ function getWrappedLines(
 
 
 /* =========================================
-   SAYFALARI OLUSTUR
+   SAYFALARA BOL
 ========================================= */
 
-function buildPages(text) {
+function buildPages() {
 
     const lines =
-        getWrappedLines(
-            text,
-            leftPoem
+        getWrappedLines();
+
+    /*
+       Sayfanin gercek yuksekligine
+       gore satir sayisini buluyoruz.
+    */
+
+    const test =
+        document.createElement("div");
+
+    test.className = "poem";
+
+    test.style.visibility =
+        "hidden";
+
+    test.style.position =
+        "absolute";
+
+    test.style.width =
+        leftPoem
+            .getBoundingClientRect()
+            .width + "px";
+
+    document.body.appendChild(
+        test
+    );
+
+    const lineHeight =
+        parseFloat(
+            getComputedStyle(
+                test
+            ).lineHeight
         );
 
-    const linesPerPage = 9;
+    const pageHeight =
+        leftPoem
+            .getBoundingClientRect()
+            .height;
 
-    const result = [];
+    const linesPerPage =
+        Math.max(
+            1,
+            Math.floor(
+                pageHeight /
+                lineHeight
+            )
+        );
+
+    test.remove();
+
+    const pages = [];
 
     for (
         let i = 0;
@@ -703,7 +723,7 @@ function buildPages(text) {
         i += linesPerPage
     ) {
 
-        result.push(
+        pages.push(
             lines.slice(
                 i,
                 i + linesPerPage
@@ -711,279 +731,85 @@ function buildPages(text) {
         );
     }
 
-    return result;
+    return pages;
 }
 
 
 /* =========================================
-   KARAKTER OLUSTUR
+   DURUM
 ========================================= */
 
-function createCharacter(
+let pages = [];
+
+let pageIndex = 0;
+
+let stageState = "left";
+
+let animating = false;
+
+
+/* =========================================
+   SAYFAYA METIN HAZIRLA
+========================================= */
+
+function preparePage(
     element,
-    character
+    lines
 ) {
 
-    const span =
-        document.createElement(
-            "span"
-        );
+    element.textContent =
+        lines.join("\n");
 
-    span.className =
-        "poem-char";
-
-    /*
-       Bosluklar kaybolmasin diye
-       normal text olarak bırakıyoruz.
-    */
-
-    span.textContent =
-        character;
-
-    element.appendChild(
-        span
-    );
-
-    return span;
+    element.style.opacity =
+        "0";
 }
 
 
 /* =========================================
-   KALEMİ GERCEK KARAKTER BASLANGICINA
-   GOTUR
+   YAVASCA GOSTER
 ========================================= */
 
-function moveQuillToCharacter(
-    span
-) {
+function fadeIn(element) {
 
-    if (!span) {
-        return;
-    }
+    element.style.opacity =
+        "0";
 
-    const range =
-        document.createRange();
+    requestAnimationFrame(() => {
 
-    /*
-       Karakterin TAM ONCESİ.
-    */
+        requestAnimationFrame(() => {
 
-    range.setStart(
-        span.firstChild,
-        0
-    );
+            element.style.opacity =
+                "1";
 
-    range.collapse(true);
-
-    let rect =
-        range.getBoundingClientRect();
-
-    /*
-       Bosluk karakterlerinde bazı
-       tarayıcılar sıfır genişlik
-       verebilir.
-
-       Bu durumda karakter kutusunun
-       sol tarafını kullanıyoruz.
-    */
-
-    if (
-        !rect ||
-        rect.height === 0
-    ) {
-
-        rect =
-            span.getBoundingClientRect();
-    }
-
-    const stageRect =
-        stage.getBoundingClientRect();
-
-    /*
-       Kalemin ucunu yazı hattına
-       oturtuyoruz.
-
-       - X = karakterin gerçek solu
-       - Y = satırın üstünden kalem
-             ucuna kadar olan mesafe
-    */
-
-    writingQuill.style.left =
-        (
-            rect.left -
-            stageRect.left -
-            8
-        ) + "px";
-
-    writingQuill.style.top =
-        (
-            rect.top -
-            stageRect.top -
-            52
-        ) + "px";
-
-    writingQuill.style.opacity =
-        "1";
-}
-
-
-/* =========================================
-   KARAKTERI YAZ
-========================================= */
-
-function typeCharacter(
-    element,
-    character,
-    token
-) {
-
-    return new Promise(resolve => {
-
-        if (
-            token !==
-            typingToken
-        ) {
-
-            resolve();
-
-            return;
-        }
-
-        /*
-           Önce karakterin spanını
-           oluşturuyoruz.
-        */
-
-        const span =
-            createCharacter(
-                element,
-                character
-            );
-
-        /*
-           Kalem tam olarak bu
-           karakterin önüne geliyor.
-        */
-
-        moveQuillToCharacter(
-            span
-        );
-
-        /*
-           Karakterin görünmesi için
-           çok kısa bekleme.
-        */
-
-        setTimeout(
-            resolve,
-            45
-        );
+        });
 
     });
 }
 
 
 /* =========================================
-   METNI KARAKTER KARAKTER YAZ
+   YAVASCA KAYBET
 ========================================= */
 
-async function typeText(
-    element,
-    text,
-    token
-) {
+function fadeOut(element) {
 
-    element.innerHTML = "";
-
-    writingQuill.style.opacity =
+    element.style.opacity =
         "0";
-
-    for (
-        let i = 0;
-        i < text.length;
-        i++
-    ) {
-
-        if (
-            token !==
-            typingToken
-        ) {
-
-            return;
-        }
-
-        await typeCharacter(
-            element,
-            text[i],
-            token
-        );
-    }
-
-    /*
-       Son harften sonra kalem
-       hemen kaybolmasın.
-    */
-
-    await new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                300
-            )
-    );
-
-    if (
-        token ===
-        typingToken
-    ) {
-
-        writingQuill.style.opacity =
-            "0";
-    }
 }
 
 
 /* =========================================
-   SAYFAYA YAZ
+   ILK DURUM
 ========================================= */
 
-async function writePage(
-    element,
-    lines,
-    token
-) {
-
-    const text =
-        lines.join("\n");
-
-    await typeText(
-        element,
-        text,
-        token
-    );
-}
-
-
-/* =========================================
-   SIIRI BASLAT
-========================================= */
-
-async function startPoem() {
-
-    typingToken++;
-
-    const token =
-        typingToken;
-
-    const poem =
-        poems[0];
+function startBook() {
 
     pages =
-        buildPages(
-            poem.text
-        );
+        buildPages();
 
-    currentPageIndex = 0;
+    pageIndex = 0;
+
+    stageState = "left";
 
     leftPage.classList.remove(
         "blank-page"
@@ -993,240 +819,222 @@ async function startPoem() {
         "blank-page"
     );
 
-    leftPoem.innerHTML = "";
-    rightPoem.innerHTML = "";
+    leftPoem.textContent =
+        pages[0]
+            ? pages[0].join("\n")
+            : "";
+
+    rightPoem.textContent =
+        "";
 
     /*
-       İlk sayfa sol.
+       Ilk durumda sol sayfa
+       bos bekler.
+       Ilk okta siir gorunur.
     */
 
-    await writePage(
-        leftPoem,
-        pages[0] || [],
-        token
-    );
+    leftPoem.style.opacity =
+        "0";
 
-    if (
-        token !==
-        typingToken
-    ) {
-
-        return;
-    }
-
-    /*
-       İkinci sayfa sağ.
-    */
-
-    await writePage(
-        rightPoem,
-        pages[1] || [],
-        token
-    );
+    rightPoem.style.opacity =
+        "0";
 }
 
 
 /* =========================================
-   SONRAKI SAYFA
+   SAG OK
 ========================================= */
 
 async function nextPage() {
 
-    typingToken++;
+    if (animating) {
+        return;
+    }
 
-    writingQuill.style.opacity =
-        "0";
+    animating = true;
 
-    /*
-       Devam eden sayfalar varsa
-       sağdaki sola geçer.
-    */
+
+    /* -------------------------------------
+       1. DURUM:
+       ILK OK -> SOL SAYFA
+    ------------------------------------- */
 
     if (
-        currentPageIndex + 2 <
-        pages.length
+        stageState === "left"
     ) {
 
-        const token =
-            typingToken;
+        leftPoem.textContent =
+            pages[pageIndex]
+                ? pages[pageIndex].join("\n")
+                : "";
 
-        leftPoem.style.opacity =
-            "0";
+        fadeIn(leftPoem);
 
-        rightPoem.style.opacity =
-            "0";
+        stageState =
+            "right";
 
-        await new Promise(
-            resolve =>
-                setTimeout(
-                    resolve,
-                    250
-                )
-        );
+        await wait(1900);
 
-        currentPageIndex++;
+        animating = false;
 
-        leftPoem.innerHTML = "";
-        rightPoem.innerHTML = "";
+        return;
+    }
 
-        leftPage.classList.remove(
-            "blank-page"
-        );
 
-        rightPage.classList.remove(
-            "blank-page"
-        );
+    /* -------------------------------------
+       2. DURUM:
+       SAG SAYFA
+    ------------------------------------- */
 
-        leftPoem.style.opacity =
-            "1";
-
-        rightPoem.style.opacity =
-            "1";
-
-        await writePage(
-            leftPoem,
-            pages[
-                currentPageIndex
-            ] || [],
-            token
-        );
+    if (
+        stageState === "right"
+    ) {
 
         if (
-            token !==
-            typingToken
+            pageIndex + 1 <
+            pages.length
         ) {
+
+            rightPoem.textContent =
+                pages[
+                    pageIndex + 1
+                ].join("\n");
+
+            fadeIn(rightPoem);
+
+            stageState =
+                "spread";
+
+            await wait(1900);
+
+            animating = false;
 
             return;
         }
 
-        await writePage(
-            rightPoem,
-            pages[
-                currentPageIndex + 1
-            ] || [],
-            token
-        );
+        /*
+           Sag sayfa yoksa
+           son sayfadayiz.
+        */
+
+        stageState =
+            "spread";
+
+        animating = false;
 
         return;
     }
 
-    /*
-       Siir tamamen bittiyse
-       gizli resim kesinlikle görünmeyecek.
 
-       Sayfa görseli korunuyor,
-       sadece şiir kaldırılıyor.
-    */
+    /* -------------------------------------
+       3. DURUM:
+       IKI SAYFA DOLU
+       IKISI BIRDEN KAYBOLUR
+       DEVAM SOLA GELIR
+    ------------------------------------- */
 
-    await showBlankPage();
+    if (
+        stageState === "spread"
+    ) {
+
+        fadeOut(leftPoem);
+        fadeOut(rightPoem);
+
+        await wait(1900);
+
+        pageIndex += 2;
+
+        leftPoem.textContent =
+            pages[pageIndex]
+                ? pages[pageIndex].join("\n")
+                : "";
+
+        rightPoem.textContent =
+            "";
+
+        /*
+           Sag sayfa tekrar bos.
+        */
+
+        rightPoem.style.opacity =
+            "0";
+
+        if (
+            pageIndex <
+            pages.length
+        ) {
+
+            fadeIn(leftPoem);
+
+            stageState =
+                "right";
+
+        } else {
+
+            /*
+               Siir bittiyse iki sayfa
+               bos kalir.
+            */
+
+            leftPoem.textContent =
+                "";
+
+            rightPoem.textContent =
+                "";
+
+            stageState =
+                "finished";
+        }
+
+        await wait(1900);
+
+        animating = false;
+
+        return;
+    }
+
+
+    /* -------------------------------------
+       SIIR BITTI
+    ------------------------------------- */
+
+    if (
+        stageState === "finished"
+    ) {
+
+        animating = false;
+
+        return;
+    }
 }
 
 
 /* =========================================
-   BOS SAYFA
-========================================= */
-
-async function showBlankPage() {
-
-    typingToken++;
-
-    writingQuill.style.opacity =
-        "0";
-
-    leftPoem.style.opacity =
-        "0";
-
-    rightPoem.style.opacity =
-        "0";
-
-    await new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                250
-            )
-    );
-
-    leftPoem.innerHTML = "";
-    rightPoem.innerHTML = "";
-
-    /*
-       Sayfa arka planı korunuyor.
-       Böylece arkaplan0.jpeg altında
-       bulunan başka bir görsel açığa
-       çıkmıyor.
-    */
-
-    leftPage.classList.add(
-        "blank-page"
-    );
-
-    rightPage.classList.add(
-        "blank-page"
-    );
-
-    leftPoem.style.opacity =
-        "1";
-
-    rightPoem.style.opacity =
-        "1";
-}
-
-
-/* =========================================
-   ONCEKI SAYFA
+   SOL OK
 ========================================= */
 
 function previousPage() {
 
-    typingToken++;
+    /*
+       Su asamada sol ok
+       sayfa akisini degistirmiyor.
+    */
 
-    writingQuill.style.opacity =
-        "0";
+}
 
-    if (
-        currentPageIndex <= 0
-    ) {
 
-        return;
-    }
+/* =========================================
+   BEKLE
+========================================= */
 
-    currentPageIndex--;
+function wait(ms) {
 
-    leftPage.classList.remove(
-        "blank-page"
-    );
-
-    rightPage.classList.remove(
-        "blank-page"
-    );
-
-    leftPoem.innerHTML = "";
-    rightPoem.innerHTML = "";
-
-    leftPoem.style.opacity =
-        "1";
-
-    rightPoem.style.opacity =
-        "1";
-
-    const token =
-        typingToken;
-
-    writePage(
-        leftPoem,
-        pages[
-            currentPageIndex
-        ] || [],
-        token
-    );
-
-    writePage(
-        rightPoem,
-        pages[
-            currentPageIndex + 1
-        ] || [],
-        token
+    return new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                ms
+            )
     );
 }
 
@@ -1254,7 +1062,7 @@ function toggleFullscreen() {
 
 
 /* =========================================
-   BASLANGIC
+   BASLAT
 ========================================= */
 
 window.addEventListener(
@@ -1262,11 +1070,7 @@ window.addEventListener(
     () => {
 
         setTimeout(
-            () => {
-
-                startPoem();
-
-            },
+            startBook,
             500
         );
 
