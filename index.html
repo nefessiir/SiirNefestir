@@ -49,6 +49,8 @@ body {
     height: min(100vh, 66.6667vw);
 
     overflow: visible;
+
+    perspective: 1800px;
 }
 
 
@@ -109,6 +111,36 @@ body {
 }
 
 
+/* DONEN SAYFA */
+
+.turning-page {
+    position: absolute;
+
+    left: 48.828125%;
+    top: 13.2%;
+
+    width: 38.411458%;
+    height: auto;
+
+    display: block;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    transform-origin: left center;
+
+    backface-visibility: hidden;
+
+    will-change:
+        left,
+        top,
+        width,
+        height,
+        transform;
+}
+
+
 /* OKLAR */
 
 .page-arrow {
@@ -150,24 +182,99 @@ body {
 }
 
 
-/* SOL OK - KITABIN HEMEN SOLU */
+/* SOL OK */
 
 .prev-arrow {
     left: 16%;
+    display: none;
 }
 
 
-/* SAG OK - KITABIN HEMEN SAGI */
+/* SAG OK */
 
 .next-arrow {
     left: 88%;
 }
 
 
-/* ILK SAYFADA SOL OK GIZLI */
+/* DONUS ANIMASYONU */
 
-.prev-arrow {
-    display: none;
+.turning-page.animate {
+    animation: pageTurn 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+
+@keyframes pageTurn {
+
+    0% {
+
+        left: 48.828125%;
+        top: 13.2%;
+
+        width: 38.411458%;
+        height: auto;
+
+        transform:
+            rotateY(0deg)
+            scaleX(1);
+    }
+
+
+    25% {
+
+        left: 43%;
+        top: 13.2%;
+
+        width: 37%;
+        height: auto;
+
+        transform:
+            rotateY(-55deg)
+            scaleX(0.96);
+    }
+
+
+    50% {
+
+        left: 35%;
+        top: 13.2%;
+
+        width: 35.5%;
+        height: auto;
+
+        transform:
+            rotateY(-115deg)
+            scaleX(0.94);
+    }
+
+
+    75% {
+
+        left: 26%;
+        top: 13.2%;
+
+        width: 34.5%;
+        height: auto;
+
+        transform:
+            rotateY(-155deg)
+            scaleX(0.98);
+    }
+
+
+    100% {
+
+        left: 19%;
+        top: 13.2%;
+
+        width: 34%;
+
+        height: calc(100% - 27.5%);
+
+        transform:
+            rotateY(-180deg)
+            scaleX(-1);
+    }
 }
 
 </style>
@@ -201,6 +308,16 @@ body {
             alt=""
         >
 
+        <!-- SAG OK -->
+
+        <div
+            class="page-arrow next-arrow"
+            onclick="turnPage()"
+            aria-label="Sonraki sayfa"
+        >
+            ›
+        </div>
+
         <!-- SOL OK -->
 
         <div
@@ -210,18 +327,64 @@ body {
             ‹
         </div>
 
-        <!-- SAG OK -->
+        <!-- DONEN SAYFA -->
 
-        <div
-            class="page-arrow next-arrow"
-            aria-label="Sonraki sayfa"
+        <img
+            class="turning-page"
+            id="turningPage"
+            src="sag_sayfa_bos.png"
+            alt=""
         >
-            ›
-        </div>
 
     </div>
 
 </div>
+
+
+<script>
+
+function turnPage() {
+
+    const turningPage =
+        document.getElementById("turningPage");
+
+    const rightPage =
+        document.querySelector(".right-page");
+
+    const nextArrow =
+        document.querySelector(".next-arrow");
+
+    if (turningPage.classList.contains("animate")) {
+        return;
+    }
+
+    nextArrow.style.pointerEvents = "none";
+
+    turningPage.classList.add("animate");
+
+    turningPage.addEventListener(
+        "animationend",
+        function () {
+
+            rightPage.style.display = "none";
+
+            turningPage.style.left = "19%";
+            turningPage.style.top = "13.2%";
+            turningPage.style.width = "34%";
+            turningPage.style.height =
+                "calc(100% - 27.5%)";
+
+            turningPage.style.transform =
+                "scaleX(-1)";
+
+            turningPage.classList.remove("animate");
+
+        },
+        { once: true }
+    );
+}
+
+</script>
 
 </body>
 </html>
