@@ -29,10 +29,17 @@ body {
     overflow: hidden;
 }
 
+
+/* =========================================================
+   KITAP ALANI
+   ========================================================= */
+
 .book-stage {
     position: relative;
+
     width: min(100vw, 150vh);
     height: min(100vh, 66.6667vw);
+
     margin: auto;
 
     background: url("arkaplan0.jpeg") center center / 100% 100% no-repeat;
@@ -50,17 +57,20 @@ body {
 
     left: 19%;
     top: 13.2%;
+
     width: 34%;
     height: calc(100% - 27.5%);
 
     overflow: hidden;
+
+    direction: ltr;
+    unicode-bidi: normal;
 }
 
 
-/*
-   Sadece sayfa gorselini aynaliyoruz.
-   Boylece siir normal okunuyor.
-*/
+/* =========================================================
+   SOL SAYFA GORSEL
+   ========================================================= */
 
 .page-left::before {
     content: "";
@@ -74,12 +84,15 @@ body {
     height: 100%;
 
     background-image: url("sag_sayfa_bos.png");
+
     background-size: 100% 100%;
     background-repeat: no-repeat;
 
     transform: scaleX(-1);
 
     z-index: 1;
+
+    pointer-events: none;
 }
 
 
@@ -92,14 +105,19 @@ body {
 
     left: 48.828125%;
     top: 13.2%;
+
     width: 38.411458%;
     height: calc(100% - 27.5%);
 
     background-image: url("sag_sayfa_bos.png");
+
     background-size: 100% 100%;
     background-repeat: no-repeat;
 
     overflow: hidden;
+
+    direction: ltr;
+    unicode-bidi: normal;
 }
 
 
@@ -114,7 +132,17 @@ body {
 
     height: calc(61% + 0.5em);
 
-    width: 25%;
+    /*
+       ONEMLI:
+       Eski kodda width %25 idi.
+       Bu nedenle metin cok dar bir alana
+       sikisiyordu ve kelimeler alt alta geliyordu.
+
+       Simdi sayfanin buyuk bir bolumunu
+       kullanmasini sagliyoruz.
+    */
+
+    width: 72%;
 
     font-family: "Caveat", cursive;
 
@@ -134,26 +162,35 @@ body {
 
     opacity: 1;
 
-    /*
-       Sayfanin gorselinden bagimsiz.
-       Yazinin yonu normal kalir.
-    */
-
     direction: ltr;
 
-    unicode-bidi: normal;
+    unicode-bidi: isolate;
 
-    z-index: 5;
+    text-align: left;
+
+    writing-mode: horizontal-tb;
+
+    transform: none;
+
+    z-index: 10;
 }
 
+
+/* =========================================================
+   SOL SIIR
+   ========================================================= */
 
 .poem-left {
-    left: 23%;
+    left: 14%;
 }
 
 
+/* =========================================================
+   SAG SIIR
+   ========================================================= */
+
 .poem-right {
-    left: 53%;
+    left: 14%;
 }
 
 
@@ -191,6 +228,10 @@ body {
     pointer-events: none;
 
     opacity: 0;
+
+    transition:
+        left 0.04s linear,
+        top 0.04s linear;
 }
 
 
@@ -301,7 +342,7 @@ body {
 
 
 /* =========================================================
-   OLCTU ALANI
+   GIZLI OLCTU ALANI
    ========================================================= */
 
 #measurePoem {
@@ -316,6 +357,14 @@ body {
 
     overflow-wrap: break-word;
     word-wrap: break-word;
+
+    direction: ltr;
+
+    unicode-bidi: isolate;
+
+    text-align: left;
+
+    writing-mode: horizontal-tb;
 }
 
 </style>
@@ -327,31 +376,39 @@ body {
 <div class="book-stage" id="bookStage">
 
 
-    <!-- SOL SAYFA -->
+    <!-- =====================================================
+         SOL SAYFA
+         ===================================================== -->
 
     <div class="page-left" id="pageLeft">
 
         <div
             class="poem poem-left"
             id="poemLeft"
+            dir="ltr"
         ></div>
 
     </div>
 
 
-    <!-- SAG SAYFA -->
+    <!-- =====================================================
+         SAG SAYFA
+         ===================================================== -->
 
     <div class="page-right" id="pageRight">
 
         <div
             class="poem poem-right"
             id="poemRight"
+            dir="ltr"
         ></div>
 
     </div>
 
 
-    <!-- KOSedeki KALEM -->
+    <!-- =====================================================
+         KOSedeki KALEM
+         ===================================================== -->
 
     <img
         src="murekkep_kalem.png"
@@ -360,7 +417,9 @@ body {
     >
 
 
-    <!-- YAZAN KALEM -->
+    <!-- =====================================================
+         YAZAN KALEM
+         ===================================================== -->
 
     <img
         src="yazan_kalem3.png"
@@ -370,7 +429,9 @@ body {
     >
 
 
-    <!-- SAG OK -->
+    <!-- =====================================================
+         SAG OK
+         ===================================================== -->
 
     <button
         class="next-arrow"
@@ -379,7 +440,9 @@ body {
     >›</button>
 
 
-    <!-- GIZLI OLCTU ALANI -->
+    <!-- =====================================================
+         GIZLI OLCTU ALANI
+         ===================================================== -->
 
     <div id="measurePoem"></div>
 
@@ -565,6 +628,7 @@ function prepareMeasureArea() {
     const style =
         window.getComputedStyle(leftPoem);
 
+
     measurePoem.style.fontFamily =
         style.fontFamily;
 
@@ -582,16 +646,54 @@ function prepareMeasureArea() {
 
     measurePoem.style.width =
         leftPoem.getBoundingClientRect().width + "px";
+
+    measurePoem.style.direction =
+        "ltr";
+
+    measurePoem.style.unicodeBidi =
+        "isolate";
+
+    measurePoem.style.textAlign =
+        "left";
+
+    measurePoem.style.writingMode =
+        "horizontal-tb";
 }
 
 
 /* =========================================================
-   METIN YUKSEKLIGI
+   TEK SATIR GENISLIGINI OL
+   ========================================================= */
+
+function measureTextWidth(text) {
+
+    measurePoem.style.whiteSpace =
+        "nowrap";
+
+    measurePoem.textContent =
+        text;
+
+    const width =
+        measurePoem.getBoundingClientRect().width;
+
+    measurePoem.style.whiteSpace =
+        "pre-wrap";
+
+    return width;
+}
+
+
+/* =========================================================
+   METIN YUKSEKLIGINI OL
    ========================================================= */
 
 function measureTextHeight(text) {
 
-    measurePoem.textContent = text;
+    measurePoem.style.whiteSpace =
+        "pre-wrap";
+
+    measurePoem.textContent =
+        text;
 
     return measurePoem.getBoundingClientRect().height;
 }
@@ -608,6 +710,10 @@ function getWrappedLines(text) {
     const paragraphs =
         text.split("\n");
 
+    const availableWidth =
+        leftPoem.getBoundingClientRect().width;
+
+
     for (const paragraph of paragraphs) {
 
         if (paragraph.trim() === "") {
@@ -617,10 +723,12 @@ function getWrappedLines(text) {
             continue;
         }
 
+
         const words =
             paragraph.trim().split(/\s+/);
 
         let currentLine = "";
+
 
         for (const word of words) {
 
@@ -629,27 +737,53 @@ function getWrappedLines(text) {
                     ? currentLine + " " + word
                     : word;
 
+
+            /*
+               ESKI HATA BURADAYDI.
+
+               Daha once satirin YUKSEKLIGI,
+               "X" harfinin yuksekligiyle
+               karsilastiriliyordu.
+
+               Simdi gercek SATIR GENISLIGINI
+               sayfadaki kullanilabilir genislikle
+               karsilastiriyoruz.
+            */
+
+            const testWidth =
+                measureTextWidth(testLine);
+
+
             if (
-                measureTextHeight(testLine)
-                <= measureTextHeight("X")
+                testWidth <= availableWidth
             ) {
 
-                currentLine = testLine;
+                currentLine =
+                    testLine;
 
             } else {
 
                 if (currentLine) {
-                    lines.push(currentLine);
+
+                    lines.push(
+                        currentLine
+                    );
                 }
 
-                currentLine = word;
+                currentLine =
+                    word;
             }
         }
 
+
         if (currentLine) {
-            lines.push(currentLine);
+
+            lines.push(
+                currentLine
+            );
         }
     }
+
 
     return lines;
 }
@@ -668,6 +802,7 @@ function splitLinesIntoPages(lines) {
 
     let currentPage = "";
 
+
     for (const line of lines) {
 
         const testPage =
@@ -675,27 +810,39 @@ function splitLinesIntoPages(lines) {
                 ? currentPage + "\n" + line
                 : line;
 
+
         const height =
             measureTextHeight(testPage);
 
+
         if (
-            height <= pageHeight + 1 ||
+            height <= pageHeight + 1
+            ||
             currentPage === ""
         ) {
 
-            currentPage = testPage;
+            currentPage =
+                testPage;
 
         } else {
 
-            pages.push(currentPage);
+            pages.push(
+                currentPage
+            );
 
-            currentPage = line;
+            currentPage =
+                line;
         }
     }
 
+
     if (currentPage) {
-        pages.push(currentPage);
+
+        pages.push(
+            currentPage
+        );
     }
+
 
     return pages;
 }
@@ -722,37 +869,44 @@ function createPoemPages(text) {
 
 function moveWritingQuillToCharacter(
     element,
-    startIndex
+    characterIndex
 ) {
 
     if (!element.textContent.length) {
         return;
     }
 
+
     const textNode =
         element.firstChild;
+
 
     if (!textNode) {
         return;
     }
 
+
     const safeIndex =
         Math.min(
-            startIndex,
+            characterIndex,
             textNode.textContent.length - 1
         );
+
 
     if (safeIndex < 0) {
         return;
     }
 
+
     const range =
         document.createRange();
+
 
     range.setStart(
         textNode,
         safeIndex
     );
+
 
     range.setEnd(
         textNode,
@@ -762,26 +916,41 @@ function moveWritingQuillToCharacter(
         )
     );
 
+
     const rect =
         range.getBoundingClientRect();
 
+
     const stageRect =
         stage.getBoundingClientRect();
+
 
     if (
         !rect ||
         rect.width === 0 ||
         rect.height === 0
     ) {
+
         return;
     }
 
+
+    /*
+       KALEM ARTIK HARFIN UZERINDE DEGIL,
+       YAZININ ONUNDE DURUYOR.
+
+       rect.right kullanildigi icin
+       kalem yazilan karakterin biraz
+       onunde ilerliyor.
+    */
+
     writingQuill.style.left =
         (
-            rect.left -
+            rect.right -
             stageRect.left -
-            8
+            3
         ) + "px";
+
 
     writingQuill.style.top =
         (
@@ -790,7 +959,9 @@ function moveWritingQuillToCharacter(
             45
         ) + "px";
 
-    writingQuill.style.opacity = "1";
+
+    writingQuill.style.opacity =
+        "1";
 }
 
 
@@ -815,8 +986,6 @@ function typeWord(
             return;
         }
 
-        const wordStart =
-            element.textContent.length;
 
         let index = 0;
 
@@ -843,17 +1012,28 @@ function typeWord(
             }
 
 
-            element.textContent +=
-                word[index];
+            /*
+               Karakteri once yaziyoruz.
+            */
+
+            element.append(
+                word[index]
+            );
 
 
-            if (index === 0) {
+            /*
+               Sonra kalemi yeni yazilan
+               karakterin ONUNE tasiyoruz.
 
-                moveWritingQuillToCharacter(
-                    element,
-                    wordStart
-                );
-            }
+               Boylece kalem sadece kelimenin
+               basinda degil, yazinin ilerleyisi
+               boyunca hareket ediyor.
+            */
+
+            moveWritingQuillToCharacter(
+                element,
+                element.textContent.length - 1
+            );
 
 
             index++;
@@ -885,9 +1065,13 @@ async function typeText(
     const token =
         activeTypingToken;
 
-    element.textContent = "";
 
-    writingQuill.style.opacity = "0";
+    element.textContent =
+        "";
+
+
+    writingQuill.style.opacity =
+        "0";
 
 
     const parts =
@@ -899,6 +1083,7 @@ async function typeText(
         if (
             token !== activeTypingToken
         ) {
+
             return;
         }
 
@@ -907,7 +1092,26 @@ async function typeText(
             /^\s+$/.test(part)
         ) {
 
-            element.textContent += part;
+            element.append(
+                part
+            );
+
+
+            /*
+               Boslukta da kalem yeni yazinin
+               baslangicina dogru ilerlesin.
+            */
+
+            if (
+                element.textContent.length > 0
+            ) {
+
+                moveWritingQuillToCharacter(
+                    element,
+                    element.textContent.length - 1
+                );
+            }
+
 
             await new Promise(
                 resolve =>
@@ -932,9 +1136,11 @@ async function typeText(
         token === activeTypingToken
     ) {
 
-        activeTypingFinished = true;
+        activeTypingFinished =
+            true;
 
-        writingQuill.style.opacity = "0";
+        writingQuill.style.opacity =
+            "0";
     }
 }
 
@@ -945,16 +1151,25 @@ async function typeText(
 
 async function typeSpread() {
 
-    activeTypingFinished = false;
+    activeTypingFinished =
+        false;
 
-    leftPoem.textContent = "";
-    rightPoem.textContent = "";
 
-    writingQuill.style.opacity = "0";
+    leftPoem.textContent =
+        "";
+
+    rightPoem.textContent =
+        "";
+
+
+    writingQuill.style.opacity =
+        "0";
 
 
     const leftText =
-        poemPages[currentSpreadIndex] || "";
+        poemPages[
+            currentSpreadIndex
+        ] || "";
 
 
     const rightText =
@@ -971,7 +1186,9 @@ async function typeSpread() {
 
     if (rightText) {
 
-        activeTypingFinished = false;
+        activeTypingFinished =
+            false;
+
 
         await typeText(
             rightPoem,
@@ -980,9 +1197,12 @@ async function typeSpread() {
     }
 
 
-    activeTypingFinished = true;
+    activeTypingFinished =
+        true;
 
-    writingQuill.style.opacity = "0";
+
+    writingQuill.style.opacity =
+        "0";
 }
 
 
@@ -1002,21 +1222,26 @@ async function nextPage() {
     }
 
 
-    movingToNextPage = true;
+    movingToNextPage =
+        true;
 
 
     nextArrow.classList.remove(
         "arrow-flash"
     );
 
+
     void nextArrow.offsetWidth;
+
 
     nextArrow.classList.add(
         "arrow-flash"
     );
 
 
-    /* AYNI SIIR DEVAM EDIYOR */
+    /* =====================================================
+       AYNI SIIR DEVAM EDIYOR
+       ===================================================== */
 
     if (
         currentSpreadIndex + 2
@@ -1056,13 +1281,17 @@ async function nextPage() {
         await typeSpread();
 
 
-        movingToNextPage = false;
+        movingToNextPage =
+            false;
+
 
         return;
     }
 
 
-    /* YENI SIIR */
+    /* =====================================================
+       YENI SIIR
+       ===================================================== */
 
     if (
         currentPoemIndex + 1
@@ -1089,7 +1318,9 @@ async function nextPage() {
 
         currentPoemIndex++;
 
-        currentSpreadIndex = 0;
+
+        currentSpreadIndex =
+            0;
 
 
         poemPages =
@@ -1112,15 +1343,20 @@ async function nextPage() {
         await typeSpread();
 
 
-        movingToNextPage = false;
+        movingToNextPage =
+            false;
+
 
         return;
     }
 
 
-    /* SON */
+    /* =====================================================
+       SON
+       ===================================================== */
 
-    movingToNextPage = false;
+    movingToNextPage =
+        false;
 }
 
 
@@ -1137,7 +1373,10 @@ async function startBook() {
             ].text
         );
 
-    currentSpreadIndex = 0;
+
+    currentSpreadIndex =
+        0;
+
 
     await typeSpread();
 }
@@ -1165,8 +1404,10 @@ window.addEventListener(
             !activeTypingFinished ||
             movingToNextPage
         ) {
+
             return;
         }
+
 
         poemPages =
             createPoemPages(
