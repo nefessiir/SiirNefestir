@@ -26,7 +26,6 @@ body {
 body {
     background: #111;
     overflow: hidden;
-    font-family: Arial, sans-serif;
 }
 
 .book-stage {
@@ -47,6 +46,7 @@ body {
 
     overflow: hidden;
 }
+
 
 /* =========================
    SAYFALAR
@@ -72,6 +72,7 @@ body {
 .left-page {
     left: 19%;
     width: 34%;
+
     transform: scaleX(-1);
 }
 
@@ -80,13 +81,9 @@ body {
     width: 38.411458%;
 }
 
-/* Sayfanın içeriği ters dönmesin */
-.left-page .page-content {
-    transform: scaleX(-1);
-}
 
 /* =========================
-   SIĞAN YAZI ALANI
+   SAYFA ICERIGI
 ========================= */
 
 .page-content {
@@ -101,8 +98,13 @@ body {
     overflow: hidden;
 }
 
+.left-page .page-content {
+    transform: scaleX(-1);
+}
+
+
 /* =========================
-   ŞİİR
+   SIIR
 ========================= */
 
 .poem {
@@ -126,23 +128,31 @@ body {
     line-height: 1.55;
 
     direction: ltr;
+
     text-align: left;
 
     white-space: pre-wrap;
+
     word-break: normal;
+
     overflow-wrap: normal;
 }
 
+
 /*
-   Karakterler normal akışta kalıyor.
-   Böylece satır kırılması gerçek yazı gibi oluyor.
+   Her karakter ayrı span.
+   Ancak span kendi başına yeni satır
+   oluşturmaz.
 */
+
 .poem-char {
+    display: inline;
     white-space: pre;
 }
 
+
 /* =========================
-   YAZAN TÜY KALEM
+   YAZAN TUY KALEM
 ========================= */
 
 .writing-quill {
@@ -153,20 +163,27 @@ body {
 
     pointer-events: none;
 
-    z-index: 20;
+    z-index: 30;
 
     opacity: 0;
+
+    /*
+       Kalemin ucu sağ-alt tarafta.
+       Bu nedenle konumlandırmayı buna göre
+       yapıyoruz.
+    */
 
     transform-origin: 50% 90%;
 
     transition:
         left 0.035s linear,
         top 0.035s linear,
-        opacity 0.15s ease;
+        opacity 0.12s ease;
 }
 
+
 /* =========================
-   MÜREKKEP KALEM
+   KORNER KALEM
 ========================= */
 
 .ink-quill {
@@ -183,6 +200,7 @@ body {
     pointer-events: none;
 }
 
+
 /* =========================
    OKLAR
 ========================= */
@@ -198,6 +216,7 @@ body {
     height: 48px;
 
     border: none;
+
     background: transparent;
 
     color: rgba(255,255,255,0.55);
@@ -235,8 +254,9 @@ body {
     right: 4%;
 }
 
+
 /* =========================
-   ÜST KONTROLLER
+   UST KONTROLLER
 ========================= */
 
 .top-controls {
@@ -248,6 +268,7 @@ body {
     z-index: 60;
 
     display: flex;
+
     gap: 10px;
 }
 
@@ -282,8 +303,9 @@ body {
         0 0 10px rgba(255,255,255,0.35);
 }
 
+
 /* =========================
-   EŞİTLEYİCİ
+   ESITLEYICI
 ========================= */
 
 .equalizer {
@@ -295,6 +317,7 @@ body {
     transform: translateX(-50%);
 
     display: flex;
+
     align-items: flex-end;
 
     gap: 4px;
@@ -315,16 +338,13 @@ body {
     border-radius: 2px;
 }
 
+
 /* =========================
-   BOŞ SAYFA
+   BOS SAYFA
 ========================= */
 
 .blank-page {
     background-image: url("sag_sayfa_bos.png") !important;
-}
-
-.blank-page::before {
-    display: none !important;
 }
 
 </style>
@@ -336,18 +356,20 @@ body {
 <div class="book-stage" id="bookStage">
 
 ```
-<!-- ÜST KONTROLLER -->
+<!-- UST KONTROLLER -->
 
 <div class="top-controls">
 
-    <button class="control-button"
-            title="Sesli dinle">
+    <button
+        class="control-button"
+        title="Sesli dinle">
         🔊
     </button>
 
-    <button class="control-button"
-            title="Tam ekran"
-            onclick="toggleFullscreen()">
+    <button
+        class="control-button"
+        title="Tam ekran"
+        onclick="toggleFullscreen()">
         ⛶
     </button>
 
@@ -356,69 +378,71 @@ body {
 
 <!-- SOL SAYFA -->
 
-<div class="page left-page" id="leftPage">
+<div
+    class="page left-page"
+    id="leftPage">
 
     <div class="page-content">
 
-        <div class="poem"
-             id="leftPoem"></div>
+        <div
+            class="poem"
+            id="leftPoem"></div>
 
     </div>
 
 </div>
 
 
-<!-- SAĞ SAYFA -->
+<!-- SAG SAYFA -->
 
-<div class="page right-page" id="rightPage">
+<div
+    class="page right-page"
+    id="rightPage">
 
     <div class="page-content">
 
-        <div class="poem"
-             id="rightPoem"></div>
+        <div
+            class="poem"
+            id="rightPoem"></div>
 
     </div>
 
 </div>
 
 
-<!-- YAZAN TÜY KALEM -->
+<!-- YAZAN TUY KALEM -->
 
 <img
     src="yazan_kalem3.png"
     class="writing-quill"
     id="writingQuill"
-    alt=""
->
+    alt="">
 
 
-<!-- MÜREKKEP KALEMİ -->
+<!-- KORNER KALEM -->
 
 <img
     src="murekkep_kalem.png"
     class="ink-quill"
-    alt=""
->
+    alt="">
 
 
 <!-- OKLAR -->
 
 <button
     class="nav-arrow left-arrow"
-    id="leftArrow"
     onclick="previousPage()">
     ‹
 </button>
 
 <button
     class="nav-arrow right-arrow"
-    id="rightArrow"
     onclick="nextPage()">
     ›
 </button>
 
 
-<!-- EŞİTLEYİCİ -->
+<!-- ESITLEYICI -->
 
 <div class="equalizer">
 
@@ -439,49 +463,78 @@ body {
 
 <script>
 
+
 /* =========================================
-   TEMEL ELEMANLAR
+   ELEMANLAR
 ========================================= */
 
-const stage = document.getElementById("bookStage");
+const stage =
+    document.getElementById("bookStage");
 
-const leftPage = document.getElementById("leftPage");
-const rightPage = document.getElementById("rightPage");
+const leftPage =
+    document.getElementById("leftPage");
 
-const leftPoem = document.getElementById("leftPoem");
-const rightPoem = document.getElementById("rightPoem");
+const rightPage =
+    document.getElementById("rightPage");
+
+const leftPoem =
+    document.getElementById("leftPoem");
+
+const rightPoem =
+    document.getElementById("rightPoem");
 
 const writingQuill =
     document.getElementById("writingQuill");
 
 
 /* =========================================
-   TEST ŞİİRİ
+   UZUN TEST SIIRI
 ========================================= */
 
 const poems = [
 
-    {
-        title: "Deneme 1",
+{
+    title: "Deneme 1",
 
-        text:
-`Abi gel
-Biraz konuşalım.
-Sessizliğin içinden
-geçip gidelim.
-Belki kelimeler
-bize yolu gösterir.`
-    },
+    text:
+`Yoksam düşlerinde
+Bakışların hep donuk
+Gözlerin uzaklarda
+Sanki beni arıyor
 
-    {
-        title: "Deneme 2",
+Bir sessizlik büyüyor
+İçinde sakladığın
+Söyleyemediğin sözler
+Dudaklarında kalıyor
 
-        text:
-`Bazen bir kelime
-koca bir ömrü anlatır.
-Bazen bir bakış
-bin cümleden daha fazlasıdır.`
-    }
+Ben seni beklerken
+Zaman ağır ağır geçiyor
+Her geçen gün biraz daha
+İçimde büyüyor özlemin
+
+Bir gün dönersin diye
+Penceremde ışık yanıyor
+Gecenin en sessiz yerinde
+Adını fısıldıyor rüzgar
+
+Belki uzaklardasın
+Belki hemen yanımdasın
+Ama ben yine de seni
+Kalbimin içinde arıyorum
+
+Ne zaman gözlerimi kapatsam
+Bir başka yol açılıyor
+O yolların sonunda
+Yine sen duruyorsun
+
+Yoksam düşlerinde
+Bir gün hatırla beni
+Çünkü ben bu dünyada
+Seni beklemek için vardım
+
+Bekle…!
+Geliyorum!`
+}
 
 ];
 
@@ -489,8 +542,6 @@ bin cümleden daha fazlasıdır.`
 /* =========================================
    DURUM
 ========================================= */
-
-let currentPoem = 0;
 
 let pages = [];
 
@@ -500,52 +551,74 @@ let typingToken = 0;
 
 
 /* =========================================
-   YAZI GENİŞLİĞİNİ ÖLÇ
+   YAZI GENISLIGI
 ========================================= */
 
 const measurePoem =
     document.createElement("div");
 
-measurePoem.style.position = "absolute";
-measurePoem.style.visibility = "hidden";
-measurePoem.style.pointerEvents = "none";
+measurePoem.style.position =
+    "absolute";
+
+measurePoem.style.visibility =
+    "hidden";
+
+measurePoem.style.pointerEvents =
+    "none";
 
 measurePoem.style.fontFamily =
     '"Caveat", cursive';
 
-measurePoem.style.fontSize = "11pt";
-measurePoem.style.fontWeight = "500";
-measurePoem.style.lineHeight = "1.55";
+measurePoem.style.fontSize =
+    "11pt";
 
-measurePoem.style.whiteSpace = "nowrap";
+measurePoem.style.fontWeight =
+    "500";
 
-document.body.appendChild(measurePoem);
+measurePoem.style.lineHeight =
+    "1.55";
+
+measurePoem.style.whiteSpace =
+    "nowrap";
+
+document.body.appendChild(
+    measurePoem
+);
 
 
 function measureTextWidth(text) {
 
-    measurePoem.textContent = text;
+    measurePoem.textContent =
+        text;
 
-    return measurePoem.getBoundingClientRect().width;
-
+    return measurePoem
+        .getBoundingClientRect()
+        .width;
 }
 
 
 /* =========================================
-   ŞİİRİ SAYFALARA BÖL
+   SATIRLARI OLUSTUR
 ========================================= */
 
-function getWrappedLines(text, element) {
+function getWrappedLines(
+    text,
+    element
+) {
 
     const availableWidth =
-        element.getBoundingClientRect().width;
+        element
+            .getBoundingClientRect()
+            .width;
 
     const rawLines =
         text.split("\n");
 
     const result = [];
 
-    for (const rawLine of rawLines) {
+    for (
+        const rawLine of rawLines
+    ) {
 
         if (rawLine === "") {
 
@@ -559,7 +632,9 @@ function getWrappedLines(text, element) {
 
         let currentLine = "";
 
-        for (const word of words) {
+        for (
+            const word of words
+        ) {
 
             const testLine =
                 currentLine
@@ -567,31 +642,39 @@ function getWrappedLines(text, element) {
                     : word;
 
             const testWidth =
-                measureTextWidth(testLine);
+                measureTextWidth(
+                    testLine
+                );
 
             if (
-                testWidth <= availableWidth ||
-                currentLine === ""
+                testWidth <=
+                availableWidth
             ) {
 
-                currentLine = testLine;
+                currentLine =
+                    testLine;
 
             } else {
 
-                result.push(currentLine);
+                if (currentLine) {
 
-                currentLine = word;
+                    result.push(
+                        currentLine
+                    );
 
+                }
+
+                currentLine =
+                    word;
             }
-
         }
 
         if (currentLine) {
 
-            result.push(currentLine);
-
+            result.push(
+                currentLine
+            );
         }
-
     }
 
     return result;
@@ -599,13 +682,16 @@ function getWrappedLines(text, element) {
 
 
 /* =========================================
-   SAYFA DİZİSİ OLUŞTUR
+   SAYFALARI OLUSTUR
 ========================================= */
 
 function buildPages(text) {
 
     const lines =
-        getWrappedLines(text, leftPoem);
+        getWrappedLines(
+            text,
+            leftPoem
+        );
 
     const linesPerPage = 9;
 
@@ -623,81 +709,126 @@ function buildPages(text) {
                 i + linesPerPage
             )
         );
-
     }
 
     return result;
-
 }
 
 
 /* =========================================
-   KARAKTERİ SAYFAYA EKLE
+   KARAKTER OLUSTUR
 ========================================= */
 
-function appendCharacter(element, character) {
+function createCharacter(
+    element,
+    character
+) {
 
     const span =
-        document.createElement("span");
+        document.createElement(
+            "span"
+        );
 
-    span.className = "poem-char";
+    span.className =
+        "poem-char";
 
-    span.textContent = character;
+    /*
+       Bosluklar kaybolmasin diye
+       normal text olarak bırakıyoruz.
+    */
 
-    element.appendChild(span);
+    span.textContent =
+        character;
+
+    element.appendChild(
+        span
+    );
 
     return span;
 }
 
 
 /* =========================================
-   TÜY KALEMİ KARAKTERİN ÖNÜNE TAŞI
+   KALEMİ GERCEK KARAKTER BASLANGICINA
+   GOTUR
 ========================================= */
 
-function moveQuillBeforeCharacter(span) {
+function moveQuillToCharacter(
+    span
+) {
 
     if (!span) {
         return;
     }
 
-    const rect =
-        span.getBoundingClientRect();
+    const range =
+        document.createRange();
+
+    /*
+       Karakterin TAM ONCESİ.
+    */
+
+    range.setStart(
+        span.firstChild,
+        0
+    );
+
+    range.collapse(true);
+
+    let rect =
+        range.getBoundingClientRect();
+
+    /*
+       Bosluk karakterlerinde bazı
+       tarayıcılar sıfır genişlik
+       verebilir.
+
+       Bu durumda karakter kutusunun
+       sol tarafını kullanıyoruz.
+    */
+
+    if (
+        !rect ||
+        rect.height === 0
+    ) {
+
+        rect =
+            span.getBoundingClientRect();
+    }
 
     const stageRect =
         stage.getBoundingClientRect();
 
     /*
-       Kalemi karakterin tam önüne getiriyoruz.
+       Kalemin ucunu yazı hattına
+       oturtuyoruz.
 
-       Böylece:
-
-       a
-       b
-       i
-       boşluk
-       g
-       e
-       l
-
-       her birinde ayrı ayrı hareket ediyor.
+       - X = karakterin gerçek solu
+       - Y = satırın üstünden kalem
+             ucuna kadar olan mesafe
     */
 
     writingQuill.style.left =
-        (rect.left -
-         stageRect.left -
-         10) + "px";
+        (
+            rect.left -
+            stageRect.left -
+            8
+        ) + "px";
 
     writingQuill.style.top =
-        (rect.top -
-         stageRect.top -
-         54) + "px";
+        (
+            rect.top -
+            stageRect.top -
+            52
+        ) + "px";
 
-    writingQuill.style.opacity = "1";
+    writingQuill.style.opacity =
+        "1";
 }
 
 
 /* =========================================
-   TEK KARAKTER YAZ
+   KARAKTERI YAZ
 ========================================= */
 
 function typeCharacter(
@@ -708,43 +839,52 @@ function typeCharacter(
 
     return new Promise(resolve => {
 
-        if (token !== typingToken) {
+        if (
+            token !==
+            typingToken
+        ) {
+
             resolve();
+
             return;
         }
 
+        /*
+           Önce karakterin spanını
+           oluşturuyoruz.
+        */
+
         const span =
-            appendCharacter(
+            createCharacter(
                 element,
                 character
             );
 
         /*
-           Önce kalemi karakterin önüne
-           taşıyoruz.
+           Kalem tam olarak bu
+           karakterin önüne geliyor.
         */
 
-        moveQuillBeforeCharacter(span);
+        moveQuillToCharacter(
+            span
+        );
 
         /*
-           Çok kısa bekleme.
-           Böylece her karakter ayrı ayrı
-           görülebiliyor.
+           Karakterin görünmesi için
+           çok kısa bekleme.
         */
 
-        setTimeout(() => {
-
-            resolve();
-
-        }, 42);
+        setTimeout(
+            resolve,
+            45
+        );
 
     });
-
 }
 
 
 /* =========================================
-   METNİ KARAKTER KARAKTER YAZ
+   METNI KARAKTER KARAKTER YAZ
 ========================================= */
 
 async function typeText(
@@ -755,7 +895,8 @@ async function typeText(
 
     element.innerHTML = "";
 
-    writingQuill.style.opacity = "0";
+    writingQuill.style.opacity =
+        "0";
 
     for (
         let i = 0;
@@ -763,7 +904,11 @@ async function typeText(
         i++
     ) {
 
-        if (token !== typingToken) {
+        if (
+            token !==
+            typingToken
+        ) {
+
             return;
         }
 
@@ -772,23 +917,34 @@ async function typeText(
             text[i],
             token
         );
-
     }
 
     /*
-       Son karakterden sonra kalemi
-       biraz bekletiyoruz.
+       Son harften sonra kalem
+       hemen kaybolmasın.
     */
 
-    await new Promise(resolve =>
-        setTimeout(resolve, 250)
+    await new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                300
+            )
     );
 
+    if (
+        token ===
+        typingToken
+    ) {
+
+        writingQuill.style.opacity =
+            "0";
+    }
 }
 
 
 /* =========================================
-   SAYFAYA METİN YAZ
+   SAYFAYA YAZ
 ========================================= */
 
 async function writePage(
@@ -796,10 +952,6 @@ async function writePage(
     lines,
     token
 ) {
-
-    element.innerHTML = "";
-
-    writingQuill.style.opacity = "0";
 
     const text =
         lines.join("\n");
@@ -809,12 +961,11 @@ async function writePage(
         text,
         token
     );
-
 }
 
 
 /* =========================================
-   ŞİİRİ BAŞLAT
+   SIIRI BASLAT
 ========================================= */
 
 async function startPoem() {
@@ -825,61 +976,70 @@ async function startPoem() {
         typingToken;
 
     const poem =
-        poems[currentPoem];
+        poems[0];
 
     pages =
-        buildPages(poem.text);
+        buildPages(
+            poem.text
+        );
 
     currentPageIndex = 0;
+
+    leftPage.classList.remove(
+        "blank-page"
+    );
+
+    rightPage.classList.remove(
+        "blank-page"
+    );
 
     leftPoem.innerHTML = "";
     rightPoem.innerHTML = "";
 
-    leftPage.classList.remove("blank-page");
-    rightPage.classList.remove("blank-page");
-
     /*
-       İlk açılışta ilk iki sayfa.
+       İlk sayfa sol.
     */
-
-    const firstPage =
-        pages[0] || [];
-
-    const secondPage =
-        pages[1] || [];
 
     await writePage(
         leftPoem,
-        firstPage,
+        pages[0] || [],
         token
     );
 
-    if (token !== typingToken) {
+    if (
+        token !==
+        typingToken
+    ) {
+
         return;
     }
 
+    /*
+       İkinci sayfa sağ.
+    */
+
     await writePage(
         rightPoem,
-        secondPage,
+        pages[1] || [],
         token
     );
-
 }
 
 
 /* =========================================
-   SONRAKİ SAYFA
+   SONRAKI SAYFA
 ========================================= */
 
 async function nextPage() {
 
     typingToken++;
 
-    writingQuill.style.opacity = "0";
+    writingQuill.style.opacity =
+        "0";
 
     /*
-       Eğer mevcut şiirin sayfaları devam ediyorsa
-       sağ sayfa sola geçer.
+       Devam eden sayfalar varsa
+       sağdaki sola geçer.
     */
 
     if (
@@ -887,22 +1047,24 @@ async function nextPage() {
         pages.length
     ) {
 
-        const nextLeft =
-            pages[
-                currentPageIndex + 1
-            ];
+        const token =
+            typingToken;
 
-        const nextRight =
-            pages[
-                currentPageIndex + 2
-            ];
+        leftPoem.style.opacity =
+            "0";
 
-        leftPoem.style.opacity = "0";
-        rightPoem.style.opacity = "0";
+        rightPoem.style.opacity =
+            "0";
 
-        await new Promise(resolve =>
-            setTimeout(resolve, 250)
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    250
+                )
         );
+
+        currentPageIndex++;
 
         leftPoem.innerHTML = "";
         rightPoem.innerHTML = "";
@@ -915,68 +1077,84 @@ async function nextPage() {
             "blank-page"
         );
 
-        leftPoem.style.opacity = "1";
-        rightPoem.style.opacity = "1";
+        leftPoem.style.opacity =
+            "1";
 
-        currentPageIndex++;
-
-        const token =
-            typingToken;
+        rightPoem.style.opacity =
+            "1";
 
         await writePage(
             leftPoem,
-            nextLeft,
+            pages[
+                currentPageIndex
+            ] || [],
             token
         );
 
-        if (token !== typingToken) {
+        if (
+            token !==
+            typingToken
+        ) {
+
             return;
         }
 
         await writePage(
             rightPoem,
-            nextRight,
+            pages[
+                currentPageIndex + 1
+            ] || [],
             token
         );
 
         return;
     }
 
-
     /*
-       Şiirin tüm sayfaları bittiyse
-       bir sonraki tıklamada boş sayfa.
+       Siir tamamen bittiyse
+       gizli resim kesinlikle görünmeyecek.
+
+       Sayfa görseli korunuyor,
+       sadece şiir kaldırılıyor.
     */
 
     await showBlankPage();
-
 }
 
 
 /* =========================================
-   BOŞ SAYFA
+   BOS SAYFA
 ========================================= */
 
 async function showBlankPage() {
 
     typingToken++;
 
-    writingQuill.style.opacity = "0";
+    writingQuill.style.opacity =
+        "0";
 
-    leftPoem.style.opacity = "0";
-    rightPoem.style.opacity = "0";
+    leftPoem.style.opacity =
+        "0";
 
-    await new Promise(resolve =>
-        setTimeout(resolve, 250)
+    rightPoem.style.opacity =
+        "0";
+
+    await new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                250
+            )
     );
 
     leftPoem.innerHTML = "";
     rightPoem.innerHTML = "";
 
     /*
-       Sayfa resmi korunuyor.
-       Böylece arkaplan0'ın altındaki başka
-       görsel ortaya çıkmıyor.
+       Sayfa arka planı korunuyor.
+       Böylece arkaplan0.jpeg altında
+       bulunan başka bir görsel açığa
+       çıkmıyor.
     */
 
     leftPage.classList.add(
@@ -987,23 +1165,29 @@ async function showBlankPage() {
         "blank-page"
     );
 
-    leftPoem.style.opacity = "1";
-    rightPoem.style.opacity = "1";
+    leftPoem.style.opacity =
+        "1";
 
+    rightPoem.style.opacity =
+        "1";
 }
 
 
 /* =========================================
-   ÖNCEKİ SAYFA
+   ONCEKI SAYFA
 ========================================= */
 
 function previousPage() {
 
     typingToken++;
 
-    writingQuill.style.opacity = "0";
+    writingQuill.style.opacity =
+        "0";
 
-    if (currentPageIndex <= 0) {
+    if (
+        currentPageIndex <= 0
+    ) {
+
         return;
     }
 
@@ -1020,24 +1204,30 @@ function previousPage() {
     leftPoem.innerHTML = "";
     rightPoem.innerHTML = "";
 
-    const leftLines =
-        pages[currentPageIndex] || [];
+    leftPoem.style.opacity =
+        "1";
 
-    const rightLines =
-        pages[currentPageIndex + 1] || [];
+    rightPoem.style.opacity =
+        "1";
+
+    const token =
+        typingToken;
 
     writePage(
         leftPoem,
-        leftLines,
-        typingToken
+        pages[
+            currentPageIndex
+        ] || [],
+        token
     );
 
     writePage(
         rightPoem,
-        rightLines,
-        typingToken
+        pages[
+            currentPageIndex + 1
+        ] || [],
+        token
     );
-
 }
 
 
@@ -1047,7 +1237,9 @@ function previousPage() {
 
 function toggleFullscreen() {
 
-    if (!document.fullscreenElement) {
+    if (
+        !document.fullscreenElement
+    ) {
 
         document.documentElement
             .requestFullscreen()
@@ -1055,44 +1247,28 @@ function toggleFullscreen() {
 
     } else {
 
-        document.exitFullscreen();
-
+        document
+            .exitFullscreen();
     }
-
 }
 
 
 /* =========================================
-   BAŞLANGIÇ
+   BASLANGIC
 ========================================= */
 
 window.addEventListener(
     "load",
     () => {
 
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            startPoem();
+                startPoem();
 
-        }, 500);
-
-    }
-);
-
-
-/* =========================================
-   SAYFA YENİDEN BOYUTLANINCA
-========================================= */
-
-window.addEventListener(
-    "resize",
-    () => {
-
-        /*
-           Kalemin o anki karakter konumunun
-           yeniden hesaplanması için mevcut
-           görünümü bozmuyoruz.
-        */
+            },
+            500
+        );
 
     }
 );
