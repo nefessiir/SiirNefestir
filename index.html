@@ -1,1 +1,427 @@
-4bc22df51fbaa4c04c8fa3d3883d28dcad5671a3
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Şiir Nefestir</title>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap"
+rel="stylesheet"
+>
+
+<style>
+
+* {
+box-sizing: border-box;
+}
+
+html,
+body {
+width: 100%;
+height: 100%;
+margin: 0;
+padding: 0;
+}
+
+body {
+background: #111;
+overflow: hidden;
+}
+
+
+/* KITAP SAHNESI */
+
+.page {
+width: 100vw;
+height: 100vh;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+overflow: hidden;
+}
+
+
+/* ARKA PLAN VE SAYFA AYNI OLCEKTE */
+
+.book-stage {
+position: relative;
+
+width: min(100vw, 150vh);
+height: min(100vh, 66.6667vw);
+
+overflow: visible;
+}
+
+
+/* ARKA PLAN */
+
+.book-background {
+position: absolute;
+
+left: 0;
+top: 0;
+
+width: 100%;
+height: 100%;
+
+display: block;
+
+object-fit: fill;
+}
+
+
+/* SABIT SAG SAYFA */
+
+.right-page {
+position: absolute;
+
+left: 48.828125%;
+top: 13.2%;
+
+width: 38.411458%;
+height: auto;
+
+display: block;
+
+pointer-events: none;
+
+z-index: 2;
+}
+
+
+/* SABIT SOL SAYFA */
+
+.left-page {
+position: absolute;
+
+left: 19%;
+top: 13.2%;
+
+width: 34%;
+height: calc(100% - 27.5%);
+
+display: block;
+
+pointer-events: none;
+
+transform: scaleX(-1);
+
+z-index: 2;
+}
+
+
+/* SIIR METINLERI */
+
+.poem-text {
+position: absolute;
+
+top: 23%;
+width: 25%;
+height: 61%;
+
+z-index: 5;
+
+color: #174a82;
+
+font-family:
+"Caveat",
+"Segoe Print",
+"Bradley Hand",
+cursive;
+
+font-size: clamp(17px, 1.35vw, 23px);
+
+font-weight: 500;
+
+line-height: 1.55;
+
+letter-spacing: 0.01em;
+
+white-space: pre-line;
+
+overflow: hidden;
+
+text-shadow:
+0.2px 0.2px 0 rgba(23, 74, 130, 0.22);
+
+opacity: 1;
+
+transition:
+opacity 1.2s ease;
+}
+
+
+/* SOL SIIR */
+
+.left-poem {
+left: 23%;
+text-align: left;
+}
+
+
+/* SAG SIIR */
+
+.right-poem {
+left: 53%;
+text-align: left;
+}
+
+
+/* SAYFA GECISINDE SILINME */
+
+.poem-text.fade-out {
+opacity: 0;
+}
+
+
+/* =================================================
+  SOL ALTTAKI SABIT KALEM + MUREKKEP
+  3 CM SAG
+  4 CM YUKARI
+  ================================================= */
+
+.corner-quill {
+position: absolute;
+
+left: calc(1.5% + 3cm);
+
+bottom: calc(-1% + 4cm);
+
+width: 140px;
+height: auto;
+
+z-index: 6;
+
+pointer-events: none;
+user-select: none;
+
+opacity: 0.96;
+}
+
+
+/* =================================================
+  YAZIYI YAZAN ALTIN TUY KALEM
+  ================================================= */
+
+.writing-quill {
+position: absolute;
+
+width: 78px;
+height: auto;
+
+z-index: 10;
+
+pointer-events: none;
+user-select: none;
+
+opacity: 0;
+
+transform-origin: 8% 88%;
+
+transition:
+left 0.08s linear,
+top 0.08s linear,
+opacity 0.25s ease;
+}
+
+
+/* SAG OK */
+
+.page-arrow {
+position: absolute;
+
+top: 50%;
+left: 88%;
+
+width: 30px;
+height: 50px;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+color: rgba(255, 255, 255, 0.72);
+
+font-family: Arial, sans-serif;
+
+font-size: 38px;
+font-weight: 300;
+
+line-height: 1;
+
+cursor: pointer;
+user-select: none;
+
+z-index: 20;
+
+transform: translateY(-50%);
+
+text-shadow:
+0 1px 3px rgba(0, 0, 0, 0.8);
+
+transition:
+color 0.25s ease,
+transform 0.25s ease,
+text-shadow 0.25s ease;
+}
+
+
+/* OK UZERINE GELINCE */
+
+.page-arrow:hover {
+
+color: rgba(255, 255, 255, 0.95);
+
+transform:
+translateY(-50%)
+scale(1.08);
+
+text-shadow:
+0 0 7px rgba(255, 255, 255, 0.45),
+0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+
+/* OKA BASILDIGINDA PARLAMA */
+
+.page-arrow.flash {
+
+animation:
+arrowFlash 0.55s ease;
+}
+
+
+@keyframes arrowFlash {
+
+0% {
+
+color:
+rgba(255, 255, 255, 0.72);
+
+text-shadow:
+0 1px 3px rgba(0, 0, 0, 0.8);
+
+transform:
+translateY(-50%)
+scale(1);
+
+}
+
+
+35% {
+
+color: #ffffff;
+
+text-shadow:
+0 0 5px rgba(255, 255, 255, 0.65),
+0 0 12px rgba(255, 255, 255, 0.45),
+0 1px 4px rgba(0, 0, 0, 0.8);
+
+transform:
+translateY(-50%)
+scale(1.16);
+
+}
+
+
+100% {
+
+color:
+rgba(255, 255, 255, 0.72);
+
+text-shadow:
+0 1px 3px rgba(0, 0, 0, 0.8);
+
+transform:
+translateY(-50%)
+scale(1);
+
+}
+
+}
+
+
+/* ANIMASYON SIRASINDA OK KAPALI */
+
+.page-arrow.disabled {
+pointer-events: none;
+opacity: 0.35;
+}
+
+
+/* GIZLI OLCUM ALANI */
+
+.measure-poem {
+position: absolute;
+
+visibility: hidden;
+
+pointer-events: none;
+
+left: -99999px;
+top: 0;
+
+white-space: pre-line;
+
+overflow: hidden;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+<div class="book-stage">
+
+<!-- ARKA PLAN -->
+
+<img
+class="book-background"
+src="arkaplan0.jpeg"
+alt="Sair Nefestir"
+>
+
+
+<!-- SABIT SAG SAYFA -->
+
+<img
+class="right-page"
+src="sag_sayfa_bos.png"
+alt=""
+>
+
+
+<!-- SABIT SOL SAYFA -->
+
+<img
+class="left-page"
+src="sag_sayfa_bos.png"
+alt=""
+>
+
+
+<!-- SOL ALTTA SABIT KALEM + MUREKKEP -->
+
+<img
+class="corner-quill"
+src="murekkep_kalem.png"
+alt=""
+>
+
+
+<!-- YAZIYI YAZAN ALTIN TUY KALEM -->
+
+<img
+id="writingQuill"
+class="writing-quill"
+            src="yazan_kalem3.png"
+            
+alt=""
+>
