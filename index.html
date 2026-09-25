@@ -26,7 +26,9 @@ body {
 }
 
 
-/* KITAP SAHNESI */
+/* =========================================================
+   KITAP SAHNESI
+========================================================= */
 
 .page {
     width: 100vw;
@@ -40,7 +42,9 @@ body {
 }
 
 
-/* ARKA PLAN VE SAYFA AYNI OLCEKTE */
+/* =========================================================
+   ARKA PLAN VE SAYFA AYNI OLCEKTE
+========================================================= */
 
 .book-stage {
     position: relative;
@@ -52,7 +56,9 @@ body {
 }
 
 
-/* ARKA PLAN */
+/* =========================================================
+   ARKA PLAN
+========================================================= */
 
 .book-background {
     position: absolute;
@@ -69,7 +75,9 @@ body {
 }
 
 
-/* SABIT SAG SAYFA */
+/* =========================================================
+   SABIT SAG SAYFA
+========================================================= */
 
 .right-page {
     position: absolute;
@@ -88,7 +96,9 @@ body {
 }
 
 
-/* SABIT SOL SAYFA */
+/* =========================================================
+   SABIT SOL SAYFA
+========================================================= */
 
 .left-page {
     position: absolute;
@@ -109,7 +119,68 @@ body {
 }
 
 
-/* SAG OK */
+/* =========================================================
+   SIIR METIN ALANLARI
+========================================================= */
+
+.poem-text {
+    position: absolute;
+
+    top: 23%;
+    width: 25%;
+
+    z-index: 5;
+
+    color: #173c68;
+
+    font-family:
+        "Segoe Print",
+        "Bradley Hand",
+        "Comic Sans MS",
+        cursive;
+
+    font-size: clamp(15px, 1.35vw, 23px);
+
+    line-height: 1.9;
+
+    white-space: pre-line;
+
+    opacity: 1;
+
+    transition: opacity 1.2s ease;
+}
+
+
+/* SOL SIIR */
+
+.left-poem {
+    left: 23%;
+
+    text-align: left;
+}
+
+
+/* SAG SIIR */
+
+.right-poem {
+    left: 53%;
+
+    text-align: left;
+}
+
+
+/* =========================================================
+   SIIR KAYBOLURKEN
+========================================================= */
+
+.poem-text.fade-out {
+    opacity: 0;
+}
+
+
+/* =========================================================
+   SAG OK
+========================================================= */
 
 .page-arrow {
     position: absolute;
@@ -150,6 +221,16 @@ body {
     color: #fff;
 }
 
+
+/* =========================================================
+   OK ANIMASYON SIRASINDA KAPALI
+========================================================= */
+
+.page-arrow.disabled {
+    pointer-events: none;
+    opacity: 0.35;
+}
+
 </style>
 </head>
 
@@ -159,11 +240,14 @@ body {
 
     <div class="book-stage">
 
+        <!-- ARKA PLAN -->
+
         <img
             class="book-background"
             src="arkaplan0.jpeg"
             alt="Sair Nefestir"
         >
+
 
         <!-- SABIT SAG SAYFA -->
 
@@ -173,6 +257,7 @@ body {
             alt=""
         >
 
+
         <!-- SABIT SOL SAYFA -->
 
         <img
@@ -181,11 +266,45 @@ body {
             alt=""
         >
 
-        <!-- SAG OK -->
+
+        <!-- =================================================
+             SOL SIIR
+        ================================================== -->
 
         <div
+            id="leftPoem"
+            class="poem-text left-poem"
+        >
+            ŞİİR METİNLERİ
+            AL BENİ
+            YE BENİ
+            OKU BENİ...
+        </div>
+
+
+        <!-- =================================================
+             SAG SIIR
+        ================================================== -->
+
+        <div
+            id="rightPoem"
+            class="poem-text right-poem"
+        >
+            ŞİİR METİNLERİ
+            ALDIM SENİ
+            YEDİM SENİ
+            OKUDUM SENİ...
+        </div>
+
+
+        <!-- =================================================
+             SAG OK
+        ================================================== -->
+
+        <div
+            id="nextArrow"
             class="page-arrow next-arrow"
-            aria-label="Siirin devamini goster"
+            aria-label="Şiirin devamını göster"
         >
             ›
         </div>
@@ -193,6 +312,107 @@ body {
     </div>
 
 </div>
+
+
+<script>
+
+/* =========================================================
+   SIIRLER
+========================================================= */
+
+const leftPoem = document.getElementById("leftPoem");
+const rightPoem = document.getElementById("rightPoem");
+const nextArrow = document.getElementById("nextArrow");
+
+
+/* =========================================================
+   ANIMASYON DURUMU
+========================================================= */
+
+let isAnimating = false;
+
+
+/* =========================================================
+   SAG OKA BASILINCA
+========================================================= */
+
+nextArrow.addEventListener("click", function () {
+
+    if (isAnimating) {
+        return;
+    }
+
+    isAnimating = true;
+
+    nextArrow.classList.add("disabled");
+
+
+    /*
+     * 1
+     * SOL VE SAG SIIR YAVASCA KAYBOLUYOR
+     */
+
+    leftPoem.classList.add("fade-out");
+    rightPoem.classList.add("fade-out");
+
+
+    /*
+     * 2
+     * KAYBOLMA TAMAMLANDIKTAN SONRA
+     * YENI METINLERI YERLESTIRIYORUZ
+     */
+
+    setTimeout(function () {
+
+        /*
+         * SAGDAKI SIIR SOLA GECIYOR
+         */
+
+        leftPoem.innerHTML =
+            "ŞİİR METİNLERİ<br>" +
+            "ALDIM SENİ<br>" +
+            "YEDİM SENİ<br>" +
+            "OKUDUM SENİ...";
+
+
+        /*
+         * SIIRIN DEVAMI SAG SAYFAYA GELIYOR
+         */
+
+        rightPoem.innerHTML =
+            "SİİRDİM<br>" +
+            "ALINDIM<br>" +
+            "YENİLDİM<br>" +
+            "OKUNDUM....";
+
+
+        /*
+         * 3
+         * YENI METINLERI GORUNUR YAPIYORUZ
+         */
+
+        leftPoem.classList.remove("fade-out");
+        rightPoem.classList.remove("fade-out");
+
+
+        /*
+         * 4
+         * ANIMASYON BITINCE OK YENIDEN AKTIF
+         */
+
+        setTimeout(function () {
+
+            isAnimating = false;
+
+            nextArrow.classList.remove("disabled");
+
+        }, 1200);
+
+    }, 1200);
+
+});
+
+</script>
 
 </body>
 </html>
