@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -159,7 +160,6 @@ body {
 
 .left-poem {
     left: 23%;
-
     text-align: left;
 }
 
@@ -168,7 +168,6 @@ body {
 
 .right-poem {
     left: 53%;
-
     text-align: left;
 }
 
@@ -182,13 +181,16 @@ body {
 
 /* =================================================
    SOL ALTTAKI SABIT KALEM + MUREKKEP
+   3 CM SAG
+   4 CM YUKARI
    ================================================= */
 
 .corner-quill {
     position: absolute;
 
-    left: 1.5%;
-    bottom: -1%;
+    left: calc(1.5% + 3cm);
+
+    bottom: calc(-1% + 4cm);
 
     width: 140px;
     height: auto;
@@ -222,8 +224,8 @@ body {
     transform-origin: 8% 88%;
 
     transition:
-        left 0.12s linear,
-        top 0.12s linear,
+        left 0.08s linear,
+        top 0.08s linear,
         opacity 0.25s ease;
 }
 
@@ -348,7 +350,6 @@ body {
 
 .page-arrow.disabled {
     pointer-events: none;
-
     opacity: 0.35;
 }
 
@@ -512,7 +513,9 @@ let currentSpread = 0;
 
 let isAnimating = false;
 
-let typingTimers = [];
+let activeTypingToken = 0;
+
+let activeTypingFinished = true;
 
 
 /* =========================================
@@ -697,47 +700,28 @@ function buildPages() {
 
 
 /* =========================================
-   ZAMANLAYICILARI TEMIZLE
-   ========================================= */
-
-function clearTypingTimers() {
-
-    typingTimers.forEach(
-        function(timer) {
-
-            clearTimeout(timer);
-
-        }
-    );
-
-    typingTimers = [];
-}
-
-
-/* =========================================
    KALEM POZISYONU
    ========================================= */
 
 function moveWritingQuill(element) {
 
     if (!element || !element.textContent) {
-        writingQuill.style.opacity = "0";
+
+        writingQuill.style.opacity =
+            "0";
+
         return;
     }
 
 
+    const stage =
+        document.querySelector(
+            ".book-stage"
+        );
+
+
     const stageRect =
-        document
-            .querySelector(".book-stage")
-            .getBoundingClientRect();
-
-
-    const textRect =
-        element.getBoundingClientRect();
-
-
-    const range =
-        document.createRange();
+        stage.getBoundingClientRect();
 
 
     const textNode =
@@ -749,12 +733,20 @@ function moveWritingQuill(element) {
     }
 
 
-    range.setStart(
-        textNode,
+    const range =
+        document.createRange();
+
+
+    const lastIndex =
         Math.max(
             0,
             textNode.length - 1
-        )
+        );
+
+
+    range.setStart(
+        textNode,
+        lastIndex
     );
 
     range.setEnd(
@@ -775,13 +767,13 @@ function moveWritingQuill(element) {
     const x =
         rect.right -
         stageRect.left -
-        7;
+        5;
 
 
     const y =
         rect.bottom -
         stageRect.top -
-        19;
+        18;
 
 
     writingQuill.style.left =
@@ -803,6 +795,7 @@ function typeText(
     element,
     text,
     speed,
+    token,
     callback
 ) {
 
@@ -812,6 +805,13 @@ function typeText(
 
 
     function writeCharacter() {
+
+        if (
+            token !== activeTypingToken
+        ) {
+            return;
+        }
+
 
         if (index >= text.length) {
 
@@ -823,5 +823,291 @@ function typeText(
         }
 
 
-        element
+        element.textContent +=
+            text.charAt(index);
 
+        index++;
+
+
+        moveWritingQuill(
+            element
+        );
+
+
+        setTimeout(
+            writeCharacter,
+            speed
+        );
+    }
+
+
+    if (!text) {
+
+        if (callback) {
+            callback();
+        }
+
+        return;
+    }
+
+
+    writingQuill.style.opacity =
+        "0.95";
+
+
+    writeCharacter();
+}
+
+
+/* =========================================
+   SAYFAYI DAKTILO GIBI YAZ
+   ========================================= */
+
+function typeSpread(index) {
+
+    activeTypingToken++;
+
+    const token =
+        activeTypingToken;
+
+    activeTypingFinished =
+        false;
+
+
+    const spread =
+        pages[index];
+
+
+    leftPoem.textContent = "";
+
+    rightPoem.textContent = "";
+
+
+    writingQuill.style.opacity =
+        "0";
+
+
+    /* SOL SAYFA */
+
+    typeText(
+        leftPoem,
+        spread.left,
+        55,
+        token,
+        function() {
+
+            if (
+                token !== activeTypingToken
+            ) {
+                return;
+            }
+
+
+            /* SAG SAYFA */
+
+            typeText(
+                rightPoem,
+                spread.right,
+                55,
+                token,
+                function() {
+
+                    if (
+                        token !== activeTypingToken
+                    ) {
+                        return;
+                    }
+
+
+                    activeTypingFinished =
+                        true;
+
+                    writingQuill.style.opacity =
+                        "0";
+
+                }
+            );
+
+        }
+    );
+}
+
+
+/* =========================================
+   SAYFAYI GOSTER
+   ========================================= */
+
+function showSpread(index) {
+
+    if (!pages[index]) {
+        return;
+    }
+
+    typeSpread(index);
+}
+
+
+/* =========================================
+   ILK ACILIS
+   ========================================= */
+
+async function initializeBook() {
+
+    if (
+        document.fonts &&
+        document.fonts.ready
+    ) {
+
+        await document.fonts.ready;
+    }
+
+
+    requestAnimationFrame(
+        function() {
+
+            buildPages();
+
+            currentSpread = 0;
+
+            showSpread(
+                currentSpread
+            );
+
+        }
+    );
+}
+
+
+/* =========================================
+   OKA BASILINCA
+   ========================================= */
+
+nextArrow.addEventListener(
+    "click",
+    function() {
+
+        if (isAnimating) {
+            return;
+        }
+
+
+        if (
+            currentSpread >=
+            pages.length - 1
+        ) {
+
+            return;
+        }
+
+
+        /* OK PARLASIN */
+
+        nextArrow.classList.remove(
+            "flash"
+        );
+
+        void nextArrow.offsetWidth;
+
+        nextArrow.classList.add(
+            "flash"
+        );
+
+
+        isAnimating = true;
+
+        nextArrow.classList.add(
+            "disabled"
+        );
+
+
+        /* AKTIF YAZIYI DURDUR */
+
+        activeTypingToken++;
+
+        activeTypingFinished =
+            true;
+
+        writingQuill.style.opacity =
+            "0";
+
+
+        /* IKI SAYFA SILINSIN */
+
+        leftPoem.classList.add(
+            "fade-out"
+        );
+
+        rightPoem.classList.add(
+            "fade-out"
+        );
+
+
+        /* YENI SAYFA */
+
+        setTimeout(
+            function() {
+
+                currentSpread++;
+
+
+                leftPoem.classList.remove(
+                    "fade-out"
+                );
+
+                rightPoem.classList.remove(
+                    "fade-out"
+                );
+
+
+                /* DEVAM SOLDAN */
+
+                typeSpread(
+                    currentSpread
+                );
+
+
+                /* YAZININ TAMAMLANMASINI BEKLE */
+
+                const wait =
+                    setInterval(
+                        function() {
+
+                            if (
+                                activeTypingFinished
+                            ) {
+
+                                clearInterval(
+                                    wait
+                                );
+
+                                isAnimating =
+                                    false;
+
+                                nextArrow.classList.remove(
+                                    "disabled"
+                                );
+                            }
+
+                        },
+                        100
+                    );
+
+            },
+            1200
+        );
+
+    }
+);
+
+
+/* =========================================
+   BASLAT
+   ========================================= */
+
+initializeBook();
+
+</script>
+
+</body>
+</html>
+```
