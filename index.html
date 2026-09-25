@@ -31,9 +31,7 @@ body {
 }
 
 
-/* =========================================================
-   KITAP SAHNESI
-========================================================= */
+/* KITAP SAHNESI */
 
 .page {
     width: 100vw;
@@ -47,9 +45,7 @@ body {
 }
 
 
-/* =========================================================
-   ARKA PLAN VE SAYFA AYNI OLCEKTE
-========================================================= */
+/* ARKA PLAN VE SAYFA AYNI OLCEKTE */
 
 .book-stage {
     position: relative;
@@ -61,9 +57,7 @@ body {
 }
 
 
-/* =========================================================
-   ARKA PLAN
-========================================================= */
+/* ARKA PLAN */
 
 .book-background {
     position: absolute;
@@ -80,9 +74,7 @@ body {
 }
 
 
-/* =========================================================
-   SABIT SAG SAYFA
-========================================================= */
+/* SABIT SAG SAYFA */
 
 .right-page {
     position: absolute;
@@ -101,9 +93,7 @@ body {
 }
 
 
-/* =========================================================
-   SABIT SOL SAYFA
-========================================================= */
+/* SABIT SOL SAYFA */
 
 .left-page {
     position: absolute;
@@ -124,9 +114,7 @@ body {
 }
 
 
-/* =========================================================
-   SIIR METINLERI
-========================================================= */
+/* SIIR METINLERI */
 
 .poem-text {
     position: absolute;
@@ -134,17 +122,11 @@ body {
     top: 23%;
     width: 25%;
 
+    height: 61%;
+
     z-index: 5;
 
-    /*
-       MAVI DIVIT MUREKKEBI
-    */
-
     color: #174a82;
-
-    /*
-       EL YAZISI
-    */
 
     font-family:
         "Caveat",
@@ -162,9 +144,7 @@ body {
 
     white-space: pre-line;
 
-    /*
-       Hafif murekkep hissi
-    */
+    overflow: hidden;
 
     text-shadow:
         0.25px 0.25px 0 rgba(23, 74, 130, 0.35);
@@ -176,9 +156,7 @@ body {
 }
 
 
-/* =========================================================
-   SOL SIIR
-========================================================= */
+/* SOL SIIR */
 
 .left-poem {
     left: 23%;
@@ -187,9 +165,7 @@ body {
 }
 
 
-/* =========================================================
-   SAG SIIR
-========================================================= */
+/* SAG SIIR */
 
 .right-poem {
     left: 53%;
@@ -198,18 +174,14 @@ body {
 }
 
 
-/* =========================================================
-   SIIR KAYBOLURKEN
-========================================================= */
+/* SIIR KAYBOLURKEN */
 
 .poem-text.fade-out {
     opacity: 0;
 }
 
 
-/* =========================================================
-   SAG OK
-========================================================= */
+/* SAG OK */
 
 .page-arrow {
     position: absolute;
@@ -248,20 +220,35 @@ body {
         transform 0.2s ease;
 }
 
-
 .page-arrow:hover {
     color: #fff;
 }
 
 
-/* =========================================================
-   OK ANIMASYON SIRASINDA
-========================================================= */
+/* OK ANIMASYON SIRASINDA */
 
 .page-arrow.disabled {
     pointer-events: none;
 
     opacity: 0.35;
+}
+
+
+/* GIZLI OLCUM ALANI */
+
+.measure-poem {
+    position: absolute;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    left: -99999px;
+    top: 0;
+
+    white-space: pre-line;
+
+    overflow: hidden;
 }
 
 </style>
@@ -274,10 +261,7 @@ body {
 
     <div class="book-stage">
 
-
-        <!-- =================================================
-             ARKA PLAN
-        ================================================== -->
+        <!-- ARKA PLAN -->
 
         <img
             class="book-background"
@@ -286,9 +270,7 @@ body {
         >
 
 
-        <!-- =================================================
-             SABIT SAG SAYFA
-        ================================================== -->
+        <!-- SABIT SAG SAYFA -->
 
         <img
             class="right-page"
@@ -297,9 +279,7 @@ body {
         >
 
 
-        <!-- =================================================
-             SABIT SOL SAYFA
-        ================================================== -->
+        <!-- SABIT SOL SAYFA -->
 
         <img
             class="left-page"
@@ -308,44 +288,31 @@ body {
         >
 
 
-        <!-- =================================================
-             SOL SIIR
-        ================================================== -->
+        <!-- SOL SIIR -->
 
         <div
             id="leftPoem"
             class="poem-text left-poem"
-        >ŞİİR METİNLERİ
-AL BENİ
-YE BENİ
-OKU BENİ...</div>
+        ></div>
 
 
-        <!-- =================================================
-             SAG SIIR
-        ================================================== -->
+        <!-- SAG SIIR -->
 
         <div
             id="rightPoem"
             class="poem-text right-poem"
-        >ŞİİR METİNLERİ
-ALDIM SENİ
-YEDİM SENİ
-OKUDUM SENİ...</div>
+        ></div>
 
 
-        <!-- =================================================
-             SAG OK
-        ================================================== -->
+        <!-- SAG OK -->
 
         <div
             id="nextArrow"
             class="page-arrow next-arrow"
-            aria-label="Şiirin devamını göster"
+            aria-label="Siirin devamini goster"
         >
             ›
         </div>
-
 
     </div>
 
@@ -354,9 +321,35 @@ OKUDUM SENİ...</div>
 
 <script>
 
-/* =========================================================
-   SIIR ELEMANLARI
-========================================================= */
+/* =========================================
+   DEMO SIIR
+   ========================================= */
+
+const poems = [
+
+`Haydi Abbas, vakit tamam;
+Akşam diyordun işte oldu akşam.
+Kur bakalım çilingir soframızı;
+Dinsin artık bu kalb ağrısı.
+Şu ağacın gölgesinde olsun;
+Tam kenarında havuzun.
+Aya haber sal çıksın bu gece;
+Görünsün şöyle gönlümce.
+Bas kırbacı sihirli seccadeye,
+Göster hükmettiğini mesafeye
+Ve zamana.
+Katıp tozu dumana,
+Var git,
+Böyle ferman etti Cahit,
+Al getir ilk sevgiliyi Beşiktaş'tan;
+Yaşamak istiyorum gençliğimi yeni baştan.`
+
+];
+
+
+/* =========================================
+   ELEMENTLER
+   ========================================= */
 
 const leftPoem =
     document.getElementById("leftPoem");
@@ -368,95 +361,379 @@ const nextArrow =
     document.getElementById("nextArrow");
 
 
-/* =========================================================
-   ANIMASYON DURUMU
-========================================================= */
+/* =========================================
+   DURUM
+   ========================================= */
+
+let poemIndex = 0;
+
+let pages = [];
+
+let currentSpread = 0;
 
 let isAnimating = false;
 
 
-/* =========================================================
-   SAG OK
-========================================================= */
+/* =========================================
+   SAYFA OLCUMU
+   ========================================= */
 
-nextArrow.addEventListener("click", function () {
+function createMeasureElement(sourceElement) {
 
-    if (isAnimating) {
+    const measure =
+        document.createElement("div");
+
+    measure.className =
+        "measure-poem";
+
+    const styles =
+        window.getComputedStyle(sourceElement);
+
+    measure.style.width =
+        styles.width;
+
+    measure.style.height =
+        styles.height;
+
+    measure.style.fontFamily =
+        styles.fontFamily;
+
+    measure.style.fontSize =
+        styles.fontSize;
+
+    measure.style.fontWeight =
+        styles.fontWeight;
+
+    measure.style.lineHeight =
+        styles.lineHeight;
+
+    measure.style.letterSpacing =
+        styles.letterSpacing;
+
+    measure.style.whiteSpace =
+        styles.whiteSpace;
+
+    measure.style.textShadow =
+        styles.textShadow;
+
+    document.body.appendChild(measure);
+
+    return measure;
+}
+
+
+/* =========================================
+   BIR PARCANIN SAYFAYA SIGIP SIGMADIGI
+   ========================================= */
+
+function fitsOnPage(
+    text,
+    sourceElement,
+    measureElement
+) {
+
+    measureElement.textContent = text;
+
+    return (
+        measureElement.scrollHeight <=
+        sourceElement.clientHeight + 1
+    );
+}
+
+
+/* =========================================
+   SIIRI SAYFALARA BOL
+   ========================================= */
+
+function paginatePoem(poem) {
+
+    const lines =
+        poem.split("\n");
+
+    const measure =
+        createMeasureElement(leftPoem);
+
+    const result = [];
+
+    let currentText = "";
+
+
+    for (let i = 0; i < lines.length; i++) {
+
+        const line =
+            lines[i];
+
+        const candidate =
+            currentText === ""
+                ? line
+                : currentText + "\n" + line;
+
+
+        /*
+         * Yeni satir sayfaya sigiyorsa ekle.
+         */
+
+        if (
+            fitsOnPage(
+                candidate,
+                leftPoem,
+                measure
+            )
+        ) {
+
+            currentText =
+                candidate;
+
+            continue;
+        }
+
+
+        /*
+         * Sayfa doldu.
+         * Onceki parcayi kaydet.
+         */
+
+        if (currentText !== "") {
+
+            result.push(
+                currentText
+            );
+
+            currentText = line;
+
+        } else {
+
+            /*
+             * Tek bir satir normalden
+             * daha uzun olsa bile kaybolmasin.
+             */
+
+            result.push(line);
+
+            currentText = "";
+        }
+    }
+
+
+    /*
+     * Son kalan parcayi ekle.
+     */
+
+    if (currentText !== "") {
+
+        result.push(
+            currentText
+        );
+    }
+
+
+    measure.remove();
+
+    return result;
+}
+
+
+/* =========================================
+   BUTUN SIIRLERI SAYFALANDIR
+   ========================================= */
+
+function buildPages() {
+
+    pages = [];
+
+
+    poems.forEach(function(poem) {
+
+        const chunks =
+            paginatePoem(poem);
+
+
+        /*
+         * Her siir MUTLAKA sol sayfadan baslar.
+         *
+         * Ilk parca -> sol
+         * Ikinci parca -> sag
+         *
+         * Sonraki parcalar yeni spread'e gider.
+         */
+
+        for (
+            let i = 0;
+            i < chunks.length;
+            i += 2
+        ) {
+
+            pages.push({
+
+                left:
+                    chunks[i] || "",
+
+                right:
+                    chunks[i + 1] || "",
+
+                poemIndex:
+                    poems.indexOf(poem)
+
+            });
+        }
+
+    });
+}
+
+
+/* =========================================
+   SAYFAYI GOSTER
+   ========================================= */
+
+function showSpread(index) {
+
+    if (
+        !pages[index]
+    ) {
         return;
     }
 
-    isAnimating = true;
 
-    nextArrow.classList.add("disabled");
+    leftPoem.textContent =
+        pages[index].left;
+
+    rightPoem.textContent =
+        pages[index].right;
+}
+
+
+/* =========================================
+   ILK SAYFA
+   ========================================= */
+
+async function initializeBook() {
+
+    /*
+     * Web font tamamen yuklenmeden
+     * olcum yapmiyoruz.
+     */
+
+    if (
+        document.fonts &&
+        document.fonts.ready
+    ) {
+
+        await document.fonts.ready;
+    }
 
 
     /*
-       1
-       MEVCUT SIIRLER YAVASCA KAYBOLUYOR
-    */
+     * Tarayicinin gercek boyutlari
+     * hesaplamasi icin bir frame bekle.
+     */
 
-    leftPoem.classList.add("fade-out");
+    requestAnimationFrame(function() {
 
-    rightPoem.classList.add("fade-out");
+        buildPages();
 
+        currentSpread = 0;
 
-    /*
-       2
-       KAYBOLMA TAMAMLANDIKTAN SONRA
-       YENI METINLERI YERLESTIRIYORUZ
-    */
+        showSpread(currentSpread);
 
-    setTimeout(function () {
+    });
+}
 
 
-        /*
-           SAGDAKI SIIR SOL SAYFAYA GECIYOR
-        */
+/* =========================================
+   OK
+   ========================================= */
 
-        leftPoem.innerHTML =
-            "ŞİİR METİNLERİ<br>" +
-            "ALDIM SENİ<br>" +
-            "YEDİM SENİ<br>" +
-            "OKUDUM SENİ...";
+nextArrow.addEventListener(
+    "click",
+    function() {
 
-
-        /*
-           SIIRIN DEVAMI SAG SAYFAYA GELIYOR
-        */
-
-        rightPoem.innerHTML =
-            "SİİRDİM<br>" +
-            "ALINDIM<br>" +
-            "YENİLDİM<br>" +
-            "OKUNDUM....";
+        if (isAnimating) {
+            return;
+        }
 
 
         /*
-           3
-           YENI SIIRLER YAVASCA BELIRIYOR
-        */
+         * Gidecek baska sayfa yoksa
+         * hicbir sey yapma.
+         */
 
-        leftPoem.classList.remove("fade-out");
+        if (
+            currentSpread >=
+            pages.length - 1
+        ) {
 
-        rightPoem.classList.remove("fade-out");
+            return;
+        }
+
+
+        isAnimating = true;
+
+        nextArrow.classList.add(
+            "disabled"
+        );
 
 
         /*
-           4
-           ANIMASYON TAMAMLANDI
-        */
+         * ONCE IKISINI DE YAVASCA YOK ET
+         */
 
-        setTimeout(function () {
+        leftPoem.classList.add(
+            "fade-out"
+        );
 
-            isAnimating = false;
+        rightPoem.classList.add(
+            "fade-out"
+        );
 
-            nextArrow.classList.remove("disabled");
+
+        /*
+         * KAYBOLMA TAMAMLANDIGINDA
+         * YENI SAYFAYI YERLESTIR
+         */
+
+        setTimeout(function() {
+
+            currentSpread++;
+
+            showSpread(
+                currentSpread
+            );
+
+
+            /*
+             * SONRA TEKRAR GORUNUR YAP
+             */
+
+            leftPoem.classList.remove(
+                "fade-out"
+            );
+
+            rightPoem.classList.remove(
+                "fade-out"
+            );
+
+
+            setTimeout(function() {
+
+                isAnimating = false;
+
+                nextArrow.classList.remove(
+                    "disabled"
+                );
+
+            }, 1200);
 
         }, 1200);
 
-    }, 1200);
+    }
+);
 
-});
+
+/* =========================================
+   BASLAT
+   ========================================= */
+
+initializeBook();
 
 </script>
 
