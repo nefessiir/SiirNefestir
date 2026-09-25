@@ -42,7 +42,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
-    perspective: 2000px; /* 3D Kitap çevrilme derinliği */
+    perspective: 2000px; /* 3D derinlik */
 }
 
 /* =========================================
@@ -73,7 +73,7 @@ body {
 }
 
 /* =========================================
-   GERÇEK KİTAP YAPRAĞI ÇEVRİLME (3D FLIP)
+   SAYFA ÇEVRİLME ANİMASYONU (CİLT BİLEŞENİ)
 ========================================= */
 
 .flipping-page {
@@ -86,15 +86,16 @@ body {
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    transform-origin: left center; /* Tam cildin olduğu yerden katlanır */
+    transform-origin: 0% 50%; /* Tam orta cilt çizgisine sabitleme */
     transform-style: preserve-3d;
     z-index: 30;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-    box-shadow: -10px 0 20px rgba(0,0,0,0.4);
+    transition: transform 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
 }
 
+/* Sağ sayfa sola yatarken sol sayfanın genişliğine tam oturması için oranlama yapılıyor */
 .flipping-page.turned {
-    transform: rotateY(-180deg);
+    transform: rotateY(-180deg) scaleX(0.885);
 }
 
 /* =========================================
@@ -141,7 +142,7 @@ body {
 }
 
 /* =========================================
-   ARKA PLAN TUY KALEMLARI (SAYFA DOKUSU)
+   ARKA PLAN TUY KALEMLARI
 ========================================= */
 
 .quill-bg-right {
@@ -274,10 +275,6 @@ body {
     background: rgba(255,255,255,0.55);
     border-radius: 2px;
 }
-
-/* =========================================
-   BOS SAYFA
-========================================= */
 
 .blank-page {
     background-image: url("sag_sayfa_bos.png") !important;
@@ -506,14 +503,13 @@ function fadeOut(element) {
 }
 
 /* =========================================
-   SAYFA ÇEVİRME ANİMASYONU (FLIP)
+   SAYFA ÇEVİRME ANİMASYONU (TAM CİLT SABİT)
 ========================================= */
 
 async function triggerPageFlipAnimation() {
     const flipPage = document.createElement("div");
     flipPage.className = "flipping-page";
     
-    // Sağ sayfadaki kalem ve metni çevrilen yaprağa kopyala
     flipPage.innerHTML = `
         <img src="yazan_kalem3.png" class="quill-bg-right" alt="">
         <div class="page-content">
@@ -524,12 +520,11 @@ async function triggerPageFlipAnimation() {
     bookStage.appendChild(flipPage);
     rightPoem.textContent = "";
 
-    // Animasyonu tetikle
     requestAnimationFrame(() => {
         flipPage.classList.add("turned");
     });
 
-    await wait(1200); // Dönüş süresi
+    await wait(1200);
     flipPage.remove();
 }
 
@@ -585,9 +580,8 @@ async function nextPage() {
         return;
     }
 
-    /* 3. DURUM: IKI SAYFA DOLU -> YAPRAK ÇEVRİLİR VE SONRAKI SAYFA CIFTINE GECILIR */
+    /* 3. DURUM: IKI SAYFA DOLU -> CİLTTEN DÖNEN YAPRAK KAPANIR */
     if (stageState === "spread") {
-        // Yaprak sol sayfanın üzerine kıvrılarak düşer
         await triggerPageFlipAnimation();
 
         fadeOut(leftPoem);
