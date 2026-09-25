@@ -1,1 +1,462 @@
-<!DOCTYPE html> <html lang="tr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Şiir Nefestir</title> <style> * { box-sizing: border-box; } html, body { width: 100%; height: 100%; margin: 0; padding: 0; } body { background: #111; overflow: hidden; } /* KITAP SAHNESI */ .page { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; } /* KITAP */ .book-stage { position: relative; width: min(100vw, 150vh); height: min(100vh, 66.6667vw); overflow: visible; perspective: 1800px; } /* ARKA PLAN */ .book-background { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; object-fit: fill; z-index: 1; } /* SAG SAYFA */ .right-page { position: absolute; left: 48.828125%; top: 13.2%; width: 38.411458%; height: auto; display: block; pointer-events: none; z-index: 2; } /* SOL SAYFA */ .left-page { position: absolute; left: 19%; top: 13.2%; width: 34%; height: calc(100% - 27.5%); display: block; pointer-events: none; transform: scaleX(-1); z-index: 2; } /* SAGDA KALACAK BOS SAYFA */ .right-page-cover { position: absolute; left: 48.828125%; top: 13.2%; width: 38.411458%; height: auto; display: none; z-index: 3; pointer-events: none; } /* DONEN SAYFA */ .turning-page-wrap { position: absolute; left: 48.828125%; top: 13.2%; width: 38.411458%; height: auto; z-index: 5; transform-origin: left center; transform-style: preserve-3d; pointer-events: none; will-change: transform; } /* DONEN SAYFA */ .turning-page { position: relative; left: 0; top: 0; width: 100%; height: auto; display: block; transform-origin: left center; transform-style: preserve-3d; backface-visibility: visible; } /* OKLAR */ .page-arrow { position: absolute; top: 50%; width: 30px; height: 50px; display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.85); font-family: Arial, sans-serif; font-size: 38px; font-weight: 300; line-height: 1; cursor: pointer; user-select: none; z-index: 20; transform: translateY(-50%); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); } .page-arrow:hover { color: #fff; } /* SOL OK */ .prev-arrow { left: 16%; display: none; } /* SAG OK */ .next-arrow { left: 88%; } /* DONUS */ .turning-page-wrap.animate { animation: pageTurn 1.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards; } @keyframes pageTurn { 0% { transform: translateX(0) rotateY(0deg); } 15% { transform: translateX(0) rotateY(-28deg); } 30% { transform: translateX(0) rotateY(-60deg); } 45% { transform: translateX(0) rotateY(-92deg); } 60% { transform: translateX(0) rotateY(-120deg); } 75% { transform: translateX(0) rotateY(-148deg); } 88% { transform: translateX(0) rotateY(-168deg); } 100% { transform: translateX(50px) rotateY(-180deg); } } </style> </head> <body> <div class="page"> <div class="book-stage"> <!-- ARKA PLAN --> <img class="book-background" src="arkaplan0.jpeg" alt="Sair Nefestir" > <!-- SAGDA KALACAK BOS SAYFA --> <img class="right-page-cover" src="sag_sayfa_bos.png" alt="" > <!-- SAG SAYFA --> <img class="right-page" src="sag_sayfa_bos.png" alt="" > <!-- SOL SAYFA --> <img class="left-page" src="sag_sayfa_bos.png" alt="" > <!-- SAG OK --> <div class="page-arrow next-arrow" onclick="turnPage()" aria-label="Sonraki sayfa" > › </div> <!-- SOL OK --> <div class="page-arrow prev-arrow" aria-label="Onceki sayfa" > ‹ </div> <!-- DONEN SAYFA --> <div class="turning-page-wrap" id="turningPageWrap" > <img class="turning-page" id="turningPage" src="sag_sayfa_bos.png" alt="" > </div> </div> </div> <script> function turnPage() { const turningPageWrap = document.getElementById("turningPageWrap"); const rightPage = document.querySelector(".right-page"); const leftPage = document.querySelector(".left-page"); const rightPageCover = document.querySelector(".right-page-cover"); const nextArrow = document.querySelector(".next-arrow"); if ( turningPageWrap.classList.contains("animate") ) { return; } nextArrow.style.pointerEvents = "none"; turningPageWrap.classList.add("animate"); turningPageWrap.addEventListener( "animationend", function () { leftPage.style.display = "none"; rightPage.style.display = "none"; rightPageCover.style.display = "block"; }, { once: true } ); } </script> </body> </html>
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Şiir Nefestir</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #111;
+    overflow: hidden;
+}
+
+
+/* KITAP SAHNESI */
+
+.page {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+
+/* KITAP */
+
+.book-stage {
+    position: relative;
+
+    width: min(100vw, 150vh);
+    height: min(100vh, 66.6667vw);
+
+    overflow: visible;
+
+    perspective: 1800px;
+}
+
+
+/* ARKA PLAN */
+
+.book-background {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: fill;
+
+    z-index: 1;
+}
+
+
+/* SAG SAYFA */
+
+.right-page {
+    position: absolute;
+
+    left: 48.828125%;
+    top: 13.2%;
+
+    width: 38.411458%;
+    height: auto;
+
+    display: block;
+
+    pointer-events: none;
+
+    z-index: 2;
+}
+
+
+/* SOL SAYFA */
+
+.left-page {
+    position: absolute;
+
+    left: 19%;
+    top: 13.2%;
+
+    width: 34%;
+    height: calc(100% - 27.5%);
+
+    display: block;
+
+    pointer-events: none;
+
+    transform: scaleX(-1);
+
+    z-index: 2;
+}
+
+
+/* SAGDA KALACAK BOS SAYFA */
+
+.right-page-cover {
+    position: absolute;
+
+    left: 48.828125%;
+    top: 13.2%;
+
+    width: 38.411458%;
+    height: auto;
+
+    display: none;
+
+    z-index: 3;
+
+    pointer-events: none;
+}
+
+
+/* DONEN SAYFA */
+
+.turning-page-wrap {
+    position: absolute;
+
+    left: 48.828125%;
+    top: 13.2%;
+
+    width: 38.411458%;
+
+    height: auto;
+
+    display: none;
+
+    z-index: 5;
+
+    transform-origin: left center;
+
+    transform-style: preserve-3d;
+
+    pointer-events: none;
+
+    will-change: transform;
+}
+
+
+/* DONEN SAYFA */
+
+.turning-page {
+    position: relative;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: auto;
+
+    display: block;
+
+    transform-origin: left center;
+
+    transform-style: preserve-3d;
+
+    backface-visibility: visible;
+}
+
+
+/* OKLAR */
+
+.page-arrow {
+    position: absolute;
+
+    top: 50%;
+
+    width: 30px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255, 255, 255, 0.85);
+
+    font-family: Arial, sans-serif;
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1;
+
+    cursor: pointer;
+    user-select: none;
+
+    z-index: 20;
+
+    transform: translateY(-50%);
+
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.page-arrow:hover {
+    color: #fff;
+}
+
+
+/* SOL OK */
+
+.prev-arrow {
+    left: 16%;
+
+    display: none;
+}
+
+
+/* SAG OK */
+
+.next-arrow {
+    left: 88%;
+}
+
+
+/* DONUS */
+
+.turning-page-wrap.animate {
+    animation:
+        pageTurn
+        1.2s
+        cubic-bezier(0.22, 0.61, 0.36, 1)
+        forwards;
+}
+
+
+@keyframes pageTurn {
+
+    0% {
+        transform:
+            translateX(0)
+            rotateY(0deg);
+    }
+
+    15% {
+        transform:
+            translateX(0)
+            rotateY(-28deg);
+    }
+
+    30% {
+        transform:
+            translateX(0)
+            rotateY(-60deg);
+    }
+
+    45% {
+        transform:
+            translateX(0)
+            rotateY(-92deg);
+    }
+
+    60% {
+        transform:
+            translateX(0)
+            rotateY(-120deg);
+    }
+
+    75% {
+        transform:
+            translateX(0)
+            rotateY(-148deg);
+    }
+
+    88% {
+        transform:
+            translateX(0)
+            rotateY(-168deg);
+    }
+
+    100% {
+        transform:
+            translateX(50px)
+            rotateY(-180deg);
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="book-stage">
+
+
+        <!-- ARKA PLAN -->
+
+        <img
+            class="book-background"
+            src="arkaplan0.jpeg"
+            alt="Sair Nefestir"
+        >
+
+
+        <!-- SAGDA KALACAK BOS SAYFA -->
+
+        <img
+            class="right-page-cover"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
+
+
+        <!-- SAG SAYFA -->
+
+        <img
+            class="right-page"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
+
+
+        <!-- SOL SAYFA -->
+
+        <img
+            class="left-page"
+            src="sag_sayfa_bos.png"
+            alt=""
+        >
+
+
+        <!-- SAG OK -->
+
+        <div
+            class="page-arrow next-arrow"
+            onclick="turnPage()"
+            aria-label="Sonraki sayfa"
+        >
+            ›
+        </div>
+
+
+        <!-- SOL OK -->
+
+        <div
+            class="page-arrow prev-arrow"
+            aria-label="Onceki sayfa"
+        >
+            ‹
+        </div>
+
+
+        <!-- DONEN SAYFA -->
+
+        <div
+            class="turning-page-wrap"
+            id="turningPageWrap"
+        >
+
+            <img
+                class="turning-page"
+                id="turningPage"
+                src="sag_sayfa_bos.png"
+                alt=""
+            >
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+function turnPage() {
+
+    const turningPageWrap =
+        document.getElementById("turningPageWrap");
+
+    const rightPage =
+        document.querySelector(".right-page");
+
+    const leftPage =
+        document.querySelector(".left-page");
+
+    const rightPageCover =
+        document.querySelector(".right-page-cover");
+
+    const nextArrow =
+        document.querySelector(".next-arrow");
+
+
+    if (
+        turningPageWrap.classList.contains("animate")
+    ) {
+        return;
+    }
+
+
+    /*
+     * Donen sayfayi sadece tiklandiginda gorunur yap.
+     */
+
+    turningPageWrap.style.display = "block";
+
+
+    nextArrow.style.pointerEvents = "none";
+
+
+    turningPageWrap.classList.add("animate");
+
+
+    turningPageWrap.addEventListener(
+        "animationend",
+        function () {
+
+            /*
+             * Eski sol sayfayi gizle.
+             */
+
+            leftPage.style.display = "none";
+
+
+            /*
+             * Eski sag sayfayi gizle.
+             */
+
+            rightPage.style.display = "none";
+
+
+            /*
+             * Sag tarafta bos sayfa kalsin.
+             */
+
+            rightPageCover.style.display = "block";
+
+
+        },
+        { once: true }
+    );
+}
+
+</script>
+
+</body>
+</html>
+```
