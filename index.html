@@ -180,6 +180,54 @@ body {
 }
 
 
+/* =================================================
+   SOL ALTTAKI SABIT KALEM + MUREKKEP
+   ================================================= */
+
+.corner-quill {
+    position: absolute;
+
+    left: 1.5%;
+    bottom: -1%;
+
+    width: 140px;
+    height: auto;
+
+    z-index: 6;
+
+    pointer-events: none;
+    user-select: none;
+
+    opacity: 0.96;
+}
+
+
+/* =================================================
+   YAZIYI YAZAN ALTIN TUY KALEM
+   ================================================= */
+
+.writing-quill {
+    position: absolute;
+
+    width: 78px;
+    height: auto;
+
+    z-index: 10;
+
+    pointer-events: none;
+    user-select: none;
+
+    opacity: 0;
+
+    transform-origin: 8% 88%;
+
+    transition:
+        left 0.12s linear,
+        top 0.12s linear,
+        opacity 0.25s ease;
+}
+
+
 /* SAG OK */
 
 .page-arrow {
@@ -359,6 +407,25 @@ body {
         >
 
 
+        <!-- SOL ALTTA SABIT KALEM + MUREKKEP -->
+
+        <img
+            class="corner-quill"
+            src="murekkep_kalem.png"
+            alt=""
+        >
+
+
+        <!-- YAZIYI YAZAN ALTIN TUY KALEM -->
+
+        <img
+            id="writingQuill"
+            class="writing-quill"
+            src="yazan_kalem.png"
+            alt=""
+        >
+
+
         <!-- SOL SIIR -->
 
         <div
@@ -430,6 +497,9 @@ const rightPoem =
 
 const nextArrow =
     document.getElementById("nextArrow");
+
+const writingQuill =
+    document.getElementById("writingQuill");
 
 
 /* =========================================
@@ -645,6 +715,87 @@ function clearTypingTimers() {
 
 
 /* =========================================
+   KALEM POZISYONU
+   ========================================= */
+
+function moveWritingQuill(element) {
+
+    if (!element || !element.textContent) {
+        writingQuill.style.opacity = "0";
+        return;
+    }
+
+
+    const stageRect =
+        document
+            .querySelector(".book-stage")
+            .getBoundingClientRect();
+
+
+    const textRect =
+        element.getBoundingClientRect();
+
+
+    const range =
+        document.createRange();
+
+
+    const textNode =
+        element.firstChild;
+
+
+    if (!textNode) {
+        return;
+    }
+
+
+    range.setStart(
+        textNode,
+        Math.max(
+            0,
+            textNode.length - 1
+        )
+    );
+
+    range.setEnd(
+        textNode,
+        textNode.length
+    );
+
+
+    const rect =
+        range.getBoundingClientRect();
+
+
+    if (!rect.width && !rect.height) {
+        return;
+    }
+
+
+    const x =
+        rect.right -
+        stageRect.left -
+        7;
+
+
+    const y =
+        rect.bottom -
+        stageRect.top -
+        19;
+
+
+    writingQuill.style.left =
+        x + "px";
+
+    writingQuill.style.top =
+        y + "px";
+
+    writingQuill.style.opacity =
+        "0.95";
+}
+
+
+/* =========================================
    DAKTILO YAZISI
    ========================================= */
 
@@ -672,252 +823,5 @@ function typeText(
         }
 
 
-        element.textContent +=
-            text.charAt(index);
+        element
 
-        index++;
-
-
-        const timer =
-            setTimeout(
-                writeCharacter,
-                speed
-            );
-
-        typingTimers.push(timer);
-    }
-
-
-    writeCharacter();
-}
-
-
-/* =========================================
-   SAYFAYI DAKTILO GIBI YAZ
-   ========================================= */
-
-function typeSpread(index) {
-
-    clearTypingTimers();
-
-
-    const spread =
-        pages[index];
-
-
-    leftPoem.textContent = "";
-
-    rightPoem.textContent = "";
-
-
-    /* SOL SAYFA */
-
-    typeText(
-        leftPoem,
-        spread.left,
-        55,
-        function() {
-
-            /* SAG SAYFA */
-
-            typeText(
-                rightPoem,
-                spread.right,
-                55,
-                function() {
-
-                    /* YAZI BITTI */
-
-                }
-            );
-
-        }
-    );
-}
-
-
-/* =========================================
-   SAYFAYI GOSTER
-   ========================================= */
-
-function showSpread(index) {
-
-    if (!pages[index]) {
-        return;
-    }
-
-    typeSpread(index);
-}
-
-
-/* =========================================
-   DAKTILO BITISINI BEKLE
-   ========================================= */
-
-function waitForTypingToFinish(callback) {
-
-    const check =
-        setInterval(
-            function() {
-
-                if (
-                    typingTimers.length === 0
-                ) {
-
-                    clearInterval(check);
-
-                    if (callback) {
-                        callback();
-                    }
-                }
-
-            },
-            100
-        );
-
-}
-
-
-/* =========================================
-   ILK ACILIS
-   ========================================= */
-
-async function initializeBook() {
-
-    if (
-        document.fonts &&
-        document.fonts.ready
-    ) {
-
-        await document.fonts.ready;
-    }
-
-
-    requestAnimationFrame(
-        function() {
-
-            buildPages();
-
-            currentSpread = 0;
-
-            showSpread(
-                currentSpread
-            );
-
-        }
-    );
-}
-
-
-/* =========================================
-   OKA BASILINCA
-   ========================================= */
-
-nextArrow.addEventListener(
-    "click",
-    function() {
-
-        if (isAnimating) {
-            return;
-        }
-
-
-        if (
-            currentSpread >=
-            pages.length - 1
-        ) {
-
-            return;
-        }
-
-
-        /* OK PARLASIN */
-
-        nextArrow.classList.remove(
-            "flash"
-        );
-
-        void nextArrow.offsetWidth;
-
-        nextArrow.classList.add(
-            "flash"
-        );
-
-
-        isAnimating = true;
-
-        nextArrow.classList.add(
-            "disabled"
-        );
-
-
-        clearTypingTimers();
-
-
-        /* IKI SAYFA SILINSIN */
-
-        leftPoem.classList.add(
-            "fade-out"
-        );
-
-        rightPoem.classList.add(
-            "fade-out"
-        );
-
-
-        /* YENI SAYFA */
-
-        setTimeout(
-            function() {
-
-                currentSpread++;
-
-
-                leftPoem.classList.remove(
-                    "fade-out"
-                );
-
-                rightPoem.classList.remove(
-                    "fade-out"
-                );
-
-
-                /* DEVAM SOLDAN */
-
-                typeSpread(
-                    currentSpread
-                );
-
-
-                /* YAZI BITINCE OK AKTIF */
-
-                waitForTypingToFinish(
-                    function() {
-
-                        isAnimating = false;
-
-                        nextArrow.classList.remove(
-                            "disabled"
-                        );
-
-                    }
-                );
-
-            },
-            1200
-        );
-
-    }
-);
-
-
-/* =========================================
-   BASLAT
-   ========================================= */
-
-initializeBook();
-
-</script>
-
-</body>
-</html>
