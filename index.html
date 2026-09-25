@@ -1,4 +1,4 @@
-```text
+
 <!DOCTYPE html>
 
 <html lang="tr">
@@ -32,6 +32,7 @@ body {
 
 /* =========================================
    KITAP ALANI
+   MEVCUT YAPI KORUNDU
 ========================================= */
 
 .book-stage {
@@ -56,6 +57,7 @@ body {
 
 /* =========================================
    SAYFALAR
+   HICBIR KONUM / BOYUT DEGISTIRILMEDI
 ========================================= */
 
 .page {
@@ -477,4 +479,581 @@ const measurePoem =
 
 measurePoem.style.position =
     "absolute";
-```
+
+measurePoem.style.visibility =
+    "hidden";
+
+measurePoem.style.pointerEvents =
+    "none";
+
+measurePoem.style.fontFamily =
+    '"Caveat", cursive';
+
+measurePoem.style.fontSize =
+    "11pt";
+
+measurePoem.style.fontWeight =
+    "500";
+
+measurePoem.style.lineHeight =
+    "1.55";
+
+measurePoem.style.whiteSpace =
+    "nowrap";
+
+document.body.appendChild(
+    measurePoem
+);
+
+
+/* =========================================
+   GENISLIK OLCE
+========================================= */
+
+function measureTextWidth(text) {
+
+    measurePoem.textContent =
+        text;
+
+    return measurePoem
+        .getBoundingClientRect()
+        .width;
+}
+
+
+/* =========================================
+   SIIRI GERCEK SAYFA GENISLIGINE GORE
+   SATIRLARA AYIR
+========================================= */
+
+function getWrappedLines() {
+
+    const availableWidth =
+        document.querySelector(
+            ".left-page .page-content"
+        ).getBoundingClientRect().width;
+
+    const rawLines =
+        poemText.split("\n");
+
+    const result = [];
+
+    for (
+        const rawLine of rawLines
+    ) {
+
+        if (
+            rawLine.trim() === ""
+        ) {
+
+            result.push("");
+
+            continue;
+        }
+
+        const words =
+            rawLine.split(/\s+/);
+
+        let currentLine = "";
+
+        for (
+            const word of words
+        ) {
+
+            const testLine =
+                currentLine
+                    ? currentLine +
+                      " " +
+                      word
+                    : word;
+
+            if (
+                measureTextWidth(
+                    testLine
+                ) <=
+                availableWidth
+            ) {
+
+                currentLine =
+                    testLine;
+
+            } else {
+
+                if (
+                    currentLine
+                ) {
+
+                    result.push(
+                        currentLine
+                    );
+                }
+
+                currentLine =
+                    word;
+            }
+        }
+
+        if (
+            currentLine
+        ) {
+
+            result.push(
+                currentLine
+            );
+        }
+    }
+
+    return result;
+}
+
+
+/* =========================================
+   SAYFALARA BOL
+   DUZELTILEN KISIM:
+   SIIR KUTUSUNUN DEGIL,
+   SAYFA ICERIGININ YUKSEKLIGI OLCULUYOR
+========================================= */
+
+function buildPages() {
+
+    const lines =
+        getWrappedLines();
+
+    const pageContent =
+        document.querySelector(
+            ".left-page .page-content"
+        );
+
+    const pageRect =
+        pageContent.getBoundingClientRect();
+
+    const test =
+        document.createElement("div");
+
+    test.style.position =
+        "absolute";
+
+    test.style.visibility =
+        "hidden";
+
+    test.style.pointerEvents =
+        "none";
+
+    test.style.width =
+        pageRect.width + "px";
+
+    test.style.fontFamily =
+        '"Caveat", cursive';
+
+    test.style.fontSize =
+        "11pt";
+
+    test.style.fontWeight =
+        "500";
+
+    test.style.lineHeight =
+        "1.55";
+
+    test.style.whiteSpace =
+        "pre-wrap";
+
+    test.textContent =
+        "A";
+
+    document.body.appendChild(
+        test
+    );
+
+    const lineHeight =
+        test.getBoundingClientRect().height;
+
+    test.remove();
+
+    /*
+       Sayfanin gercek kullanilabilir
+       yuksekligi burada hesaplaniyor.
+    */
+
+    const pageHeight =
+        pageRect.height;
+
+    const linesPerPage =
+        Math.max(
+            1,
+            Math.floor(
+                pageHeight /
+                lineHeight
+            )
+        );
+
+    const pages = [];
+
+    for (
+        let i = 0;
+        i < lines.length;
+        i += linesPerPage
+    ) {
+
+        pages.push(
+            lines.slice(
+                i,
+                i + linesPerPage
+            )
+        );
+    }
+
+    return pages;
+}
+
+
+/* =========================================
+   DURUM
+========================================= */
+
+let pages = [];
+
+let pageIndex = 0;
+
+let stageState = "left";
+
+let animating = false;
+
+
+/* =========================================
+   SAYFAYA METIN HAZIRLA
+========================================= */
+
+function preparePage(
+    element,
+    lines
+) {
+
+    element.textContent =
+        lines.join("\n");
+
+    element.style.opacity =
+        "0";
+}
+
+
+/* =========================================
+   YAVASCA GOSTER
+========================================= */
+
+function fadeIn(element) {
+
+    element.style.opacity =
+        "0";
+
+    requestAnimationFrame(() => {
+
+        requestAnimationFrame(() => {
+
+            element.style.opacity =
+                "1";
+
+        });
+
+    });
+}
+
+
+/* =========================================
+   YAVASCA KAYBET
+========================================= */
+
+function fadeOut(element) {
+
+    element.style.opacity =
+        "0";
+}
+
+
+/* =========================================
+   ILK DURUM
+========================================= */
+
+function startBook() {
+
+    pages =
+        buildPages();
+
+    pageIndex = 0;
+
+    stageState = "left";
+
+    leftPage.classList.remove(
+        "blank-page"
+    );
+
+    rightPage.classList.remove(
+        "blank-page"
+    );
+
+    leftPoem.textContent =
+        pages[0]
+            ? pages[0].join("\n")
+            : "";
+
+    rightPoem.textContent =
+        "";
+
+    leftPoem.style.opacity =
+        "0";
+
+    rightPoem.style.opacity =
+        "0";
+}
+
+
+/* =========================================
+   SAG OK
+========================================= */
+
+async function nextPage() {
+
+    if (animating) {
+        return;
+    }
+
+    animating = true;
+
+
+    /* -------------------------------------
+       1. DURUM
+       ILK OK -> SOL SAYFA
+    ------------------------------------- */
+
+    if (
+        stageState === "left"
+    ) {
+
+        leftPoem.textContent =
+            pages[pageIndex]
+                ? pages[pageIndex].join("\n")
+                : "";
+
+        fadeIn(leftPoem);
+
+        stageState =
+            "right";
+
+        await wait(1900);
+
+        animating = false;
+
+        return;
+    }
+
+
+    /* -------------------------------------
+       2. DURUM
+       IKINCI OK -> SAG SAYFA
+    ------------------------------------- */
+
+    if (
+        stageState === "right"
+    ) {
+
+        if (
+            pageIndex + 1 <
+            pages.length
+        ) {
+
+            rightPoem.textContent =
+                pages[
+                    pageIndex + 1
+                ].join("\n");
+
+            fadeIn(rightPoem);
+
+            stageState =
+                "spread";
+
+            await wait(1900);
+
+            animating = false;
+
+            return;
+        }
+
+        stageState =
+            "spread";
+
+        animating = false;
+
+        return;
+    }
+
+
+    /* -------------------------------------
+       3. DURUM
+       IKI SAYFA DOLU
+       IKISI BIRDEN YAVASCA SILINIR
+    ------------------------------------- */
+
+    if (
+        stageState === "spread"
+    ) {
+
+        fadeOut(leftPoem);
+        fadeOut(rightPoem);
+
+        /*
+           1.8 saniye:
+           iki sayfanin tamamen
+           kaybolmasi
+        */
+
+        await wait(1800);
+
+        /*
+           Iki sayfa tamamen
+           kaybolduktan sonra
+           2 saniye BOS BEKLE.
+        */
+
+        await wait(2000);
+
+        /*
+           Simdi bir sonraki
+           sayfa cifti.
+        */
+
+        pageIndex += 2;
+
+        leftPoem.textContent =
+            pages[pageIndex]
+                ? pages[pageIndex].join("\n")
+                : "";
+
+        rightPoem.textContent =
+            "";
+
+        rightPoem.style.opacity =
+            "0";
+
+        if (
+            pageIndex <
+            pages.length
+        ) {
+
+            /*
+               Yeni siir bolumu
+               tekrar SOL SAYFADA
+               yavasca gorunur.
+            */
+
+            fadeIn(leftPoem);
+
+            stageState =
+                "right";
+
+        } else {
+
+            leftPoem.textContent =
+                "";
+
+            rightPoem.textContent =
+                "";
+
+            stageState =
+                "finished";
+        }
+
+        await wait(1900);
+
+        animating = false;
+
+        return;
+    }
+
+
+    /* -------------------------------------
+       SIIR BITTI
+    ------------------------------------- */
+
+    if (
+        stageState === "finished"
+    ) {
+
+        animating = false;
+
+        return;
+    }
+}
+
+
+/* =========================================
+   SOL OK
+========================================= */
+
+function previousPage() {
+
+    /*
+       Su asamada sol ok
+       akis degistirmiyor.
+    */
+
+}
+
+
+/* =========================================
+   BEKLE
+========================================= */
+
+function wait(ms) {
+
+    return new Promise(
+        resolve =>
+            setTimeout(
+                resolve,
+                ms
+            )
+    );
+}
+
+
+/* =========================================
+   TAM EKRAN
+========================================= */
+
+function toggleFullscreen() {
+
+    if (
+        !document.fullscreenElement
+    ) {
+
+        document.documentElement
+            .requestFullscreen()
+            .catch(() => {});
+
+    } else {
+
+        document
+            .exitFullscreen();
+    }
+}
+
+
+/* =========================================
+   BASLAT
+========================================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        setTimeout(
+            startBook,
+            500
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+
