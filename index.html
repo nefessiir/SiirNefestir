@@ -6,6 +6,11 @@
 
 <title>Şiir Nefestir</title>
 
+<link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
 <style>
 
 * {
@@ -120,7 +125,7 @@ body {
 
 
 /* =========================================================
-   SIIR METIN ALANLARI
+   SIIR METINLERI
 ========================================================= */
 
 .poem-text {
@@ -131,27 +136,49 @@ body {
 
     z-index: 5;
 
-    color: #173c68;
+    /*
+       MAVI DIVIT MUREKKEBI
+    */
+
+    color: #174a82;
+
+    /*
+       EL YAZISI
+    */
 
     font-family:
+        "Caveat",
         "Segoe Print",
         "Bradley Hand",
-        "Comic Sans MS",
         cursive;
 
-    font-size: clamp(15px, 1.35vw, 23px);
+    font-size: clamp(18px, 1.55vw, 27px);
 
-    line-height: 1.9;
+    font-weight: 500;
+
+    line-height: 1.85;
+
+    letter-spacing: 0.01em;
 
     white-space: pre-line;
 
+    /*
+       Hafif murekkep hissi
+    */
+
+    text-shadow:
+        0.25px 0.25px 0 rgba(23, 74, 130, 0.35);
+
     opacity: 1;
 
-    transition: opacity 1.2s ease;
+    transition:
+        opacity 1.2s ease;
 }
 
 
-/* SOL SIIR */
+/* =========================================================
+   SOL SIIR
+========================================================= */
 
 .left-poem {
     left: 23%;
@@ -160,7 +187,9 @@ body {
 }
 
 
-/* SAG SIIR */
+/* =========================================================
+   SAG SIIR
+========================================================= */
 
 .right-poem {
     left: 53%;
@@ -198,8 +227,10 @@ body {
     color: rgba(255, 255, 255, 0.85);
 
     font-family: Arial, sans-serif;
+
     font-size: 38px;
     font-weight: 300;
+
     line-height: 1;
 
     cursor: pointer;
@@ -217,22 +248,25 @@ body {
         transform 0.2s ease;
 }
 
+
 .page-arrow:hover {
     color: #fff;
 }
 
 
 /* =========================================================
-   OK ANIMASYON SIRASINDA KAPALI
+   OK ANIMASYON SIRASINDA
 ========================================================= */
 
 .page-arrow.disabled {
     pointer-events: none;
+
     opacity: 0.35;
 }
 
 </style>
 </head>
+
 
 <body>
 
@@ -240,7 +274,10 @@ body {
 
     <div class="book-stage">
 
-        <!-- ARKA PLAN -->
+
+        <!-- =================================================
+             ARKA PLAN
+        ================================================== -->
 
         <img
             class="book-background"
@@ -249,7 +286,9 @@ body {
         >
 
 
-        <!-- SABIT SAG SAYFA -->
+        <!-- =================================================
+             SABIT SAG SAYFA
+        ================================================== -->
 
         <img
             class="right-page"
@@ -258,7 +297,9 @@ body {
         >
 
 
-        <!-- SABIT SOL SAYFA -->
+        <!-- =================================================
+             SABIT SOL SAYFA
+        ================================================== -->
 
         <img
             class="left-page"
@@ -274,12 +315,10 @@ body {
         <div
             id="leftPoem"
             class="poem-text left-poem"
-        >
-            ŞİİR METİNLERİ
-            AL BENİ
-            YE BENİ
-            OKU BENİ...
-        </div>
+        >ŞİİR METİNLERİ
+AL BENİ
+YE BENİ
+OKU BENİ...</div>
 
 
         <!-- =================================================
@@ -289,12 +328,10 @@ body {
         <div
             id="rightPoem"
             class="poem-text right-poem"
-        >
-            ŞİİR METİNLERİ
-            ALDIM SENİ
-            YEDİM SENİ
-            OKUDUM SENİ...
-        </div>
+        >ŞİİR METİNLERİ
+ALDIM SENİ
+YEDİM SENİ
+OKUDUM SENİ...</div>
 
 
         <!-- =================================================
@@ -309,6 +346,7 @@ body {
             ›
         </div>
 
+
     </div>
 
 </div>
@@ -317,12 +355,17 @@ body {
 <script>
 
 /* =========================================================
-   SIIRLER
+   SIIR ELEMANLARI
 ========================================================= */
 
-const leftPoem = document.getElementById("leftPoem");
-const rightPoem = document.getElementById("rightPoem");
-const nextArrow = document.getElementById("nextArrow");
+const leftPoem =
+    document.getElementById("leftPoem");
+
+const rightPoem =
+    document.getElementById("rightPoem");
+
+const nextArrow =
+    document.getElementById("nextArrow");
 
 
 /* =========================================================
@@ -333,7 +376,7 @@ let isAnimating = false;
 
 
 /* =========================================================
-   SAG OKA BASILINCA
+   SAG OK
 ========================================================= */
 
 nextArrow.addEventListener("click", function () {
@@ -348,25 +391,27 @@ nextArrow.addEventListener("click", function () {
 
 
     /*
-     * 1
-     * SOL VE SAG SIIR YAVASCA KAYBOLUYOR
-     */
+       1
+       MEVCUT SIIRLER YAVASCA KAYBOLUYOR
+    */
 
     leftPoem.classList.add("fade-out");
+
     rightPoem.classList.add("fade-out");
 
 
     /*
-     * 2
-     * KAYBOLMA TAMAMLANDIKTAN SONRA
-     * YENI METINLERI YERLESTIRIYORUZ
-     */
+       2
+       KAYBOLMA TAMAMLANDIKTAN SONRA
+       YENI METINLERI YERLESTIRIYORUZ
+    */
 
     setTimeout(function () {
 
+
         /*
-         * SAGDAKI SIIR SOLA GECIYOR
-         */
+           SAGDAKI SIIR SOL SAYFAYA GECIYOR
+        */
 
         leftPoem.innerHTML =
             "ŞİİR METİNLERİ<br>" +
@@ -376,8 +421,8 @@ nextArrow.addEventListener("click", function () {
 
 
         /*
-         * SIIRIN DEVAMI SAG SAYFAYA GELIYOR
-         */
+           SIIRIN DEVAMI SAG SAYFAYA GELIYOR
+        */
 
         rightPoem.innerHTML =
             "SİİRDİM<br>" +
@@ -387,18 +432,19 @@ nextArrow.addEventListener("click", function () {
 
 
         /*
-         * 3
-         * YENI METINLERI GORUNUR YAPIYORUZ
-         */
+           3
+           YENI SIIRLER YAVASCA BELIRIYOR
+        */
 
         leftPoem.classList.remove("fade-out");
+
         rightPoem.classList.remove("fade-out");
 
 
         /*
-         * 4
-         * ANIMASYON BITINCE OK YENIDEN AKTIF
-         */
+           4
+           ANIMASYON TAMAMLANDI
+        */
 
         setTimeout(function () {
 
