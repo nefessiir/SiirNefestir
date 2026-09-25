@@ -132,12 +132,22 @@ body {
 }
 
 
-/* DONEN SAYFA */
+/*
+==================================================
+DONEN SAYFA
+==================================================
+
+Donus ekseni sol sayfanin sag kenari:
+
+19% + 34% = 53%
+
+Bu eksen SABIT.
+*/
 
 .turning-page-wrap {
     position: absolute;
 
-    left: 48.828125%;
+    left: 53%;
     top: 13.2%;
 
     width: 38.411458%;
@@ -154,19 +164,29 @@ body {
 
     pointer-events: none;
 
-    will-change: transform, left, width;
+    will-change: transform;
 }
 
 
-/* DONEN SAYFA */
+/*
+DONEN GORSEL
+
+Baslangicta:
+
+53% - 4.171875% = 48.828125%
+
+Yani tam olarak sag sayfanin baslangic noktasi.
+*/
 
 .turning-page {
     position: relative;
 
-    left: 0;
+    left: -10.861%;
+
     top: 0;
 
     width: 100%;
+
     height: auto;
 
     display: block;
@@ -176,6 +196,8 @@ body {
     transform-style: preserve-3d;
 
     backface-visibility: visible;
+
+    will-change: left, width;
 }
 
 
@@ -232,7 +254,11 @@ body {
 }
 
 
-/* DONUS */
+/*
+==================================================
+DONUS
+==================================================
+*/
 
 .turning-page-wrap.animate {
     animation:
@@ -243,85 +269,158 @@ body {
 }
 
 
+/*
+==================================================
+SAYFA OLCU / KONUM DONUSUMU
+==================================================
+
+Sayfa:
+
+SAG:
+left  = 48.828125%
+width = 38.411458%
+
+SOL:
+left  = 19%
+width = 34%
+
+Donus ekseni:
+53%
+*/
+
+.turning-page-wrap.animate .turning-page {
+    animation:
+        pageShape
+        1.2s
+        cubic-bezier(0.22, 0.61, 0.36, 1)
+        forwards;
+}
+
+
+/*
+==================================================
+DONEN SAYFA
+==================================================
+*/
+
 @keyframes pageTurn {
 
-    /*
-     * SAG SAYFA
-     */
-
     0% {
-        left: 48.828125%;
-        width: 38.411458%;
-
         transform:
             rotateY(0deg);
     }
 
-
     15% {
-        left: 47%;
-        width: 38.411458%;
-
         transform:
             rotateY(-28deg);
     }
 
-
     30% {
-        left: 44%;
-        width: 38.411458%;
-
         transform:
             rotateY(-60deg);
     }
 
-
     45% {
-        left: 40%;
-        width: 38.411458%;
-
         transform:
             rotateY(-92deg);
     }
 
-
     60% {
-        left: 34%;
-        width: 37%;
-
         transform:
             rotateY(-120deg);
     }
 
-
     75% {
-        left: 27%;
-        width: 35.5%;
-
         transform:
             rotateY(-148deg);
     }
 
-
     88% {
-        left: 22%;
-        width: 34.5%;
-
         transform:
             rotateY(-168deg);
     }
 
-
-    /*
-     * SOL SAYFA
-     */
-
     100% {
-        left: 19%;
-        width: 34%;
-
         transform:
             rotateY(-180deg);
+    }
+}
+
+
+/*
+==================================================
+SAYFANIN SAGDAN SOLA GECISI
+==================================================
+*/
+
+@keyframes pageShape {
+
+    0% {
+
+        left: -10.861%;
+
+        width: 100%;
+    }
+
+
+    15% {
+
+        left: -9%;
+
+        width: 99%;
+    }
+
+
+    30% {
+
+        left: -7%;
+
+        width: 97%;
+    }
+
+
+    45% {
+
+        left: -5%;
+
+        width: 94%;
+    }
+
+
+    60% {
+
+        left: -3%;
+
+        width: 91%;
+    }
+
+
+    75% {
+
+        left: -1.5%;
+
+        width: 88%;
+    }
+
+
+    88% {
+
+        left: -0.5%;
+
+        width: 87%;
+    }
+
+
+    100% {
+
+        /*
+         * Sol sayfanin sag kenari
+         * tam olarak donus eksenine oturur.
+         */
+
+        left: 0;
+
+        width: 88.515%;
     }
 }
 
@@ -443,7 +542,7 @@ function turnPage() {
 
 
     /*
-     * Donen sayfayi sadece tiklandiginda gorunur yap.
+     * Donen sayfayi tiklandiginda gorunur yap.
      */
 
     turningPageWrap.style.display = "block";
@@ -451,6 +550,10 @@ function turnPage() {
 
     nextArrow.style.pointerEvents = "none";
 
+
+    /*
+     * Donusu baslat.
+     */
 
     turningPageWrap.classList.add("animate");
 
@@ -478,7 +581,6 @@ function turnPage() {
              */
 
             rightPageCover.style.display = "block";
-
 
         },
         { once: true }
