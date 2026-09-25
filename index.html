@@ -30,7 +30,10 @@ body {
     justify-content: center;
 }
 
-/* ANA KITAP */
+
+/* =========================================================
+   ANA KITAP
+   ========================================================= */
 
 .book-stage {
     position: relative;
@@ -44,7 +47,10 @@ body {
     background-position: center;
 }
 
-/* SAYFALAR */
+
+/* =========================================================
+   SAYFALAR
+   ========================================================= */
 
 .page {
     position: absolute;
@@ -55,6 +61,7 @@ body {
 
     pointer-events: none;
 }
+
 
 /* SAG SAYFA */
 
@@ -67,6 +74,7 @@ body {
 
     background-image: url("sag_sayfa_bos.png");
 }
+
 
 /* SOL SAYFA */
 
@@ -82,24 +90,22 @@ body {
     transform: scaleX(-1);
 }
 
-/* SIIR ALANLARI */
+
+/* =========================================================
+   SIIR ALANLARI
+   ========================================================= */
 
 .poem {
     position: absolute;
 
     /*
-     * Alt bitis noktasi eski haliyle korunuyor.
-     * Baslangic yarim satir yukari alindi.
+     * Baslangic yarim satir yukarida.
+     * Alt bitis noktasi korunuyor.
      */
 
     top: calc(23% - 0.5em);
 
     width: 25%;
-
-    /*
-     * Alt sinir degismiyor.
-     * Top yukari alindigi icin yukseklik ayni miktarda artiyor.
-     */
 
     height: calc(61% + 0.5em);
 
@@ -116,7 +122,7 @@ body {
     font-weight: 500;
 
     /*
-     * Yeni puntoya uygun satir araligi
+     * Satir araligi
      */
 
     line-height: 1.55;
@@ -145,13 +151,15 @@ body {
     left: 53%;
 }
 
-/* YAZAN TUYLU KALEM */
+
+/* =========================================================
+   YAZAN TUYLU KALEM
+   ========================================================= */
 
 .writing-quill {
     position: absolute;
 
     width: 78px;
-
     height: auto;
 
     pointer-events: none;
@@ -170,7 +178,10 @@ body {
         drop-shadow(0 1px 1px rgba(0,0,0,0.18));
 }
 
-/* KOSENIN ALTINDAKI MUREKKEP + KALEM */
+
+/* =========================================================
+   SOL ALTTAKI MUREKKEP + KALEM
+   ========================================================= */
 
 .corner-quill {
     position: absolute;
@@ -189,10 +200,17 @@ body {
         drop-shadow(0 2px 2px rgba(0,0,0,0.2));
 }
 
-/* OK */
+
+/* =========================================================
+   SAGDAKI ILERLEME OKU
+   ========================================================= */
 
 .next-arrow {
     position: absolute;
+
+    /*
+     * Sag sayfanin hemen yani.
+     */
 
     right: 1.5%;
     top: 50%;
@@ -225,7 +243,13 @@ body {
         transform 0.2s ease;
 }
 
+
+/*
+ * Uzerine gelince hafif belirginlesir.
+ */
+
 .next-arrow:hover {
+
     color: rgba(255,255,255,0.92);
 
     transform:
@@ -233,20 +257,31 @@ body {
         scale(1.05);
 }
 
+
+/*
+ * Basinca kisa beyaz isik.
+ */
+
 .next-arrow.arrow-flash {
-    animation: arrowFlash 0.38s ease;
+
+    animation:
+        arrowFlash 0.38s ease;
 }
+
 
 @keyframes arrowFlash {
 
     0% {
-        color: rgba(255,255,255,0.68);
+
+        color:
+            rgba(255,255,255,0.68);
 
         text-shadow:
             0 0 0 rgba(255,255,255,0);
     }
 
     45% {
+
         color: #fff;
 
         text-shadow:
@@ -256,18 +291,26 @@ body {
     }
 
     100% {
-        color: rgba(255,255,255,0.68);
+
+        color:
+            rgba(255,255,255,0.68);
 
         text-shadow:
             0 0 0 rgba(255,255,255,0);
     }
 }
 
-/* SAYFA GECISI */
+
+/* =========================================================
+   SAYFA GECISI
+   ========================================================= */
 
 .page-fade {
-    animation: pageFade 0.55s ease;
+
+    animation:
+        pageFade 0.55s ease;
 }
+
 
 @keyframes pageFade {
 
@@ -284,9 +327,13 @@ body {
     }
 }
 
-/* GIZLI OLCUM ALANI */
+
+/* =========================================================
+   GIZLI OLCUM ALANI
+   ========================================================= */
 
 #measurePoem {
+
     position: absolute;
 
     left: -100000px;
@@ -309,20 +356,26 @@ body {
 }
 
 
-/* KUCUK EKRAN */
+/* =========================================================
+   KUCUK EKRAN
+   ========================================================= */
 
 @media (max-width: 700px) {
 
     .next-arrow {
+
         right: 0.5%;
+
         font-size: 55px;
     }
 
     .corner-quill {
+
         width: 105px;
     }
 
     .writing-quill {
+
         width: 60px;
     }
 }
@@ -330,28 +383,55 @@ body {
 </style>
 </head>
 
+
 <body>
 
-<div class="book-stage" id="bookStage">
+<div
+    class="book-stage"
+    id="bookStage"
+>
 
-    <div class="page left-page"></div>
-    <div class="page right-page"></div>
+
+    <!-- SOL SAYFA -->
+
+    <div
+        class="page left-page">
+    </div>
+
+
+    <!-- SAG SAYFA -->
+
+    <div
+        class="page right-page">
+    </div>
+
+
+    <!-- SOL SIIR -->
 
     <div
         class="poem left-poem"
         id="leftPoem">
     </div>
 
+
+    <!-- SAG SIIR -->
+
     <div
         class="poem right-poem"
         id="rightPoem">
     </div>
+
+
+    <!-- SOL ALT MUREKKEP VE KALEM -->
 
     <img
         src="murekkep_kalem.png"
         class="corner-quill"
         alt=""
     >
+
+
+    <!-- YAZIYI CEKEN TUYLU KALEM -->
 
     <img
         src="yazan_kalem3.png"
@@ -360,6 +440,9 @@ body {
         alt=""
     >
 
+
+    <!-- SAGDAKI ILERLEME OKU -->
+
     <button
         class="next-arrow"
         id="nextArrow"
@@ -367,7 +450,12 @@ body {
         ›
     </button>
 
-    <div id="measurePoem"></div>
+
+    <!-- GIZLI OLCUM ALANI -->
+
+    <div
+        id="measurePoem">
+    </div>
 
 </div>
 
@@ -375,13 +463,27 @@ body {
 <script>
 
 /* =========================================================
-   SIIRLER
+   TEST SIIRLERI
+   =========================================================
+   
+   Burasi sadece TEST icindir.
+   
+   1. uzun test siiri
+   2. Abbas
+   
+   Bunlar arsive alinmaz.
    ========================================================= */
 
 const poems = [
 
     {
-        title: "",
+        title: "Test Siiri",
+        text:
+`BURAYA UZUN TEST SIIRINI YAPISTIR.`
+    },
+
+    {
+        title: "Abbas",
         text:
 `Haydi Abbas, vakit tamam;
 Akşam diyordun işte oldu akşam.
@@ -477,7 +579,8 @@ function prepareMeasureArea() {
         style.textShadow;
 
     measurePoem.style.width =
-        leftPoem.getBoundingClientRect().width + "px";
+        leftPoem.getBoundingClientRect().width
+        + "px";
 
     measurePoem.style.padding =
         style.padding;
@@ -495,11 +598,15 @@ function measureTextHeight(text) {
 
     prepareMeasureArea();
 
-    measurePoem.style.height = "auto";
+    measurePoem.style.height =
+        "auto";
 
-    measurePoem.textContent = text;
+    measurePoem.textContent =
+        text;
 
-    return measurePoem.getBoundingClientRect().height;
+    return measurePoem
+        .getBoundingClientRect()
+        .height;
 }
 
 
@@ -511,13 +618,18 @@ function getWrappedLines(text) {
 
     prepareMeasureArea();
 
-    const paragraphs = text.split("\n");
+    const paragraphs =
+        text.split("\n");
 
     const result = [];
 
-    for (const paragraph of paragraphs) {
+    for (
+        const paragraph of paragraphs
+    ) {
 
-        if (paragraph.trim() === "") {
+        if (
+            paragraph.trim() === ""
+        ) {
 
             result.push("");
 
@@ -529,37 +641,52 @@ function getWrappedLines(text) {
 
         let currentLine = "";
 
-        for (const word of words) {
+        for (
+            const word of words
+        ) {
 
             const candidate =
                 currentLine === ""
                     ? word
-                    : currentLine + " " + word;
+                    : currentLine
+                        + " "
+                        + word;
 
             measurePoem.textContent =
                 candidate;
 
             const candidateHeight =
-                measurePoem.getBoundingClientRect().height;
+                measurePoem
+                    .getBoundingClientRect()
+                    .height;
 
             if (
                 currentLine !== "" &&
-                candidateHeight > getPageHeight()
+                candidateHeight >
+                getPageHeight()
             ) {
 
-                result.push(currentLine);
+                result.push(
+                    currentLine
+                );
 
-                currentLine = word;
+                currentLine =
+                    word;
 
             } else {
 
-                currentLine = candidate;
+                currentLine =
+                    candidate;
             }
         }
 
-        if (currentLine !== "") {
+        if (
+            currentLine !== ""
+        ) {
 
-            result.push(currentLine);
+            result.push(
+                currentLine
+            );
         }
     }
 
@@ -573,7 +700,9 @@ function getWrappedLines(text) {
 
 function getPageHeight() {
 
-    return leftPoem.getBoundingClientRect().height;
+    return leftPoem
+        .getBoundingClientRect()
+        .height;
 }
 
 
@@ -592,7 +721,9 @@ function splitLinesIntoPages(lines) {
 
     let currentPage = [];
 
-    for (const line of lines) {
+    for (
+        const line of lines
+    ) {
 
         const candidateLines =
             currentPage.concat([line]);
@@ -601,11 +732,14 @@ function splitLinesIntoPages(lines) {
             candidateLines.join("\n");
 
         const candidateHeight =
-            measureTextHeight(candidateText);
+            measureTextHeight(
+                candidateText
+            );
 
         if (
             currentPage.length > 0 &&
-            candidateHeight > pageHeight + 1
+            candidateHeight >
+            pageHeight + 1
         ) {
 
             pages.push(
@@ -620,7 +754,9 @@ function splitLinesIntoPages(lines) {
         }
     }
 
-    if (currentPage.length > 0) {
+    if (
+        currentPage.length > 0
+    ) {
 
         pages.push(
             currentPage.join("\n")
@@ -647,21 +783,18 @@ function createPoemPages(text) {
 
 
 /* =========================================================
-   KALEMI KELIMENIN BASINA GOTUR
+   KALEMI GERCEK HARFIN ONUNE GOTUR
    ========================================================= */
 
-function moveWritingQuillToWordStart(element) {
+function moveWritingQuillToCharacter(
+    element,
+    startIndex
+) {
 
     if (!element) {
 
-        writingQuill.style.opacity = "0";
-
-        return;
-    }
-
-    if (!element.textContent) {
-
-        writingQuill.style.opacity = "0";
+        writingQuill.style.opacity =
+            "0";
 
         return;
     }
@@ -671,31 +804,35 @@ function moveWritingQuillToWordStart(element) {
 
     if (!textNode) {
 
-        writingQuill.style.opacity = "0";
+        writingQuill.style.opacity =
+            "0";
 
         return;
     }
 
-    /*
-     * Kalem metnin sonuna degil,
-     * o anda yazilacak kelimenin
-     * baslangic noktasina konuluyor.
-     */
+    if (
+        startIndex < 0 ||
+        startIndex >=
+        textNode.textContent.length
+    ) {
+
+        writingQuill.style.opacity =
+            "0";
+
+        return;
+    }
 
     const range =
         document.createRange();
 
-    const start =
-        textNode.textContent.length;
-
     range.setStart(
         textNode,
-        start
+        startIndex
     );
 
     range.setEnd(
         textNode,
-        start
+        startIndex + 1
     );
 
     const rect =
@@ -704,9 +841,9 @@ function moveWritingQuillToWordStart(element) {
     const stageRect =
         stage.getBoundingClientRect();
 
+
     /*
-     * Kalemin ucu kelimenin baslangicina
-     * yakin olacak.
+     * Kalem kelimenin tam onunde.
      */
 
     writingQuill.style.left =
@@ -716,6 +853,11 @@ function moveWritingQuillToWordStart(element) {
             8
         ) + "px";
 
+
+    /*
+     * Kalemin ucu satir hizasinda.
+     */
+
     writingQuill.style.top =
         (
             rect.top -
@@ -723,7 +865,9 @@ function moveWritingQuillToWordStart(element) {
             45
         ) + "px";
 
-    writingQuill.style.opacity = "1";
+
+    writingQuill.style.opacity =
+        "1";
 }
 
 
@@ -737,51 +881,109 @@ function typeWord(
     token
 ) {
 
-    return new Promise(resolve => {
+    return new Promise(
+        resolve => {
 
-        let index = 0;
-
-        function writeNextCharacter() {
-
-            if (
-                token !== activeTypingToken
-            ) {
-
-                resolve(false);
-
-                return;
-            }
+            let index = 0;
 
             /*
-             * Kelimenin basinda kalemi tutuyoruz.
+             * Kelimenin ilk harfinin
+             * metin icindeki yeri.
              */
 
-            moveWritingQuillToWordStart(
+            const wordStart =
                 element
-            );
+                    .textContent
+                    .length;
 
-            if (
-                index >= word.length
-            ) {
 
-                resolve(true);
+            function writeNextCharacter() {
 
-                return;
+                if (
+                    token !==
+                    activeTypingToken
+                ) {
+
+                    resolve(false);
+
+                    return;
+                }
+
+
+                /*
+                 * Kelimenin ilk harfini yaz.
+                 */
+
+                if (
+                    index === 0
+                ) {
+
+                    element.textContent +=
+                        word[index];
+
+
+                    /*
+                     * Ilk harf DOM'a girdikten
+                     * sonra gercek koordinatini
+                     * aliyoruz.
+                     */
+
+                    moveWritingQuillToCharacter(
+                        element,
+                        wordStart
+                    );
+
+                    index++;
+
+                    setTimeout(
+                        writeNextCharacter,
+                        55
+                    );
+
+                    return;
+                }
+
+
+                /*
+                 * Kelimenin kalan harfleri.
+                 */
+
+                if (
+                    index >= word.length
+                ) {
+
+                    resolve(true);
+
+                    return;
+                }
+
+
+                element.textContent +=
+                    word[index];
+
+
+                /*
+                 * Kalem kelimenin basinda
+                 * kalmaya devam ediyor.
+                 */
+
+                moveWritingQuillToCharacter(
+                    element,
+                    wordStart
+                );
+
+                index++;
+
+                setTimeout(
+                    writeNextCharacter,
+                    55
+                );
             }
 
-            element.textContent +=
-                word[index];
 
-            index++;
-
-            setTimeout(
-                writeNextCharacter,
-                55
-            );
+            writeNextCharacter();
         }
-
-        writeNextCharacter();
-    });
+    );
 }
 
 
@@ -797,47 +999,56 @@ async function typeText(
 
     element.textContent = "";
 
-    /*
-     * Metni kelime ve bosluklari koruyacak
-     * sekilde parcalayacagiz.
-     */
-
     const parts =
-        text.match(/\S+\s*|\s+/g) || [];
+        text.match(/\S+\s*|\s+/g)
+        || [];
 
-    for (const part of parts) {
+
+    for (
+        const part of parts
+    ) {
 
         if (
-            token !== activeTypingToken
+            token !==
+            activeTypingToken
         ) {
 
             return false;
         }
 
+
         /*
-         * Sadece bosluksa dogrudan ekle.
+         * Sadece bosluksa direkt ekle.
          */
 
-        if (/^\s+$/.test(part)) {
+        if (
+            /^\s+$/.test(part)
+        ) {
 
-            element.textContent += part;
+            element.textContent +=
+                part;
 
             continue;
         }
 
-        /*
-         * Kelimenin kendisini ayir.
-         */
 
         const match =
-            part.match(/^(\S+)(\s*)$/);
+            part.match(
+                /^(\S+)(\s*)$/
+            );
+
 
         if (!match) {
             continue;
         }
 
-        const word = match[1];
-        const spaces = match[2];
+
+        const word =
+            match[1];
+
+        const spaces =
+            match[2];
+
 
         const finished =
             await typeWord(
@@ -846,16 +1057,21 @@ async function typeText(
                 token
             );
 
+
         if (!finished) {
             return false;
         }
 
+
         /*
-         * Kelime bittikten sonra bosluk ekle.
+         * Kelime bittikten sonra
+         * bosluklari ekle.
          */
 
-        element.textContent += spaces;
+        element.textContent +=
+            spaces;
     }
+
 
     return true;
 }
@@ -873,12 +1089,15 @@ async function typePage(
 
     if (!text) {
 
-        element.textContent = "";
+        element.textContent =
+            "";
 
-        writingQuill.style.opacity = "0";
+        writingQuill.style.opacity =
+            "0";
 
         return true;
     }
+
 
     return await typeText(
         element,
@@ -897,18 +1116,30 @@ async function typeSpread() {
     const token =
         ++activeTypingToken;
 
-    activeTypingFinished = false;
+    activeTypingFinished =
+        false;
 
-    writingQuill.style.opacity = "0";
+    writingQuill.style.opacity =
+        "0";
 
-    leftPoem.textContent = "";
-    rightPoem.textContent = "";
+    leftPoem.textContent =
+        "";
+
+    rightPoem.textContent =
+        "";
+
 
     const leftText =
-        poemPages[currentSpreadIndex] || "";
+        poemPages[
+            currentSpreadIndex
+        ] || "";
+
 
     const rightText =
-        poemPages[currentSpreadIndex + 1] || "";
+        poemPages[
+            currentSpreadIndex + 1
+        ] || "";
+
 
     /*
      * Her spread soldan baslar.
@@ -921,12 +1152,14 @@ async function typeSpread() {
             token
         );
 
+
     if (!leftFinished) {
         return;
     }
 
+
     /*
-     * Sol bittikten sonra saga gec.
+     * Sonra saga devam eder.
      */
 
     const rightFinished =
@@ -936,13 +1169,17 @@ async function typeSpread() {
             token
         );
 
+
     if (!rightFinished) {
         return;
     }
 
-    writingQuill.style.opacity = "0";
 
-    activeTypingFinished = true;
+    writingQuill.style.opacity =
+        "0";
+
+    activeTypingFinished =
+        true;
 }
 
 
@@ -959,12 +1196,15 @@ function prepareCurrentPoem() {
         return;
     }
 
+
     poemPages =
         createPoemPages(
             poem.text
         );
 
-    currentSpreadIndex = 0;
+
+    currentSpreadIndex =
+        0;
 }
 
 
@@ -981,9 +1221,13 @@ async function startPoem(index) {
         return;
     }
 
-    currentPoemIndex = index;
+
+    currentPoemIndex =
+        index;
+
 
     prepareCurrentPoem();
+
 
     await typeSpread();
 }
@@ -995,13 +1239,25 @@ async function startPoem(index) {
 
 async function nextPage() {
 
-    if (movingToNextPage) {
+    if (
+        movingToNextPage
+    ) {
+
         return;
     }
 
-    if (!activeTypingFinished) {
+
+    if (
+        !activeTypingFinished
+    ) {
+
         return;
     }
+
+
+    /*
+     * OK BASINCA ISIK.
+     */
 
     nextArrow.classList.remove(
         "arrow-flash"
@@ -1015,7 +1271,7 @@ async function nextPage() {
 
 
     /*
-     * Ayni siirin devam eden spread'i
+     * AYNI SIIRIN DEVAMI
      */
 
     if (
@@ -1023,7 +1279,9 @@ async function nextPage() {
         < poemPages.length
     ) {
 
-        movingToNextPage = true;
+        movingToNextPage =
+            true;
+
 
         leftPoem.classList.add(
             "page-fade"
@@ -1033,30 +1291,41 @@ async function nextPage() {
             "page-fade"
         );
 
-        setTimeout(async () => {
 
-            leftPoem.classList.remove(
-                "page-fade"
-            );
+        setTimeout(
+            async () => {
 
-            rightPoem.classList.remove(
-                "page-fade"
-            );
+                leftPoem.classList.remove(
+                    "page-fade"
+                );
 
-            currentSpreadIndex += 2;
+                rightPoem.classList.remove(
+                    "page-fade"
+                );
 
-            movingToNextPage = false;
 
-            await typeSpread();
+                currentSpreadIndex +=
+                    2;
 
-        }, 550);
+
+                movingToNextPage =
+                    false;
+
+
+                await typeSpread();
+
+            },
+            550
+        );
+
 
         return;
     }
 
 
     /*
-     * Siir bittiyse sonraki siir
+     * SIIR BITTIYSE
+     * SONRAKI SIIR
      */
 
     if (
@@ -1064,7 +1333,9 @@ async function nextPage() {
         < poems.length
     ) {
 
-        movingToNextPage = true;
+        movingToNextPage =
+            true;
+
 
         leftPoem.classList.add(
             "page-fade"
@@ -1074,29 +1345,36 @@ async function nextPage() {
             "page-fade"
         );
 
-        setTimeout(async () => {
 
-            leftPoem.classList.remove(
-                "page-fade"
-            );
+        setTimeout(
+            async () => {
 
-            rightPoem.classList.remove(
-                "page-fade"
-            );
+                leftPoem.classList.remove(
+                    "page-fade"
+                );
 
-            movingToNextPage = false;
+                rightPoem.classList.remove(
+                    "page-fade"
+                );
 
-            await startPoem(
-                currentPoemIndex + 1
-            );
 
-        }, 550);
+                movingToNextPage =
+                    false;
+
+
+                await startPoem(
+                    currentPoemIndex + 1
+                );
+
+            },
+            550
+        );
     }
 }
 
 
 /* =========================================================
-   OK
+   OKA TIKLAMA
    ========================================================= */
 
 nextArrow.addEventListener(
@@ -1119,17 +1397,22 @@ async function initializeBook() {
         await document.fonts.ready;
     }
 
-    requestAnimationFrame(() => {
 
-        requestAnimationFrame(() => {
+    requestAnimationFrame(
+        () => {
 
-            startPoem(0);
+            requestAnimationFrame(
+                () => {
 
-        });
+                    startPoem(0);
 
-    });
+                }
+            );
 
+        }
+    );
 }
+
 
 initializeBook();
 
