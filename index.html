@@ -6,10 +6,7 @@
 
 <title>Şiir Nefestir</title>
 
-<link
-href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap"
-rel="stylesheet"
->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
@@ -28,28 +25,12 @@ body {
 body {
     background: #111;
     overflow: hidden;
-}
-
-
-/* =================================================
-   KITAP SAHNESI
-   ================================================= */
-
-.page {
-    width: 100vw;
-    height: 100vh;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    overflow: hidden;
 }
 
-
-/* =================================================
-   ARKA PLAN VE SAYFA AYNI OLCEKTE
-   ================================================= */
+/* ANA KITAP */
 
 .book-stage {
     position: relative;
@@ -57,93 +38,63 @@ body {
     width: min(100vw, 150vh);
     height: min(100vh, 66.6667vw);
 
-    overflow: visible;
+    background-image: url("arkaplan0.jpeg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
+/* SAYFALAR */
 
-/* =================================================
-   ARKA PLAN
-   ================================================= */
-
-.book-background {
+.page {
     position: absolute;
 
-    left: 0;
-    top: 0;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
 
-    width: 100%;
-    height: 100%;
-
-    display: block;
-
-    object-fit: fill;
+    pointer-events: none;
 }
 
-
-/* =================================================
-   SABIT SAG SAYFA
-   ================================================= */
+/* SAG SAYFA */
 
 .right-page {
-    position: absolute;
-
     left: 48.828125%;
     top: 13.2%;
 
     width: 38.411458%;
-    height: auto;
+    height: calc(100% - 27.5%);
 
-    display: block;
-
-    pointer-events: none;
-
-    z-index: 2;
+    background-image: url("sag_sayfa_bos.png");
 }
 
-
-/* =================================================
-   SABIT SOL SAYFA
-   ================================================= */
+/* SOL SAYFA */
 
 .left-page {
-    position: absolute;
-
     left: 19%;
     top: 13.2%;
 
     width: 34%;
     height: calc(100% - 27.5%);
 
-    display: block;
-
-    pointer-events: none;
+    background-image: url("sag_sayfa_bos.png");
 
     transform: scaleX(-1);
-
-    z-index: 2;
 }
 
+/* SIIR ALANLARI */
 
-/* =================================================
-   SIIR METINLERI
-   ================================================= */
-
-.poem-text {
+.poem {
     position: absolute;
 
     top: 23%;
+
     width: 25%;
     height: 61%;
 
-    z-index: 5;
+    overflow: hidden;
 
-    color: #174a82;
-
-    font-family:
-        "Caveat",
-        "Segoe Print",
-        "Bradley Hand",
-        cursive;
+    font-family: "Caveat", cursive;
 
     font-size: clamp(17px, 1.35vw, 23px);
 
@@ -151,429 +102,332 @@ body {
 
     line-height: 1.55;
 
-    letter-spacing: 0.01em;
+    letter-spacing: 0;
 
-    white-space: pre-line;
+    color: #174a82;
 
-    overflow: hidden;
+    white-space: pre-wrap;
+
+    word-break: normal;
+
+    overflow-wrap: normal;
 
     text-shadow:
         0.2px 0.2px 0 rgba(23, 74, 130, 0.22);
 
     opacity: 1;
-
-    transition:
-        opacity 1.2s ease;
 }
-
-
-/* =================================================
-   SOL SIIR
-   ================================================= */
 
 .left-poem {
     left: 23%;
-    text-align: left;
 }
-
-
-/* =================================================
-   SAG SIIR
-   ================================================= */
 
 .right-poem {
     left: 53%;
-    text-align: left;
 }
 
-
-/* =================================================
-   SAYFA GECISINDE SILINME
-   ================================================= */
-
-.poem-text.fade-out {
-    opacity: 0;
-}
-
-
-/* =================================================
-   SOL ALTTAKI SABIT KALEM + MUREKKEP
-
-   ONCEKI:
-   +2 CM SAG
-   +2 CM YUKARI
-
-   SIMDI:
-   1 CM SOL
-   1 CM ASAGI
-   ================================================= */
-
-.corner-quill {
-    position: absolute;
-
-    left: calc(1.5% + 1cm);
-
-    bottom: calc(-1% + 1cm);
-
-    width: 140px;
-    height: auto;
-
-    z-index: 6;
-
-    pointer-events: none;
-    user-select: none;
-
-    opacity: 0.96;
-}
-
-
-/* =================================================
-   YAZIYI YAZAN ALTIN TUY KALEM
-   ================================================= */
+/* KALENIN YAZI YAZARKEN KULLANILAN HALI */
 
 .writing-quill {
     position: absolute;
 
     width: 78px;
+
     height: auto;
 
-    z-index: 10;
-
     pointer-events: none;
-    user-select: none;
-
-    opacity: 0;
-
-    transform-origin: 8% 88%;
-
-    transition:
-        left 0.08s linear,
-        top 0.08s linear,
-        opacity 0.25s ease;
-}
-
-
-/* =================================================
-   SAG OK
-   ================================================= */
-
-.page-arrow {
-    position: absolute;
-
-    top: 50%;
-    left: 88%;
-
-    width: 30px;
-    height: 50px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: rgba(255, 255, 255, 0.72);
-
-    font-family: Arial, sans-serif;
-
-    font-size: 38px;
-    font-weight: 300;
-
-    line-height: 1;
-
-    cursor: pointer;
-    user-select: none;
 
     z-index: 20;
 
-    transform: translateY(-50%);
+    opacity: 0;
 
-    text-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.8);
+    transform-origin: center center;
 
     transition:
-        color 0.25s ease,
-        transform 0.25s ease,
-        text-shadow 0.25s ease;
+        left 0.08s linear,
+        top 0.08s linear;
+
+    filter:
+        drop-shadow(0 1px 1px rgba(0,0,0,0.18));
 }
 
+/* SOL ALTTAKI MUREKKEP + KALEM */
 
-/* =================================================
-   OK UZERINE GELINCE
-   ================================================= */
+.corner-quill {
+    position: absolute;
 
-.page-arrow:hover {
+    left: calc(1.5% + 1cm);
+    bottom: calc(-1% + 1cm);
 
-    color: rgba(255, 255, 255, 0.95);
+    width: 140px;
+    height: auto;
+
+    pointer-events: none;
+
+    z-index: 10;
+
+    filter:
+        drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+}
+
+/* OK */
+
+.next-arrow {
+    position: absolute;
+
+    right: 1.5%;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 45px;
+    height: 80px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: rgba(255,255,255,0.68);
+
+    font-family: Arial, sans-serif;
+
+    font-size: 70px;
+    font-weight: 200;
+
+    line-height: 80px;
+
+    cursor: pointer;
+
+    z-index: 50;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.next-arrow:hover {
+    color: rgba(255,255,255,0.92);
 
     transform:
         translateY(-50%)
-        scale(1.08);
-
-    text-shadow:
-        0 0 7px rgba(255, 255, 255, 0.45),
-        0 1px 4px rgba(0, 0, 0, 0.8);
+        scale(1.05);
 }
 
-
-/* =================================================
-   OKA BASILDIGINDA PARLAMA
-   ================================================= */
-
-.page-arrow.flash {
-
-    animation:
-        arrowFlash 0.55s ease;
+.next-arrow.arrow-flash {
+    animation: arrowFlash 0.38s ease;
 }
-
 
 @keyframes arrowFlash {
 
     0% {
-
-        color:
-            rgba(255, 255, 255, 0.72);
+        color: rgba(255,255,255,0.68);
 
         text-shadow:
-            0 1px 3px rgba(0, 0, 0, 0.8);
-
-        transform:
-            translateY(-50%)
-            scale(1);
+            0 0 0 rgba(255,255,255,0);
     }
 
-
-    35% {
-
-        color: #ffffff;
+    45% {
+        color: #fff;
 
         text-shadow:
-            0 0 5px rgba(255, 255, 255, 0.65),
-            0 0 12px rgba(255, 255, 255, 0.45),
-            0 1px 4px rgba(0, 0, 0, 0.8);
-
-        transform:
-            translateY(-50%)
-            scale(1.16);
+            0 0 7px rgba(255,255,255,0.95),
+            0 0 16px rgba(255,255,255,0.75),
+            0 0 28px rgba(255,255,255,0.45);
     }
-
 
     100% {
-
-        color:
-            rgba(255, 255, 255, 0.72);
+        color: rgba(255,255,255,0.68);
 
         text-shadow:
-            0 1px 3px rgba(0, 0, 0, 0.8);
+            0 0 0 rgba(255,255,255,0);
+    }
+}
 
-        transform:
-            translateY(-50%)
-            scale(1);
+/* SAYFA GECISI */
+
+.page-fade {
+    animation: pageFade 0.55s ease;
+}
+
+@keyframes pageFade {
+
+    0% {
+        opacity: 1;
     }
 
+    35% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
+/* GIZLI OLCUM ALANI */
 
-/* =================================================
-   ANIMASYON SIRASINDA OK KAPALI
-   ================================================= */
-
-.page-arrow.disabled {
-    pointer-events: none;
-    opacity: 0.35;
-}
-
-
-/* =================================================
-   GIZLI OLCUM ALANI
-
-   SADECE SATIR OLCECEGI ICIN KULLANILIR.
-   SAYFA YUKSEKLIGI BURADA SINIRLANMAZ.
-   ================================================= */
-
-.measure-poem {
+#measurePoem {
     position: absolute;
+
+    left: -100000px;
+    top: 0;
 
     visibility: hidden;
 
-    pointer-events: none;
+    white-space: pre-wrap;
 
-    left: -99999px;
-    top: 0;
+    overflow-wrap: normal;
+
+    word-break: normal;
 
     height: auto;
 
-    overflow: visible;
+    min-height: 0;
 
-    white-space: pre-line;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* TELEFON / KUCUK EKRAN */
+
+@media (max-width: 700px) {
+
+    .next-arrow {
+        right: 0.5%;
+        font-size: 55px;
+    }
+
+    .corner-quill {
+        width: 105px;
+    }
+
+    .writing-quill {
+        width: 60px;
+    }
 }
 
 </style>
 </head>
 
-
 <body>
 
-<div class="page">
+<div class="book-stage" id="bookStage">
 
-    <div class="book-stage">
+    <div class="page left-page"></div>
+    <div class="page right-page"></div>
 
-
-        <!-- ARKA PLAN -->
-
-        <img
-            class="book-background"
-            src="arkaplan0.jpeg"
-            alt="Sair Nefestir"
-        >
-
-
-        <!-- SABIT SAG SAYFA -->
-
-        <img
-            class="right-page"
-            src="sag_sayfa_bos.png"
-            alt=""
-        >
-
-
-        <!-- SABIT SOL SAYFA -->
-
-        <img
-            class="left-page"
-            src="sag_sayfa_bos.png"
-            alt=""
-        >
-
-
-        <!-- SOL ALTTA SABIT KALEM + MUREKKEP -->
-
-        <img
-            class="corner-quill"
-            src="murekkep_kalem.png"
-            alt=""
-        >
-
-
-        <!-- YAZIYI YAZAN ALTIN TUY KALEM -->
-
-        <img
-            id="writingQuill"
-            class="writing-quill"
-            src="yazan_kalem3.png"
-            alt=""
-        >
-
-
-        <!-- SOL SIIR -->
-
-        <div
-            id="leftPoem"
-            class="poem-text left-poem"
-        ></div>
-
-
-        <!-- SAG SIIR -->
-
-        <div
-            id="rightPoem"
-            class="poem-text right-poem"
-        ></div>
-
-
-        <!-- GIZLI OLCUM ALANI -->
-
-        <div
-            id="measurePoem"
-            class="measure-poem"
-        ></div>
-
-
-        <!-- SAG OK -->
-
-        <div
-            id="pageArrow"
-            class="page-arrow"
-        >
-            ›
-        </div>
-
-
+    <div
+        class="poem left-poem"
+        id="leftPoem">
     </div>
+
+    <div
+        class="poem right-poem"
+        id="rightPoem">
+    </div>
+
+    <img
+        src="murekkep_kalem.png"
+        class="corner-quill"
+        alt=""
+    >
+
+    <img
+        src="yazan_kalem3.png"
+        class="writing-quill"
+        id="writingQuill"
+        alt=""
+    >
+
+    <button
+        class="next-arrow"
+        id="nextArrow"
+        aria-label="Sonraki sayfa">
+        ›
+    </button>
+
+    <div id="measurePoem"></div>
 
 </div>
 
 
 <script>
 
-
-/* =================================================
-   DEMO SIIR
-   ================================================= */
+/* =========================================================
+   SIIRLER
+   ========================================================= */
 
 const poems = [
 
+    {
+        title: "",
+        text:
 `Haydi Abbas, vakit tamam;
 Akşam diyordun işte oldu akşam.
 Kur bakalım çilingir soframızı;
 Dinsin artık bu kalb ağrısı.
+
 Şu ağacın gölgesinde olsun;
 Tam kenarında havuzun.
 Aya haber sal çıksın bu gece;
 Görünsün şöyle gönlümce.
+
 Bas kırbacı sihirli seccadeye,
 Göster hükmettiğini mesafeye
 Ve zamana.
+
 Katıp tozu dumana,
 Var git,
+
 Böyle ferman etti Cahit,
+
 Al getir ilk sevgiliyi Beşiktaş'tan;
 Yaşamak istiyorum gençliğimi yeni baştan.`
+    }
 
 ];
 
 
-/* =================================================
-   ELEMANLAR
-   ================================================= */
+/* =========================================================
+   ELEMENTLER
+   ========================================================= */
 
-const leftPoem =
-    document.getElementById("leftPoem");
+const stage = document.getElementById("bookStage");
 
-const rightPoem =
-    document.getElementById("rightPoem");
+const leftPoem = document.getElementById("leftPoem");
+const rightPoem = document.getElementById("rightPoem");
 
-const measurePoem =
-    document.getElementById("measurePoem");
-
-const pageArrow =
-    document.getElementById("pageArrow");
+const measurePoem = document.getElementById("measurePoem");
 
 const writingQuill =
     document.getElementById("writingQuill");
 
-const bookStage =
-    document.querySelector(".book-stage");
+const nextArrow =
+    document.getElementById("nextArrow");
 
 
-/* =================================================
+/* =========================================================
    DURUM
-   ================================================= */
+   ========================================================= */
 
-let poemIndex = 0;
+let currentPoemIndex = 0;
 
-let spreadParts = [];
+let currentSpreadIndex = 0;
 
-let currentPart = 0;
+let poemPages = [];
 
 let activeTypingToken = 0;
 
-let activeTypingFinished = true;
+let activeTypingFinished = false;
 
-let isAnimating = false;
+let movingToNextPage = false;
 
 
-/* =================================================
-   OLCEK ALANINI SIIR ALANIYLA AYNI YAP
-   ================================================= */
+/* =========================================================
+   OLCUM ALANI
+   ========================================================= */
 
 function prepareMeasureArea() {
 
@@ -595,322 +449,276 @@ function prepareMeasureArea() {
     measurePoem.style.letterSpacing =
         style.letterSpacing;
 
+    measurePoem.style.textShadow =
+        style.textShadow;
+
     measurePoem.style.width =
         leftPoem.getBoundingClientRect().width + "px";
+
+    measurePoem.style.padding =
+        style.padding;
+
+    measurePoem.style.margin =
+        style.margin;
 }
 
 
-/* =================================================
-   SATIR YUKSEKLIGI
-   ================================================= */
+/* =========================================================
+   METIN YUKSEKLIGI
+   ========================================================= */
 
-function getLineHeight() {
-
-    const style =
-        window.getComputedStyle(leftPoem);
-
-    const fontSize =
-        parseFloat(style.fontSize);
-
-    const lineHeight =
-        parseFloat(style.lineHeight);
-
-    return fontSize * lineHeight;
-}
-
-
-/* =================================================
-   SAYFAYA SIGABILECEK SATIR SAYISI
-   ================================================= */
-
-function getLinesPerPage() {
-
-    const lineHeight =
-        getLineHeight();
-
-    const pageHeight =
-        leftPoem.getBoundingClientRect().height;
-
-    return Math.max(
-        1,
-        Math.floor(
-            pageHeight / lineHeight
-        )
-    );
-}
-
-
-/* =================================================
-   BIR METNIN GERCEK YUKSEKLIGINI OLC
-   ================================================= */
-
-function getMeasuredHeight(text) {
+function measureTextHeight(text) {
 
     prepareMeasureArea();
 
-    measurePoem.innerText = text;
+    measurePoem.style.height = "auto";
+
+    measurePoem.textContent = text;
 
     return measurePoem.getBoundingClientRect().height;
 }
 
 
-/* =================================================
-   METNI GERCEK SATIRLARA AYIR
-   ================================================= */
+/* =========================================================
+   GERCEK SATIRLARI BUL
+   ========================================================= */
 
 function getWrappedLines(text) {
 
     prepareMeasureArea();
 
-    const lines = [];
+    const paragraphs = text.split("\n");
 
-    const paragraphs =
-        text.split("\n");
+    const result = [];
 
-    for (
-        let p = 0;
-        p < paragraphs.length;
-        p++
-    ) {
+    for (const paragraph of paragraphs) {
 
-        const paragraph =
-            paragraphs[p];
+        /*
+         * Bos satirlar korunuyor.
+         */
 
+        if (paragraph.trim() === "") {
 
-        /* BOS SATIR */
-
-        if (paragraph === "") {
-
-            lines.push("");
+            result.push("");
 
             continue;
         }
 
-
         const words =
-            paragraph.split(" ");
+            paragraph.split(/\s+/);
 
         let currentLine = "";
 
+        for (const word of words) {
 
-        for (
-            let w = 0;
-            w < words.length;
-            w++
-        ) {
+            const candidate =
+                currentLine === ""
+                    ? word
+                    : currentLine + " " + word;
 
-            const word =
-                words[w];
+            measurePoem.textContent =
+                candidate;
 
-            const testLine =
-                currentLine
-                ? currentLine + " " + word
-                : word;
+            const candidateHeight =
+                measurePoem.getBoundingClientRect().height;
 
-
-            const testHeight =
-                getMeasuredHeight(testLine);
-
-            const lineHeight =
-                getLineHeight();
-
-
-            /* TEK SATIR SINIRI */
+            /*
+             * Tek kelime bile alan disina cikiyorsa
+             * kelimeyi kendi satirina birakiyoruz.
+             */
 
             if (
-                testHeight > lineHeight * 1.15
+                currentLine !== "" &&
+                candidateHeight > getPageHeight()
             ) {
 
-                if (currentLine) {
+                result.push(currentLine);
 
-                    lines.push(
-                        currentLine
-                    );
-
-                    currentLine =
-                        word;
-
-                } else {
-
-                    lines.push(
-                        word
-                    );
-
-                    currentLine = "";
-                }
+                currentLine = word;
 
             } else {
 
-                currentLine =
-                    testLine;
+                currentLine = candidate;
             }
         }
 
-
-        if (currentLine) {
-
-            lines.push(
-                currentLine
-            );
+        if (currentLine !== "") {
+            result.push(currentLine);
         }
     }
 
-
-    return lines;
+    return result;
 }
 
 
-/* =================================================
-   SIIRI SOL VE SAG SAYFAYA DAGIT
-   ================================================= */
+/* =========================================================
+   SAYFA YUKSEKLIGI
+   ========================================================= */
 
-function createSpreadParts(text) {
+function getPageHeight() {
 
-    const lines =
+    return leftPoem.getBoundingClientRect().height;
+}
+
+
+/* =========================================================
+   SATIRLARI GERCEK YUKSEKLIKLE SAYFALARA DAGIT
+   ========================================================= */
+
+function splitLinesIntoPages(lines) {
+
+    prepareMeasureArea();
+
+    const pageHeight =
+        getPageHeight();
+
+    const pages = [];
+
+    let currentPage = [];
+
+    for (const line of lines) {
+
+        const candidateLines =
+            currentPage.concat([line]);
+
+        const candidateText =
+            candidateLines.join("\n");
+
+        const candidateHeight =
+            measureTextHeight(candidateText);
+
+        /*
+         * Ilk satir bile sigmiyorsa yine de
+         * sayfaya koy.
+         */
+
+        if (
+            currentPage.length > 0 &&
+            candidateHeight > pageHeight + 1
+        ) {
+
+            pages.push(
+                currentPage.join("\n")
+            );
+
+            currentPage = [line];
+
+        } else {
+
+            currentPage.push(line);
+        }
+    }
+
+    if (currentPage.length > 0) {
+
+        pages.push(
+            currentPage.join("\n")
+        );
+    }
+
+    return pages;
+}
+
+
+/* =========================================================
+   SIIRI SAYFALARA HAZIRLA
+   ========================================================= */
+
+function createPoemPages(text) {
+
+    const wrappedLines =
         getWrappedLines(text);
 
-    const linesPerPage =
-        getLinesPerPage();
-
-    const parts = [];
-
-    let index = 0;
-
-
-    while (
-        index < lines.length
-    ) {
-
-        const leftLines =
-            lines.slice(
-                index,
-                index + linesPerPage
-            );
-
-        index +=
-            linesPerPage;
-
-
-        const rightLines =
-            lines.slice(
-                index,
-                index + linesPerPage
-            );
-
-        index +=
-            linesPerPage;
-
-
-        parts.push({
-
-            left:
-                leftLines.join("\n"),
-
-            right:
-                rightLines.join("\n")
-        });
-    }
-
-
-    if (
-        parts.length === 0
-    ) {
-
-        parts.push({
-
-            left: "",
-
-            right: ""
-        });
-    }
-
-
-    return parts;
+    return splitLinesIntoPages(
+        wrappedLines
+    );
 }
 
 
-/* =================================================
-   YAZAN TUY KALEM POZISYONU
-
-   YAZIYA 1 PX DAHA YAKIN
-   ================================================= */
+/* =========================================================
+   YAZI KALEMİNİ SON KARAKTERE GOTUR
+   ========================================================= */
 
 function moveWritingQuill(element) {
 
     if (!element) {
+
+        writingQuill.style.opacity = "0";
+
         return;
     }
 
+    if (!element.textContent) {
+
+        writingQuill.style.opacity = "0";
+
+        return;
+    }
 
     const textNode =
         element.firstChild;
 
+    if (!textNode) {
 
-    if (
-        !textNode ||
-        textNode.nodeType !== Node.TEXT_NODE ||
-        textNode.length === 0
-    ) {
+        writingQuill.style.opacity = "0";
 
         return;
     }
 
+    const range =
+        document.createRange();
 
-    try {
+    const lastIndex =
+        textNode.textContent.length;
 
-        const range =
-            document.createRange();
+    if (lastIndex <= 0) {
 
+        writingQuill.style.opacity = "0";
 
-        range.setStart(
-            textNode,
-            textNode.length - 1
-        );
-
-
-        range.setEnd(
-            textNode,
-            textNode.length
-        );
-
-
-        const rect =
-            range.getBoundingClientRect();
-
-
-        const stageRect =
-            bookStage.getBoundingClientRect();
-
-
-        writingQuill.style.left =
-            (
-                rect.right -
-                stageRect.left -
-                11
-            ) + "px";
-
-
-        writingQuill.style.top =
-            (
-                rect.bottom -
-                stageRect.top -
-                54
-            ) + "px";
-
+        return;
     }
 
-    catch (error) {
+    range.setStart(
+        textNode,
+        lastIndex - 1
+    );
 
-        console.log(
-            "Kalem konumu hesaplanamadi."
-        );
-    }
+    range.setEnd(
+        textNode,
+        lastIndex
+    );
+
+    const rect =
+        range.getBoundingClientRect();
+
+    const stageRect =
+        stage.getBoundingClientRect();
+
+    /*
+     * Kalemi yazinin hemen yanina getiriyoruz.
+     */
+
+    writingQuill.style.left =
+        (
+            rect.right -
+            stageRect.left -
+            11
+        ) + "px";
+
+    writingQuill.style.top =
+        (
+            rect.bottom -
+            stageRect.top -
+            54
+        ) + "px";
+
+    writingQuill.style.opacity = "1";
 }
 
 
-/* =================================================
-   METNI HARF HARF YAZ
-   ================================================= */
+/* =========================================================
+   YAZMA
+   ========================================================= */
 
 function typeText(
     element,
@@ -918,485 +726,337 @@ function typeText(
     token
 ) {
 
-    return new Promise(
-        resolve => {
+    return new Promise(resolve => {
 
-            element.innerText = "";
+        element.textContent = "";
 
+        let index = 0;
 
-            if (!text) {
+        function writeNext() {
 
-                resolve();
+            if (
+                token !== activeTypingToken
+            ) {
+
+                resolve(false);
 
                 return;
             }
 
+            if (
+                index >= text.length
+            ) {
 
-            let index = 0;
+                resolve(true);
 
-            activeTypingFinished =
-                false;
-
-            writingQuill.style.opacity =
-                "1";
-
-
-            function writeNext() {
-
-
-                /* ESKI YAZMA ISLEMI IPTAL */
-
-                if (
-                    token !==
-                    activeTypingToken
-                ) {
-
-                    resolve();
-
-                    return;
-                }
-
-
-                /* METIN BITTI */
-
-                if (
-                    index >=
-                    text.length
-                ) {
-
-                    writingQuill.style.opacity =
-                        "0";
-
-                    resolve();
-
-                    return;
-                }
-
-
-                /* HARFI YAZ */
-
-                element.innerText +=
-                    text.charAt(index);
-
-
-                /* KALEMI YAZININ UCUNA GOTUR */
-
-                moveWritingQuill(
-                    element
-                );
-
-
-                index++;
-
-
-                setTimeout(
-                    writeNext,
-                    55
-                );
+                return;
             }
 
+            element.textContent +=
+                text[index];
 
-            writeNext();
+            index++;
 
+            moveWritingQuill(element);
+
+            setTimeout(
+                writeNext,
+                55
+            );
         }
+
+        writeNext();
+    });
+}
+
+
+/* =========================================================
+   TEK SAYFA YAZ
+   ========================================================= */
+
+async function typePage(
+    element,
+    text,
+    token
+) {
+
+    if (!text) {
+
+        element.textContent = "";
+
+        writingQuill.style.opacity = "0";
+
+        return true;
+    }
+
+    return await typeText(
+        element,
+        text,
+        token
     );
 }
 
 
-/* =================================================
-   BIR KITAP ACILIMINI YAZ
-   ================================================= */
+/* =========================================================
+   SPREAD YAZ
+   ========================================================= */
 
-async function typeSpread(spread) {
+async function typeSpread() {
 
     const token =
         ++activeTypingToken;
 
-    activeTypingFinished =
-        false;
+    activeTypingFinished = false;
 
+    writingQuill.style.opacity = "0";
 
-    leftPoem.innerText =
-        "";
+    leftPoem.textContent = "";
+    rightPoem.textContent = "";
 
-    rightPoem.innerText =
-        "";
+    const leftText =
+        poemPages[currentSpreadIndex] || "";
 
+    const rightText =
+        poemPages[currentSpreadIndex + 1] || "";
 
-    writingQuill.style.opacity =
-        "0";
+    /*
+     * ONEMLI:
+     * Her spread MUTLAKA soldan baslar.
+     */
 
+    const leftFinished =
+        await typePage(
+            leftPoem,
+            leftText,
+            token
+        );
 
-    /* =================================================
-       SOL SAYFA
-       ================================================= */
-
-    await typeText(
-        leftPoem,
-        spread.left,
-        token
-    );
-
-
-    if (
-        token !==
-        activeTypingToken
-    ) {
-
+    if (!leftFinished) {
         return;
     }
 
+    /*
+     * Sol bittikten sonra saga geciyoruz.
+     */
 
-    /* =================================================
-       SAG SAYFA
-       ================================================= */
+    const rightFinished =
+        await typePage(
+            rightPoem,
+            rightText,
+            token
+        );
 
-    await typeText(
-        rightPoem,
-        spread.right,
-        token
-    );
-
-
-    if (
-        token !==
-        activeTypingToken
-    ) {
-
+    if (!rightFinished) {
         return;
     }
 
+    writingQuill.style.opacity = "0";
 
-    /* =================================================
-       TAMAMLANDI
-       ================================================= */
+    activeTypingFinished = true;
 
-    activeTypingFinished =
-        true;
+    /*
+     * Bu spread'de saga kadar ilerlenmis demektir.
+     */
 
-    writingQuill.style.opacity =
-        "0";
 }
 
 
-/* =================================================
-   ILK SIIRI BASLAT
-   ================================================= */
+/* =========================================================
+   SIIRI BASLAT
+   ========================================================= */
+
+function prepareCurrentPoem() {
+
+    const poem =
+        poems[currentPoemIndex];
+
+    if (!poem) {
+        return;
+    }
+
+    poemPages =
+        createPoemPages(
+            poem.text
+        );
+
+    currentSpreadIndex = 0;
+}
+
+
+/* =========================================================
+   SIIRI GOSTER
+   ========================================================= */
 
 async function startPoem(index) {
 
-    poemIndex =
-        index;
-
-
-    spreadParts =
-        createSpreadParts(
-            poems[poemIndex]
-        );
-
-
-    currentPart =
-        0;
-
-
-    leftPoem.classList.remove(
-        "fade-out"
-    );
-
-
-    rightPoem.classList.remove(
-        "fade-out"
-    );
-
-
-    await typeSpread(
-        spreadParts[currentPart]
-    );
-}
-
-
-/* =================================================
-   SONRAKI SAYFA
-   ================================================= */
-
-async function nextPage() {
-
-
-    if (isAnimating) {
+    if (
+        index < 0 ||
+        index >= poems.length
+    ) {
         return;
     }
 
+    currentPoemIndex = index;
+
+    prepareCurrentPoem();
+
+    await typeSpread();
+}
+
+
+/* =========================================================
+   SONRAKI SAYFA
+   ========================================================= */
+
+async function nextPage() {
+
+    if (movingToNextPage) {
+        return;
+    }
+
+    /*
+     * Yazim devam ediyorsa bekle.
+     */
 
     if (!activeTypingFinished) {
         return;
     }
 
+    nextArrow.classList.remove(
+        "arrow-flash"
+    );
 
-    isAnimating =
-        true;
+    void nextArrow.offsetWidth;
 
-
-    pageArrow.classList.add(
-        "disabled"
+    nextArrow.classList.add(
+        "arrow-flash"
     );
 
 
-    pageArrow.classList.remove(
-        "flash"
-    );
-
-
-    void pageArrow.offsetWidth;
-
-
-    pageArrow.classList.add(
-        "flash"
-    );
-
-
-    await new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                120
-            )
-    );
-
-
-    /* SAYFALARI SOLUKLASTIR */
-
-    leftPoem.classList.add(
-        "fade-out"
-    );
-
-
-    rightPoem.classList.add(
-        "fade-out"
-    );
-
-
-    await new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                1200
-            )
-    );
-
-
-    /* =================================================
-       AYNI SIIRIN DEVAMI
-       ================================================= */
+    /*
+     * Bir sonraki spread var mi?
+     */
 
     if (
-        currentPart <
-        spreadParts.length - 1
+        currentSpreadIndex + 2
+        < poemPages.length
     ) {
 
-        currentPart++;
+        movingToNextPage = true;
 
-
-        leftPoem.classList.remove(
-            "fade-out"
+        leftPoem.classList.add(
+            "page-fade"
         );
 
-
-        rightPoem.classList.remove(
-            "fade-out"
+        rightPoem.classList.add(
+            "page-fade"
         );
 
+        setTimeout(async () => {
 
-        await typeSpread(
-            spreadParts[currentPart]
-        );
-
-
-        isAnimating =
-            false;
-
-
-        pageArrow.classList.remove(
-            "disabled"
-        );
-
-
-        return;
-    }
-
-
-    /* =================================================
-       YENI SIIR
-       ================================================= */
-
-    if (
-        poemIndex <
-        poems.length - 1
-    ) {
-
-        poemIndex++;
-
-
-        spreadParts =
-            createSpreadParts(
-                poems[poemIndex]
+            leftPoem.classList.remove(
+                "page-fade"
             );
 
+            rightPoem.classList.remove(
+                "page-fade"
+            );
 
-        currentPart =
-            0;
+            currentSpreadIndex += 2;
 
+            movingToNextPage = false;
 
-        leftPoem.classList.remove(
-            "fade-out"
-        );
+            await typeSpread();
 
-
-        rightPoem.classList.remove(
-            "fade-out"
-        );
-
-
-        await typeSpread(
-            spreadParts[currentPart]
-        );
-
-
-        isAnimating =
-            false;
-
-
-        pageArrow.classList.remove(
-            "disabled"
-        );
-
+        }, 550);
 
         return;
     }
 
 
-    /* =================================================
-       SON SIIR
-       ================================================= */
+    /*
+     * Siir bittiyse sonraki siire gec.
+     */
 
-    leftPoem.classList.remove(
-        "fade-out"
-    );
+    if (
+        currentPoemIndex + 1
+        < poems.length
+    ) {
 
+        movingToNextPage = true;
 
-    rightPoem.classList.remove(
-        "fade-out"
-    );
+        leftPoem.classList.add(
+            "page-fade"
+        );
 
+        rightPoem.classList.add(
+            "page-fade"
+        );
 
-    isAnimating =
-        false;
+        setTimeout(async () => {
 
+            leftPoem.classList.remove(
+                "page-fade"
+            );
 
-    pageArrow.classList.remove(
-        "disabled"
-    );
+            rightPoem.classList.remove(
+                "page-fade"
+            );
+
+            movingToNextPage = false;
+
+            await startPoem(
+                currentPoemIndex + 1
+            );
+
+        }, 550);
+    }
+
 }
 
 
-/* =================================================
-   OK TIKLAMA
-   ================================================= */
+/* =========================================================
+   OK
+   ========================================================= */
 
-pageArrow.addEventListener(
+nextArrow.addEventListener(
     "click",
     nextPage
 );
 
 
-/* =================================================
-   PENCERE BOYUTU DEGISTIGINDE
-   ================================================= */
+/* =========================================================
+   FONT HAZIR OLDUGUNDA BASLAT
+   ========================================================= */
 
-window.addEventListener(
-    "resize",
-    () => {
+async function initializeBook() {
 
-        if (
-            !leftPoem.clientHeight
-        ) {
+    if (
+        document.fonts &&
+        document.fonts.ready
+    ) {
 
-            return;
-        }
-
-
-        spreadParts =
-            createSpreadParts(
-                poems[poemIndex]
-            );
-
-
-        if (
-            currentPart >=
-            spreadParts.length
-        ) {
-
-            currentPart =
-                spreadParts.length - 1;
-        }
+        await document.fonts.ready;
     }
-);
 
+    /*
+     * Tarayicinin sayfa boyutunu tamamen
+     * hesaplamasini bekliyoruz.
+     */
 
-/* =================================================
-   KITAP TAM HAZIR OLDUGUNDA BASLAT
-   ================================================= */
+    requestAnimationFrame(() => {
 
-function initializeBook() {
+        requestAnimationFrame(() => {
 
-    requestAnimationFrame(
-        () => {
+            startPoem(0);
 
-            requestAnimationFrame(
-                () => {
+        });
 
-                    if (
-                        !leftPoem.clientHeight
-                    ) {
+    });
 
-                        setTimeout(
-                            initializeBook,
-                            200
-                        );
-
-                        return;
-                    }
-
-
-                    prepareMeasureArea();
-
-
-                    startPoem(0);
-
-                }
-            );
-        }
-    );
 }
 
-
-/* =================================================
-   BASLANGIC
-   ================================================= */
-
-if (
-    document.readyState ===
-    "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        initializeBook
-    );
-
-} else {
-
-    initializeBook();
-}
+initializeBook();
 
 </script>
 
