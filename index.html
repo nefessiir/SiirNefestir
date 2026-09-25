@@ -40,7 +40,7 @@ body {
 }
 
 
-/* ARKA PLAN VE SAYFA AYNI OLCEKTE */
+/* KITAP */
 
 .book-stage {
     position: relative;
@@ -68,6 +68,8 @@ body {
     display: block;
 
     object-fit: fill;
+
+    z-index: 1;
 }
 
 
@@ -130,37 +132,60 @@ body {
 }
 
 
-/* DONEN SAYFA */
+/*
+==================================================
+DONEN SAYFA SISTEMI
+==================================================
+*/
 
-.turning-page {
+.turning-page-wrap {
     position: absolute;
 
     left: 48.828125%;
     top: 13.2%;
 
     width: 38.411458%;
+
+    height: auto;
+
+    z-index: 5;
+
+    transform-origin: left center;
+
+    transform-style: preserve-3d;
+
+    pointer-events: none;
+
+    will-change: transform;
+}
+
+
+/* DONEN SAYFA */
+
+.turning-page {
+    position: relative;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
     height: auto;
 
     display: block;
 
-    z-index: 5;
-
-    pointer-events: none;
-
     transform-origin: left center;
 
-    backface-visibility: visible;
+    transform-style: preserve-3d;
 
-    will-change:
-        left,
-        top,
-        width,
-        height,
-        transform;
+    backface-visibility: visible;
 }
 
 
-/* OKLAR */
+/*
+==================================================
+OKLAR
+==================================================
+*/
 
 .page-arrow {
     position: absolute;
@@ -201,6 +226,7 @@ body {
 
 .prev-arrow {
     left: 16%;
+
     display: none;
 }
 
@@ -212,9 +238,13 @@ body {
 }
 
 
-/* DONUS ANIMASYONU */
+/*
+==================================================
+SAYFA DONUSU
+==================================================
+*/
 
-.turning-page.animate {
+.turning-page-wrap.animate {
     animation:
         pageTurn
         1.2s
@@ -223,84 +253,105 @@ body {
 }
 
 
+/*
+--------------------------------------------------
+SAGDAN SOLA
+
+Dikkat:
+Kitabin kendisi hareket etmiyor.
+
+Sadece donen sayfa,
+sol kenarindaki menteşe etrafinda
+180 derece donuyor.
+--------------------------------------------------
+*/
+
 @keyframes pageTurn {
 
     0% {
-        left: 48.828125%;
-        top: 13.2%;
-
-        width: 38.411458%;
-        height: auto;
 
         transform:
-            rotateY(0deg)
-            scaleX(1);
+            rotateY(0deg);
+
     }
 
-    25% {
-        left: 43%;
-        top: 13.2%;
 
-        width: 37%;
-        height: auto;
+    15% {
 
         transform:
-            rotateY(-55deg)
-            scaleX(0.96);
+            rotateY(-28deg);
+
     }
 
-    50% {
-        left: 35%;
-        top: 13.2%;
 
-        width: 35.5%;
-        height: auto;
+    30% {
 
         transform:
-            rotateY(-115deg)
-            scaleX(0.94);
+            rotateY(-60deg);
+
     }
+
+
+    45% {
+
+        transform:
+            rotateY(-92deg);
+
+    }
+
+
+    60% {
+
+        transform:
+            rotateY(-120deg);
+
+    }
+
 
     75% {
-        left: 26%;
-        top: 13.2%;
-
-        width: 34.5%;
-        height: auto;
 
         transform:
-            rotateY(-155deg)
-            scaleX(0.98);
+            rotateY(-148deg);
+
     }
 
-    100% {
-        left: 19%;
-        top: 13.2%;
 
-        width: 34%;
-
-        height: calc(100% - 27.5%);
+    88% {
 
         transform:
-            rotateY(-180deg)
-            scaleX(-1);
+            rotateY(-168deg);
+
+    }
+
+
+    100% {
+
+        transform:
+            rotateY(-180deg);
+
     }
 }
 
 </style>
 </head>
 
+
 <body>
+
 
 <div class="page">
 
     <div class="book-stage">
+
+
+        <!-- ARKA PLAN -->
 
         <img
             class="book-background"
             src="arkaplan0.jpeg"
             alt="Sair Nefestir"
         >
+
 
         <!-- SAGDA KALACAK BOS SAYFA -->
 
@@ -310,6 +361,7 @@ body {
             alt=""
         >
 
+
         <!-- SAG SAYFA -->
 
         <img
@@ -318,6 +370,7 @@ body {
             alt=""
         >
 
+
         <!-- SOL SAYFA -->
 
         <img
@@ -325,6 +378,7 @@ body {
             src="sag_sayfa_bos.png"
             alt=""
         >
+
 
         <!-- SAG OK -->
 
@@ -336,6 +390,7 @@ body {
             ›
         </div>
 
+
         <!-- SOL OK -->
 
         <div
@@ -345,14 +400,23 @@ body {
             ‹
         </div>
 
+
         <!-- DONEN SAYFA -->
 
-        <img
-            class="turning-page"
-            id="turningPage"
-            src="sag_sayfa_bos.png"
-            alt=""
+        <div
+            class="turning-page-wrap"
+            id="turningPageWrap"
         >
+
+            <img
+                class="turning-page"
+                id="turningPage"
+                src="sag_sayfa_bos.png"
+                alt=""
+            >
+
+        </div>
+
 
     </div>
 
@@ -363,8 +427,8 @@ body {
 
 function turnPage() {
 
-    const turningPage =
-        document.getElementById("turningPage");
+    const turningPageWrap =
+        document.getElementById("turningPageWrap");
 
     const rightPage =
         document.querySelector(".right-page");
@@ -378,40 +442,50 @@ function turnPage() {
     const nextArrow =
         document.querySelector(".next-arrow");
 
-    if (turningPage.classList.contains("animate")) {
+
+    if (
+        turningPageWrap.classList.contains("animate")
+    ) {
         return;
     }
 
+
     nextArrow.style.pointerEvents = "none";
 
-    turningPage.classList.add("animate");
 
-    turningPage.addEventListener(
+    turningPageWrap.classList.add("animate");
+
+
+    turningPageWrap.addEventListener(
         "animationend",
         function () {
 
-            /* Eski sol sayfayi gizle */
+            /*
+             * Eski sol sayfayi kaldir.
+             */
 
             leftPage.style.display = "none";
 
 
-            /* Eski sag sayfayi gizle */
+            /*
+             * Eski sag sayfayi kaldir.
+             */
 
             rightPage.style.display = "none";
 
 
-            /* Sag tarafta bos sayfa kalsin */
+            /*
+             * Sag tarafta bos sayfa kalsin.
+             */
 
             rightPageCover.style.display = "block";
 
 
             /*
-             * ONEMLI:
+             * DONEN SAYFANIN ANIMASYON SINIFI
+             * KALDIRILMIYOR.
              *
-             * animate sinifini KALDIRMIYORUZ.
-             *
-             * Boylece sayfa animasyonun
-             * son karesinde sabit kaliyor.
+             * Boylece son konumunda kalir.
              */
 
         },
