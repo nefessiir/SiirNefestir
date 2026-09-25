@@ -21,37 +21,35 @@ body {
     background: #111;
     overflow: hidden;
     user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* =========================================
-   KITAP ALANI (ORAN KİLİTLİ RESPONSIVE CONTAINER)
+   KITAP ALANI
 ========================================= */
 
 .book-stage {
     position: relative;
-    /* Kitap sahnesini her ekranda orantılı tutmak için */
     width: min(100vw, 150vh);
-    aspect-ratio: 3 / 2;
-    max-height: 100vh;
+    height: min(100vh, 66.6667vw);
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
     background-image: url("arkaplan0.jpeg");
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
-    container-type: inline-size; /* Container birimleri için */
+    container-type: inline-size;
 }
 
 /* =========================================
-   SAYFALAR
+   SAYFALAR (ORİJİNAL KONUM VE BOYUTLAR)
 ========================================= */
 
 .page {
     position: absolute;
     top: 13.2%;
-    height: 59.3%;
+    height: calc(100% - 27.5%);
     background-image: url("sag_sayfa_bos.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -102,8 +100,8 @@ body {
     padding: 0;
     color: #174a82;
     font-family: "Caveat", cursive;
-    /* Ekran genişliğine tam orantılı dinamik yazı boyutu */
-    font-size: 1.85cqw; 
+    /* Mobil ve PC uyumlu oransal font */
+    font-size: 1.85cqw;
     font-weight: 500;
     line-height: 1.55;
     direction: ltr;
@@ -155,9 +153,9 @@ body {
 
 .ink-quill {
     position: absolute;
-    width: 8cqw; /* Ekran boyutuna göre orantılı küçülür */
+    width: 8.5cqw;
     height: auto;
-    left: 3.5%;
+    left: 4.5%;
     bottom: 2.5%;
     z-index: 10;
     pointer-events: none;
@@ -193,11 +191,11 @@ body {
 }
 
 .left-arrow {
-    left: 15%;
+    left: 12%;
 }
 
 .right-arrow {
-    right: 9%;
+    right: 8%;
 }
 
 /* =========================================
@@ -216,8 +214,8 @@ body {
 .control-button {
     width: 4.2cqw;
     height: 4.2cqw;
-    min-width: 30px;
-    min-height: 30px;
+    min-width: 28px;
+    min-height: 28px;
     border: 1px solid rgba(255,255,255,0.35);
     border-radius: 50%;
     background: rgba(0,0,0,0.22);
