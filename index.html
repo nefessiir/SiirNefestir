@@ -132,11 +132,7 @@ body {
 }
 
 
-/*
-==================================================
-DONEN SAYFA SISTEMI
-==================================================
-*/
+/* DONEN SAYFA */
 
 .turning-page-wrap {
     position: absolute;
@@ -181,11 +177,7 @@ DONEN SAYFA SISTEMI
 }
 
 
-/*
-==================================================
-OKLAR
-==================================================
-*/
+/* OKLAR */
 
 .page-arrow {
     position: absolute;
@@ -226,7 +218,6 @@ OKLAR
 
 .prev-arrow {
     left: 16%;
-
     display: none;
 }
 
@@ -238,11 +229,7 @@ OKLAR
 }
 
 
-/*
-==================================================
-SAYFA DONUSU
-==================================================
-*/
+/* DONUS */
 
 .turning-page-wrap.animate {
     animation:
@@ -253,82 +240,54 @@ SAYFA DONUSU
 }
 
 
-/*
---------------------------------------------------
-SAGDAN SOLA
-
-Dikkat:
-Kitabin kendisi hareket etmiyor.
-
-Sadece donen sayfa,
-sol kenarindaki menteşe etrafinda
-180 derece donuyor.
---------------------------------------------------
-*/
-
 @keyframes pageTurn {
 
     0% {
-
         transform:
+            translateX(0)
             rotateY(0deg);
-
     }
-
 
     15% {
-
         transform:
+            translateX(0)
             rotateY(-28deg);
-
     }
-
 
     30% {
-
         transform:
+            translateX(0)
             rotateY(-60deg);
-
     }
-
 
     45% {
-
         transform:
+            translateX(0)
             rotateY(-92deg);
-
     }
-
 
     60% {
-
         transform:
+            translateX(0)
             rotateY(-120deg);
-
     }
-
 
     75% {
-
         transform:
+            translateX(0)
             rotateY(-148deg);
-
     }
-
 
     88% {
-
         transform:
+            translateX(0)
             rotateY(-168deg);
-
     }
 
-
     100% {
-
         transform:
+            translateX(10px)
             rotateY(-180deg);
-
     }
 }
 
@@ -338,11 +297,9 @@ sol kenarindaki menteşe etrafinda
 
 <body>
 
-
 <div class="page">
 
     <div class="book-stage">
-
 
         <!-- ARKA PLAN -->
 
@@ -417,7 +374,6 @@ sol kenarindaki menteşe etrafinda
 
         </div>
 
-
     </div>
 
 </div>
@@ -460,33 +416,19 @@ function turnPage() {
         "animationend",
         function () {
 
-            /*
-             * Eski sol sayfayi kaldir.
-             */
+            /* Eski sol sayfayi gizle */
 
             leftPage.style.display = "none";
 
 
-            /*
-             * Eski sag sayfayi kaldir.
-             */
+            /* Eski sag sayfayi gizle */
 
             rightPage.style.display = "none";
 
 
-            /*
-             * Sag tarafta bos sayfa kalsin.
-             */
+            /* Sag tarafta bos sayfa kalsin */
 
             rightPageCover.style.display = "block";
-
-
-            /*
-             * DONEN SAYFANIN ANIMASYON SINIFI
-             * KALDIRILMIYOR.
-             *
-             * Boylece son konumunda kalir.
-             */
 
         },
         { once: true }
