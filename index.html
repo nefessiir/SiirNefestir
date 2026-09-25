@@ -286,7 +286,7 @@ body {
 
     100% {
         transform:
-            translateX(10px)
+            translateX(20px)
             rotateY(-180deg);
     }
 }
@@ -301,16 +301,11 @@ body {
 
     <div class="book-stage">
 
-        <!-- ARKA PLAN -->
-
         <img
             class="book-background"
             src="arkaplan0.jpeg"
             alt="Sair Nefestir"
         >
-
-
-        <!-- SAGDA KALACAK BOS SAYFA -->
 
         <img
             class="right-page-cover"
@@ -318,26 +313,17 @@ body {
             alt=""
         >
 
-
-        <!-- SAG SAYFA -->
-
         <img
             class="right-page"
             src="sag_sayfa_bos.png"
             alt=""
         >
 
-
-        <!-- SOL SAYFA -->
-
         <img
             class="left-page"
             src="sag_sayfa_bos.png"
             alt=""
         >
-
-
-        <!-- SAG OK -->
 
         <div
             class="page-arrow next-arrow"
@@ -347,18 +333,12 @@ body {
             ›
         </div>
 
-
-        <!-- SOL OK -->
-
         <div
             class="page-arrow prev-arrow"
             aria-label="Onceki sayfa"
         >
             ‹
         </div>
-
-
-        <!-- DONEN SAYFA -->
 
         <div
             class="turning-page-wrap"
@@ -416,17 +396,9 @@ function turnPage() {
         "animationend",
         function () {
 
-            /* Eski sol sayfayi gizle */
-
             leftPage.style.display = "none";
 
-
-            /* Eski sag sayfayi gizle */
-
             rightPage.style.display = "none";
-
-
-            /* Sag tarafta bos sayfa kalsin */
 
             rightPageCover.style.display = "block";
 
