@@ -54,7 +54,7 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: MASKE KUTUSU (Perdeleme efektini kusursuz yönetir) */
+/* 2. KATMAN: MASKE KUTUSU (Sağdan Sola Perdeleme) */
 .kitap-maske {
     position: absolute;
     top: 0;
@@ -66,12 +66,12 @@ body {
     pointer-events: none;
     overflow: hidden;
     
-    /* Başlangıçta sağ taraf tamamen kırpılmış (gizli) */
-    clip-path: inset(0 100% 0 0);
+    /* Başlangıçta sol tarafı gizleyip sağdan sola doğru açılması için: inset(0 0 0 100%) veya tersi */
+    clip-path: inset(0 0 0 100%);
     transition: clip-path 1.5s ease-in-out, z-index 0s 1.5s;
 }
 
-/* Kapak açıldığında maske açılır ve kitap görünür */
+/* Kapak açıldığında maske tamamen açılır */
 .kitap-kapsayici.acildi .kitap-maske {
     clip-path: inset(0 0 0 0);
     z-index: 4;
