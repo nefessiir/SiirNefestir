@@ -34,6 +34,21 @@ body {
     perspective: 1200px;
 }
 
+/* AÇIK KİTAP - ARKA PLANIN ÜZERİNDE, KAPAKLARIN ALTINDA */
+
+.acik-kitap {
+    position: fixed;
+    z-index: 1;
+    pointer-events: none;
+
+    width: 60vw;
+    height: auto;
+
+    display: block;
+}
+
+/* KAPAKLAR */
+
 .kapak-alan {
     position: relative;
     width: 20%;
@@ -43,6 +58,8 @@ body {
 
     transform-style: preserve-3d;
     transform-origin: right bottom;
+
+    z-index: 2;
 }
 
 /* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
@@ -145,31 +162,35 @@ body {
 
 <body>
 
+<!-- AÇIK KİTAP -->
+
+<img src="acik_kitap1.png" class="acik-kitap">
+
 <div class="kapak-alan">
 
-```
 <div class="sag-kapak">
     <img src="kapak.jpg">
 </div>
 
 <div class="kapak-on" onclick="this.classList.toggle('dondu')">
 
-    <img src="kapak.jpg" class="kapak">
+```
+<img src="kapak.jpg" class="kapak">
 
-    <div class="kapak-yazi">
-        Şiir'e..<br>
-        hatıra..<br>
-        kelimelerden..<br>
-        hayattan..<br>
-        babasından.<br><br><br>
+<div class="kapak-yazi">
+    Şiir'e..<br>
+    hatıra..<br>
+    kelimelerden..<br>
+    hayattan..<br>
+    babasından.<br><br><br>
 
-        <span class="imza">S.O.A</span>
-    </div>
+    <span class="imza">S.O.A</span>
+</div>
 
-    <img src="kapak.jpg" class="kapak-arka">
+<img src="kapak.jpg" class="kapak-arka">
+```
 
 </div>
-```
 
 </div>
 
@@ -188,6 +209,19 @@ window.addEventListener("load", function () {
 
     alan.style.transform =
         "translateX(8cm) scale(" + oran + ")";
+
+    /* AÇIK KİTABI KAPAĞIN BULUNDUĞU KOORDİNATA YERLEŞTİR */
+
+    const sagKapak = document.querySelector(".sag-kapak");
+    const acikKitap = document.querySelector(".acik-kitap");
+
+    const konum = sagKapak.getBoundingClientRect();
+
+    acikKitap.style.left =
+        (konum.left + konum.width / 2 - acikKitap.offsetWidth / 2) + "px";
+
+    acikKitap.style.top =
+        (konum.top + konum.height / 2 - acikKitap.offsetHeight / 2) + "px";
 
 });
 
