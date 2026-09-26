@@ -76,7 +76,7 @@ body {
     backface-visibility: hidden;
 }
 
-/* Ön yüz */
+/* Ön kapak */
 .kapak-on {
     background-image: url("kitap_kapagi.png");
     background-size: 100% 100%;
@@ -84,19 +84,51 @@ body {
     background-repeat: no-repeat;
 }
 
-/* Arka yüz */
+/* İç kapak / cilt */
 .kapak-arka {
-    background: linear-gradient(
-        to right,
-        #3a2417,
-        #5a3824,
-        #432a1b
-    );
-
     transform: rotateY(180deg);
 
+    background:
+        linear-gradient(
+            to right,
+            #4a2d1d 0,
+            #4a2d1d 1cm,
+            #d8c08d 1cm,
+            #d8c08d 100%
+        );
+
     box-shadow:
-        inset 0 0 25px rgba(0,0,0,0.35);
+        inset 0 0 20px rgba(0,0,0,0.18);
+}
+
+/* Üst ve alt cilt payları */
+.kapak-arka::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 0;
+
+    height: 1cm;
+
+    background: #4a2d1d;
+}
+
+/* Alt cilt payı */
+.kapak-arka::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 1cm;
+
+    background: #4a2d1d;
 }
 
 /* Açılmış kapak */
