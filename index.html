@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Şiir Sitesi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,19 +17,252 @@
             height: 100%;
             overflow: hidden;
             background-color: #000;
+            font-family: 'Cinzel', serif;
+            user-select: none;
         }
 
+        /* Arka Plan Görseli */
         .background {
+            position: absolute;
             width: 100vw;
             height: 100vh;
             background-image: url("yeni_arka_plan0.jpg");
             background-size: 100% 100%;
             background-position: center;
             background-repeat: no-repeat;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            z-index: 1;
+        }
+
+        /* 3D Sahne ve Kitap Konumu (Gaz Lambasını Kapatmayacak Sınırda) */
+        .book-stage {
+            position: absolute;
+            left: 36%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: min(42vw, 480px);
+            height: min(68vh, 620px);
+            perspective: 1800px;
+            z-index: 10;
+        }
+
+        /* Kitap Yapısı */
+        .book {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        /* İç Sayfa / Şiir Alanı */
+        .book-pages {
+            position: absolute;
+            inset: 0;
+            background: #f3e5c8;
+            background-image: radial-gradient(circle at 50% 50%, #f7ebd0 0%, #dfc89e 100%);
+            border-radius: 4px 12px 12px 4px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset -5px 0 10px rgba(0,0,0,0.15);
+            padding: 35px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-left: 8px solid #3d2314;
+        }
+
+        .poem-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            line-height: 1.6;
+            color: #2c1a0e;
+            white-space: pre-line;
+            opacity: 0;
+            transition: opacity 0.8s ease 0.3s;
+        }
+
+        /* Dış Kapak Yapısı (Soldan Eksenli Dönüş) */
+        .book-cover {
+            position: absolute;
+            inset: 0;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            cursor: pointer;
+            z-index: 20;
+            border-radius: 4px 12px 12px 4px;
+            box-shadow: 10px 15px 30px rgba(0,0,0,0.7);
+        }
+
+        /* Kapağın Ön Yüzü (kitap_kapagi.png) */
+        .cover-front {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            background-image: url("kitap_kapagi.png");
+            background-size: 100% 100%;
+            background-position: center;
+            border-radius: 4px 12px 12px 4px;
+        }
+
+        /* Sağ Kenar Orta-Alt Tutma/Çekme Alanı */
+        .grab-handle {
+            position: absolute;
+            right: 0;
+            top: 55%;
+            width: 45px;
+            height: 80px;
+            background: linear-gradient(to right, transparent, rgba(212, 160, 80, 0.35));
+            border-right: 3px solid rgba(255, 215, 0, 0.8);
+            border-radius: 0 8px 8px 0;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        .grab-handle::after {
+            content: "‹";
+            font-size: 2rem;
+            color: #ffd700;
+            text-shadow: 0 0 5px #000;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; transform: scaleX(0.95); }
+            100% { opacity: 1; transform: scaleX(1.1); }
+        }
+
+        /* Kapak İç Yüzü */
+        .cover-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+            background: #2b1810;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.5), transparent);
+            border-radius: 12px 4px 4px 12px;
+        }
+
+        /* Kitap Açıldığındaki Durum */
+        .book-cover.open {
+            transform: rotateY(-160deg);
+            box-shadow: -15px 15px 35px rgba(0,0,0,0.8);
+        }
+
+        .book-cover.open + .book-pages .poem-text {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .book-stage {
+                left: 20%;
+                width: 70vw;
+                height: 60vh;
+            }
+            .poem-text {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
+
     <div class="background"></div>
+
+    <div class="book-stage">
+        <div class="book">
+            <!-- Dış Kapak -->
+            <div class="book-cover" id="bookCover">
+                <div class="cover-front">
+                    <!-- Sağ Kenar Tutma Noktası -->
+                    <div class="grab-handle" id="grabHandle" title="Tutup Çekin veya Tıklayın"></div>
+                </div>
+                <div class="cover-back"></div>
+            </div>
+
+            <!-- İç Sayfa -->
+            <div class="book-pages">
+                <div class="poem-text">
+Yoksam düşlerinde
+Bakışların hep donuk
+Gözlerin uzaklarda
+Sanki beni arıyor...
+
+Bir sessizlik büyüyor
+İçinde sakladığın
+Söyleyemediğin sözler
+Dudaklarında kalıyor.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bookCover = document.getElementById('bookCover');
+        const grabHandle = document.getElementById('grabHandle');
+
+        let isDragging = false;
+        let startX = 0;
+        let isOpen = false;
+
+        // Tıklayarak Açma / Kapama
+        bookCover.addEventListener('click', (e) => {
+            if (!isDragging) {
+                isOpen = !isOpen;
+                toggleBook(isOpen);
+            }
+        });
+
+        // Mouse & Dokunma ile Tutup Çekme Mantığı
+        function startDrag(e) {
+            isDragging = false;
+            startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('touchmove', onDrag);
+            document.addEventListener('mouseup', stopDrag);
+            document.addEventListener('touchend', stopDrag);
+        }
+
+        function onDrag(e) {
+            const currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            const diffX = startX - currentX;
+
+            if (Math.abs(diffX) > 10) {
+                isDragging = true;
+            }
+
+            if (isDragging) {
+                if (diffX > 50 && !isOpen) {
+                    isOpen = true;
+                    toggleBook(true);
+                } else if (diffX < -50 && isOpen) {
+                    isOpen = false;
+                    toggleBook(false);
+                }
+            }
+        }
+
+        function stopDrag() {
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('touchmove', onDrag);
+            document.removeEventListener('mouseup', stopDrag);
+            document.removeEventListener('touchend', stopDrag);
+        }
+
+        function toggleBook(open) {
+            if (open) {
+                bookCover.classList.add('open');
+            } else {
+                bookCover.classList.remove('open');
+            }
+        }
+
+        grabHandle.addEventListener('mousedown', startDrag);
+        grabHandle.addEventListener('touchstart', startDrag);
+    </script>
 </body>
 </html>
