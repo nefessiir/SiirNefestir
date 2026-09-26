@@ -90,47 +90,31 @@ body {
 .kapak-arka {
     transform: rotateY(180deg);
 
-    background:
-        linear-gradient(
-            to right,
-            #4a2d1d 0,
-            #4a2d1d 1cm,
-            #d8c08d 1cm,
-            #d8c08d 100%
-        );
+    background: #4a2d1d;
 
     box-shadow:
         inset 0 0 20px rgba(0,0,0,0.18);
+
+    /* Cilt paylarını kapağın içinde tut */
+    padding-top: 1cm;
+    padding-bottom: 1cm;
+    padding-left: 1cm;
 }
 
-/* Üst cilt payı */
-.kapak-arka::before {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    top: 0;
-
-    height: 1cm;
-
-    background: #4a2d1d;
-}
-
-/* Alt cilt payı */
+/* Saman kağıdı alanı */
 .kapak-arka::after {
     content: "";
 
     position: absolute;
 
-    left: 0;
+    top: 1cm;
+    left: 1cm;
     right: 0;
-    bottom: 0;
+    bottom: 1cm;
 
-    height: 1cm;
+    background: #d8c08d;
 
-    background: #4a2d1d;
+    z-index: -1;
 }
 
 /* Kapak açıldığında */
