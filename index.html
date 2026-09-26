@@ -45,6 +45,32 @@ body {
     transform-origin: right bottom;
 }
 
+/* AÇIK KİTAP */
+
+.acik-kitap {
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 200%;
+    height: auto;
+
+    transform: translateY(-50%);
+
+    z-index: 0;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: opacity 1.5s ease-in-out;
+}
+
+.acik-kitap.gorunur {
+    opacity: 1;
+}
+
 /* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
 
 .sag-kapak {
@@ -147,29 +173,33 @@ body {
 
 <div class="kapak-alan">
 
-```
+<div class="acik-kitap" id="acikKitap">
+    <img src="acik_kitap.png" style="width:100%; height:auto; display:block;">
+</div>
+
 <div class="sag-kapak">
     <img src="kapak.jpg">
 </div>
 
-<div class="kapak-on" onclick="this.classList.toggle('dondu')">
+<div class="kapak-on" id="kapakOn" onclick="this.classList.toggle('dondu')">
 
-    <img src="kapak.jpg" class="kapak">
+```
+<img src="kapak.jpg" class="kapak">
 
-    <div class="kapak-yazi">
-        Şiir'e..<br>
-        hatıramdır..<br>
-        kelimelerden..<br>
-        hayattan..<br>
-        babasından.<br><br><br>
+<div class="kapak-yazi">
+    Şiir'e..<br>
+    hatıramdır..<br>
+    kelimelerden..<br>
+    hayattan..<br>
+    babasından.<br><br><br>
 
-        <span class="imza">S.O.A</span>
-    </div>
+    <span class="imza">S.O.A</span>
+</div>
 
-    <img src="kapak.jpg" class="kapak-arka">
+<img src="kapak.jpg" class="kapak-arka">
+```
 
 </div>
-```
 
 </div>
 
@@ -188,6 +218,25 @@ window.addEventListener("load", function () {
 
     alan.style.transform =
         "translateX(8cm) scale(" + oran + ")";
+
+    const kapakOn = document.getElementById("kapakOn");
+    const acikKitap = document.getElementById("acikKitap");
+
+    kapakOn.addEventListener("click", function () {
+
+        if (kapakOn.classList.contains("dondu")) {
+
+            setTimeout(function () {
+                acikKitap.classList.add("gorunur");
+            }, 250);
+
+        } else {
+
+            acikKitap.classList.remove("gorunur");
+
+        }
+
+    });
 
 });
 
