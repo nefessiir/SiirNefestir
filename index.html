@@ -1,179 +1,23 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Şiir Nefestir</title>
-<style>
-html,
-body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    overflow: hidden;
-    background-image: url("arka_plan.jpg");
-    background-size: 100% 100%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #111;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 1200px;
-}
-
-.kapak-alan {
-    position: relative;
-    width: 20%;
-    height: auto;
-    transform: translateX(8cm);
-    transform-style: preserve-3d;
-    transform-origin: right bottom;
-}
-
-/* AÇILAN KİTAP ARKAPLANI (SOL VE SAĞ KAPAK ARASINDAKİ ORTAM) */
-.acik-kitap {
-    position: absolute;
-    top: 0.45cm;
-    left: -100%;
-    width: 200%;
-    height: auto;
-    z-index: 0;
-}
-
-.acik-kitap img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
-.sag-kapak {
-    position: absolute;
-    top: 0.45cm;
-    left: 0;
-    width: 100%;
-    height: auto;
-    z-index: 1;
-}
-
-.sag-kapak img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* ÜSTTEKİ YAZILI KAPAK */
-.kapak-on {
-    position: relative;
-    width: 100%;
-    height: auto;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    cursor: pointer;
-    transition: transform 1.5s ease-in-out;
-    z-index: 2;
-}
-
-.kapak-on.dondu {
-    transform: rotateY(-180deg);
-}
-
-.kapak,
-.kapak-arka {
-    width: 100%;
-    height: auto;
-    display: block;
-    backface-visibility: hidden;
-}
-
-.kapak {
-    position: relative;
-}
-
-.kapak-arka {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: rotateY(180deg);
-}
-
-.kapak-yazi {
-    position: absolute;
-    top: 50%;
-    left: calc(50% + 1cm);
-    transform: translate(-50%, -50%);
-    width: 85%;
-    text-align: left;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(10px, 1.25vw, 22px);
-    line-height: 1.7;
-    color: #d6ad38;
-    text-shadow:
-        -1px -1px 1px rgba(55, 32, 5, 0.95),
-        1px 1px 0 rgba(255, 226, 120, 0.75),
-        0 0 1px rgba(245, 198, 65, 0.8),
-        0 1px 2px rgba(45, 25, 3, 0.9);
-    letter-spacing: 0.3px;
-    backface-visibility: hidden;
-}
-
-.kapak-yazi .imza {
-    text-align: center;
-    display: block;
-    transform: translate(0.3cm, 1.7em);
-}
-</style>
-</head>
-<body>
-
-<div class="kapak-alan">
-
-    <!-- Açık Kitap Görseli (Kapak açıldığında tam ortada belirir) -->
-    <div class="acik-kitap">
-        <img src="acik_kitap.png" alt="Açık Kitap">
-    </div>
-
-    <div class="sag-kapak">
-        <img src="kapak.jpg" alt="Sağ Kapak">
-    </div>
-
-    <div class="kapak-on" onclick="this.classList.toggle('dondu')">
-
-        <img src="kapak.jpg" class="kapak" alt="Ön Kapak">
-
-        <div class="kapak-yazi">
-            Şiir'e..<br>
-            hatıramdır..<br>
-            kelimelerden..<br>
-            hayattan..<br>
-            babasından.<br><br><br>
-
-            <span class="imza">S.O.A</span>
-        </div>
-
-        <img src="kapak.jpg" class="kapak-arka" alt="Arka Kapak İç Yüzü">
-
-    </div>
-
+<!DOCTYPE html> <html lang="tr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Şiir Nefestir</title> <style> html, body { width: 100%; height: 100%; margin: 0; padding: 0; } body { overflow: hidden; background-image: url("arka_plan.jpg"); background-size: 100% 100%; background-position: center center; background-repeat: no-repeat; background-color: #111; display: flex; justify-content: center; align-items: center; perspective: 1200px; } .kapak-alan { position: relative; width: 20%; height: auto; transform: translateX(8cm); transform-style: preserve-3d; transform-origin: right bottom; } /* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */ .sag-kapak { position: absolute; top: 0.45cm; left: 0; width: 100%; height: auto; z-index: 1; } .sag-kapak img { width: 100%; height: auto; display: block; } /* ÜSTTEKİ YAZILI KAPAK */ .kapak-on { position: relative; width: 100%; height: auto; transform-style: preserve-3d; transform-origin: left center; cursor: pointer; transition: transform 1.5s ease-in-out; z-index: 2; } .kapak-on.dondu { transform: rotateY(-180deg); } .kapak, .kapak-arka { width: 100%; height: auto; display: block; backface-visibility: hidden; } .kapak { position: relative; } .kapak-arka { position: absolute; top: 0; left: 0; transform: rotateY(180deg); } .kapak-yazi { position: absolute; top: 50%; left: calc(50% + 1cm); transform: translate(-50%, -50%); width: 85%; text-align: left; font-family: Georgia, "Times New Roman", serif; font-size: clamp(10px, 1.25vw, 22px); line-height: 1.7; color: #d6ad38; text-shadow: -1px -1px 1px rgba(55, 32, 5, 0.95), 1px 1px 0 rgba(255, 226, 120, 0.75), 0 0 1px rgba(245, 198, 65, 0.8), 0 1px 2px rgba(45, 25, 3, 0.9); letter-spacing: 0.3px; backface-visibility: hidden; } .kapak-yazi .imza { text-align: center; display: block; transform: translate(0.3cm, 1.7em); } </style> </head> <body> <div class="kapak-alan">
+<div class="sag-kapak">
+    <img src="kapak.jpg">
 </div>
 
-<script>
-window.addEventListener("load", function () {
-    const alan = document.querySelector(".kapak-alan");
-    const kapak = document.querySelector(".kapak");
+<div class="kapak-on" onclick="this.classList.toggle('dondu')">
 
-    const yukseklik = kapak.getBoundingClientRect().height;
-    const ikiCm = 2 * 96 / 2.54;
-    const oran = (yukseklik + ikiCm) / yukseklik;
+    <img src="kapak.jpg" class="kapak">
 
-    alan.style.transform = "translateX(8cm) scale(" + oran + ")";
-});
-</script>
+    <div class="kapak-yazi">
+        Şiir'e..<br>
+        hatıramdır..<br>
+        kelimelerden..<br>
+        hayattan..<br>
+        babasından.<br><br><br>
 
-</body>
-</html>
+        <span class="imza">S.O.A</span>
+    </div>
+
+    <img src="kapak.jpg" class="kapak-arka">
+
+</div>
+</div> <script> window.addEventListener("load", function () { const alan = document.querySelector(".kapak-alan"); const kapak = document.querySelector(".kapak"); const yukseklik = kapak.getBoundingClientRect().height; const ikiCm = 2 * 96 / 2.54; const oran = (yukseklik + ikiCm) / yukseklik; alan.style.transform = "translateX(8cm) scale(" + oran + ")"; }); </script> </body> </html>
