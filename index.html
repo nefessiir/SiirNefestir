@@ -65,30 +65,18 @@ body {
     z-index: 2;
 }
 
-/* Kapak yüzleri */
-.kapak-on,
-.kapak-arka {
+/* Ön kapak yüzü */
+.kapak-on {
     width: 100%;
     height: 100%;
     position: absolute;
     left: 0;
     top: 0;
     backface-visibility: hidden;
-}
-
-/* Ön kapak */
-.kapak-on {
     background-image: url("kitap_kapagi.png");
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
-}
-
-/* Kapağın açılınca görünen iç yüzü */
-.kapak-arka {
-    transform: rotateY(180deg);
-    background: #d8c08d;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.18);
 }
 
 /* Ana kapak sola açılır */
@@ -109,10 +97,9 @@ body {
     <!-- Sağ tarafta sabit duran saman renkli sayfa -->
     <div class="sag-kapak"></div>
 
-    <!-- Sola açılan kapak -->
+    <!-- Sola açılan kapak (Arka yüzü kaldırıldı) -->
     <div class="kitap-kapak" id="kitapKapak">
         <div class="kapak-on"></div>
-        <div class="kapak-arka"></div>
     </div>
 </div>
 
