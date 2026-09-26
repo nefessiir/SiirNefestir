@@ -54,7 +54,7 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: MASKE KUTUSU (Sağdan Sola Perdeleme) */
+/* 2. KATMAN: PERDELEME KUTUSU (Yumuşak Genişleme Efekti) */
 .kitap-maske {
     position: absolute;
     top: 0;
@@ -66,16 +66,16 @@ body {
     pointer-events: none;
     overflow: hidden;
     
-    /* Başlangıçta sol tarafı gizleyip sağdan sola doğru açılması için: inset(0 0 0 100%) veya tersi */
-    clip-path: inset(0 0 0 100%);
-    transition: clip-path 1.5s ease-in-out, z-index 0s 1.5s;
+    /* Perde kapalı: Başlangıçta genişlik 0 (hiç görünmüyor) */
+    width: 0%;
+    transition: width 1.5s ease-in-out, z-index 0s 1.5s;
 }
 
-/* Kapak açıldığında maske tamamen açılır */
+/* Kapak açıldığında maske perde gibi yavaşça genişleyerek kitabın tamamını açar */
 .kitap-kapsayici.acildi .kitap-maske {
-    clip-path: inset(0 0 0 0);
+    width: 200%; /* Tam boyutuna ulaşır */
     z-index: 4;
-    transition: clip-path 1.5s ease-in-out, z-index 0s 0s;
+    transition: width 1.5s ease-in-out, z-index 0s 0s;
 }
 
 /* GERÇEK AÇIK KİTAP GÖRSELİ */
@@ -83,7 +83,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 200%; /* Kapsayıcıya göre sabit kalır, maske açıldıkça görünür */
     height: auto;
     display: block;
 }
@@ -160,7 +160,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. MASKELENMİŞ AÇIK KİTAP ALANI -->
+    <!-- 2. PERDELENEN AÇIK KİTAP ALANI -->
     <div class="kitap-maske">
         <img src="acik_kitap1.png" class="acik-kitap">
     </div>
