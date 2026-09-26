@@ -33,14 +33,45 @@ body {
     justify-content: center;
 }
 
-.kitap-kapagi {
+/* 3D hareket alanı */
+.kitap-alani {
     width: 39%;
     height: calc(82vh + 4cm);
-    max-height: none;
+
+    transform: translateX(8cm);
+
+    perspective: 1800px;
+
+    position: relative;
+}
+
+/* Kitap kapağı */
+.kitap-kapagi {
+    width: 100%;
+    height: 100%;
+
     object-fit: fill;
     display: block;
 
-    transform: translateX(8cm);
+    cursor: pointer;
+
+    transform-origin: left center;
+
+    transform: rotateY(0deg);
+
+    transition:
+        transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    backface-visibility: hidden;
+}
+
+/* Kapak açıldığında sola doğru 3D döner */
+.kitap-kapagi.acik {
+    transform: rotateY(-180deg);
 }
 
 </style>
@@ -48,7 +79,26 @@ body {
 
 <body>
 
-<img src="kitap_kapagi.png" class="kitap-kapagi" alt="Şiir Nefestir">
+<div class="kitap-alani">
+
+    <img
+        src="kitap_kapagi.png"
+        class="kitap-kapagi"
+        id="kitapKapagi"
+        alt="Şiir Nefestir"
+    >
+
+</div>
+
+<script>
+
+const kitapKapagi = document.getElementById("kitapKapagi");
+
+kitapKapagi.addEventListener("click", function () {
+    kitapKapagi.classList.toggle("acik");
+});
+
+</script>
 
 </body>
 </html>
