@@ -54,38 +54,28 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: PERDELEME KUTUSU (Yumuşak Genişleme Efekti) */
-.kitap-maske {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 100%;
-    transform: translateX(-50%);
-    z-index: 1;
-    pointer-events: none;
-    overflow: hidden;
-    
-    /* Perde kapalı: Başlangıçta genişlik 0 (hiç görünmüyor) */
-    width: 0%;
-    transition: width 1.5s ease-in-out, z-index 0s 1.5s;
-}
-
-/* Kapak açıldığında maske perde gibi yavaşça genişleyerek kitabın tamamını açar */
-.kitap-kapsayici.acildi .kitap-maske {
-    width: 200%; /* Tam boyutuna ulaşır */
-    z-index: 4;
-    transition: width 1.5s ease-in-out, z-index 0s 0s;
-}
-
-/* GERÇEK AÇIK KİTAP GÖRSELİ */
+/* 2. KATMAN: AÇIK KİTAP (Sağdan Sola Doğru Maskelenmiş Bütünsel Görsel) */
 .acik-kitap {
     position: absolute;
     top: 0;
     left: 0;
-    width: 200%; /* Kapsayıcıya göre sabit kalır, maske açıldıkça görünür */
+    width: 200%;
     height: auto;
-    display: block;
+    transform: translateX(-50%);
+    z-index: 1; 
+    pointer-events: none;
+    
+    /* Başlangıçta sağ taraf kırpılmış (gizli), soldan sağa doğru (sağdan sola) açılacak */
+    clip-path: inset(0 0 0 100%);
+    transition: clip-path 1.5s ease-in-out, z-index 0s 1.5s;
+}
+
+/* Kapak açıldığında tetiklenen stiller */
+.kitap-kapsayici.acildi .acik-kitap {
+    /* Kitabın tamamı görünür hale gelir */
+    clip-path: inset(0 0 0 0);
+    z-index: 4; /* Açık kitap en üste çıkar */
+    transition: clip-path 1.5s ease-in-out, z-index 0s 0s;
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -160,10 +150,8 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. PERDELENEN AÇIK KİTAP ALANI -->
-    <div class="kitap-maske">
-        <img src="acik_kitap1.png" class="acik-kitap">
-    </div>
+    <!-- 2. AÇIK KİTAP (Maskelenmiş bütünsel görsel) -->
+    <img src="acik_kitap1.png" class="acik-kitap">
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
