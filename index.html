@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Şiir Nefestir</title>
 
 <style>
-
 html,
 body {
     width: 100%;
@@ -19,108 +16,63 @@ body {
 
 body {
     overflow: hidden;
-
     background-image: url("arka_plan.jpg");
     background-size: 100% 100%;
     background-position: center center;
     background-repeat: no-repeat;
-
     background-color: #111;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     perspective: 1200px;
 }
 
-/* AÇIK KİTAP */
+/* KAPSAYICI ALAN: Kapak ve Açık Kitap artık bu ortak alanda birebir üst üste hizalanacak */
+.kitap-kapsayici {
+    position: relative;
+    width: 20%;
+    height: auto;
+    transform: translateX(8cm); /* Tüm kitabın genel konumu */
+    transform-style: preserve-3d;
+    transform-origin: right bottom;
+    z-index: 2;
+}
 
+/* AÇIK KİTAP: Artık kapsayıcının içinde ve kapakla tam aynı konumda */
 .acik-kitap {
-    position: fixed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300%; /* Açık kitap iki sayfa genişliğinde olduğu için oranlandı */
+    height: auto;
+    transform: translateX(-50%); /* Ortalamak için */
     z-index: 1;
     pointer-events: none;
-
-    width: 60vw;
-    height: auto;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    display: block;
-
+    
+    /* Kapak açılma süresiyle (1.5s) birebir senkronize opaklık geçişi */
     opacity: 0;
-
     transition: opacity 1.5s ease-in-out;
 }
 
 /* KAPAKLAR */
-
 .kapak-alan {
     position: relative;
-    width: 20%;
-    height: auto;
-
-    transform: translateX(8cm);
-
-    transform-style: preserve-3d;
-    transform-origin: right bottom;
-
-    z-index: 2;
-}
-
-/* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
-
-.sag-kapak {
-    position: absolute;
-    top: 0;
-    left: 0;
-
     width: 100%;
     height: auto;
-
-    z-index: 1;
-
-    transition: opacity 0.01s linear;
-}
-
-.sag-kapak img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* ÜSTTEKİ YAZILI KAPAK */
-
-.kapak-on {
-    position: relative;
-    width: 100%;
-    height: auto;
-
     transform-style: preserve-3d;
     transform-origin: left center;
-
     cursor: pointer;
-
     transition: transform 1.5s ease-in-out;
-
-    z-index: 2;
+    z-index: 3;
 }
 
-.kapak-on.dondu {
-    transform: rotateY(-180deg);
-}
-
-/* AÇILMA BAŞLADIĞINDA */
-
-.kapak-alan.aciliyor .acik-kitap {
+/* Kapak açıldığında (dondu sınıfı eklendiğinde) açık kitabın görünür olması */
+.kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
 }
 
-.kapak-alan.aciliyor .sag-kapak {
-    opacity: 0;
+.kapak-alan.dondu {
+    transform: rotateY(-180deg);
 }
 
 .kapak,
@@ -128,7 +80,6 @@ body {
     width: 100%;
     height: auto;
     display: block;
-
     backface-visibility: hidden;
 }
 
@@ -140,7 +91,6 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-
     transform: rotateY(180deg);
 }
 
@@ -149,25 +99,18 @@ body {
     top: 50%;
     left: calc(50% + 1cm);
     transform: translate(-50%, -50%);
-
     width: 85%;
-
     text-align: left;
-
     font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(10px, 1.25vw, 22px);
     line-height: 1.7;
-
     color: #d6ad38;
-
     text-shadow:
         -1px -1px 1px rgba(55, 32, 5, 0.95),
         1px 1px 0 rgba(255, 226, 120, 0.75),
         0 0 1px rgba(245, 198, 65, 0.8),
         0 1px 2px rgba(45, 25, 3, 0.9);
-
     letter-spacing: 0.3px;
-
     backface-visibility: hidden;
 }
 
@@ -176,78 +119,52 @@ body {
     display: block;
     transform: translate(0.3cm, 1.7em);
 }
-
 </style>
-
 </head>
 
 <body>
 
-<!-- AÇIK KİTAP -->
+<div class="kitap-kapsayici" id="kitapKapsayici">
 
-<img src="acik_kitap1.png" class="acik-kitap">
+    <!-- AÇIK KİTAP (Kapak açıldıkça belirginleşecek, kapakla birebir aynı merkezde) -->
+    <img src="acik_kitap1.png" class="acik-kitap">
 
-<div class="kapak-alan">
+    <!-- ÜSTTEKİ YAZILI KAPAK -->
+    <div class="kapak-alan" id="kapakAlan">
+        <img src="kapak.jpg" class="kapak">
+        
+        <div class="kapak-yazi">
+            Şiir'e hatıra<br>
+            kelimelerden..<br>
+            hayattan..<br>
+            babasından.<br><br><br>
+            <span class="imza">S.O.A</span>
+        </div>
 
-<div class="sag-kapak">
-    <img src="kapak.jpg">
-</div>
-
-<div class="kapak-on" onclick="kapakAc(this)">
-
-<img src="kapak.jpg" class="kapak">
-
-<div class="kapak-yazi">
-    Şiir'e hatıra<br>
-
-```
-kelimelerden..<br>
-hayattan..<br>
-babasından.<br><br><br>
-
-<span class="imza">S.O.A</span>
-```
-
-</div>
-
-<img src="kapak.jpg" class="kapak-arka">
-
-</div>
+        <img src="kapak.jpg" class="kapak-arka">
+    </div>
 
 </div>
 
 <script>
-
-function kapakAc(kapak) {
-
-    const alan = document.querySelector(".kapak-alan");
-
-    if (!kapak.classList.contains("dondu")) {
-
-        alan.classList.add("aciliyor");
-
-        kapak.classList.add("dondu");
-
-    }
-
-}
-
 window.addEventListener("load", function () {
+    const kapsayici = document.getElementById("kitapKapsayici");
+    const kapakAlan = document.getElementById("kapakAlan");
+    const kapakImg = document.querySelector(".kapak");
 
-    const alan = document.querySelector(".kapak-alan");
-    const kapak = document.querySelector(".kapak");
-
-    const yukseklik = kapak.getBoundingClientRect().height;
-
+    // Ölçeklendirme hesabı (orijinal kodunuzdaki mantık korunmuştur)
+    const yukseklik = kapakImg.getBoundingClientRect().height;
     const ikiCm = 2 * 96 / 2.54;
-
     const oran = (yukseklik + ikiCm) / yukseklik;
 
-    alan.style.transform =
-        "translateX(8cm) scale(" + oran + ")";
+    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
+    // Tıklama olayı ile hem kapağı açıyoruz hem de arka plandaki açık kitabın belirme animasyonunu tetikliyoruz
+    kapakAlan.addEventListener("click", function () {
+        kapakAlan.classList.toggle("dondu");
+        kapsayici.classList.toggle("acildi");
+    });
 });
-
 </script>
 
 </body>
