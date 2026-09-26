@@ -18,7 +18,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background: #080808;
+    background: #111;
     overflow: hidden;
     user-select: none;
     -webkit-user-select: none;
@@ -26,98 +26,50 @@ body {
 }
 
 /* =========================================
-   KITAP SAHNESI VE ARKA PLAN (Sıcak Ahşap/Masa Dokusu)
+   KITAP ALANI
 ========================================= */
 
 .book-stage {
     position: relative;
-    width: min(98vw, 150vh);
-    height: min(98vh, 66.6667vw);
+    width: min(100vw, 150vh);
+    height: min(100vh, 66.6667vw);
     margin: auto;
     top: 50%;
     transform: translateY(-50%);
-    /* Arka plan: Zengin sıcak ahşap/deri tonları */
-    background: #1c1410;
-    background-image: 
-        radial-gradient(ellipse at 50% 50%, rgba(138, 90, 56, 0.25) 0%, rgba(0,0,0,0.85) 100%),
-        linear-gradient(135deg, #2b1d14 0%, #170f0b 50%, #0d0806 100%);
-    box-shadow: 0 30px 80px rgba(0,0,0,0.95), inset 0 0 120px rgba(0,0,0,0.8);
-    border-radius: 8px;
-    border: 1px solid rgba(212, 175, 55, 0.15);
+    background-image: url("arkaplan0.jpeg");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow: hidden;
     container-type: inline-size;
-}
-
-/* 3D Sahne Konteyneri - Tam Omurga Hizalaması */
-.book-3d-wrapper {
-    position: absolute;
-    top: 13.2%;
-    left: 10%;
-    width: 80%;
-    height: calc(100% - 27.5%);
     perspective: 2500px;
 }
 
 /* =========================================
-   SAYFA DOKUSU VE RENKLERİ (Eski Sıcak Parşömen)
-========================================= */
-
-.page-bg-texture {
-    position: absolute;
-    inset: 0;
-    background-color: #f7eedc;
-    background-image: 
-        radial-gradient(ellipse at 50% 50%, #fbf6ea 0%, #ece1c9 80%, #dfcea8 100%),
-        linear-gradient(to right, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.02) 6%, rgba(0,0,0,0) 12%);
-    box-shadow: inset 0 0 25px rgba(130, 95, 45, 0.22);
-    border-radius: 2px 6px 6px 2px;
-}
-
-.left-page .page-bg-texture {
-    background-image: 
-        radial-gradient(ellipse at 50% 50%, #fbf6ea 0%, #ece1c9 80%, #dfcea8 100%),
-        linear-gradient(to left, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.03) 6%, rgba(0,0,0,0) 12%);
-    border-radius: 6px 2px 2px 6px;
-}
-
-/* OMURGA DERİNLİK GÖLGESİ */
-.spine-shadow {
-    position: absolute;
-    left: 50%;
-    top: -2%;
-    bottom: -2%;
-    width: 48px;
-    transform: translateX(-50%);
-    background: linear-gradient(to right, 
-        rgba(0,0,0,0) 0%, 
-        rgba(35,20,10,0.3) 30%, 
-        rgba(0,0,0,0.55) 50%, 
-        rgba(35,20,10,0.3) 70%, 
-        rgba(0,0,0,0) 100%);
-    z-index: 25;
-    pointer-events: none;
-}
-
-/* =========================================
-   SAYFALAR
+   SAYFALAR (ORİJİNAL KONUM VE BOYUTLAR)
 ========================================= */
 
 .page {
     position: absolute;
-    top: 0;
-    height: 100%;
-    width: 50%;
+    top: 13.2%;
+    height: calc(100% - 27.5%);
+    background-image: url("sag_sayfa_bos.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
     overflow: hidden;
+    z-index: 2;
 }
 
 .left-page {
-    left: 0;
-    z-index: 2;
+    left: 19%;
+    width: 34%;
+    transform: scaleX(-1);
 }
 
 .right-page {
-    left: 50%;
-    z-index: 2;
+    left: 48.828125%;
+    width: 38.411458%;
     cursor: grab;
 }
 
@@ -126,18 +78,26 @@ body {
 }
 
 /* =========================================
-   SAYFA İÇERİĞİ VE ŞİİR METNİ
+   SAYFA ICERIGI & YAZI KATMANI
 ========================================= */
 
 .page-content {
     position: absolute;
-    left: 12%;
-    top: 10%;
-    width: 76%;
-    height: 80%;
+    left: 14%;
+    top: 11%;
+    width: 72%;
+    height: 78%;
     overflow: hidden;
     z-index: 5;
 }
+
+.left-page .page-content {
+    transform: scaleX(-1);
+}
+
+/* =========================================
+   SIIR
+========================================= */
 
 .poem {
     position: absolute;
@@ -146,9 +106,10 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-    color: #174a82; /* Orijinal koyu mavi şiir rengi */
+    color: #174a82;
     font-family: "Caveat", cursive;
-    font-size: 2.1cqw;
+    /* Mobil ve PC uyumlu oransal font */
+    font-size: 1.85cqw;
     font-weight: 500;
     line-height: 1.55;
     direction: ltr;
@@ -161,15 +122,15 @@ body {
 }
 
 /* =========================================
-   FLIPPER (SÜRÜKLENEN SAYFA KATMANI)
+   3D ÇEVİRME KATMANI (FLIPPER)
 ========================================= */
 
 .flipper {
     position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
+    top: 13.2%;
+    left: 48.828125%;
+    width: 38.411458%;
+    height: calc(100% - 27.5%);
     transform-origin: left center !important;
     transform-style: preserve-3d;
     z-index: 30;
@@ -188,6 +149,10 @@ body {
     top: 0;
     left: 0;
     backface-visibility: hidden;
+    background-image: url("sag_sayfa_bos.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
     overflow: hidden;
 }
 
@@ -198,54 +163,70 @@ body {
 
 .flipper-back {
     z-index: 1;
-    transform: rotateY(180deg);
+    transform: rotateY(180deg) scaleX(-1);
+}
+
+.flipper-back .page-content {
+    transform: scaleX(-1);
 }
 
 .curl-shadow-overlay {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.06) 70%, rgba(0,0,0,0.28) 100%);
+    background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.06) 70%, rgba(0,0,0,0.25) 100%);
 }
 
 /* =========================================
-   ARKA PLAN TÜY KALEM SÜSLERİ (Açı & Duruş Düzeltildi)
+   ARKA PLAN TUY KALEMLARI (SAYFA DOKUSU)
 ========================================= */
 
-.quill-watermark {
+.quill-bg-right {
     position: absolute;
-    width: 75%;
-    height: 75%;
+    max-width: 85%;
+    max-height: 85%;
+    width: auto;
+    height: auto;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(-35deg);
-    opacity: 0.18;
+    opacity: 0.22;
     pointer-events: none;
     z-index: 1;
-    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+    filter: sepia(0.3) contrast(0.9);
 }
 
-.quill-watermark-flip {
+.quill-bg-left {
+    position: absolute;
+    max-width: 85%;
+    max-height: 85%;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%) scaleX(-1) rotate(-35deg);
+    opacity: 0.22;
+    pointer-events: none;
+    z-index: 1;
+    filter: sepia(0.3) contrast(0.9);
 }
 
 /* =========================================
-   SOL ALT KÖŞE MÜREKKEPLİ TÜY KALEM
+   KOSENIN KALEM / MUREKKEP GORSELI
 ========================================= */
 
-.ink-quill-wrapper {
+.ink-quill {
     position: absolute;
-    left: 3.5%;
-    bottom: 2.5%;
     width: 8.5cqw;
-    height: 8.5cqw;
-    z-index: 40;
+    height: auto;
+    left: 4.5%;
+    bottom: 2.5%;
+    z-index: 10;
     pointer-events: none;
-    filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.6));
 }
 
 /* =========================================
-   KONTROLLER VE GEZİNTİ OKLARI
+   OKLAR
 ========================================= */
 
 .nav-arrow {
@@ -256,12 +237,12 @@ body {
     height: 5cqw;
     border: none;
     background: transparent;
-    color: rgba(255,255,255,0.6);
+    color: rgba(255,255,255,0.55);
     font-size: 4cqw;
-    line-height: 1;
+    line-height: 5cqw;
     cursor: pointer;
     z-index: 50;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -269,12 +250,21 @@ body {
 
 .nav-arrow:hover {
     color: #fff;
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
-    transform: translateY(-50%) scale(1.1);
+    text-shadow: 0 0 6px rgba(255,255,255,0.9), 0 0 15px rgba(255,255,255,0.8);
+    transform: translateY(-50%) scale(1.08);
 }
 
-.left-arrow { left: 2%; }
-.right-arrow { right: 2%; }
+.left-arrow {
+    left: 12%;
+}
+
+.right-arrow {
+    right: 8%;
+}
+
+/* =========================================
+   UST KONTROLLER
+========================================= */
 
 .top-controls {
     position: absolute;
@@ -286,36 +276,40 @@ body {
 }
 
 .control-button {
-    width: 4cqw;
-    height: 4cqw;
+    width: 4.2cqw;
+    height: 4.2cqw;
     min-width: 28px;
     min-height: 28px;
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.35);
     border-radius: 50%;
-    background: rgba(0,0,0,0.3);
-    color: rgba(255,255,255,0.8);
+    background: rgba(0,0,0,0.22);
+    color: rgba(255,255,255,0.75);
     cursor: pointer;
-    font-size: 1.8cqw;
+    font-size: 2cqw;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .control-button:hover {
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.4);
     color: #fff;
-    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px rgba(255,255,255,0.35);
 }
+
+/* =========================================
+   EQUALIZER
+========================================= */
 
 .equalizer {
     position: absolute;
     left: 50%;
-    bottom: 2.5%;
+    bottom: 3%;
     transform: translateX(-50%);
     display: flex;
     align-items: flex-end;
     gap: 0.4cqw;
-    height: 2.5cqw;
+    height: 3cqw;
     z-index: 40;
 }
 
@@ -324,8 +318,16 @@ body {
     width: 0.3cqw;
     min-width: 2px;
     height: 30%;
-    background: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.55);
     border-radius: 2px;
+}
+
+/* =========================================
+   BOS SAYFA
+========================================= */
+
+.blank-page {
+    background-image: url("sag_sayfa_bos.png") !important;
 }
 </style>
 </head>
@@ -334,119 +336,87 @@ body {
 
 <div class="book-stage" id="bookStage">
 
-    <!-- ÜST KONTROLLER -->
+    <!-- UST KONTROLLER -->
     <div class="top-controls">
         <button class="control-button" title="Sesli dinle" onclick="toggleAudio()">🔊</button>
         <button class="control-button" title="Tam ekran" onclick="toggleFullscreen()">⛶</button>
     </div>
 
-    <!-- 3D KİTAP ALANI -->
-    <div class="book-3d-wrapper" id="bookWrapper">
-
-        <!-- OMURGA DERİNLİK GÖLGESİ -->
-        <div class="spine-shadow"></div>
-
-        <!-- SOL SAYFA -->
-        <div class="page left-page" id="leftPage">
-            <div class="page-bg-texture"></div>
-            <!-- Zengin Arka Plan Tüy Süsü -->
-            <svg class="quill-watermark quill-watermark-flip" viewBox="0 0 100 100">
-                <path d="M85 10 C60 20, 20 40, 15 85 C25 75, 45 55, 85 10 Z" fill="#174a82"/>
-                <path d="M15 85 Q 40 50, 85 10" stroke="#174a82" stroke-width="1.5" fill="none"/>
-                <path d="M35 60 Q 25 55, 20 62" stroke="#174a82" stroke-width="1" fill="none"/>
-                <path d="M45 48 Q 35 42, 30 50" stroke="#174a82" stroke-width="1" fill="none"/>
-                <path d="M55 36 Q 45 30, 40 38" stroke="#174a82" stroke-width="1" fill="none"/>
-            </svg>
-            <div class="page-content">
-                <div class="poem" id="leftPoem"></div>
-            </div>
+    <!-- SOL SAYFA -->
+    <div class="page left-page" id="leftPage">
+        <img src="yazan_kalem3.png" class="quill-bg-left" alt="">
+        <div class="page-content">
+            <div class="poem" id="leftPoem"></div>
         </div>
-
-        <!-- SAĞ SAYFA -->
-        <div class="page right-page" id="rightPage">
-            <div class="page-bg-texture"></div>
-            <!-- Zengin Arka Plan Tüy Süsü -->
-            <svg class="quill-watermark" viewBox="0 0 100 100">
-                <path d="M85 10 C60 20, 20 40, 15 85 C25 75, 45 55, 85 10 Z" fill="#174a82"/>
-                <path d="M15 85 Q 40 50, 85 10" stroke="#174a82" stroke-width="1.5" fill="none"/>
-                <path d="M35 60 Q 25 55, 20 62" stroke="#174a82" stroke-width="1" fill="none"/>
-                <path d="M45 48 Q 35 42, 30 50" stroke="#174a82" stroke-width="1" fill="none"/>
-                <path d="M55 36 Q 45 30, 40 38" stroke="#174a82" stroke-width="1" fill="none"/>
-            </svg>
-            <div class="page-content">
-                <div class="poem" id="rightPoem"></div>
-            </div>
-        </div>
-
-        <!-- SÜRÜKLENEN / DÖNEN SAYFA (FLIPPER) -->
-        <div class="flipper" id="flipper">
-            <!-- Ön Yüz -->
-            <div class="flipper-face flipper-front">
-                <div class="page-bg-texture"></div>
-                <svg class="quill-watermark" viewBox="0 0 100 100">
-                    <path d="M85 10 C60 20, 20 40, 15 85 C25 75, 45 55, 85 10 Z" fill="#174a82"/>
-                    <path d="M15 85 Q 40 50, 85 10" stroke="#174a82" stroke-width="1.5" fill="none"/>
-                </svg>
-                <div class="page-content">
-                    <div class="poem" id="flipperFrontPoem" style="opacity: 1;"></div>
-                </div>
-                <div class="curl-shadow-overlay"></div>
-            </div>
-            <!-- Arka Yüz -->
-            <div class="flipper-face flipper-back">
-                <div class="page-bg-texture" style="border-radius: 6px 2px 2px 6px;"></div>
-                <svg class="quill-watermark quill-watermark-flip" viewBox="0 0 100 100">
-                    <path d="M85 10 C60 20, 20 40, 15 85 C25 75, 45 55, 85 10 Z" fill="#174a82"/>
-                    <path d="M15 85 Q 40 50, 85 10" stroke="#174a82" stroke-width="1.5" fill="none"/>
-                </svg>
-                <div class="page-content">
-                    <div class="poem" id="flipperBackPoem" style="opacity: 1;"></div>
-                </div>
-                <div class="curl-shadow-overlay"></div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- KÖŞEDEKİ MÜREKKEP VE TÜY KALEM GÖRSELİ -->
-    <div class="ink-quill-wrapper">
-        <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
-            <!-- Mürekkep Hokkası -->
-            <ellipse cx="30" cy="80" rx="18" ry="10" fill="#111" />
-            <path d="M 20 80 L 22 68 L 38 68 L 40 80 Z" fill="#222" />
-            <ellipse cx="30" cy="68" rx="8" ry="3" fill="#000" />
-            <!-- Tüy Kalem -->
-            <path d="M 30 70 C 40 50, 65 25, 90 5 C 75 25, 55 55, 30 70 Z" fill="#d4af37" />
-            <path d="M 30 70 C 45 45, 70 20, 90 5" stroke="#8a5a38" stroke-width="1.5" fill="none" />
-            <!-- Altın Kalem Ucu -->
-            <path d="M 27 74 L 30 70 L 33 74 L 30 82 Z" fill="#d4af37" stroke="#8a5a38" stroke-width="0.5" />
-        </svg>
+    <!-- SAG SAYFA -->
+    <div class="page right-page" id="rightPage">
+        <img src="yazan_kalem3.png" class="quill-bg-right" alt="">
+        <div class="page-content">
+            <div class="poem" id="rightPoem"></div>
+        </div>
     </div>
 
-    <!-- GEZİNTİ OKLARI -->
+    <!-- SÜRÜKLENEN / DÖNEN SAYFA (FLIPPER) -->
+    <div class="flipper" id="flipper">
+        <div class="flipper-face flipper-front">
+            <img src="yazan_kalem3.png" class="quill-bg-right" alt="">
+            <div class="page-content">
+                <div class="poem" id="flipperFrontPoem" style="opacity: 1;"></div>
+            </div>
+            <div class="curl-shadow-overlay"></div>
+        </div>
+        <div class="flipper-face flipper-back">
+            <img src="yazan_kalem3.png" class="quill-bg-left" alt="">
+            <div class="page-content">
+                <div class="poem" id="flipperBackPoem" style="opacity: 1;"></div>
+            </div>
+            <div class="curl-shadow-overlay"></div>
+        </div>
+    </div>
+
+    <!-- KOSENIN KALEM GORSELI -->
+    <img src="murekkep_kalem.png" class="ink-quill" alt="">
+
+    <!-- OKLAR -->
     <button class="nav-arrow left-arrow" onclick="previousPage()">‹</button>
     <button class="nav-arrow right-arrow" onclick="nextPage()">›</button>
 
     <!-- EQUALIZER -->
     <div class="equalizer">
-        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
 
 </div>
 
 <script>
-/* ELEMANLAR */
+/* =========================================
+   ELEMANLAR
+========================================= */
+
 const leftPoem = document.getElementById("leftPoem");
 const rightPoem = document.getElementById("rightPoem");
 const leftPage = document.getElementById("leftPage");
 const rightPage = document.getElementById("rightPage");
-const bookWrapper = document.getElementById("bookWrapper");
+const bookStage = document.getElementById("bookStage");
 
 const flipper = document.getElementById("flipper");
 const flipperFrontPoem = document.getElementById("flipperFrontPoem");
 const flipperBackPoem = document.getElementById("flipperBackPoem");
 
-/* ŞİİR METNİ */
+/* =========================================
+   ŞİİR METNİ
+========================================= */
+
 const poemText =
 `Yoksam düşlerinde
 Bakışların hep donuk
@@ -486,20 +456,33 @@ Seni beklemek için vardım
 Bekle…!
 Geliyorum!`;
 
-/* YAZI BOYUTU VE SAYFA HESAPLAMA */
+/* =========================================
+   GENISLIK OLCECEK ALAN
+========================================= */
+
 const measurePoem = document.createElement("div");
 measurePoem.style.position = "absolute";
 measurePoem.style.visibility = "hidden";
 measurePoem.style.pointerEvents = "none";
 measurePoem.style.fontFamily = '"Caveat", cursive';
 measurePoem.style.whiteSpace = "nowrap";
+
 document.body.appendChild(measurePoem);
+
+/* =========================================
+   GENISLIK OLCE
+========================================= */
 
 function measureTextWidth(text, fontSize) {
     measurePoem.style.fontSize = fontSize;
     measurePoem.textContent = text;
     return measurePoem.getBoundingClientRect().width;
 }
+
+/* =========================================
+   SIIRI GERCEK SAYFA GENISLIGINE GORE
+   SATIRLARA AYIR
+========================================= */
 
 function getWrappedLines() {
     const pageContent = document.querySelector(".left-page .page-content");
@@ -513,21 +496,34 @@ function getWrappedLines() {
             result.push("");
             continue;
         }
+
         const words = rawLine.split(/\s+/);
         let currentLine = "";
+
         for (const word of words) {
             const testLine = currentLine ? currentLine + " " + word : word;
+
             if (measureTextWidth(testLine, currentFontSize) <= availableWidth) {
                 currentLine = testLine;
             } else {
-                if (currentLine) result.push(currentLine);
+                if (currentLine) {
+                    result.push(currentLine);
+                }
                 currentLine = word;
             }
         }
-        if (currentLine) result.push(currentLine);
+
+        if (currentLine) {
+            result.push(currentLine);
+        }
     }
+
     return result;
 }
+
+/* =========================================
+   SAYFALARA BOL
+========================================= */
 
 function buildPages() {
     const lines = getWrappedLines();
@@ -549,19 +545,29 @@ function buildPages() {
     const lineHeight = test.getBoundingClientRect().height;
     test.remove();
 
-    const linesPerPage = Math.max(1, Math.floor(pageRect.height / lineHeight));
+    const pageHeight = pageRect.height;
+    const linesPerPage = Math.max(1, Math.floor(pageHeight / lineHeight));
     const pagesList = [];
+
     for (let i = 0; i < lines.length; i += linesPerPage) {
         pagesList.push(lines.slice(i, i + linesPerPage));
     }
+
     return pagesList;
 }
 
-/* DURUM DEĞİŞKENLERİ */
+/* =========================================
+   DURUM
+========================================= */
+
 let pages = [];
 let pageIndex = 0;
 let stageState = "left";
 let animating = false;
+
+/* =========================================
+   YAVASCA GOSTER / KAYBET
+========================================= */
 
 function fadeIn(element) {
     element.style.opacity = "0";
@@ -576,10 +582,17 @@ function fadeOut(element) {
     element.style.opacity = "0";
 }
 
+/* =========================================
+   ILK DURUM
+========================================= */
+
 function startBook() {
     pages = buildPages();
     pageIndex = 0;
     stageState = "left";
+
+    leftPage.classList.remove("blank-page");
+    rightPage.classList.remove("blank-page");
 
     leftPoem.textContent = pages[0] ? pages[0].join("\n") : "";
     rightPoem.textContent = "";
@@ -588,7 +601,10 @@ function startBook() {
     rightPoem.style.opacity = "0";
 }
 
-/* OMURGAYA KİLİTLİ SÜRÜKLEME MANTIĞI */
+/* =========================================
+   3D DOKUNMATIK VE SÜRÜKLEME MANTIĞI
+========================================= */
+
 let isDragging = false;
 let startX = 0;
 let currentProgress = 0;
@@ -607,7 +623,7 @@ function onPointerDown(e) {
         
         isDragging = true;
         startX = clientX;
-        
+
         if (stageState === "spread") {
             const nextLeftIndex = pageIndex + 2;
             flipperFrontPoem.textContent = rightPoem.textContent;
@@ -632,13 +648,13 @@ function onPointerMove(e) {
     if (!clientX) return;
 
     const deltaX = startX - clientX;
-    const maxDistance = bookWrapper.getBoundingClientRect().width * 0.5;
+    const maxDistance = rightPage.getBoundingClientRect().width * 1.1;
     
     currentProgress = Math.min(Math.max(deltaX / maxDistance, 0), 1);
 
     const angle = currentProgress * -180;
-    const skew = Math.sin(currentProgress * Math.PI) * -3;
-    const translateY = Math.sin(currentProgress * Math.PI) * -1.5;
+    const skew = Math.sin(currentProgress * Math.PI) * -2;
+    const translateY = Math.sin(currentProgress * Math.PI) * -1;
 
     flipper.style.transform = `rotateY(${angle}deg) rotateZ(${skew}deg) translateY(${translateY}%)`;
 }
@@ -680,7 +696,6 @@ async function onPointerUp() {
     flipper.style.transform = "";
 }
 
-/* EVENT LISTENERS */
 window.addEventListener("mousedown", onPointerDown);
 window.addEventListener("mousemove", onPointerMove);
 window.addEventListener("mouseup", onPointerUp);
@@ -689,7 +704,10 @@ window.addEventListener("touchstart", onPointerDown, { passive: true });
 window.addEventListener("touchmove", onPointerMove, { passive: true });
 window.addEventListener("touchend", onPointerUp);
 
-/* BUTON İLE SAYFA ÇEVİRME */
+/* =========================================
+   SAG OK (ILERI) - 3D ANİMASYONLU
+========================================= */
+
 async function nextPage() {
     if (animating) return;
     animating = true;
@@ -751,7 +769,16 @@ async function nextPage() {
         animating = false;
         return;
     }
+
+    if (stageState === "finished") {
+        animating = false;
+        return;
+    }
 }
+
+/* =========================================
+   SOL OK (GERI)
+========================================= */
 
 async function previousPage() {
     if (animating || (pageIndex === 0 && stageState === "left")) return;
@@ -774,17 +801,30 @@ async function previousPage() {
     }
 
     if (stageState === "finished" || (stageState === "left" && pageIndex >= 2)) {
+        fadeOut(leftPoem);
+        fadeOut(rightPoem);
+        await wait(800);
+
         pageIndex = Math.max(0, pageIndex - 2);
+
         leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
         rightPoem.textContent = pages[pageIndex + 1] ? pages[pageIndex + 1].join("\n") : "";
+
         fadeIn(leftPoem);
         if (pages[pageIndex + 1]) fadeIn(rightPoem);
+
         stageState = pages[pageIndex + 1] ? "spread" : "right";
         await wait(800);
+        animating = false;
+        return;
     }
 
     animating = false;
 }
+
+/* =========================================
+   BEKLEME VE KONTROL FONKSIYONLARI
+========================================= */
 
 function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -802,9 +842,13 @@ function toggleAudio() {
     alert("Ses oynatma başlatıldı/durduruldu.");
 }
 
+/* =========================================
+   BASLAT VE RESIZE DINLEYICI
+========================================= */
+
 let resizeTimer;
 window.addEventListener("load", () => {
-    setTimeout(startBook, 300);
+    setTimeout(startBook, 500);
 });
 
 window.addEventListener("resize", () => {
