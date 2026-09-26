@@ -18,7 +18,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background: #0d0d0d;
+    background: #080808;
     overflow: hidden;
     user-select: none;
     -webkit-user-select: none;
@@ -26,82 +26,80 @@ body {
 }
 
 /* =========================================
-   KITAP SAHNESI VE 3D PERSPEKTIF
+   KITAP SAHNESI VE ARKA PLAN (Sıcak Ahşap/Masa Dokusu)
 ========================================= */
 
 .book-stage {
     position: relative;
-    width: min(96vw, 140vh);
-    height: min(96vh, 65vw);
+    width: min(98vw, 150vh);
+    height: min(98vh, 66.6667vw);
     margin: auto;
     top: 50%;
     transform: translateY(-50%);
-    background: #1e1915;
+    /* Arka plan: Zengin sıcak ahşap/deri tonları */
+    background: #1c1410;
     background-image: 
-        radial-gradient(circle at 50% 50%, rgba(244, 230, 208, 0.08) 0%, transparent 80%),
-        linear-gradient(to bottom, #14100d, #261f1a, #14100d);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.9), inset 0 0 100px rgba(0,0,0,0.8);
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.05);
+        radial-gradient(ellipse at 50% 50%, rgba(138, 90, 56, 0.25) 0%, rgba(0,0,0,0.85) 100%),
+        linear-gradient(135deg, #2b1d14 0%, #170f0b 50%, #0d0806 100%);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.95), inset 0 0 120px rgba(0,0,0,0.8);
+    border-radius: 8px;
+    border: 1px solid rgba(212, 175, 55, 0.15);
     overflow: hidden;
     container-type: inline-size;
 }
 
-/* 3D Sahne Konteyneri - Omurga ile tam hizalanma sağlar */
+/* 3D Sahne Konteyneri - Tam Omurga Hizalaması */
 .book-3d-wrapper {
     position: absolute;
-    top: 10%;
+    top: 13.2%;
     left: 10%;
     width: 80%;
-    height: 80%;
-    perspective: 2000px;
+    height: calc(100% - 27.5%);
+    perspective: 2500px;
 }
 
 /* =========================================
-   SAYFA TABAN DOKULERI
+   SAYFA DOKUSU VE RENKLERİ (Eski Sıcak Parşömen)
 ========================================= */
 
 .page-bg-texture {
     position: absolute;
     inset: 0;
-    background: #f8f1e5;
+    background-color: #f7eedc;
     background-image: 
-        linear-gradient(to right, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.02) 8%, rgba(0,0,0,0) 15%),
-        radial-gradient(circle at 50% 50%, #fbf6ed 0%, #ede1cc 100%);
-    box-shadow: inset 0 0 30px rgba(160, 130, 90, 0.25);
+        radial-gradient(ellipse at 50% 50%, #fbf6ea 0%, #ece1c9 80%, #dfcea8 100%),
+        linear-gradient(to right, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.02) 6%, rgba(0,0,0,0) 12%);
+    box-shadow: inset 0 0 25px rgba(130, 95, 45, 0.22);
+    border-radius: 2px 6px 6px 2px;
 }
 
 .left-page .page-bg-texture {
     background-image: 
-        linear-gradient(to left, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.03) 8%, rgba(0,0,0,0) 15%),
-        radial-gradient(circle at 50% 50%, #fbf6ed 0%, #ede1cc 100%);
-    border-radius: 6px 0 0 6px;
+        radial-gradient(ellipse at 50% 50%, #fbf6ea 0%, #ece1c9 80%, #dfcea8 100%),
+        linear-gradient(to left, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.03) 6%, rgba(0,0,0,0) 12%);
+    border-radius: 6px 2px 2px 6px;
 }
 
-.right-page .page-bg-texture {
-    border-radius: 0 6px 6px 0;
-}
-
-/* ORTA OMURGA GÖLGESİ */
+/* OMURGA DERİNLİK GÖLGESİ */
 .spine-shadow {
     position: absolute;
     left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 40px;
+    top: -2%;
+    bottom: -2%;
+    width: 48px;
     transform: translateX(-50%);
     background: linear-gradient(to right, 
         rgba(0,0,0,0) 0%, 
-        rgba(0,0,0,0.25) 35%, 
-        rgba(0,0,0,0.45) 50%, 
-        rgba(0,0,0,0.25) 65%, 
+        rgba(35,20,10,0.3) 30%, 
+        rgba(0,0,0,0.55) 50%, 
+        rgba(35,20,10,0.3) 70%, 
         rgba(0,0,0,0) 100%);
-    z-index: 20;
+    z-index: 25;
     pointer-events: none;
 }
 
 /* =========================================
-   SAYFA YERLEŞİMLERİ (OMURGAYA SIFIRLI)
+   SAYFALAR
 ========================================= */
 
 .page {
@@ -148,7 +146,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-    color: #1a385c;
+    color: #174a82; /* Orijinal koyu mavi şiir rengi */
     font-family: "Caveat", cursive;
     font-size: 2.1cqw;
     font-weight: 500;
@@ -163,17 +161,16 @@ body {
 }
 
 /* =========================================
-   SÜRÜKLENEN SAYFA KATMANI (FLIPPER)
-   Omurgaya %100 Kilitli Eksen
+   FLIPPER (SÜRÜKLENEN SAYFA KATMANI)
 ========================================= */
 
 .flipper {
     position: absolute;
     top: 0;
-    left: 50%; /* Tam Omurga Ekseni */
+    left: 50%;
     width: 50%;
     height: 100%;
-    transform-origin: left center !important; /* Omurgadan Ayrılmaz */
+    transform-origin: left center !important;
     transform-style: preserve-3d;
     z-index: 30;
     pointer-events: none;
@@ -204,51 +201,51 @@ body {
     transform: rotateY(180deg);
 }
 
-/* Sağ Alt Köşe Bükülme ve Gölge Doku Katmanı */
 .curl-shadow-overlay {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(135deg, transparent 55%, rgba(0,0,0,0.08) 75%, rgba(0,0,0,0.3) 100%);
+    background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.06) 70%, rgba(0,0,0,0.28) 100%);
 }
 
 /* =========================================
-   TÜY KALEM DOKULARI
+   ARKA PLAN TÜY KALEM SÜSLERİ (Açı & Duruş Düzeltildi)
 ========================================= */
 
 .quill-watermark {
     position: absolute;
-    width: 60%;
-    height: 60%;
+    width: 75%;
+    height: 75%;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    opacity: 0.08;
+    transform: translate(-50%, -50%) rotate(-35deg);
+    opacity: 0.18;
     pointer-events: none;
     z-index: 1;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
 }
 
 .quill-watermark-flip {
-    transform: translate(-50%, -50%) scaleX(-1) rotate(-30deg);
+    transform: translate(-50%, -50%) scaleX(-1) rotate(-35deg);
 }
 
 /* =========================================
-   KÖŞE KALEM SÜSÜ
+   SOL ALT KÖŞE MÜREKKEPLİ TÜY KALEM
 ========================================= */
 
-.ink-quill {
+.ink-quill-wrapper {
     position: absolute;
-    width: 7cqw;
-    height: auto;
-    left: 3%;
-    bottom: 3%;
+    left: 3.5%;
+    bottom: 2.5%;
+    width: 8.5cqw;
+    height: 8.5cqw;
     z-index: 40;
     pointer-events: none;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));
+    filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.6));
 }
 
 /* =========================================
-   OKLAR VE BUTONLAR
+   KONTROLLER VE GEZİNTİ OKLARI
 ========================================= */
 
 .nav-arrow {
@@ -258,10 +255,9 @@ body {
     width: 5cqw;
     height: 5cqw;
     border: none;
-    background: rgba(0,0,0,0.25);
-    border-radius: 50%;
-    color: rgba(255,255,255,0.7);
-    font-size: 3.5cqw;
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    font-size: 4cqw;
     line-height: 1;
     cursor: pointer;
     z-index: 50;
@@ -273,7 +269,7 @@ body {
 
 .nav-arrow:hover {
     color: #fff;
-    background: rgba(0,0,0,0.5);
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
     transform: translateY(-50%) scale(1.1);
 }
 
@@ -290,11 +286,11 @@ body {
 }
 
 .control-button {
-    width: 3.8cqw;
-    height: 3.8cqw;
+    width: 4cqw;
+    height: 4cqw;
     min-width: 28px;
     min-height: 28px;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.25);
     border-radius: 50%;
     background: rgba(0,0,0,0.3);
     color: rgba(255,255,255,0.8);
@@ -308,12 +304,13 @@ body {
 .control-button:hover {
     background: rgba(0,0,0,0.6);
     color: #fff;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
 }
 
 .equalizer {
     position: absolute;
     left: 50%;
-    bottom: 2%;
+    bottom: 2.5%;
     transform: translateX(-50%);
     display: flex;
     align-items: flex-end;
@@ -327,7 +324,7 @@ body {
     width: 0.3cqw;
     min-width: 2px;
     height: 30%;
-    background: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.45);
     border-radius: 2px;
 }
 </style>
@@ -346,13 +343,20 @@ body {
     <!-- 3D KİTAP ALANI -->
     <div class="book-3d-wrapper" id="bookWrapper">
 
-        <!-- OMURGA GÖLGESİ -->
+        <!-- OMURGA DERİNLİK GÖLGESİ -->
         <div class="spine-shadow"></div>
 
         <!-- SOL SAYFA -->
         <div class="page left-page" id="leftPage">
             <div class="page-bg-texture"></div>
-            <svg class="quill-watermark quill-watermark-flip" viewBox="0 0 24 24" fill="#1a385c"><path d="M21 3C21 3 14 4 10 9C6 14 4 20 4 20C4 20 8 19 12 15C16 11 21 3 21 3Z"/></svg>
+            <!-- Zengin Arka Plan Tüy Süsü -->
+            <svg class="quill-watermark quill-watermark-flip" viewBox="0 0 100 100">
+                <path d="M85 10 C60 20, 20 40, 15 85 C25 75, 45 55, 85 10 Z" fill="#174a82"/>
+                <path d="M15 85 Q 40 50, 85 10" stroke="#174a82" stroke-width="1.5" fill="none"/>
+                <path d="M35 60 Q 25 55, 20 62" stroke="#174a82" stroke-width="1" fill="none"/>
+                <path d="M45 48 Q 35 42, 30 50" stroke="#174a82" stroke-width="1" fill="none"/>
+                <path d="M55 36 Q 45 30, 40 38" stroke="#174a82" stroke-width="1" fill="none"/>
+            </svg>
             <div class="page-content">
                 <div class="poem" id="leftPoem"></div>
             </div>
@@ -361,7 +365,14 @@ body {
         <!-- SAĞ SAYFA -->
         <div class="page right-page" id="rightPage">
             <div class="page-bg-texture"></div>
-            <svg class="quill-watermark" viewBox="0 0 24 24" fill="#1a385c"><path d="M21 3C21 3 14 4 10 9C6 14 4 20 4 20C4 20 8 19 12 15C16 11 21 3 21 3Z"/></svg>
+            <!-- Zengin Arka Plan Tüy Süsü -->
+            <svg class="quill-watermark" viewBox="0 0 100 100">
+                <path d="M85 10 C60 20, 20 40, 15 85 C25 75, 45 55, 85 10 Z" fill="#174a82"/>
+                <path d="M15 85 Q 40 50, 85 10" stroke="#174a82" stroke-width="1.5" fill="none"/>
+                <path d="M35 60 Q 25 55, 20 62" stroke="#174a82" stroke-width="1" fill="none"/>
+                <path d="M45 48 Q 35 42, 30 50" stroke="#174a82" stroke-width="1" fill="none"/>
+                <path d="M55 36 Q 45 30, 40 38" stroke="#174a82" stroke-width="1" fill="none"/>
+            </svg>
             <div class="page-content">
                 <div class="poem" id="rightPoem"></div>
             </div>
@@ -369,19 +380,25 @@ body {
 
         <!-- SÜRÜKLENEN / DÖNEN SAYFA (FLIPPER) -->
         <div class="flipper" id="flipper">
-            <!-- Ön Yüz (Sağ Sayfadan Başlar) -->
+            <!-- Ön Yüz -->
             <div class="flipper-face flipper-front">
-                <div class="page-bg-texture" style="border-radius: 0 6px 6px 0;"></div>
-                <svg class="quill-watermark" viewBox="0 0 24 24" fill="#1a385c"><path d="M21 3C21 3 14 4 10 9C6 14 4 20 4 20C4 20 8 19 12 15C16 11 21 3 21 3Z"/></svg>
+                <div class="page-bg-texture"></div>
+                <svg class="quill-watermark" viewBox="0 0 100 100">
+                    <path d="M85 10 C60 20, 20 40, 15 85 C25 75, 45 55, 85 10 Z" fill="#174a82"/>
+                    <path d="M15 85 Q 40 50, 85 10" stroke="#174a82" stroke-width="1.5" fill="none"/>
+                </svg>
                 <div class="page-content">
                     <div class="poem" id="flipperFrontPoem" style="opacity: 1;"></div>
                 </div>
                 <div class="curl-shadow-overlay"></div>
             </div>
-            <!-- Arka Yüz (Sol Sayfaya Dönüşür) -->
+            <!-- Arka Yüz -->
             <div class="flipper-face flipper-back">
-                <div class="page-bg-texture" style="border-radius: 6px 0 0 6px;"></div>
-                <svg class="quill-watermark quill-watermark-flip" viewBox="0 0 24 24" fill="#1a385c"><path d="M21 3C21 3 14 4 10 9C6 14 4 20 4 20C4 20 8 19 12 15C16 11 21 3 21 3Z"/></svg>
+                <div class="page-bg-texture" style="border-radius: 6px 2px 2px 6px;"></div>
+                <svg class="quill-watermark quill-watermark-flip" viewBox="0 0 100 100">
+                    <path d="M85 10 C60 20, 20 40, 15 85 C25 75, 45 55, 85 10 Z" fill="#174a82"/>
+                    <path d="M15 85 Q 40 50, 85 10" stroke="#174a82" stroke-width="1.5" fill="none"/>
+                </svg>
                 <div class="page-content">
                     <div class="poem" id="flipperBackPoem" style="opacity: 1;"></div>
                 </div>
@@ -391,11 +408,20 @@ body {
 
     </div>
 
-    <!-- KALEM SÜSÜ -->
-    <svg class="ink-quill" viewBox="0 0 100 100" fill="none">
-        <path d="M80 10C80 10 40 30 20 70C15 80 10 90 10 90C10 90 20 85 30 80C70 60 90 20 90 20Z" fill="#2c1a0e"/>
-        <path d="M10 90L22 78" stroke="#d4af37" stroke-width="3"/>
-    </svg>
+    <!-- KÖŞEDEKİ MÜREKKEP VE TÜY KALEM GÖRSELİ -->
+    <div class="ink-quill-wrapper">
+        <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
+            <!-- Mürekkep Hokkası -->
+            <ellipse cx="30" cy="80" rx="18" ry="10" fill="#111" />
+            <path d="M 20 80 L 22 68 L 38 68 L 40 80 Z" fill="#222" />
+            <ellipse cx="30" cy="68" rx="8" ry="3" fill="#000" />
+            <!-- Tüy Kalem -->
+            <path d="M 30 70 C 40 50, 65 25, 90 5 C 75 25, 55 55, 30 70 Z" fill="#d4af37" />
+            <path d="M 30 70 C 45 45, 70 20, 90 5" stroke="#8a5a38" stroke-width="1.5" fill="none" />
+            <!-- Altın Kalem Ucu -->
+            <path d="M 27 74 L 30 70 L 33 74 L 30 82 Z" fill="#d4af37" stroke="#8a5a38" stroke-width="0.5" />
+        </svg>
+    </div>
 
     <!-- GEZİNTİ OKLARI -->
     <button class="nav-arrow left-arrow" onclick="previousPage()">‹</button>
@@ -562,7 +588,7 @@ function startBook() {
     rightPoem.style.opacity = "0";
 }
 
-/* OMURGAYA kilitli CANLI SÜRÜKLEME (DRAG/TOUCH) MANTIĞI */
+/* OMURGAYA KİLİTLİ SÜRÜKLEME MANTIĞI */
 let isDragging = false;
 let startX = 0;
 let currentProgress = 0;
@@ -576,7 +602,6 @@ function onPointerDown(e) {
 
     if (!clientX || !clientY) return;
 
-    // Sağ sayfa alanından başlarsa yakala
     if (clientX >= rightRect.left && clientX <= rightRect.right + 20 &&
         clientY >= rightRect.top && clientY <= rightRect.bottom) {
         
@@ -612,7 +637,6 @@ function onPointerMove(e) {
     currentProgress = Math.min(Math.max(deltaX / maxDistance, 0), 1);
 
     const angle = currentProgress * -180;
-    // Sağ alt köşeden kıvrılma kavisleri
     const skew = Math.sin(currentProgress * Math.PI) * -3;
     const translateY = Math.sin(currentProgress * Math.PI) * -1.5;
 
@@ -626,7 +650,6 @@ async function onPointerUp() {
     flipper.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
 
     if (currentProgress > 0.3) {
-        // Eşik geçildi: Sol sayfaya sıfır oturarak yapışır
         flipper.style.transform = `rotateY(-180deg) rotateZ(0deg) translateY(0%)`;
         await wait(500);
 
@@ -649,7 +672,6 @@ async function onPointerUp() {
             stageState = "right";
         }
     } else {
-        // Eşik geçilemedi: Geri yerine esner
         flipper.style.transform = `rotateY(0deg) rotateZ(0deg) translateY(0%)`;
         await wait(500);
     }
