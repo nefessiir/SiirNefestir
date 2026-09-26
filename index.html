@@ -38,21 +38,22 @@ body {
     width: 39%;
     height: calc(82vh + 4cm);
 
-    transform: translateX(8cm);
+    transform: translateX(10cm);
 
     perspective: 1800px;
 
     position: relative;
 }
 
-/* 3D kapak */
+/* Kapak */
 .kitap-kapak {
-    width: 100%;
-    height: 100%;
+    width: calc(100% - 2cm);
+    height: calc(100% - 2cm);
 
     position: absolute;
-    left: 0;
-    top: 0;
+
+    left: 1cm;
+    top: 1cm;
 
     transform-style: preserve-3d;
     transform-origin: left center;
@@ -70,6 +71,7 @@ body {
     height: 100%;
 
     position: absolute;
+
     left: 0;
     top: 0;
 
@@ -84,7 +86,7 @@ body {
     background-repeat: no-repeat;
 }
 
-/* İç kapak / cilt */
+/* İç kapak */
 .kapak-arka {
     transform: rotateY(180deg);
 
@@ -101,7 +103,7 @@ body {
         inset 0 0 20px rgba(0,0,0,0.18);
 }
 
-/* Üst ve alt cilt payları */
+/* Üst cilt payı */
 .kapak-arka::before {
     content: "";
 
@@ -131,7 +133,7 @@ body {
     background: #4a2d1d;
 }
 
-/* Açılmış kapak */
+/* Kapak açıldığında */
 .kitap-kapak.acik {
     transform: rotateY(-180deg);
 }
