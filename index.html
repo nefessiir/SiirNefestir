@@ -90,31 +90,10 @@ body {
 .kapak-arka {
     transform: rotateY(180deg);
 
-    background: #4a2d1d;
+    background: #d8c08d;
 
     box-shadow:
         inset 0 0 20px rgba(0,0,0,0.18);
-
-    /* Cilt paylarını kapağın içinde tut */
-    padding-top: 1cm;
-    padding-bottom: 1cm;
-    padding-left: 1cm;
-}
-
-/* Saman kağıdı alanı */
-.kapak-arka::after {
-    content: "";
-
-    position: absolute;
-
-    top: 1cm;
-    left: 1cm;
-    right: 0;
-    bottom: 1cm;
-
-    background: #d8c08d;
-
-    z-index: -1;
 }
 
 /* Kapak açıldığında */
