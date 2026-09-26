@@ -46,7 +46,7 @@ body {
     position: relative;
 }
 
-/* Sağ tarafta sabit kalan iç kapak */
+/* Sağ tarafta sabit duran iç kapak */
 .sag-kapak {
     width: calc(100% - 2cm);
     height: calc(100% - 2cm);
@@ -64,8 +64,7 @@ body {
     opacity: 0;
     visibility: hidden;
 
-    transition:
-        opacity 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 /* Kapak */
@@ -124,7 +123,7 @@ body {
     transform: rotateY(-180deg);
 }
 
-/* Kapak açıldığında sağ taraf görünür */
+/* Kapak açılınca sağ iç kapak görünür */
 .kitap-alani.acik .sag-kapak {
     opacity: 1;
     visibility: visible;
@@ -139,7 +138,7 @@ body {
 <div class="kitap-alani" id="kitapAlani">
 
 ```
-<!-- Sağda sabit iç kapak -->
+<!-- Sağda sabit duran iç kapak -->
 <div class="sag-kapak"></div>
 
 <!-- Açılan kapak -->
