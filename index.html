@@ -54,17 +54,16 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP 
-   - Kapanırken: Kapak kapanmaya başladığı an (0s gecikme) hemen hızlıca kaybolur.
-   - Açılırken: Kapak ortayı geçip kenara yaklaşana kadar (ilk 1.1s) gizli kalır, 
-     son kalan 0.4 saniyede belirerek kapakla aynı anda tam görünür olur. */
+/* 2. KATMAN: AÇIK KİTAP (Merkezi koruyarak her yöne 0.5 cm büyütülmüş hali) 
+   - width: 200% üzerine sağdan ve soldan 0.5'er cm (toplam 1cm) eklendi.
+   - height: 100% üzerine üstten ve alttan 0.5'er cm (toplam 1cm) eklendi.
+   - left ve top değerleriyle merkez noktası milimetrik olarak sabit tutuldu. */
 .acik-kitap {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: auto;
-    transform: translateX(-50%);
+    top: -0.5cm;
+    left: calc(-50% - 0.25cm);
+    width: calc(200% + 1cm);
+    height: calc(100% + 1cm);
     z-index: 1; 
     pointer-events: none;
     
@@ -151,7 +150,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP -->
+    <!-- 2. AÇIK KİTAP (Merkezi sabit, her yöne 0.5 cm büyütülmüş) -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
