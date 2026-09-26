@@ -33,7 +33,7 @@ body {
     justify-content: center;
 }
 
-/* 3D hareket alanı */
+/* Kapağın bulunduğu alan */
 .kitap-alani {
     width: 39%;
     height: calc(82vh + 4cm);
@@ -45,22 +45,29 @@ body {
     position: relative;
 }
 
-/* Kitap kapağı */
-.kitap-kapagi {
+/* 3D kapak */
+.kitap-kapak {
     width: 100%;
     height: 100%;
 
-    object-fit: fill;
-    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
 
-    cursor: pointer;
-
+    transform-style: preserve-3d;
     transform-origin: left center;
-
-    transform: rotateY(0deg);
 
     transition:
         transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    cursor: pointer;
+}
+
+/* Ön ve arka yüz */
+.kapak-on,
+.kapak-arka {
+    width: 100%;
+    height: 100%;
 
     position: absolute;
     left: 0;
@@ -69,8 +76,31 @@ body {
     backface-visibility: hidden;
 }
 
-/* Kapak açıldığında sola doğru 3D döner */
-.kitap-kapagi.acik {
+/* Ön yüz */
+.kapak-on {
+    background-image: url("kitap_kapagi.png");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Arka yüz */
+.kapak-arka {
+    background: linear-gradient(
+        to right,
+        #3a2417,
+        #5a3824,
+        #432a1b
+    );
+
+    transform: rotateY(180deg);
+
+    box-shadow:
+        inset 0 0 25px rgba(0,0,0,0.35);
+}
+
+/* Açılmış kapak */
+.kitap-kapak.acik {
     transform: rotateY(-180deg);
 }
 
@@ -81,21 +111,27 @@ body {
 
 <div class="kitap-alani">
 
-    <img
-        src="kitap_kapagi.png"
-        class="kitap-kapagi"
-        id="kitapKapagi"
-        alt="Şiir Nefestir"
+    <div
+        class="kitap-kapak"
+        id="kitapKapak"
     >
+
+        <div class="kapak-on"></div>
+
+        <div class="kapak-arka"></div>
+
+    </div>
 
 </div>
 
 <script>
 
-const kitapKapagi = document.getElementById("kitapKapagi");
+const kitapKapak = document.getElementById("kitapKapak");
 
-kitapKapagi.addEventListener("click", function () {
-    kitapKapagi.classList.toggle("acik");
+kitapKapak.addEventListener("click", function () {
+
+    kitapKapak.classList.toggle("acik");
+
 });
 
 </script>
