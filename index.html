@@ -54,18 +54,20 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP (Sağdan Sola Doğru Maskelenmiş Bütünsel Görsel) */
+/* 2. KATMAN: AÇIK KİTAP (Her yöne 0.5cm büyütülmüş ve maskelenmiş) 
+   - width: calc(200% + 1cm) -> Sol ve sağdan 0.5'er cm (toplam 1cm) genişletildi.
+   - height: calc(100% + 1cm) -> Üst ve alttan 0.5'er cm (toplam 1cm) uzatıldı.
+   - top ve left ile negatif margin verilerek dışa taşma merkezlendi. */
 .acik-kitap {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: auto;
-    transform: translateX(-50%);
+    top: -0.5cm;
+    left: calc(-50% - 0.25cm);
+    width: calc(200% + 1cm);
+    height: calc(100% + 1cm);
     z-index: 1; 
     pointer-events: none;
     
-    /* Başlangıçta sağ taraf kırpılmış (gizli), soldan sağa doğru (sağdan sola) açılacak */
+    /* Başlangıçta sağ taraf kırpılmış (gizli), sağdan sola doğru açılacak */
     clip-path: inset(0 0 0 100%);
     transition: clip-path 1.5s ease-in-out, z-index 0s 1.5s;
 }
@@ -150,7 +152,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP (Maskelenmiş bütünsel görsel) -->
+    <!-- 2. AÇIK KİTAP (Maskelenmiş ve 0.5cm büyütülmüş görsel) -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
@@ -159,6 +161,7 @@ body {
         
         <div class="kapak-yazi">
             Şiir'e hatıra<br>
+            
             kelimelerden..<br>
             hayattan..<br>
             babasından.<br><br><br>
