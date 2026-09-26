@@ -1,13 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Şiir Nefestir</title>
+
 <style>
-* {
-    box-sizing: border-box;
-}
 
 html,
 body {
@@ -19,74 +19,18 @@ body {
 
 body {
     overflow: hidden;
-    background-image: url("yeni_arka_plan0.jpg");
+
+    background-image: url("yeni_arka_plan4.jpg");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-/* Kapağın bulunduğu alan */
-.kitap-alani {
-    width: 39%;
-    height: calc(82vh + 4cm);
-    transform: translateX(10cm);
-    perspective: 2500px;
-    position: relative;
-}
-
-/* Açılan kapak */
-.kitap-kapak {
-    width: calc(100% - 2cm);
-    height: calc(100% - 2cm);
-    position: absolute;
-    left: 1cm;
-    top: 1cm;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    transition: transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
-    cursor: pointer;
-    z-index: 2;
-}
-
-/* Ön kapak yüzü */
-.kapak-on {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    backface-visibility: hidden;
-    background-image: url("kitap_kapagi.png");
-    background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-/* Ana kapak sola açılır */
-.kitap-kapak.acik {
-    transform: rotateY(-180deg);
-}
 </style>
+
 </head>
+
 <body>
-
-<div class="kitap-alani" id="kitapAlani">
-    <!-- Sola açılan kapak -->
-    <div class="kitap-kapak" id="kitapKapak">
-        <div class="kapak-on"></div>
-    </div>
-</div>
-
-<script>
-const kitapKapak = document.getElementById("kitapKapak");
-
-kitapKapak.addEventListener("click", function () {
-    kitapKapak.classList.toggle("acik");
-});
-</script>
 
 </body>
 </html>
