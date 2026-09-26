@@ -64,6 +64,8 @@ body {
     opacity: 0;
     visibility: hidden;
 
+    z-index: 1;
+
     transition: opacity 0.3s ease;
 }
 
@@ -84,6 +86,8 @@ body {
         transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 
     cursor: pointer;
+
+    z-index: 2;
 }
 
 /* Ön ve arka yüz */
@@ -108,7 +112,7 @@ body {
     background-repeat: no-repeat;
 }
 
-/* İç kapak */
+/* Kapak açıldığında görünen saman renkli iç yüz */
 .kapak-arka {
     transform: rotateY(180deg);
 
@@ -123,7 +127,7 @@ body {
     transform: rotateY(-180deg);
 }
 
-/* Kapak açılınca sağ iç kapak görünür */
+/* Kapak açılınca sağ taraftaki saman renkli iç kapak görünür */
 .kitap-alani.acik .sag-kapak {
     opacity: 1;
     visibility: visible;
@@ -138,7 +142,7 @@ body {
 <div class="kitap-alani" id="kitapAlani">
 
 ```
-<!-- Sağda sabit duran iç kapak -->
+<!-- Sağda sabit duran saman renkli iç kapak -->
 <div class="sag-kapak"></div>
 
 <!-- Açılan kapak -->
