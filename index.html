@@ -34,34 +34,6 @@ body {
     perspective: 1200px;
 }
 
-/* AÇIK KİTAP */
-
-.acik-kitap1 {
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    width: 65vw;
-    height: auto;
-
-    transform: translate(-50%, -50%);
-
-    opacity: 0;
-
-    z-index: 0;
-
-    pointer-events: none;
-
-    transition: opacity 2.2s ease-in-out;
-}
-
-.acik-kitap1.gorunur {
-    opacity: 1;
-}
-
-/* KAPAK ALANI */
-
 .kapak-alan {
     position: relative;
     width: 20%;
@@ -134,8 +106,6 @@ body {
     transform: rotateY(180deg);
 }
 
-/* KAPAK YAZISI */
-
 .kapak-yazi {
     position: absolute;
     top: 50%;
@@ -175,23 +145,14 @@ body {
 
 <body>
 
-<!-- KAPAK AÇILIRKEN ALTTA BELİRECEK AÇIK KİTAP -->
-
-<img src="acik_kitap1.png" class="acik-kitap1" id="acikKitap1">
-
 <div class="kapak-alan">
 
 ```
-<!-- YAZILI KAPAĞIN ALTINDA SABİT KALAN KAPAK -->
-
 <div class="sag-kapak">
     <img src="kapak.jpg">
 </div>
 
-
-<!-- ÜSTTEKİ YAZILI KAPAK -->
-
-<div class="kapak-on" id="kapakOn">
+<div class="kapak-on" onclick="this.classList.toggle('dondu')">
 
     <img src="kapak.jpg" class="kapak">
 
@@ -227,30 +188,6 @@ window.addEventListener("load", function () {
 
     alan.style.transform =
         "translateX(8cm) scale(" + oran + ")";
-
-});
-
-
-const kapakOn = document.getElementById("kapakOn");
-const acikKitap1 = document.getElementById("acikKitap1");
-
-kapakOn.addEventListener("click", function () {
-
-    const aciliyor = !kapakOn.classList.contains("dondu");
-
-    kapakOn.classList.toggle("dondu");
-
-    if (aciliyor) {
-
-        setTimeout(function () {
-            acikKitap.classList.add("gorunur");
-        }, 250);
-
-    } else {
-
-        acikKitap.classList.remove("gorunur");
-
-    }
 
 });
 
