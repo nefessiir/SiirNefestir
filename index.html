@@ -43,6 +43,27 @@ body {
     transform-style: preserve-3d;
 }
 
+/* SAĞDA SABİT KALACAK BOŞ KAPAK */
+
+.sag-kapak {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 0.2cm);
+
+    width: 100%;
+    height: auto;
+
+    z-index: 1;
+}
+
+.sag-kapak img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* DÖNEN ÖN KAPAK */
+
 .kapak-on {
     position: relative;
     width: 100%;
@@ -54,6 +75,8 @@ body {
     cursor: pointer;
 
     transition: transform 1.5s ease-in-out;
+
+    z-index: 2;
 }
 
 .kapak-on.dondu {
@@ -123,9 +146,15 @@ body {
 <div class="kapak-alan">
 
 ```
+<!-- SAĞDA SABİT KALAN BOŞ DERİ KAPAK -->
+<div class="sag-kapak">
+    <img src="kapak.jpg">
+</div>
+
+<!-- TIKLANIP DÖNEN KAPAK -->
 <div class="kapak-on" onclick="this.classList.toggle('dondu')">
 
-    <!-- ON KAPAK -->
+    <!-- ÖN YÜZ -->
     <img src="kapak.jpg" class="kapak">
 
     <div class="kapak-yazi">
@@ -138,7 +167,7 @@ body {
         <span class="imza">S.O.A</span>
     </div>
 
-    <!-- ARKA KAPAK -->
+    <!-- KAPAĞIN ARKA YÜZÜ -->
     <img src="kapak.jpg" class="kapak-arka">
 
 </div>
