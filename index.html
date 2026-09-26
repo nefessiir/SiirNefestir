@@ -38,9 +38,11 @@ body {
     position: relative;
     width: 20%;
     height: auto;
+
     transform: translateX(8cm);
 
     transform-style: preserve-3d;
+    transform-origin: right bottom;
 }
 
 /* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
@@ -170,6 +172,26 @@ body {
 ```
 
 </div>
+
+<script>
+
+window.addEventListener("load", function () {
+
+    const alan = document.querySelector(".kapak-alan");
+    const kapak = document.querySelector(".kapak");
+
+    const yukseklik = kapak.getBoundingClientRect().height;
+
+    const ikiCm = 2 * 96 / 2.54;
+
+    const oran = (yukseklik + ikiCm) / yukseklik;
+
+    alan.style.transform =
+        "translateX(8cm) scale(" + oran + ")";
+
+});
+
+</script>
 
 </body>
 </html>
