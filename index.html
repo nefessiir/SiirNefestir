@@ -21,12 +21,10 @@ body {
     background: #111;
     overflow: hidden;
     user-select: none;
-    -webkit-user-select: none;
-    touch-action: none;
 }
 
 /* =========================================
-   KITAP ALANI (YENİ ARKA PLANA TAM UYUMLU)
+   KITAP ALANI
 ========================================= */
 
 .book-stage {
@@ -42,20 +40,16 @@ body {
     background-repeat: no-repeat;
     overflow: hidden;
     container-type: inline-size;
-    perspective: 2500px;
 }
 
 /* =========================================
-   SAYFALAR (SAYSALLAŞTIRILMIŞ HİZALAMA)
+   SAYFALAR (GÖRSELE TAM HİZALI VE EŞİT)
 ========================================= */
 
 .page {
     position: absolute;
     top: 15.5%;
     height: 69%;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
     overflow: hidden;
     z-index: 2;
 }
@@ -68,11 +62,6 @@ body {
 .right-page {
     left: 50.85%;
     width: 31.2%;
-    cursor: grab;
-}
-
-.right-page:active {
-    cursor: grabbing;
 }
 
 /* =========================================
@@ -90,7 +79,7 @@ body {
 }
 
 /* =========================================
-   SIIR METNİ
+   SIIR
 ========================================= */
 
 .poem {
@@ -102,6 +91,7 @@ body {
     padding: 0;
     color: #174a82;
     font-family: "Caveat", cursive;
+    /* Mobil ve PC uyumlu oransal font */
     font-size: 1.85cqw;
     font-weight: 500;
     line-height: 1.55;
@@ -111,62 +101,7 @@ body {
     word-break: normal;
     overflow-wrap: normal;
     opacity: 0;
-    transition: opacity 0.8s ease;
-}
-
-/* =========================================
-   3D ÇEVİRME KATMANI (OMURGAYA TAM KİLİTLİ)
-========================================= */
-
-.flipper {
-    position: absolute;
-    top: 15.5%;
-    left: 50.85%; /* Görselin tam omurga ekseni */
-    width: 31.2%;
-    height: 69%;
-    transform-origin: 0% 50% !important; /* Sol çizgiye sıfırlı kilit */
-    transform-style: preserve-3d;
-    z-index: 30;
-    pointer-events: none;
-    display: none;
-}
-
-.flipper.active {
-    display: block;
-}
-
-.flipper-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    backface-visibility: hidden;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    overflow: hidden;
-}
-
-.flipper-front {
-    z-index: 2;
-    transform: rotateY(0deg);
-}
-
-.flipper-back {
-    z-index: 1;
-    transform: rotateY(180deg) scaleX(-1);
-}
-
-.flipper-back .page-content {
-    transform: scaleX(-1);
-}
-
-.curl-shadow-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.2) 100%);
+    transition: opacity 1.8s ease;
 }
 
 /* =========================================
@@ -204,7 +139,7 @@ body {
 }
 
 /* =========================================
-   KOSENIN KALEM GORSELI
+   KOSENIN KALEM / MUREKKEP GORSELI
 ========================================= */
 
 .ink-quill {
@@ -342,24 +277,6 @@ body {
         </div>
     </div>
 
-    <!-- SÜRÜKLENEN / DÖNEN SAYFA (FLIPPER) -->
-    <div class="flipper" id="flipper">
-        <div class="flipper-face flipper-front">
-            <img src="yazan_kalem3.png" class="quill-bg-right" alt="" onerror="this.style.display='none'">
-            <div class="page-content">
-                <div class="poem" id="flipperFrontPoem" style="opacity: 1;"></div>
-            </div>
-            <div class="curl-shadow-overlay"></div>
-        </div>
-        <div class="flipper-face flipper-back">
-            <img src="yazan_kalem3.png" class="quill-bg-left" alt="" onerror="this.style.display='none'">
-            <div class="page-content">
-                <div class="poem" id="flipperBackPoem" style="opacity: 1;"></div>
-            </div>
-            <div class="curl-shadow-overlay"></div>
-        </div>
-    </div>
-
     <!-- KOSENIN KALEM GORSELI -->
     <img src="murekkep_kalem.png" class="ink-quill" alt="" onerror="this.style.display='none'">
 
@@ -369,7 +286,15 @@ body {
 
     <!-- EQUALIZER -->
     <div class="equalizer">
-        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
 
 </div>
@@ -383,11 +308,6 @@ const leftPoem = document.getElementById("leftPoem");
 const rightPoem = document.getElementById("rightPoem");
 const leftPage = document.getElementById("leftPage");
 const rightPage = document.getElementById("rightPage");
-const bookStage = document.getElementById("bookStage");
-
-const flipper = document.getElementById("flipper");
-const flipperFrontPoem = document.getElementById("flipperFrontPoem");
-const flipperBackPoem = document.getElementById("flipperBackPoem");
 
 /* =========================================
    ŞİİR METNİ
@@ -445,11 +365,20 @@ measurePoem.style.whiteSpace = "nowrap";
 
 document.body.appendChild(measurePoem);
 
+/* =========================================
+   GENISLIK OLCE
+========================================= */
+
 function measureTextWidth(text, fontSize) {
     measurePoem.style.fontSize = fontSize;
     measurePoem.textContent = text;
     return measurePoem.getBoundingClientRect().width;
 }
+
+/* =========================================
+   SIIRI GERCEK SAYFA GENISLIGINE GORE
+   SATIRLARA AYIR
+========================================= */
 
 function getWrappedLines() {
     const pageContent = document.querySelector(".left-page .page-content");
@@ -487,6 +416,10 @@ function getWrappedLines() {
 
     return result;
 }
+
+/* =========================================
+   SAYFALARA BOL
+========================================= */
 
 function buildPages() {
     const lines = getWrappedLines();
@@ -528,6 +461,10 @@ let pageIndex = 0;
 let stageState = "left";
 let animating = false;
 
+/* =========================================
+   YAVASCA GOSTER / KAYBET
+========================================= */
+
 function fadeIn(element) {
     element.style.opacity = "0";
     requestAnimationFrame(() => {
@@ -540,6 +477,10 @@ function fadeIn(element) {
 function fadeOut(element) {
     element.style.opacity = "0";
 }
+
+/* =========================================
+   ILK DURUM
+========================================= */
 
 function startBook() {
     pages = buildPages();
@@ -554,108 +495,6 @@ function startBook() {
 }
 
 /* =========================================
-   DİK KONUM SIFIRLAMA & MÜKEMMEL DÜŞME SÜRÜKLEME SİSTEMİ
-========================================= */
-
-let isDragging = false;
-let startX = 0;
-let currentProgress = 0;
-
-function onPointerDown(e) {
-    if (animating) return;
-    
-    const rightRect = rightPage.getBoundingClientRect();
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-    if (!clientX || !clientY) return;
-
-    if (clientX >= rightRect.left && clientX <= rightRect.right + 20 &&
-        clientY >= rightRect.top && clientY <= rightRect.bottom) {
-        
-        isDragging = true;
-        startX = clientX;
-
-        if (stageState === "spread") {
-            const nextLeftIndex = pageIndex + 2;
-            flipperFrontPoem.textContent = rightPoem.textContent;
-            flipperBackPoem.textContent = pages[nextLeftIndex] ? pages[nextLeftIndex].join("\n") : "";
-        } else if (stageState === "right") {
-            flipperFrontPoem.textContent = rightPoem.textContent;
-            flipperBackPoem.textContent = "";
-        } else {
-            flipperFrontPoem.textContent = "";
-            flipperBackPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
-        }
-
-        flipper.style.transition = "none";
-        flipper.classList.add("active");
-    }
-}
-
-function onPointerMove(e) {
-    if (!isDragging) return;
-
-    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-    if (!clientX) return;
-
-    const deltaX = startX - clientX;
-    const maxDistance = rightPage.getBoundingClientRect().width * 1.05;
-    
-    currentProgress = Math.min(Math.max(deltaX / maxDistance, 0), 1);
-
-    const angle = currentProgress * -180;
-    /* Omurgadan hiç kopmadan tam merkez eksende dönüş */
-    flipper.style.transform = `rotateY(${angle}deg)`;
-}
-
-async function onPointerUp() {
-    if (!isDragging) return;
-    isDragging = false;
-
-    /* Bırakıldığında yumuşakça omurgaya kilitlenip düşme süresi */
-    flipper.style.transition = "transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)";
-
-    if (currentProgress > 0.35) {
-        flipper.style.transform = `rotateY(-180deg)`;
-        await wait(400);
-
-        if (stageState === "spread") {
-            pageIndex += 2;
-            leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
-            rightPoem.textContent = pages[pageIndex + 1] ? pages[pageIndex + 1].join("\n") : "";
-            leftPoem.style.opacity = "1";
-            rightPoem.style.opacity = pages[pageIndex + 1] ? "1" : "0";
-            stageState = pages[pageIndex + 1] ? "spread" : "right";
-        } else if (stageState === "right") {
-            if (pageIndex + 1 < pages.length) {
-                rightPoem.textContent = pages[pageIndex + 1].join("\n");
-                fadeIn(rightPoem);
-                stageState = "spread";
-            }
-        } else if (stageState === "left") {
-            leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
-            fadeIn(leftPoem);
-            stageState = "right";
-        }
-    } else {
-        flipper.style.transform = `rotateY(0deg)`;
-        await wait(400);
-    }
-
-    flipper.classList.remove("active");
-    flipper.style.transform = "";
-}
-
-window.addEventListener("mousedown", onPointerDown);
-window.addEventListener("mousemove", onPointerMove);
-window.addEventListener("mouseup", onPointerUp);
-
-window.addEventListener("touchstart", onPointerDown, { passive: true });
-window.addEventListener("touchmove", onPointerMove, { passive: true });
-window.addEventListener("touchend", onPointerUp);
-
-/* =========================================
    SAG OK (ILERI)
 ========================================= */
 
@@ -667,7 +506,7 @@ async function nextPage() {
         leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
         fadeIn(leftPoem);
         stageState = "right";
-        await wait(900);
+        await wait(1800);
         animating = false;
         return;
     }
@@ -677,7 +516,7 @@ async function nextPage() {
             rightPoem.textContent = pages[pageIndex + 1].join("\n");
             fadeIn(rightPoem);
             stageState = "spread";
-            await wait(900);
+            await wait(1800);
             animating = false;
             return;
         }
@@ -687,33 +526,22 @@ async function nextPage() {
     }
 
     if (stageState === "spread") {
-        const nextLeftIndex = pageIndex + 2;
-        const nextRightIndex = pageIndex + 3;
+        fadeOut(leftPoem);
+        fadeOut(rightPoem);
 
-        flipperFrontPoem.textContent = rightPoem.textContent;
-        flipperBackPoem.textContent = pages[nextLeftIndex] ? pages[nextLeftIndex].join("\n") : "";
-
-        flipper.style.transition = "transform 0.95s cubic-bezier(0.4, 0, 0.2, 1)";
-        flipper.classList.add("active");
-
-        requestAnimationFrame(() => {
-            flipper.style.transform = "rotateY(-180deg)";
-        });
-
-        rightPoem.textContent = pages[nextRightIndex] ? pages[nextRightIndex].join("\n") : "";
-
-        await wait(950);
+        await wait(1800);
 
         pageIndex += 2;
-        leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
-        leftPoem.style.opacity = "1";
-
-        flipper.classList.remove("active");
-        flipper.style.transform = "";
 
         if (pageIndex < pages.length) {
+            leftPoem.textContent = pages[pageIndex].join("\n");
+            rightPoem.textContent = "";
+            fadeIn(leftPoem);
             stageState = "right";
+            await wait(1800);
         } else {
+            leftPoem.textContent = "";
+            rightPoem.textContent = "";
             stageState = "finished";
         }
 
@@ -737,7 +565,7 @@ async function previousPage() {
 
     if (stageState === "right") {
         fadeOut(leftPoem);
-        await wait(750);
+        await wait(1800);
         stageState = "left";
         animating = false;
         return;
@@ -745,7 +573,7 @@ async function previousPage() {
 
     if (stageState === "spread") {
         fadeOut(rightPoem);
-        await wait(750);
+        await wait(1800);
         stageState = "right";
         animating = false;
         return;
@@ -754,7 +582,7 @@ async function previousPage() {
     if (stageState === "finished" || (stageState === "left" && pageIndex >= 2)) {
         fadeOut(leftPoem);
         fadeOut(rightPoem);
-        await wait(750);
+        await wait(1800);
 
         pageIndex = Math.max(0, pageIndex - 2);
 
@@ -765,13 +593,17 @@ async function previousPage() {
         if (pages[pageIndex + 1]) fadeIn(rightPoem);
 
         stageState = pages[pageIndex + 1] ? "spread" : "right";
-        await wait(750);
+        await wait(1800);
         animating = false;
         return;
     }
 
     animating = false;
 }
+
+/* =========================================
+   BEKLEME VE KONTROL FONKSIYONLARI
+========================================= */
 
 function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -786,12 +618,16 @@ function toggleFullscreen() {
 }
 
 function toggleAudio() {
-    alert("Sesli okuma başlatıldı/durduruldu.");
+    alert("Ses oynatma başlatıldı/durduruldu.");
 }
+
+/* =========================================
+   BASLAT VE RESIZE DINLEYICI
+========================================= */
 
 let resizeTimer;
 window.addEventListener("load", () => {
-    setTimeout(startBook, 400);
+    setTimeout(startBook, 500);
 });
 
 window.addEventListener("resize", () => {
