@@ -38,7 +38,7 @@ body {
     z-index: 2;
 }
 
-/* 1. KATMAN: SAĞDA SABİT DURAN ALT KAPAK (En altta) */
+/* 1. KATMAN: SAĞDA SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -55,8 +55,8 @@ body {
 }
 
 /* 2. KATMAN: AÇIK KİTAP 
-   Başlangıçta z-index: 1 (alt kapağın seviyesinde, kapalıyken görünmez).
-   Kapak açıldığında z-index yükselerek en üste çıkacak ve sol kanat dahil tam görünür olacak. */
+   Kapağın açılma süresi 1.5s iken, açık kitabın belirme süresini biraz daha gecikmeli 
+   veya yumuşak yaparak kapağın altında gizli kalmasını sağlıyoruz. */
 .acik-kitap {
     position: absolute;
     top: 0;
@@ -68,7 +68,8 @@ body {
     pointer-events: none;
     
     opacity: 0;
-    transition: opacity 1.5s ease-in-out;
+    /* Kapak açılırken hemen görünmemesi için hafif gecikme ve yumuşak geçiş eklendi */
+    transition: opacity 1.4s ease-in-out 0.1s;
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -86,7 +87,7 @@ body {
 /* Kapsayıcı açıldığında tetiklenen stiller */
 .kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
-    z-index: 4; /* Açık kitap artık en üst katmana geçerek sol kanat dahil kapağın üzerine çıkar */
+    z-index: 4; /* Kapak açılması bitince açık kitap tamamen en üste çıkar */
 }
 
 .kapak-alan.dondu {
@@ -144,12 +145,12 @@ body {
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
-    <!-- 1. ALT KAPAK (Sabit durur, açık kitabın taşmadığı yerlerde görünür) -->
+    <!-- 1. ALT KAPAK -->
     <div class="sag-kapak">
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP (Kapak açıldıkça belirir ve en üste çıkarak sol kanadı gösterir) -->
+    <!-- 2. AÇIK KİTAP -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
