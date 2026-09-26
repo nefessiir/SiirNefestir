@@ -30,6 +30,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    perspective: 1200px;
 }
 
 .kapak-alan {
@@ -37,12 +39,46 @@ body {
     width: 20%;
     height: auto;
     transform: translateX(8cm);
+
+    transform-style: preserve-3d;
 }
 
-.kapak {
+.kapak-on {
+    position: relative;
+    width: 100%;
+    height: auto;
+
+    transform-style: preserve-3d;
+    transform-origin: left center;
+
+    cursor: pointer;
+
+    transition: transform 1.5s ease-in-out;
+}
+
+.kapak-on.dondu {
+    transform: rotateY(-180deg);
+}
+
+.kapak,
+.kapak-arka {
     width: 100%;
     height: auto;
     display: block;
+
+    backface-visibility: hidden;
+}
+
+.kapak {
+    position: relative;
+}
+
+.kapak-arka {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    transform: rotateY(180deg);
 }
 
 .kapak-yazi {
@@ -68,6 +104,8 @@ body {
         -1px -1px 1px rgba(70, 40, 5, 0.85);
 
     letter-spacing: 0.3px;
+
+    backface-visibility: hidden;
 }
 
 .kapak-yazi .imza {
@@ -85,16 +123,24 @@ body {
 <div class="kapak-alan">
 
 ```
-<img src="kapak.jpg" class="kapak">
+<div class="kapak-on" onclick="this.classList.toggle('dondu')">
 
-<div class="kapak-yazi">
-    Şiir'e..<br>
-    hatıramdır..<br>
-    kelimelerden..<br>
-    hayattan..<br>
-    babasından.<br><br><br>
+    <!-- ON KAPAK -->
+    <img src="kapak.jpg" class="kapak">
 
-    <span class="imza">S.O.A</span>
+    <div class="kapak-yazi">
+        Şiir'e..<br>
+        hatıramdır..<br>
+        kelimelerden..<br>
+        hayattan..<br>
+        babasından.<br><br><br>
+
+        <span class="imza">S.O.A</span>
+    </div>
+
+    <!-- ARKA KAPAK -->
+    <img src="kapak.jpg" class="kapak-arka">
+
 </div>
 ```
 
