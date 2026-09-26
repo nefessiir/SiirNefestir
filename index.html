@@ -43,12 +43,12 @@ body {
     transform-style: preserve-3d;
 }
 
-/* SAĞDA SABİT KALACAK BOŞ KAPAK */
+/* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
 
 .sag-kapak {
     position: absolute;
     top: 0;
-    left: calc(100% + 0.2cm);
+    left: 0;
 
     width: 100%;
     height: auto;
@@ -62,7 +62,7 @@ body {
     display: block;
 }
 
-/* DÖNEN ÖN KAPAK */
+/* ÜSTTEKİ YAZILI KAPAK */
 
 .kapak-on {
     position: relative;
@@ -146,15 +146,14 @@ body {
 <div class="kapak-alan">
 
 ```
-<!-- SAĞDA SABİT KALAN BOŞ DERİ KAPAK -->
+<!-- YAZILI KAPAĞIN ALTINDAKİ SABİT BOŞ KAPAK -->
 <div class="sag-kapak">
     <img src="kapak.jpg">
 </div>
 
-<!-- TIKLANIP DÖNEN KAPAK -->
+<!-- ÜSTTEKİ YAZILI VE DÖNEN KAPAK -->
 <div class="kapak-on" onclick="this.classList.toggle('dondu')">
 
-    <!-- ÖN YÜZ -->
     <img src="kapak.jpg" class="kapak">
 
     <div class="kapak-yazi">
@@ -167,7 +166,7 @@ body {
         <span class="imza">S.O.A</span>
     </div>
 
-    <!-- KAPAĞIN ARKA YÜZÜ -->
+    <!-- DÖNEN KAPAĞIN ARKA YÜZÜ -->
     <img src="kapak.jpg" class="kapak-arka">
 
 </div>
