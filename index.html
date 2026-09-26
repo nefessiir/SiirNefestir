@@ -54,12 +54,11 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP (Her yöne 0.5cm büyük ve soluk/kaydırılmış hali)
-   - left değerine -3cm eklenerek sol kapağın üzerine tam oturması sağlandı. */
+/* 2. KATMAN: AÇIK KİTAP (Toplamda 4.2 cm sola kaydırılmış ve her yöne 0.5cm büyük) */
 .acik-kitap {
     position: absolute;
     top: -0.5cm;
-    left: calc(-50% - 3.25cm);
+    left: calc(-50% - 4.45cm);
     width: calc(200% + 1cm);
     height: calc(100% + 1cm);
     z-index: 1; 
@@ -148,7 +147,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP (3 cm sola kaydırılmış) -->
+    <!-- 2. AÇIK KİTAP (1.2 cm daha sola çekildi) -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
