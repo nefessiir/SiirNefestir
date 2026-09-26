@@ -33,13 +33,8 @@ body {
     justify-content: center;
 }
 
-
-/* =================================================
-   KİTABIN ANA ALANI
-================================================= */
-
+/* Kapağın bulunduğu alan */
 .kitap-alani {
-
     width: 39%;
     height: calc(82vh + 4cm);
 
@@ -50,52 +45,8 @@ body {
     position: relative;
 }
 
-
-/* =================================================
-   SABİT ALT KAPAK
-   ÜST KAPAKLA BİREBİR AYNI EBAT
-================================================= */
-
-.alt-kapak {
-
-    width: calc(100% - 2cm);
-    height: calc(100% - 2cm);
-
-    position: absolute;
-
-    left: 1cm;
-    top: 1cm;
-
-    z-index: 1;
-
-    background: #4a2d1d;
-
-    box-shadow:
-        inset 0 0 20px rgba(0,0,0,0.18);
-}
-
-
-/* Alt kapağın iç saman kağıdı */
-
-.alt-kapak-ici {
-
-    position: absolute;
-
-    left: 0;
-    top: 1cm;
-    right: 1cm;
-    bottom: 1cm;
-
-    background: #d8c08d;
-}
-
-
-/* =================================================
-   AÇILAN ÜST KAPAK
-================================================= */
-
+/* Kapak */
 .kitap-kapak {
-
     width: calc(100% - 2cm);
     height: calc(100% - 2cm);
 
@@ -103,11 +54,8 @@ body {
 
     left: 1cm;
     top: 1cm;
-
-    z-index: 5;
 
     transform-style: preserve-3d;
-
     transform-origin: left center;
 
     transition:
@@ -116,12 +64,9 @@ body {
     cursor: pointer;
 }
 
-
 /* Ön ve arka yüz */
-
 .kapak-on,
 .kapak-arka {
-
     width: 100%;
     height: 100%;
 
@@ -133,83 +78,72 @@ body {
     backface-visibility: hidden;
 }
 
-
-/* =================================================
-   ÜST KAPAK DIŞ YÜZ
-================================================= */
-
+/* Ön kapak */
 .kapak-on {
-
     background-image: url("kitap_kapagi.png");
-
     background-size: 100% 100%;
-
     background-position: center;
-
     background-repeat: no-repeat;
 }
 
-
-/* =================================================
-   ÜST KAPAĞIN İÇ YÜZÜ
-================================================= */
-
+/* İç kapak */
 .kapak-arka {
-
     transform: rotateY(180deg);
 
-    background: #4a2d1d;
+    background:
+        linear-gradient(
+            to right,
+            #4a2d1d 0,
+            #4a2d1d 1cm,
+            #d8c08d 1cm,
+            #d8c08d 100%
+        );
 
     box-shadow:
         inset 0 0 20px rgba(0,0,0,0.18);
 }
 
-
-/* İç yüz saman kağıdı */
-
-.kapak-arka-ici {
+/* Üst cilt payı */
+.kapak-arka::before {
+    content: "";
 
     position: absolute;
 
-    left: 1cm;
-    top: 1cm;
+    left: 0;
     right: 0;
-    bottom: 1cm;
+    top: 0;
 
-    background: #d8c08d;
+    height: 1cm;
+
+    background: #4a2d1d;
 }
 
+/* Alt cilt payı */
+.kapak-arka::after {
+    content: "";
 
-/* =================================================
-   KAPAĞI AÇ
-================================================= */
+    position: absolute;
 
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 1cm;
+
+    background: #4a2d1d;
+}
+
+/* Kapak açıldığında */
 .kitap-kapak.acik {
-
     transform: rotateY(-180deg);
-
 }
 
 </style>
 </head>
 
-
 <body>
 
-
 <div class="kitap-alani">
-
-
-    <!-- SABİT ALT KAPAK -->
-
-    <div class="alt-kapak">
-
-        <div class="alt-kapak-ici"></div>
-
-    </div>
-
-
-    <!-- AÇILAN ÜST KAPAK -->
 
     <div
         class="kitap-kapak"
@@ -218,23 +152,15 @@ body {
 
         <div class="kapak-on"></div>
 
-        <div class="kapak-arka">
-
-            <div class="kapak-arka-ici"></div>
-
-        </div>
+        <div class="kapak-arka"></div>
 
     </div>
 
-
 </div>
-
 
 <script>
 
-const kitapKapak =
-    document.getElementById("kitapKapak");
-
+const kitapKapak = document.getElementById("kitapKapak");
 
 kitapKapak.addEventListener("click", function () {
 
@@ -243,7 +169,6 @@ kitapKapak.addEventListener("click", function () {
 });
 
 </script>
-
 
 </body>
 </html>
