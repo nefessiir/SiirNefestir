@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -40,8 +41,6 @@ body {
 
     transform: translateX(10cm);
 
-    perspective: 1800px;
-
     position: relative;
 }
 
@@ -54,12 +53,6 @@ body {
 
     left: 1cm;
     top: 1cm;
-
-    transform-style: preserve-3d;
-    transform-origin: left center;
-
-    transition:
-        transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 
     cursor: pointer;
 }
@@ -74,8 +67,6 @@ body {
 
     left: 0;
     top: 0;
-
-    backface-visibility: hidden;
 }
 
 /* Ön kapak */
@@ -88,36 +79,44 @@ body {
 
 /* İç kapak */
 .kapak-arka {
-    transform: rotateY(180deg);
-
     background: #d8c08d;
 
     box-shadow:
         inset 0 0 20px rgba(0,0,0,0.18);
+
+    display: none;
 }
 
-/* Kapak açıldığında */
-.kitap-kapak.acik {
-    transform: rotateY(-180deg);
+/* Açıldığında ön kapak kaybolur,
+   aynı ölçüde iç kapak görünür */
+.kitap-kapak.acik .kapak-on {
+    display: none;
+}
+
+.kitap-kapak.acik .kapak-arka {
+    display: block;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="kitap-alani">
 
-    <div
-        class="kitap-kapak"
-        id="kitapKapak"
-    >
+```
+<div
+    class="kitap-kapak"
+    id="kitapKapak"
+>
 
-        <div class="kapak-on"></div>
+    <div class="kapak-on"></div>
 
-        <div class="kapak-arka"></div>
+    <div class="kapak-arka"></div>
 
-    </div>
+</div>
+```
 
 </div>
 
