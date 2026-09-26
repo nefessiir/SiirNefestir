@@ -55,8 +55,8 @@ body {
 }
 
 /* 2. KATMAN: AÇIK KİTAP 
-   Kapağın açılma süresi 1.5s iken, açık kitabın belirme süresini biraz daha gecikmeli 
-   veya yumuşak yaparak kapağın altında gizli kalmasını sağlıyoruz. */
+   Açılırken gecikmeli ve yavaş belirir (kapak açılmasının son anında görünür).
+   Kapanırken ise çok hızlı bir şekilde karararak kaybolur. */
 .acik-kitap {
     position: absolute;
     top: 0;
@@ -68,8 +68,16 @@ body {
     pointer-events: none;
     
     opacity: 0;
-    /* Kapak açılırken hemen görünmemesi için hafif gecikme ve yumuşak geçiş eklendi */
-    transition: opacity 1.4s ease-in-out 0.1s;
+    /* transition: [açılış süresi] [easing] [açılış gecikmesi]; */
+    transition: opacity 0.6s ease-in-out 0.9s;
+}
+
+/* Kapak açıldığında kitabın geçiş süresi ve hızı güncellenir */
+.kitap-kapsayici.acildi .acik-kitap {
+    opacity: 1;
+    z-index: 4; /* Kapak açılınca en üste çıkar */
+    /* Kapanırken hemen sönmesi için gecikmesiz ve kısa süre */
+    transition: opacity 0.4s ease-in-out 0s;
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -82,12 +90,6 @@ body {
     cursor: pointer;
     transition: transform 1.5s ease-in-out;
     z-index: 3;
-}
-
-/* Kapsayıcı açıldığında tetiklenen stiller */
-.kitap-kapsayici.acildi .acik-kitap {
-    opacity: 1;
-    z-index: 4; /* Kapak açılması bitince açık kitap tamamen en üste çıkar */
 }
 
 .kapak-alan.dondu {
