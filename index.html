@@ -55,9 +55,9 @@ body {
 }
 
 /* 2. KATMAN: AÇIK KİTAP 
-   - Kapak açılırken: İlk 0.75s (kapak ortaya gelene kadar) gizli kalır, 
-     sonraki 0.75s içinde belirerek kapakla aynı anda tam görünür olur.
-   - Kapak kapanırken: Önce açık kitap hemen kaybolmaya başlar (0s gecikme, 0.5s süre). */
+   - Kapanırken: Kapak kapanmaya başladığı an (0s gecikme) hemen hızlıca kaybolur.
+   - Açılırken: Kapak ortayı geçip kenara yaklaşana kadar (ilk 1.1s) gizli kalır, 
+     son kalan 0.4 saniyede belirerek kapakla aynı anda tam görünür olur. */
 .acik-kitap {
     position: absolute;
     top: 0;
@@ -69,16 +69,14 @@ body {
     pointer-events: none;
     
     opacity: 0;
-    /* Kapanırken hızlıca ve önce kaybolması için */
-    transition: opacity 0.5s ease-in-out 0s, z-index 0s 0.5s;
+    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
 /* Kapak açıldığında tetiklenen stiller */
 .kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
     z-index: 4; /* Açık kitap en üste çıkar */
-    /* Açılırken: 0.75s bekler (kapak ortaya gelene kadar), sonra 0.75s sürede belirir */
-    transition: opacity 0.75s ease-in-out 0.75s, z-index 0s 0s;
+    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
