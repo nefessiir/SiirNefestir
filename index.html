@@ -27,7 +27,7 @@ body {
     perspective: 1200px;
 }
 
-/* KAPSAYICI ALAN */
+/* ORTAK KAPSAYICI ALAN */
 .kitap-kapsayici {
     position: relative;
     width: 20%;
@@ -38,22 +38,39 @@ body {
     z-index: 2;
 }
 
-/* AÇIK KİTAP - Kapak boyutuna ve konumuna tam oturacak şekilde ayarlandı */
+/* 1. KATMAN: SAĞDA SABİT DURAN ALT KAPAK (En altta kalır) */
+.sag-kapak {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.sag-kapak img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 2. KATMAN: AÇIK KİTAP (Alt kapağın hemen üzerinde, kapak açıldıkça belirir) */
 .acik-kitap {
     position: absolute;
     top: 0;
     left: 0;
-    width: 200%; /* Tek kapağın 2 katı genişlikte (sol ve sağ sayfa için) */
+    width: 200%; /* Sol ve sağ sayfa için iki kat genişlik */
     height: auto;
-    transform: translateX(-50%); /* Tam merkeze hizalama */
-    z-index: 1;
+    transform: translateX(-50%); /* Ortalamak için */
+    z-index: 2;
     pointer-events: none;
     
+    /* Kapak kapalıyken gizli, açılma süresiyle (1.5s) birebir senkronize opaklık geçişi */
     opacity: 0;
     transition: opacity 1.5s ease-in-out;
 }
 
-/* KAPAKLAR */
+/* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK (En üstte yer alır) */
 .kapak-alan {
     position: relative;
     width: 100%;
@@ -65,6 +82,7 @@ body {
     z-index: 3;
 }
 
+/* Kapak açıldığında açık kitabın tamamen görünür olmasını tetikler */
 .kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
 }
@@ -124,10 +142,15 @@ body {
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
-    <!-- AÇIK KİTAP -->
+    <!-- 1. ALT KAPAK (Sabit durur) -->
+    <div class="sag-kapak">
+        <img src="kapak.jpg">
+    </div>
+
+    <!-- 2. AÇIK KİTAP (Kapak açıldıkça yavaşça belirir) -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
-    <!-- ÜSTTEKİ YAZILI KAPAK -->
+    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
