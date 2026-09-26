@@ -44,6 +44,11 @@ body {
     width: 60vw;
     height: auto;
 
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
     display: block;
 }
 
@@ -174,7 +179,7 @@ body {
 
 <div class="kapak-on" onclick="this.classList.toggle('dondu')">
 
-
+```
 <img src="kapak.jpg" class="kapak">
 
 <div class="kapak-yazi">
@@ -188,7 +193,7 @@ body {
 </div>
 
 <img src="kapak.jpg" class="kapak-arka">
-
+```
 
 </div>
 
@@ -209,19 +214,6 @@ window.addEventListener("load", function () {
 
     alan.style.transform =
         "translateX(8cm) scale(" + oran + ")";
-
-    /* AÇIK KİTABI KAPAĞIN BULUNDUĞU KOORDİNATA YERLEŞTİR */
-
-    const sagKapak = document.querySelector(".sag-kapak");
-    const acikKitap = document.querySelector(".acik-kitap");
-
-    const konum = sagKapak.getBoundingClientRect();
-
-    acikKitap.style.left =
-        (konum.left + konum.width / 2 - acikKitap.offsetWidth / 2) + "px";
-
-    acikKitap.style.top =
-        (konum.top + konum.height / 2 - acikKitap.offsetHeight / 2) + "px";
 
 });
 
