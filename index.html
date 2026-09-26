@@ -41,6 +41,8 @@ body {
 
     transform: translateX(10cm);
 
+    perspective: 2500px;
+
     position: relative;
 }
 
@@ -53,6 +55,12 @@ body {
 
     left: 1cm;
     top: 1cm;
+
+    transform-style: preserve-3d;
+    transform-origin: left center;
+
+    transition:
+        transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 
     cursor: pointer;
 }
@@ -67,6 +75,8 @@ body {
 
     left: 0;
     top: 0;
+
+    backface-visibility: hidden;
 }
 
 /* Ön kapak */
@@ -79,22 +89,17 @@ body {
 
 /* İç kapak */
 .kapak-arka {
+    transform: rotateY(180deg);
+
     background: #d8c08d;
 
     box-shadow:
         inset 0 0 20px rgba(0,0,0,0.18);
-
-    display: none;
 }
 
-/* Açıldığında ön kapak kaybolur,
-   aynı ölçüde iç kapak görünür */
-.kitap-kapak.acik .kapak-on {
-    display: none;
-}
-
-.kitap-kapak.acik .kapak-arka {
-    display: block;
+/* Kapak açıldığında */
+.kitap-kapak.acik {
+    transform: rotateY(-180deg);
 }
 
 </style>
