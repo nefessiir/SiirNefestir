@@ -34,8 +34,6 @@ body {
     perspective: 1200px;
 }
 
-/* KAPAK ALANI */
-
 .kapak-alan {
     position: relative;
     width: 20%;
@@ -45,33 +43,6 @@ body {
 
     transform-style: preserve-3d;
     transform-origin: right bottom;
-}
-
-/* AÇIK KİTAP
-   KAPAĞIN SOLA AÇILDIĞI BİRLEŞİM NOKTASINA GÖRE */
-
-.acik-kitap {
-    position: absolute;
-
-    left: 0;
-    top: 50%;
-
-    width: 65vw;
-    height: auto;
-
-    transform: translate(0, -50%);
-
-    opacity: 0;
-
-    z-index: 0;
-
-    pointer-events: none;
-
-    transition: opacity 2.2s ease-in-out;
-}
-
-.acik-kitap.gorunur {
-    opacity: 1;
 }
 
 /* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
@@ -177,21 +148,11 @@ body {
 <div class="kapak-alan">
 
 ```
-<!-- AÇIK KİTAP -->
-
-<img src="acik_kitap1.png" class="acik-kitap" id="acikKitap">
-
-
-<!-- YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK -->
-
 <div class="sag-kapak">
     <img src="kapak.jpg">
 </div>
 
-
-<!-- ÜSTTEKİ YAZILI KAPAK -->
-
-<div class="kapak-on" id="kapakOn">
+<div class="kapak-on" onclick="this.classList.toggle('dondu')">
 
     <img src="kapak.jpg" class="kapak">
 
@@ -227,26 +188,6 @@ window.addEventListener("load", function () {
 
     alan.style.transform =
         "translateX(8cm) scale(" + oran + ")";
-
-});
-
-
-const kapakOn = document.getElementById("kapakOn");
-const acikKitap = document.getElementById("acikKitap");
-
-kapakOn.addEventListener("click", function () {
-
-    if (kapakOn.classList.contains("dondu")) {
-
-        setTimeout(function () {
-            acikKitap.classList.add("gorunur");
-        }, 250);
-
-    } else {
-
-        acikKitap.classList.remove("gorunur");
-
-    }
 
 });
 
