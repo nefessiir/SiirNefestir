@@ -34,18 +34,32 @@ body {
     perspective: 1200px;
 }
 
-/* AÇIK KİTAP */
+/* KAPAK ALANI */
+
+.kapak-alan {
+    position: relative;
+    width: 20%;
+    height: auto;
+
+    transform: translateX(8cm);
+
+    transform-style: preserve-3d;
+    transform-origin: right bottom;
+}
+
+/* AÇIK KİTAP
+   KAPAĞIN SOLA AÇILDIĞI BİRLEŞİM NOKTASINA GÖRE */
 
 .acik-kitap {
     position: absolute;
 
-    left: 50%;
+    left: 0;
     top: 50%;
 
     width: 65vw;
     height: auto;
 
-    transform: translate(-50%, -50%);
+    transform: translate(0, -50%);
 
     opacity: 0;
 
@@ -58,19 +72,6 @@ body {
 
 .acik-kitap.gorunur {
     opacity: 1;
-}
-
-/* KAPAK ALANI */
-
-.kapak-alan {
-    position: relative;
-    width: 20%;
-    height: auto;
-
-    transform: translateX(8cm);
-
-    transform-style: preserve-3d;
-    transform-origin: right bottom;
 }
 
 /* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
@@ -173,18 +174,24 @@ body {
 
 <body>
 
+<div class="kapak-alan">
+
+```
 <!-- AÇIK KİTAP -->
 
 <img src="acik_kitap1.png" class="acik-kitap" id="acikKitap">
 
-<div class="kapak-alan">
 
-```
+<!-- YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK -->
+
 <div class="sag-kapak">
     <img src="kapak.jpg">
 </div>
 
-<div class="kapak-on" id="kapakOn" onclick="this.classList.toggle('dondu')">
+
+<!-- ÜSTTEKİ YAZILI KAPAK -->
+
+<div class="kapak-on" id="kapakOn">
 
     <img src="kapak.jpg" class="kapak">
 
