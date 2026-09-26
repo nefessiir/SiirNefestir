@@ -54,19 +54,16 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP (Yönü ters çevrilmiş ve her yöne 0.5 cm büyütülmüş) 
-   - scaleX(-1) komutu ile açık kitabın yönü (sağı solu) tersine çevrildi. */
+/* 2. KATMAN: AÇIK KİTAP (Her yöne 0.5cm büyük ve soluk/kaydırılmış hali)
+   - left değerine -3cm eklenerek sol kapağın üzerine tam oturması sağlandı. */
 .acik-kitap {
     position: absolute;
     top: -0.5cm;
-    left: calc(-50% - 0.25cm);
+    left: calc(-50% - 3.25cm);
     width: calc(200% + 1cm);
     height: calc(100% + 1cm);
     z-index: 1; 
     pointer-events: none;
-    
-    /* Kitabın yönünü yatayda ters çeviriyoruz */
-    transform: scaleX(-1);
     
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
@@ -151,7 +148,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP (Yönü ters çevrilmiş) -->
+    <!-- 2. AÇIK KİTAP (3 cm sola kaydırılmış) -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
