@@ -54,30 +54,29 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP (Her yöne 0.5cm büyütülmüş ve maskelenmiş) 
-   - width: calc(200% + 1cm) -> Sol ve sağdan 0.5'er cm (toplam 1cm) genişletildi.
-   - height: calc(100% + 1cm) -> Üst ve alttan 0.5'er cm (toplam 1cm) uzatıldı.
-   - top ve left ile negatif margin verilerek dışa taşma merkezlendi. */
+/* 2. KATMAN: AÇIK KİTAP 
+   - Kapanırken: Kapak kapanmaya başladığı an (0s gecikme) hemen hızlıca kaybolur.
+   - Açılırken: Kapak ortayı geçip kenara yaklaşana kadar (ilk 1.1s) gizli kalır, 
+     son kalan 0.4 saniyede belirerek kapakla aynı anda tam görünür olur. */
 .acik-kitap {
     position: absolute;
-    top: -0.5cm;
-    left: calc(-50% - 0.25cm);
-    width: calc(200% + 1cm);
-    height: calc(100% + 1cm);
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: auto;
+    transform: translateX(-50%);
     z-index: 1; 
     pointer-events: none;
     
-    /* Başlangıçta sağ taraf kırpılmış (gizli), sağdan sola doğru açılacak */
-    clip-path: inset(0 0 0 100%);
-    transition: clip-path 1.5s ease-in-out, z-index 0s 1.5s;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
 /* Kapak açıldığında tetiklenen stiller */
 .kitap-kapsayici.acildi .acik-kitap {
-    /* Kitabın tamamı görünür hale gelir */
-    clip-path: inset(0 0 0 0);
+    opacity: 1;
     z-index: 4; /* Açık kitap en üste çıkar */
-    transition: clip-path 1.5s ease-in-out, z-index 0s 0s;
+    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -152,7 +151,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP (Maskelenmiş ve 0.5cm büyütülmüş görsel) -->
+    <!-- 2. AÇIK KİTAP -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
