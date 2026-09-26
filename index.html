@@ -54,10 +54,8 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP (Merkezi koruyarak her yöne 0.5 cm büyütülmüş hali) 
-   - width: 200% üzerine sağdan ve soldan 0.5'er cm (toplam 1cm) eklendi.
-   - height: 100% üzerine üstten ve alttan 0.5'er cm (toplam 1cm) eklendi.
-   - left ve top değerleriyle merkez noktası milimetrik olarak sabit tutuldu. */
+/* 2. KATMAN: AÇIK KİTAP (Yönü ters çevrilmiş ve her yöne 0.5 cm büyütülmüş) 
+   - scaleX(-1) komutu ile açık kitabın yönü (sağı solu) tersine çevrildi. */
 .acik-kitap {
     position: absolute;
     top: -0.5cm;
@@ -66,6 +64,9 @@ body {
     height: calc(100% + 1cm);
     z-index: 1; 
     pointer-events: none;
+    
+    /* Kitabın yönünü yatayda ters çeviriyoruz */
+    transform: scaleX(-1);
     
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
@@ -150,7 +151,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP (Merkezi sabit, her yöne 0.5 cm büyütülmüş) -->
+    <!-- 2. AÇIK KİTAP (Yönü ters çevrilmiş) -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
