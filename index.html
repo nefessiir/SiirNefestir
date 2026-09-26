@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -8,7 +7,6 @@
 <title>Şiir Nefestir</title>
 
 <style>
-
 html,
 body {
     width: 100%;
@@ -35,7 +33,6 @@ body {
 }
 
 /* AÇIK KİTAP - ARKA PLANIN ÜZERİNDE, KAPAKLARIN ALTINDA */
-
 .acik-kitap {
     position: fixed;
     z-index: 1;
@@ -53,7 +50,6 @@ body {
 }
 
 /* KAPAKLAR */
-
 .kapak-alan {
     position: relative;
     width: 20%;
@@ -68,10 +64,9 @@ body {
 }
 
 /* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
-
 .sag-kapak {
     position: absolute;
-    top: 0.45cm;
+    top: 0; /* 0.45cm olan değer 0 yapılarak hizalandı */
     left: 0;
 
     width: 100%;
@@ -87,7 +82,6 @@ body {
 }
 
 /* ÜSTTEKİ YAZILI KAPAK */
-
 .kapak-on {
     position: relative;
     width: 100%;
@@ -160,7 +154,6 @@ body {
     display: block;
     transform: translate(0.3cm, 1.7em);
 }
-
 </style>
 
 </head>
@@ -168,7 +161,6 @@ body {
 <body>
 
 <!-- AÇIK KİTAP -->
-
 <img src="acik_kitap1.png" class="acik-kitap">
 
 <div class="kapak-alan">
@@ -198,23 +190,16 @@ body {
 </div>
 
 <script>
-
 window.addEventListener("load", function () {
-
     const alan = document.querySelector(".kapak-alan");
     const kapak = document.querySelector(".kapak");
 
     const yukseklik = kapak.getBoundingClientRect().height;
-
     const ikiCm = 2 * 96 / 2.54;
-
     const oran = (yukseklik + ikiCm) / yukseklik;
 
-    alan.style.transform =
-        "translateX(8cm) scale(" + oran + ")";
-
+    alan.style.transform = "translateX(8cm) scale(" + oran + ")";
 });
-
 </script>
 
 </body>
