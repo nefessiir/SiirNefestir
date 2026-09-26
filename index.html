@@ -54,9 +54,7 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP (Maskeleme ile Soldan Sağa Açılma Efekti) 
-   - Başlangıçta clip-path ile tamamen gizli (0% genişlikte kesilmiş).
-   - Kapak açıldığında clip-path %100'e yayılarak bütün kitabın detaylarını ortaya çıkarır. */
+/* 2. KATMAN: AÇIK KİTAP (Sağdan Sola Doğru Maskelenmiş Bütünsel Görsel) */
 .acik-kitap {
     position: absolute;
     top: 0;
@@ -67,8 +65,8 @@ body {
     z-index: 1; 
     pointer-events: none;
     
-    /* Başlangıçta soldan sağa doğru tamamen kırpılmış (gizli) */
-    clip-path: inset(0 100% 0 0);
+    /* Başlangıçta sağ taraf kırpılmış (gizli), soldan sağa doğru (sağdan sola) açılacak */
+    clip-path: inset(0 0 0 100%);
     transition: clip-path 1.5s ease-in-out, z-index 0s 1.5s;
 }
 
