@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -7,6 +8,7 @@
 <title>Şiir Nefestir</title>
 
 <style>
+
 html,
 body {
     width: 100%;
@@ -32,7 +34,8 @@ body {
     perspective: 1200px;
 }
 
-/* AÇIK KİTAP - ARKA PLANIN ÜZERİNDE, KAPAKLARIN ALTINDA */
+/* AÇIK KİTAP */
+
 .acik-kitap {
     position: fixed;
     z-index: 1;
@@ -47,9 +50,14 @@ body {
     transform: translate(-50%, -50%);
 
     display: block;
+
+    opacity: 0;
+
+    transition: opacity 1.5s ease-in-out;
 }
 
 /* KAPAKLAR */
+
 .kapak-alan {
     position: relative;
     width: 20%;
@@ -64,15 +72,18 @@ body {
 }
 
 /* YAZILI KAPAĞIN ALTINDA SABİT DURAN BOŞ KAPAK */
+
 .sag-kapak {
     position: absolute;
-    top: 0; /* 0.45cm olan değer 0 yapılarak hizalandı */
+    top: 0;
     left: 0;
 
     width: 100%;
     height: auto;
 
     z-index: 1;
+
+    transition: opacity 0.01s linear;
 }
 
 .sag-kapak img {
@@ -82,6 +93,7 @@ body {
 }
 
 /* ÜSTTEKİ YAZILI KAPAK */
+
 .kapak-on {
     position: relative;
     width: 100%;
@@ -99,6 +111,16 @@ body {
 
 .kapak-on.dondu {
     transform: rotateY(-180deg);
+}
+
+/* AÇILMA BAŞLADIĞINDA */
+
+.kapak-alan.aciliyor .acik-kitap {
+    opacity: 1;
+}
+
+.kapak-alan.aciliyor .sag-kapak {
+    opacity: 0;
 }
 
 .kapak,
@@ -154,6 +176,7 @@ body {
     display: block;
     transform: translate(0.3cm, 1.7em);
 }
+
 </style>
 
 </head>
@@ -161,6 +184,7 @@ body {
 <body>
 
 <!-- AÇIK KİTAP -->
+
 <img src="acik_kitap1.png" class="acik-kitap">
 
 <div class="kapak-alan">
@@ -169,18 +193,21 @@ body {
     <img src="kapak.jpg">
 </div>
 
-<div class="kapak-on" onclick="this.classList.toggle('dondu')">
+<div class="kapak-on" onclick="kapakAc(this)">
 
 <img src="kapak.jpg" class="kapak">
 
 <div class="kapak-yazi">
     Şiir'e hatıra<br>
-    
-    kelimelerden..<br>
-    hayattan..<br>
-    babasından.<br><br><br>
 
-    <span class="imza">S.O.A</span>
+```
+kelimelerden..<br>
+hayattan..<br>
+babasından.<br><br><br>
+
+<span class="imza">S.O.A</span>
+```
+
 </div>
 
 <img src="kapak.jpg" class="kapak-arka">
@@ -190,16 +217,37 @@ body {
 </div>
 
 <script>
+
+function kapakAc(kapak) {
+
+    const alan = document.querySelector(".kapak-alan");
+
+    if (!kapak.classList.contains("dondu")) {
+
+        alan.classList.add("aciliyor");
+
+        kapak.classList.add("dondu");
+
+    }
+
+}
+
 window.addEventListener("load", function () {
+
     const alan = document.querySelector(".kapak-alan");
     const kapak = document.querySelector(".kapak");
 
     const yukseklik = kapak.getBoundingClientRect().height;
+
     const ikiCm = 2 * 96 / 2.54;
+
     const oran = (yukseklik + ikiCm) / yukseklik;
 
-    alan.style.transform = "translateX(8cm) scale(" + oran + ")";
+    alan.style.transform =
+        "translateX(8cm) scale(" + oran + ")";
+
 });
+
 </script>
 
 </body>
