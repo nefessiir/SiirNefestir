@@ -32,11 +32,40 @@ body {
     align-items: center;
 }
 
-.kapak {
+.kapak-alan {
+    position: relative;
     width: 20%;
     height: auto;
-    display: block;
     transform: translateX(8cm);
+}
+
+.kapak {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.kapak-yazi {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 85%;
+
+    text-align: center;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(10px, 1.25vw, 22px);
+    line-height: 1.7;
+
+    color: #4a2a16;
+
+    text-shadow:
+        1px 1px 1px rgba(255, 220, 170, 0.35),
+        -1px -1px 1px rgba(35, 15, 5, 0.75);
+
+    letter-spacing: 0.3px;
 }
 
 </style>
@@ -45,7 +74,20 @@ body {
 
 <body>
 
+<div class="kapak-alan">
+
+```
 <img src="kapak.jpg" class="kapak">
+
+<div class="kapak-yazi">
+    Şiir'e bıraktığım küçük bir hatıra<br>
+    Kelimelerden..<br>
+    hayattan..<br>
+    babasından.
+</div>
+```
+
+</div>
 
 </body>
 </html>
