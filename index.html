@@ -21,6 +21,8 @@ body {
     background: #111;
     overflow: hidden;
     user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
 }
 
 /* =========================================
@@ -40,7 +42,7 @@ body {
     background-repeat: no-repeat;
     overflow: hidden;
     container-type: inline-size;
-    perspective: 2500px; /* 3D derinlik */
+    perspective: 2500px;
 }
 
 /* =========================================
@@ -67,6 +69,11 @@ body {
 .right-page {
     left: 48.828125%;
     width: 38.411458%;
+    cursor: grab;
+}
+
+.right-page:active {
+    cursor: grabbing;
 }
 
 /* =========================================
@@ -109,7 +116,7 @@ body {
 }
 
 /* =========================================
-   DÖNEN SAYFA & KIVRILMA EFEKTİ (3D FLIP)
+   3D DRAGGABLE FLIPPER (SÜRÜKLENEN SAYFA)
 ========================================= */
 
 .flipper {
@@ -118,7 +125,7 @@ body {
     left: 48.828125%;
     width: 38.411458%;
     height: calc(100% - 27.5%);
-    transform-origin: left center; /* Omurgada sabit */
+    transform-origin: left center;
     transform-style: preserve-3d;
     z-index: 30;
     pointer-events: none;
@@ -141,7 +148,6 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     overflow: hidden;
-    border-radius: 0 4px 4px 0;
 }
 
 .flipper-front {
@@ -154,69 +160,15 @@ body {
     transform: rotateY(180deg) scaleX(-1);
 }
 
-/* Sağ alt köşeden kıvrılma gölgesi ve bükülmesi */
-.curl-overlay {
+/* Kıvrılma Gölgesi ve Efekti */
+.curl-shadow {
     position: absolute;
-    bottom: 0;
+    top: 0;
     right: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, transparent 65%, rgba(0,0,0,0.18) 80%, rgba(0,0,0,0.4) 100%);
+    background: linear-gradient(135deg, transparent 60%, rgba(0,0,0,0.12) 80%, rgba(0,0,0,0.35) 100%);
     pointer-events: none;
-    transition: opacity 0.3s;
-}
-
-/* =========================================
-   ANIMASYON KEYFRAMES
-========================================= */
-
-/* Sağdan sola geçerken sağ alt köşenin bükülerek kıvrılması */
-@keyframes curlTurnNext {
-    0% {
-        transform: rotateY(0deg) rotateZ(0deg) skewY(0deg);
-        filter: drop-shadow(-2px 4px 6px rgba(0,0,0,0.1));
-    }
-    30% {
-        /* Sağ alt köşe yukarı ve sola kıvrılmaya başlıyor */
-        transform: rotateY(-50deg) rotateZ(-4deg) skewY(-3deg) translateY(-2%);
-        filter: drop-shadow(-10px 15px 12px rgba(0,0,0,0.3));
-    }
-    70% {
-        transform: rotateY(-130deg) rotateZ(-2deg) skewY(-1deg) translateY(-1%);
-        filter: drop-shadow(-8px 10px 10px rgba(0,0,0,0.25));
-    }
-    100% {
-        /* Sol sayfaya düzgünce oturur */
-        transform: rotateY(-180deg) rotateZ(0deg) skewY(0deg);
-        filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.15));
-    }
-}
-
-@keyframes curlTurnPrev {
-    0% {
-        transform: rotateY(-180deg) rotateZ(0deg) skewY(0deg);
-        filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.15));
-    }
-    30% {
-        transform: rotateY(-130deg) rotateZ(4deg) skewY(3deg) translateY(-2%);
-        filter: drop-shadow(10px 15px 12px rgba(0,0,0,0.3));
-    }
-    70% {
-        transform: rotateY(-50deg) rotateZ(2deg) skewY(1deg) translateY(-1%);
-        filter: drop-shadow(8px 10px 10px rgba(0,0,0,0.25));
-    }
-    100% {
-        transform: rotateY(0deg) rotateZ(0deg) skewY(0deg);
-        filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
-    }
-}
-
-.anim-next {
-    animation: curlTurnNext 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards;
-}
-
-.anim-prev {
-    animation: curlTurnPrev 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards;
 }
 
 /* =========================================
@@ -296,16 +248,11 @@ body {
     transform: translateY(-50%) scale(1.08);
 }
 
-.left-arrow {
-    left: 12%;
-}
-
-.right-arrow {
-    right: 8%;
-}
+.left-arrow { left: 12%; }
+.right-arrow { right: 8%; }
 
 /* =========================================
-   UST KONTROLLER
+   UST KONTROLLER & EQUALIZER
 ========================================= */
 
 .top-controls {
@@ -339,10 +286,6 @@ body {
     box-shadow: 0 0 10px rgba(255,255,255,0.35);
 }
 
-/* =========================================
-   EQUALIZER
-========================================= */
-
 .equalizer {
     position: absolute;
     left: 50%;
@@ -364,10 +307,6 @@ body {
     border-radius: 2px;
 }
 
-/* =========================================
-   BOS SAYFA
-========================================= */
-
 .blank-page {
     background-image: url("sag_sayfa_bos.png") !important;
 }
@@ -378,7 +317,6 @@ body {
 
 <div class="book-stage" id="bookStage">
 
-    <!-- UST KONTROLLER -->
     <div class="top-controls">
         <button class="control-button" title="Sesli dinle" onclick="toggleAudio()">🔊</button>
         <button class="control-button" title="Tam ekran" onclick="toggleFullscreen()">⛶</button>
@@ -400,64 +338,48 @@ body {
         </div>
     </div>
 
-    <!-- DÖNEN SAYFA (ANIMASYON KATMANI) -->
+    <!-- SÜRÜKLENEN / DÖNEN SAYFA KATMANI -->
     <div class="flipper" id="flipper">
         <div class="flipper-face flipper-front" id="flipperFront">
             <img src="yazan_kalem3.png" class="quill-bg-right" alt="">
             <div class="page-content">
                 <div class="poem" id="flipperFrontPoem" style="opacity: 1;"></div>
             </div>
-            <div class="curl-overlay"></div>
+            <div class="curl-shadow"></div>
         </div>
         <div class="flipper-face flipper-back" id="flipperBack">
             <img src="yazan_kalem3.png" class="quill-bg-left" alt="">
             <div class="page-content">
                 <div class="poem" id="flipperBackPoem" style="opacity: 1;"></div>
             </div>
-            <div class="curl-overlay"></div>
+            <div class="curl-shadow"></div>
         </div>
     </div>
 
-    <!-- KOSENIN KALEM GORSELI -->
     <img src="murekkep_kalem.png" class="ink-quill" alt="">
 
-    <!-- OKLAR -->
     <button class="nav-arrow left-arrow" onclick="previousPage()">‹</button>
     <button class="nav-arrow right-arrow" onclick="nextPage()">›</button>
 
-    <!-- EQUALIZER -->
     <div class="equalizer">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
 </div>
 
 <script>
-/* =========================================
-   ELEMANLAR
-========================================= */
-
+/* ELEMANLAR */
 const leftPoem = document.getElementById("leftPoem");
 const rightPoem = document.getElementById("rightPoem");
 const leftPage = document.getElementById("leftPage");
 const rightPage = document.getElementById("rightPage");
+const bookStage = document.getElementById("bookStage");
 
 const flipper = document.getElementById("flipper");
 const flipperFrontPoem = document.getElementById("flipperFrontPoem");
 const flipperBackPoem = document.getElementById("flipperBackPoem");
 
-/* =========================================
-   ŞİİR METNİ
-========================================= */
-
+/* ŞİİR METNİ */
 const poemText =
 `Yoksam düşlerinde
 Bakışların hep donuk
@@ -497,17 +419,13 @@ Seni beklemek için vardım
 Bekle…!
 Geliyorum!`;
 
-/* =========================================
-   GENISLIK OLCECEK ALAN
-========================================= */
-
+/* METİN BOYUTU & HESAPLAMA */
 const measurePoem = document.createElement("div");
 measurePoem.style.position = "absolute";
 measurePoem.style.visibility = "hidden";
 measurePoem.style.pointerEvents = "none";
 measurePoem.style.fontFamily = '"Caveat", cursive';
 measurePoem.style.whiteSpace = "nowrap";
-
 document.body.appendChild(measurePoem);
 
 function measureTextWidth(text, fontSize) {
@@ -515,10 +433,6 @@ function measureTextWidth(text, fontSize) {
     measurePoem.textContent = text;
     return measurePoem.getBoundingClientRect().width;
 }
-
-/* =========================================
-   SIIRI GERCEK SAYFA GENISLIGINE GORE SATIRLARA AYIR
-========================================= */
 
 function getWrappedLines() {
     const pageContent = document.querySelector(".left-page .page-content");
@@ -532,34 +446,21 @@ function getWrappedLines() {
             result.push("");
             continue;
         }
-
         const words = rawLine.split(/\s+/);
         let currentLine = "";
-
         for (const word of words) {
             const testLine = currentLine ? currentLine + " " + word : word;
-
             if (measureTextWidth(testLine, currentFontSize) <= availableWidth) {
                 currentLine = testLine;
             } else {
-                if (currentLine) {
-                    result.push(currentLine);
-                }
+                if (currentLine) result.push(currentLine);
                 currentLine = word;
             }
         }
-
-        if (currentLine) {
-            result.push(currentLine);
-        }
+        if (currentLine) result.push(currentLine);
     }
-
     return result;
 }
-
-/* =========================================
-   SAYFALARA BOL
-========================================= */
 
 function buildPages() {
     const lines = getWrappedLines();
@@ -581,29 +482,19 @@ function buildPages() {
     const lineHeight = test.getBoundingClientRect().height;
     test.remove();
 
-    const pageHeight = pageRect.height;
-    const linesPerPage = Math.max(1, Math.floor(pageHeight / lineHeight));
+    const linesPerPage = Math.max(1, Math.floor(pageRect.height / lineHeight));
     const pagesList = [];
-
     for (let i = 0; i < lines.length; i += linesPerPage) {
         pagesList.push(lines.slice(i, i + linesPerPage));
     }
-
     return pagesList;
 }
 
-/* =========================================
-   DURUM
-========================================= */
-
+/* DURUM TANIMLARI */
 let pages = [];
 let pageIndex = 0;
 let stageState = "left";
 let animating = false;
-
-/* =========================================
-   YAVASCA GOSTER / KAYBET
-========================================= */
 
 function fadeIn(element) {
     element.style.opacity = "0";
@@ -618,10 +509,6 @@ function fadeOut(element) {
     element.style.opacity = "0";
 }
 
-/* =========================================
-   ILK DURUM
-========================================= */
-
 function startBook() {
     pages = buildPages();
     pageIndex = 0;
@@ -633,14 +520,117 @@ function startBook() {
     leftPoem.textContent = pages[0] ? pages[0].join("\n") : "";
     rightPoem.textContent = "";
 
-    leftPoem.style.opacity = "1";
+    leftPoem.style.opacity = "0";
     rightPoem.style.opacity = "0";
 }
 
-/* =========================================
-   SAG OK (ILERI) - SAYFA DÖNÜŞ SİMÜLASYONU
-========================================= */
+/* SÜRÜKLEME (DRAG & TOUCH) MANTIĞI */
+let isDragging = false;
+let startX = 0;
+let currentProgress = 0; // 0 (sağ) -> 1 (sol)
 
+function onPointerDown(e) {
+    if (animating) return;
+    
+    // Sağ sayfanın sağ yarısından veya sağ alt köşeden tutulduğunu kontrol et
+    const rightRect = rightPage.getBoundingClientRect();
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+    if (!clientX || !clientY) return;
+
+    // Sadece sağ sayfa alanından başlarsa aktif et
+    if (clientX >= rightRect.left && clientX <= rightRect.right + 40 &&
+        clientY >= rightRect.top && clientY <= rightRect.bottom) {
+        
+        isDragging = true;
+        startX = clientX;
+        
+        // Flipper'a doğru sayfaları yükle
+        if (stageState === "spread") {
+            const nextLeftIndex = pageIndex + 2;
+            flipperFrontPoem.textContent = rightPoem.textContent;
+            flipperBackPoem.textContent = pages[nextLeftIndex] ? pages[nextLeftIndex].join("\n") : "";
+        } else if (stageState === "right") {
+            flipperFrontPoem.textContent = rightPoem.textContent;
+            flipperBackPoem.textContent = "";
+        } else {
+            flipperFrontPoem.textContent = "";
+            flipperBackPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
+        }
+
+        flipper.style.transition = "none";
+        flipper.classList.add("active");
+    }
+}
+
+function onPointerMove(e) {
+    if (!isDragging) return;
+
+    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+    if (!clientX) return;
+
+    const deltaX = startX - clientX;
+    const maxDistance = bookStage.getBoundingClientRect().width * 0.45;
+    
+    currentProgress = Math.min(Math.max(deltaX / maxDistance, 0), 1);
+
+    const angle = currentProgress * -180;
+    const skew = Math.sin(currentProgress * Math.PI) * -5; // Sayfanın bükülme kavis açısı
+    const translateY = Math.sin(currentProgress * Math.PI) * -2; // Sağ alt kıvrılma kalkması
+
+    flipper.style.transform = `rotateY(${angle}deg) rotateZ(${skew}deg) translateY(${translateY}%)`;
+}
+
+async function onPointerUp() {
+    if (!isDragging) return;
+    isDragging = false;
+
+    flipper.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
+
+    if (currentProgress > 0.35) {
+        // Eşik geçildi: Sol sayfaya düşür / tam kapat
+        flipper.style.transform = `rotateY(-180deg) rotateZ(0deg) translateY(0%)`;
+        await wait(500);
+
+        if (stageState === "spread") {
+            pageIndex += 2;
+            leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
+            rightPoem.textContent = pages[pageIndex + 1] ? pages[pageIndex + 1].join("\n") : "";
+            leftPoem.style.opacity = "1";
+            rightPoem.style.opacity = pages[pageIndex + 1] ? "1" : "0";
+            stageState = pages[pageIndex + 1] ? "spread" : "right";
+        } else if (stageState === "right") {
+            if (pageIndex + 1 < pages.length) {
+                rightPoem.textContent = pages[pageIndex + 1].join("\n");
+                fadeIn(rightPoem);
+                stageState = "spread";
+            }
+        } else if (stageState === "left") {
+            leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
+            fadeIn(leftPoem);
+            stageState = "right";
+        }
+    } else {
+        // Eşik geçilemedi: Sağ tarafa geri esnet
+        flipper.style.transform = `rotateY(0deg) rotateZ(0deg) translateY(0%)`;
+        await wait(500);
+    }
+
+    flipper.classList.remove("active");
+    flipper.style.transform = "";
+}
+
+/* ETKİLEŞİM DİNLENİCİLERİ */
+window.addEventListener("mousedown", onPointerDown);
+window.addEventListener("mousemove", onPointerMove);
+window.addEventListener("mouseup", onPointerUp);
+
+window.addEventListener("touchstart", onPointerDown, { passive: true });
+window.addEventListener("touchmove", onPointerMove, { passive: true });
+window.addEventListener("touchend", onPointerUp);
+
+/* BUTONLARLA İLERLEME/GERİLEME */
 async function nextPage() {
     if (animating) return;
     animating = true;
@@ -669,27 +659,29 @@ async function nextPage() {
     }
 
     if (stageState === "spread") {
-        // Sağ alt köşeden kıvrılarak sayfa çevirme animasyonu
         const nextLeftIndex = pageIndex + 2;
         const nextRightIndex = pageIndex + 3;
 
         flipperFrontPoem.textContent = rightPoem.textContent;
         flipperBackPoem.textContent = pages[nextLeftIndex] ? pages[nextLeftIndex].join("\n") : "";
 
-        flipper.classList.remove("anim-next", "anim-prev");
-        void flipper.offsetWidth; // reflow trigger
-        flipper.classList.add("active", "anim-next");
+        flipper.style.transition = "transform 1.2s cubic-bezier(0.45, 0.05, 0.55, 0.95)";
+        flipper.classList.add("active");
 
-        // Sayfa dönmeye başlayınca arka plandaki sağ sayfayı hazırla
+        requestAnimationFrame(() => {
+            flipper.style.transform = "rotateY(-180deg)";
+        });
+
         rightPoem.textContent = pages[nextRightIndex] ? pages[nextRightIndex].join("\n") : "";
 
-        await wait(1400);
+        await wait(1200);
 
         pageIndex += 2;
         leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
         leftPoem.style.opacity = "1";
 
-        flipper.classList.remove("active", "anim-next");
+        flipper.classList.remove("active");
+        flipper.style.transform = "";
 
         if (pageIndex < pages.length) {
             stageState = "right";
@@ -700,16 +692,7 @@ async function nextPage() {
         animating = false;
         return;
     }
-
-    if (stageState === "finished") {
-        animating = false;
-        return;
-    }
 }
-
-/* =========================================
-   SOL OK (GERI)
-========================================= */
 
 async function previousPage() {
     if (animating || (pageIndex === 0 && stageState === "left")) return;
@@ -732,37 +715,17 @@ async function previousPage() {
     }
 
     if (stageState === "finished" || (stageState === "left" && pageIndex >= 2)) {
-        const prevLeftIndex = Math.max(0, pageIndex - 2);
-        const prevRightIndex = prevLeftIndex + 1;
-
-        flipperFrontPoem.textContent = pages[prevRightIndex] ? pages[prevRightIndex].join("\n") : "";
-        flipperBackPoem.textContent = leftPoem.textContent;
-
-        flipper.classList.remove("anim-next", "anim-prev");
-        void flipper.offsetWidth;
-        flipper.classList.add("active", "anim-prev");
-
-        leftPoem.textContent = pages[prevLeftIndex] ? pages[prevLeftIndex].join("\n") : "";
-
-        await wait(1400);
-
-        pageIndex = prevLeftIndex;
-        rightPoem.textContent = pages[prevRightIndex] ? pages[prevRightIndex].join("\n") : "";
-        rightPoem.style.opacity = "1";
-
-        flipper.classList.remove("active", "anim-prev");
-        stageState = "spread";
-
-        animating = false;
-        return;
+        pageIndex = Math.max(0, pageIndex - 2);
+        leftPoem.textContent = pages[pageIndex] ? pages[pageIndex].join("\n") : "";
+        rightPoem.textContent = pages[pageIndex + 1] ? pages[pageIndex + 1].join("\n") : "";
+        fadeIn(leftPoem);
+        if (pages[pageIndex + 1]) fadeIn(rightPoem);
+        stageState = pages[pageIndex + 1] ? "spread" : "right";
+        await wait(800);
     }
 
     animating = false;
 }
-
-/* =========================================
-   BEKLEME VE KONTROL FONKSIYONLARI
-========================================= */
 
 function wait(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -779,10 +742,6 @@ function toggleFullscreen() {
 function toggleAudio() {
     alert("Ses oynatma başlatıldı/durduruldu.");
 }
-
-/* =========================================
-   BASLAT VE RESIZE DINLEYICI
-========================================= */
 
 let resizeTimer;
 window.addEventListener("load", () => {
