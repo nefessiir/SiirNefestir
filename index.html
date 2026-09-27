@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
+<!-- Gerçekçi Sayfa Kıvrılma ve Çevirme Motoru (StPageFlip) -->
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+
 <style>
 html,
 body {
@@ -27,152 +30,56 @@ body {
     perspective: 1200px;
 }
 
-/* ORTAK KAPSAYICI ALAN */
+/* KİTAP ANA KAPSAYICISI */
 .kitap-kapsayici {
     position: relative;
-    width: 20%;
-    height: auto;
-    transform: translateX(8cm);
+    transform: translateX(4cm);
     transform-style: preserve-3d;
-    transform-origin: right bottom;
     z-index: 2;
 }
 
-/* 1. KATMAN: SAĞDA SABİT DURAN ALT KAPAK */
-.sag-kapak {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
+/* SAYFA YAPILARI (StPageFlip İçin) */
+#gercek-kitap {
+    display: none; /* Motor verileri okurken gizli tutar, hazırlanınca gösterir */
 }
 
-.sag-kapak img {
+.sayfa-oge {
+    background-color: #fdfbf7;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.sayfa-oge img {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP */
-.acik-kitap {
-    position: absolute;
-    top: -0.5cm;
-    left: calc(-100% - 0.5cm);
-    width: calc(200% + 1cm);
-    height: calc(100% + 1cm);
-    z-index: 1; 
-    pointer-events: none;
-    
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
-}
-
-/* Kapak açıldığında tetiklenen stiller */
-.kitap-kapsayici.acildi .acik-kitap {
-    opacity: 1;
-    z-index: 4;
-    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
-}
-
-/* 2.3. KATMAN: SOL SAYFA */
-.sol-sayfa {
-    position: absolute;
-    top: 0.5cm;
-    left: calc(-100% + 0.2cm);
-    width: calc(100% - 0.2cm);
-    height: calc(100% - 1cm);
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
-    overflow: hidden;
-}
-
-.sol-sayfa img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.kitap-kapsayici.acildi .sol-sayfa {
-    opacity: 1;
-    z-index: 5;
-    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
-}
-
-/* 2.5. KATMAN: SAĞ SAYFA */
-.sag-sayfa {
-    position: absolute;
-    top: 0.5cm;
-    left: 0.1cm;
-    width: calc(100% - 0.2cm);
-    height: calc(100% - 1cm);
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
-    overflow: hidden;
-}
-
-.sag-sayfa img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.kitap-kapsayici.acildi .sag-sayfa {
-    opacity: 1;
-    z-index: 5;
-    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
-}
-
-/* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
-.kapak-alan {
+/* ÖZEL KAPAK SAYFASI VE ÜZERİNDEKİ YAZI STİLİ */
+.kapak-sayfa {
     position: relative;
     width: 100%;
     height: 100%;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    cursor: pointer;
-    transition: transform 1.5s ease-in-out;
-    z-index: 3;
 }
 
-.kapak-alan.dondu {
-    transform: rotateY(-180deg);
-}
-
-.kapak,
-.kapak-arka {
+.kapak-sayfa img {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
-    backface-visibility: hidden;
-}
-
-.kapak {
-    position: relative;
-}
-
-.kapak-arka {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: rotateY(180deg);
 }
 
 .kapak-yazi {
     position: absolute;
     top: 50%;
-    left: calc(50% + 1cm);
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 85%;
     text-align: left;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(10px, 1.25vw, 22px);
+    font-size: clamp(10px, 1.1vw, 20px);
     line-height: 1.7;
     color: #d6ad38;
     text-shadow:
@@ -181,7 +88,7 @@ body {
         0 0 1px rgba(245, 198, 65, 0.8),
         0 1px 2px rgba(45, 25, 3, 0.9);
     letter-spacing: 0.3px;
-    backface-visibility: hidden;
+    pointer-events: none;
 }
 
 .kapak-yazi .imza {
@@ -194,59 +101,75 @@ body {
 
 <body>
 
-<div class="kitap-kapsayici" id="kitapKapsayici">
-
-    <!-- 1. ALT KAPAK -->
-    <div class="sag-kapak">
-        <img src="kapak.jpg">
-    </div>
-
-    <!-- 2. AÇIK KİTAP -->
-    <img src="acik_kitap1.png" class="acik-kitap">
-
-    <!-- 2.3. SOL SAYFA -->
-    <div class="sol-sayfa">
-        <img src="sol_sayfa.png" alt="Sol Sayfa">
-    </div>
-
-    <!-- 2.5. SAĞ SAYFA -->
-    <div class="sag-sayfa">
-        <img src="sag_sayfa.png" alt="Sağ Sayfa">
-    </div>
-
-    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
-    <div class="kapak-alan" id="kapakAlan">
-        <img src="kapak.jpg" class="kapak">
+<div class="kitap-kapsayici">
+    <!-- SAYFALARIN TANIMLANDIĞI ALAN (Mouse ile tutup bükerek çevirme motoru burayı okur) -->
+    <div id="gercek-kitap">
         
-        <div class="kapak-yazi">
-            Şiir'e hatıra.<br><br>
-            kelimelerden..<br>
-            hayattan..<br>
-            babasından.<br><br><br>
-            <span class="imza">S.O.A</span>
+        <!-- Sayfa 1: Ön Kapak (Sert Kapak Efekti) -->
+        <div class="sayfa-oge" data-density="hard">
+            <div class="kapak-sayfa">
+                <img src="kapak.jpg" alt="Ön Kapak">
+                <div class="kapak-yazi">
+                    Şiir'e hatıra<br><br>
+                    kelimelerden..<br>
+                    hayattan..<br>
+                    babasından.<br><br><br>
+                    <span class="imza">S.O.A</span>
+                </div>
+            </div>
         </div>
 
-        <img src="kapak.jpg" class="kapak-arka">
-    </div>
+        <!-- Sayfa 2: Sol İç Sayfa (Ölçüleri ve konumu ayarlanmış) -->
+        <div class="sayfa-oge">
+            <img src="sol_sayfa.png" alt="Sol İç Sayfa">
+        </div>
 
+        <!-- Sayfa 3: Sağ İç Sayfa (Ölçüleri ve konumu ayarlanmış) -->
+        <div class="sayfa-oge">
+            <img src="sag_sayfa.png" alt="Sağ İç Sayfa">
+        </div>
+
+        <!-- Sayfa 4: Arka Kapak (Sert Kapak Efekti) -->
+        <div class="sayfa-oge" data-density="hard">
+            <img src="kapak.jpg" alt="Arka Kapak">
+        </div>
+
+    </div>
 </div>
 
 <script>
 window.addEventListener("load", function () {
-    const kapsayici = document.getElementById("kitapKapsayici");
-    const kapakAlan = document.getElementById("kapakAlan");
-    const kapakImg = document.querySelector(".kapak");
+    // Kitap görsellerinin orijinal oranını baz alarak dinamik boyutlandırma
+    const testImg = new Image();
+    testImg.src = "kapak.jpg";
+    
+    testImg.onload = function () {
+        // Ekran yüksekliğine göre ideal kitap yüksekliği (Örn: Ekranın %75'i)
+        let hedefYukseklik = window.innerHeight * 0.75;
+        let aspectRasyon = testImg.width / testImg.height;
+        let hedefGenislik = hedefYukseklik * aspectRasyon;
 
-    const yukseklik = kapakImg.getBoundingClientRect().height;
-    const ikiCm = 2 * 96 / 2.54;
-    const oran = (yukseklik + ikiCm) / yukseklik;
+        // StPageFlip Motorunu Başlatma
+        const pageFlip = new St.PageFlip(document.getElementById('gercek-kitap'), {
+            width: Math.round(hedefGenislik),   // Tek bir sayfanın genişliği
+            height: Math.round(hedefYukseklik), // Sayfanın yüksekliği
+            size: "fixed",
+            minWidth: 300,
+            maxWidth: 1000,
+            minHeight: 400,
+            maxHeight: 1200,
+            showCover: true,          // İlk ve son sayfayı kapak olarak tanır
+            mobileScrollSupport: false, // Mobilde sayfanın kaymasını engeller, direkt çevirtir
+            maxShadowOpacity: 0.5,    // Gerçekçi sayfa gölge efekti
+            flippingTime: 1200        // Sayfa çevrilme hisé süresi (milisaniye)
+        });
 
-    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
+        // HTML içindeki sayfa elementlerini motora yükle
+        pageFlip.loadFromHTML(document.querySelectorAll('.sayfa-oge'));
 
-    kapakAlan.addEventListener("click", function () {
-        kapakAlan.classList.toggle("dondu");
-        kapsayici.classList.toggle("acildi");
-    });
+        // Kapsayıcıyı görünür yap
+        document.getElementById('gercek-kitap').style.display = "block";
+    };
 });
 </script>
 
