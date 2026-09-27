@@ -55,26 +55,25 @@ body {
     display: block;
 }
 
-/* AÇIK KİTAP GÖVDESİ - Görünürlük sorunu giderildi */
+/* AÇIK KİTAP GÖVDESİ (acik_kitap1.png) - 0.2 cm sağa alındı */
 .acik-kitap-alan {
     position: absolute;
     top: 0.5cm;
     left: calc(-100% - 0.6cm);
     width: calc(200% - 1.3cm);
     height: calc(100% - 1cm);
-    z-index: 1; 
+    z-index: 2;
     opacity: 0;
     pointer-events: none;
     transform: scale(1.1882);
     transform-origin: left center;
     clip-path: inset(0 0 0 100%);
-    transition: opacity 0.3s ease-in-out, clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: opacity 0.3s ease-in-out 1.5s, clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) 1.5s;
 }
 
 .kitap-kapsayici.acildi .acik-kitap-alan {
     opacity: 1;
     clip-path: inset(0 0 0 0);
-    transition: opacity 0.3s ease-in-out 1.5s, clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) 1.5s;
 }
 
 .acik-kitap-alan img {
@@ -82,102 +81,6 @@ body {
     height: 100%;
     object-fit: fill;
     display: block;
-}
-
-/* 2. SOL SAYFA */
-.sol-sayfa-alan {
-    position: absolute;
-    top: 0.7cm;
-    left: calc(-100% + 0.4cm);
-    width: calc(100% - 0.6cm);
-    height: calc(100% - 1.4cm);
-    z-index: 0;
-    opacity: 0;
-    pointer-events: none;
-    transform-style: preserve-3d;
-    transform-origin: right center;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
-}
-
-.kitap-kapsayici.acildi .sol-sayfa-alan {
-    opacity: 1;
-    z-index: 5;
-    pointer-events: auto;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 1.5s;
-    cursor: pointer;
-}
-
-.sol-sayfa-alan.cevirdi {
-    transform: rotateY(180deg) translateX(calc(100% - 0.2cm));
-    z-index: 20;
-}
-
-.sol-sayfa-on, .sol-sayfa-arka {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-}
-
-.sol-sayfa-on img, .sol-sayfa-arka img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    display: block;
-}
-
-.sol-sayfa-arka {
-    transform: rotateY(180deg);
-}
-
-/* 3. SAĞ SAYFA - Eksen ve orta çizgi kayması düzeltildi */
-.sag-sayfa-alan {
-    position: absolute;
-    top: 0.7cm;
-    left: 0.3cm;
-    width: calc(100% - 0.6cm);
-    height: calc(100% - 1.4cm);
-    z-index: 0;
-    opacity: 0;
-    pointer-events: none;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
-}
-
-.kitap-kapsayici.acildi .sag-sayfa-alan {
-    opacity: 1;
-    z-index: 6;
-    pointer-events: auto;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 1.5s;
-    cursor: pointer;
-}
-
-.sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg) translateX(calc(-100% + 0.2cm));
-    z-index: 20;
-}
-
-.sayfa-on, .sayfa-arka {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-}
-
-.sayfa-on img, .sayfa-arka img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    display: block;
-}
-
-.sayfa-arka {
-    transform: rotateY(180deg);
 }
 
 /* 4. ÜSTTEKİ HAREKETLİ KAPAK */
@@ -254,29 +157,9 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- AÇIK KİTAP GÖVDESİ -->
+    <!-- AÇIK KİTAP GÖVDESİ (acik_kitap1.png) -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
-    </div>
-
-    <!-- 2. SOL SAYFA -->
-    <div class="sol-sayfa-alan" id="solSayfaAlan">
-        <div class="sol-sayfa-on">
-            <img src="sol_sayfa.png" alt="Sol Sayfa Ön">
-        </div>
-        <div class="sol-sayfa-arka">
-            <img src="sag_sayfa.png" alt="Sol Sayfa Arka">
-        </div>
-    </div>
-
-    <!-- 3. SAĞ SAYFA -->
-    <div class="sag-sayfa-alan" id="sagSayfaAlan">
-        <div class="sayfa-on">
-            <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
-        </div>
-        <div class="sayfa-arka">
-            <img src="sol_sayfa.png" alt="Sağ Sayfa Arka">
-        </div>
     </div>
 
     <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
@@ -300,8 +183,6 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
-    const solSayfaAlan = document.getElementById("solSayfaAlan");
-    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
@@ -310,31 +191,10 @@ window.addEventListener("load", function () {
 
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // Kapak tıklama mantığı (Açma / Kapanma)
+    // Kapak açma animasyonu
     kapakAlan.addEventListener("click", function () {
-        if (kapakAlan.classList.contains("dondu")) {
-            // KAPATMA: Önce sayfaları düzelt, sonra kapağı ve ana container'ı kapat
-            sagSayfaAlan.classList.remove("cevirdi");
-            solSayfaAlan.classList.remove("cevirdi");
-            kapakAlan.classList.remove("dondu");
-            kapsayici.classList.remove("acildi");
-        } else {
-            // AÇMA
-            kapsayici.classList.add("acildi");
-            kapakAlan.classList.add("dondu");
-        }
-    });
-
-    // Sağ sayfaya tıklandığında sola dönme
-    sagSayfaAlan.addEventListener("click", function (e) {
-        e.stopPropagation();
-        sagSayfaAlan.classList.toggle("cevirdi");
-    });
-
-    // Sol sayfaya tıklandığında sağa dönme (geri çevirme)
-    solSayfaAlan.addEventListener("click", function (e) {
-        e.stopPropagation();
-        solSayfaAlan.classList.toggle("cevirdi");
+        kapakAlan.classList.toggle("dondu");
+        kapsayici.classList.toggle("acildi");
     });
 });
 </script>
