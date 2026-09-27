@@ -65,12 +65,15 @@ body {
     z-index: 0;
     opacity: 0;
     pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .kitap-kapsayici.acildi .sol-sayfa-alan {
     opacity: 1;
     z-index: 5;
     pointer-events: auto;
+    /* Kapak açılma animasyonu (1.5s) bittikten sonra görünür olur */
+    transition: opacity 0.3s ease-in-out 1.5s;
 }
 
 .sol-sayfa-alan img {
@@ -80,7 +83,7 @@ body {
     display: block;
 }
 
-/* 3. SAĞ SAYFA (Çift Taraflı Yaprak - Sola Döner) */
+/* 3. SAĞ SAYFA (Sola Dönen Yaprak) */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
@@ -91,30 +94,31 @@ body {
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenarından menteşelidir */
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform-origin: left center;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
 .kitap-kapsayici.acildi .sag-sayfa-alan {
     opacity: 1;
     z-index: 6;
     pointer-events: auto;
+    /* Kapak açıldıktan sonra tıklanabilir ve görünür olur */
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 1.5s;
     cursor: pointer;
 }
 
-/* Sağ sayfa sola çevrildiğinde */
 .sag-sayfa-alan.cevirdi {
     transform: rotateY(-180deg);
 }
 
-/* Sayfanın Ön ve Arka Yüzleri */
+/* Ön ve Arka Yüz */
 .sayfa-on, .sayfa-arka {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden; /* Dönerken çakışmayı önler */
+    backface-visibility: hidden;
 }
 
 .sayfa-on img, .sayfa-arka img {
@@ -206,13 +210,13 @@ body {
         <img src="sol_sayfa.png" alt="Sol Sayfa">
     </div>
 
-    <!-- 3. SAĞ SAYFA (Çift Yüzlü Yaprak) -->
+    <!-- 3. SAĞ SAYFA -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
         <div class="sayfa-on">
             <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
         </div>
         <div class="sayfa-arka">
-            <img src="sol_sayfa.png" alt="Sağ Sayfa Arka"> <!-- Sola geçtiğinde görünecek yüz -->
+            <img src="sol_sayfa.png" alt="Sağ Sayfa Arka">
         </div>
     </div>
 
