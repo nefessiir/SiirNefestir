@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -47,8 +46,6 @@ body {
     width: 100%;
     height: auto;
     z-index: 1;
-
-    transition: opacity 0.05s linear;
 }
 
 .sag-kapak img {
@@ -57,34 +54,25 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP */
+/* 2. KATMAN: AÇIK KİTAP (0.5 cm sağa çekilmiş, her yöne 0.5cm büyük) */
 .acik-kitap {
     position: absolute;
     top: -0.5cm;
     left: calc(-50% - 3.95cm);
     width: calc(200% + 1cm);
     height: calc(100% + 1cm);
-    z-index: 1;
+    z-index: 1; 
     pointer-events: none;
-
+    
     opacity: 0;
-
-    /*
-       Kapak 1.5 saniyede açılıyor.
-       Açık kitap da aynı 1.5 saniyede
-       tamamen görünür hale geliyor.
-    */
-    transition: opacity 1.5s ease-in-out;
+    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* KAPAK AÇILIRKEN */
+/* Kapak açıldığında tetiklenen stiller */
 .kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
-}
-
-/* KAPAK AÇILIRKEN ALT KAPAK GİZLENİR */
-.kitap-kapsayici.acildi .sag-kapak {
-    opacity: 0;
+    z-index: 4; /* Açık kitap en üste çıkar */
+    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -148,69 +136,54 @@ body {
     transform: translate(0.3cm, 1.7em);
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
-```
-<!-- 1. ALT KAPAK -->
-<div class="sag-kapak">
-    <img src="kapak.jpg">
-</div>
-
-<!-- 2. AÇIK KİTAP -->
-<img src="acik_kitap1.png" class="acik-kitap">
-
-<!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
-<div class="kapak-alan" id="kapakAlan">
-
-    <img src="kapak.jpg" class="kapak">
-
-    <div class="kapak-yazi">
-        Şiir'e hatıra<br>
-        kelimelerden..<br>
-        hayattan..<br>
-        babasından.<br><br><br>
-
-        <span class="imza">S.O.A</span>
+    <!-- 1. ALT KAPAK -->
+    <div class="sag-kapak">
+        <img src="kapak.jpg">
     </div>
 
-    <img src="kapak.jpg" class="kapak-arka">
+    <!-- 2. AÇIK KİTAP (0.5 cm sağa çekildi) -->
+    <img src="acik_kitap1.png" class="acik-kitap">
 
-</div>
-```
+    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
+    <div class="kapak-alan" id="kapakAlan">
+        <img src="kapak.jpg" class="kapak">
+        
+        <div class="kapak-yazi">
+            Şiir'e hatıra<br>
+            kelimelerden..<br>
+            hayattan..<br>
+            babasından.<br><br><br>
+            <span class="imza">S.O.A</span>
+        </div>
+
+        <img src="kapak.jpg" class="kapak-arka">
+    </div>
 
 </div>
 
 <script>
-
 window.addEventListener("load", function () {
-
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
     const kapakImg = document.querySelector(".kapak");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
-
     const ikiCm = 2 * 96 / 2.54;
-
     const oran = (yukseklik + ikiCm) / yukseklik;
 
-    kapsayici.style.transform =
-        "translateX(8cm) scale(" + oran + ")";
+    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
     kapakAlan.addEventListener("click", function () {
-
         kapakAlan.classList.toggle("dondu");
         kapsayici.classList.toggle("acildi");
-
     });
-
 });
-
 </script>
 
 </body>
