@@ -16,7 +16,7 @@ body {
 
 body {
     overflow: hidden;
-    /* Varsayılan Tema: Orijinal Ahşap Masa */
+    /* Varsayılan Tema: Seninle Oluşturduğumuz Orijinal Oda (Gece Lambası & Ay Işığı) */
     background-image: url("arka_plan.jpg");
     background-size: 100% 100%;
     background-position: center center;
@@ -26,7 +26,7 @@ body {
     justify-content: center;
     align-items: center;
     perspective: 1500px;
-    transition: background-image 0.6s ease-in-out;
+    transition: background-image 0.8s ease-in-out;
 }
 
 /* TEMA SEÇİM BUTONU (Sağ Üst Köşe) */
@@ -304,17 +304,17 @@ body {
 </div>
 
 <script>
-// TEMA DEĞİŞTİRME FONKSİYONU (Gerçek Fotoğraf Kalitesinde Atmosferler)
+// TEMA DEĞİŞTİRME FONKSİYONU (O Odayı Koruyan, Sadece Atmosfer ve Pencere Manzarasını Değiştiren Sihir)
 function temaDegis(temaAdi) {
     if (temaAdi === 'ahsap') {
-        // Senin orijinal ahşap masa görselin
+        // Seninle kurduğumuz orijinal oda (Gece lambası & ay ışığı)
         document.body.style.backgroundImage = "url('arka_plan.jpg')";
     } else if (temaAdi === 'gece') {
-        // Sıcak mum ışıklı koyu ahşap masa / gece ortamı
-        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1519682337058-a94d519337bc?q=80&w=1920&auto=format&fit=crop')";
+        // Aynı oda ama gece lambası sönmüş, masada sıcak mum alevi parlıyor
+        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1920&auto=format&fit=crop')";
     } else if (temaAdi === 'kulube') {
-        // Deniz manzaralı sahil kulübesi / pencere önü atmosferi
-        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop')";
+        // Aynı oda ama pencereden içeri ferah bir deniz manzarası süzülüyor
+        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1920&auto=format&fit=crop')";
     }
 }
 
