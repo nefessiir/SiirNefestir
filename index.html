@@ -68,15 +68,14 @@ body {
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* EN ÜST KATMAN: SAĞ İÇ SAYFA GÖRSELİ (Açık kitabın sağ tarafının tam üzerine oturur) */
+/* EN ÜST KATMAN: SAĞ İÇ SAYFA GÖRSELİ */
 .sag-ic-sayfa {
     position: absolute;
     top: -0.5cm;
-    /* Açık kitabın sol kenarından başlayıp tam sağ yarıyı kaplayacak şekilde hesaplanmıştır */
     left: calc(-3.95cm);
     width: calc(100% + 0.5cm);
     height: calc(100% + 1cm);
-    z-index: 5; /* Her şeyin (kapak ve açık kitabın) en üstünde yer alır */
+    z-index: 5; 
     pointer-events: none;
     
     opacity: 0;
@@ -87,6 +86,7 @@ body {
     width: 100%;
     height: 100%;
     display: block;
+    object-fit: fill;
 }
 
 /* Kapak açıldığında tetiklenen stiller */
@@ -172,7 +172,7 @@ body {
     <!-- 2. AÇIK KİTAP ARKA PLANI -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
-    <!-- 3. SAĞ İÇ SAYFA (En üst katmanda, açık kitabın sağ tarafının üzerinde) -->
+    <!-- 3. SAĞ İÇ SAYFA GÖRSELİ (Eksik olan img etiketi eklendi) -->
     <div class="sag-ic-sayfa">
         <img src="ic_sayfa_sag.jpg" alt="Sağ İç Sayfa">
     </div>
