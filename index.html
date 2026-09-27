@@ -51,7 +51,7 @@ body {
 .sag-kapak img {
     width: 100%;
     height: 100%;
-    object-fit: fill; /* Ölçülerin esnemeden birebir oturmasını sağlar */
+    object-fit: fill;
     display: block;
 }
 
@@ -59,7 +59,7 @@ body {
 .acik-kitap {
     position: absolute;
     top: -0.5cm;
-    left: calc(-50% - 3.95cm);
+    left: calc(-100% - 0.5cm);
     width: calc(200% + 1cm);
     height: calc(100% + 1cm);
     z-index: 1; 
@@ -76,15 +76,16 @@ body {
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
-/* 2.5. KATMAN: SOL İÇ SAYFA */
+/* 2.5. KATMAN: SOL İÇ SAYFA (Önceki sağ sayfa ölçüleri ve hassas kırpma/konumlandırmasıyla) */
 .ic-sayfa-sol {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0.5cm;
+    left: calc(-100% + 0.1cm);
+    width: calc(100% - 0.2cm);
+    height: calc(100% - 1cm);
     z-index: 5;
     pointer-events: none;
+    overflow: hidden;
 
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s;
@@ -92,8 +93,7 @@ body {
 
 .ic-sayfa-sol img {
     width: 100%;
-    height: 100%;
-    object-fit: fill;
+    height: auto;
     display: block;
 }
 
