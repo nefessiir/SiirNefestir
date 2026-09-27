@@ -1,9 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
+
+<!-- StPageFlip -->
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
 <style>
 html,
@@ -55,7 +60,7 @@ body {
     display: block;
 }
 
-/* 2. SOL SAYFA (Orijinal Ölçüler) */
+/* 2. SOL SAYFA */
 .sol-sayfa-alan {
     position: absolute;
     top: 0.5cm;
@@ -82,53 +87,46 @@ body {
     display: block;
 }
 
-/* 3. SAĞ SAYFA (Orijinal Ölçüler) */
-.sag-sayfa-alan {
+/* STPAGEFLIP ALANI */
+.sayfa-flip-alan {
     position: absolute;
     top: 0.5cm;
     left: 0.1cm;
     width: calc(100% - 0.2cm);
     height: calc(100% - 1cm);
-    z-index: 0;
+    z-index: 6;
     opacity: 0;
     pointer-events: none;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
-.kitap-kapsayici.acildi .sag-sayfa-alan {
+.kitap-kapsayici.acildi .sayfa-flip-alan {
     opacity: 1;
-    z-index: 6;
     pointer-events: auto;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 1.5s;
-    cursor: pointer;
 }
 
-.sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg);
-    z-index: 20;
-}
-
-/* Ön ve Arka Yüz */
-.sayfa-on, .sayfa-arka {
-    position: absolute;
-    top: 0;
-    left: 0;
+/*
+   StPageFlip kendi canvasını oluşturur.
+   Bu alan mevcut sağ sayfanın ölçüsünü kullanır.
+*/
+#pageFlip {
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    position: relative;
 }
 
-.sayfa-on img, .sayfa-arka img {
+/* StPageFlip HTML sayfaları */
+.flip-page {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+}
+
+.flip-page img {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
-}
-
-.sayfa-arka {
-    transform: rotateY(180deg);
 }
 
 /* 4. ÜSTTEKİ HAREKETLİ KAPAK */
@@ -194,73 +192,210 @@ body {
     transform: translate(0.3cm, 1.7em);
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
-    <!-- 1. ALT KAPAK -->
-    <div class="sag-kapak">
-        <img src="kapak.jpg">
-    </div>
+```
+<!-- 1. ALT KAPAK -->
+<div class="sag-kapak">
+    <img src="kapak.jpg">
+</div>
 
-    <!-- 2. SOL SAYFA -->
-    <div class="sol-sayfa-alan" id="solSayfaAlan">
-        <img src="sol_sayfa.png" alt="Sol Sayfa">
-    </div>
+<!-- 2. SOL SAYFA -->
+<div class="sol-sayfa-alan" id="solSayfaAlan">
+    <img src="sol_sayfa.png" alt="Sol Sayfa">
+</div>
 
-    <!-- 3. SAĞ SAYFA -->
-    <div class="sag-sayfa-alan" id="sagSayfaAlan">
-        <div class="sayfa-on">
-            <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
-        </div>
-        <div class="sayfa-arka">
-            <img src="sol_sayfa.png" alt="Sağ Sayfa Arka">
-        </div>
-    </div>
+<!-- 3. STPAGEFLIP SAYFA ALANI -->
+<div class="sayfa-flip-alan" id="sayfaFlipAlan">
 
-    <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
-    <div class="kapak-alan" id="kapakAlan">
-        <img src="kapak.jpg" class="kapak">
-        
-        <div class="kapak-yazi">
-            Şiir'e hatıra.<br><br>
-            kelimelerden..<br>
-            hayattan..<br>
-            babasından.<br><br><br>
-            <span class="imza">S.O.A</span>
+    <div id="pageFlip">
+
+        <!-- SAĞ SAYFA -->
+        <div class="flip-page">
+            <img src="sag_sayfa.png" alt="Sağ Sayfa">
         </div>
 
-        <img src="kapak.jpg" class="kapak-arka-kapak">
+        <!-- SOL SAYFA -->
+        <div class="flip-page">
+            <img src="sol_sayfa.png" alt="Sol Sayfa">
+        </div>
+
     </div>
+
+</div>
+
+<!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
+<div class="kapak-alan" id="kapakAlan">
+
+    <img src="kapak.jpg" class="kapak">
+
+    <div class="kapak-yazi">
+        Şiir'e hatıra.<br><br>
+        kelimelerden..<br>
+        hayattan..<br>
+        babasından.<br><br><br>
+        <span class="imza">S.O.A</span>
+    </div>
+
+    <img src="kapak.jpg" class="kapak-arka-kapak">
+
+</div>
+```
 
 </div>
 
 <script>
 window.addEventListener("load", function () {
+
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
-    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
+    /*
+     * MEVCUT KİTAP ÖLÇÜSÜ AYNEN KORUNUYOR
+     */
     const yukseklik = kapakImg.getBoundingClientRect().height;
     const ikiCm = 2 * 96 / 2.54;
     const oran = (yukseklik + ikiCm) / yukseklik;
 
-    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
+    kapsayici.style.transform =
+        "translateX(8cm) scale(" + oran + ")";
 
-    // Kapak açma animasyonu
+    /*
+     * KAPAK AÇMA
+     * Mevcut davranış aynen korunuyor.
+     */
     kapakAlan.addEventListener("click", function () {
+
         kapakAlan.classList.toggle("dondu");
         kapsayici.classList.toggle("acildi");
+
     });
 
-    // Sağ sayfaya tıklandığında sola dönme
-    sagSayfaAlan.addEventListener("click", function (e) {
-        e.stopPropagation();
-        sagSayfaAlan.classList.toggle("cevirdi");
+    /*
+     * STPAGEFLIP
+     */
+    const pageFlipElement =
+        document.getElementById("pageFlip");
+
+    const sayfaAlan =
+        document.getElementById("sayfaFlipAlan");
+
+    let pageFlip = null;
+
+    function stPageFlipBaslat() {
+
+        if (pageFlip) {
+            return;
+        }
+
+        const rect =
+            sayfaAlan.getBoundingClientRect();
+
+        const genislik =
+            Math.max(1, Math.round(rect.width));
+
+        const yukseklikSayfa =
+            Math.max(1, Math.round(rect.height));
+
+        pageFlip = new St.PageFlip(
+            pageFlipElement,
+            {
+                width: genislik,
+                height: yukseklikSayfa,
+
+                size: "stretch",
+
+                minWidth: genislik,
+                maxWidth: genislik,
+
+                minHeight: yukseklikSayfa,
+                maxHeight: yukseklikSayfa,
+
+                drawShadow: true,
+                maxShadowOpacity: 0.35,
+
+                flippingTime: 1000,
+
+                usePortrait: false,
+
+                startPage: 0,
+
+                startZIndex: 0,
+
+                autoSize: false,
+
+                showCover: false,
+
+                mobileScrollSupport: false,
+
+                swipeDistance: 30,
+
+                useMouseEvents: true,
+
+                clickEventForward: true,
+
+                disableFlipByClick: true
+            }
+        );
+
+        /*
+         * İki mevcut görseli StPageFlip'e veriyoruz.
+         */
+        pageFlip.loadFromHtml(
+            document.querySelectorAll(".flip-page")
+        );
+
+        /*
+         * SAĞ → SOL
+         *
+         * Sağ sayfanın üzerine tıklayınca
+         * StPageFlip'in gerçek kıvrımlı dönüşü başlar.
+         */
+        pageFlipElement.addEventListener(
+            "click",
+            function (e) {
+
+                e.stopPropagation();
+
+                const mevcut =
+                    pageFlip.getCurrentPageIndex();
+
+                if (mevcut === 0) {
+
+                    pageFlip.flipNext("bottom");
+
+                } else {
+
+                    pageFlip.flipPrev("bottom");
+
+                }
+
+            }
+        );
+    }
+
+    /*
+     * Kapak tamamen açıldıktan sonra
+     * StPageFlip başlatılıyor.
+     */
+    kapakAlan.addEventListener("transitionend", function () {
+
+        if (kapakAlan.classList.contains("dondu")) {
+
+            setTimeout(function () {
+                stPageFlipBaslat();
+            }, 50);
+
+        }
+
     });
+
 });
 </script>
 
