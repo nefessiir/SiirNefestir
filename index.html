@@ -286,7 +286,6 @@ window.addEventListener("load", function () {
         let metinOn = `Sayfa ${i * 2 - 1}<br><br>Bu ${i * 2 - 1}. sayfanın şiiri / metnidir.`;
         let metinArka = `Sayfa ${i * 2}<br><br>Bu ${i * 2}. sayfanın metnidir.`;
 
-        // Eğer son sayfa ise özel bir bitiş mesajı ekleyelim
         if (i === toplamYaprak) {
             metinArka = `Son Sayfa<br><br>Kitabın sonuna geldiniz.<br><br><b>Kapatmak için bu sayfaya tıklayın.</b>`;
         }
@@ -299,7 +298,7 @@ window.addEventListener("load", function () {
     }
 
     let yaprakElementleri = [];
-    let isRewinding = false; // Geriye sarma sırasında ekstra tıklamaları engellemek için
+    let isRewinding = false;
 
     // Yaprakları DOM'a Oluşturup Yerleştirme
     for (let i = 0; i < toplamYaprak; i++) {
@@ -323,16 +322,15 @@ window.addEventListener("load", function () {
         // Yaprağa tıklama mantığı
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
-            if (isRewinding) return; // Geriye sarılırken tıklamaları kilitle
+            if (isRewinding) return;
 
             // Sağdan sola çevir
             if (!yaprakDiv.classList.contains("cevirdi")) {
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
+                    yaprakDiv.style.zIndex = 50 + i; // Dönerken üstte kalması için
                     yaprakDiv.classList.add("cevirdi");
-                    yaprakDiv.style.zIndex = 50 + i;
 
-                    // KONTROL: Eğer bu son yapraksa ve sola çevrildiyse otomatik geriye sarma animasyonunu başlat!
                     if (i === toplamYaprak - 1) {
                         otomatikGeriyeSar();
                     }
@@ -344,8 +342,16 @@ window.addEventListener("load", function () {
                 let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
                 
                 if (enUstSolYaprak === yaprakDiv) {
+                    // Dönerken altındaki sayfaların (örn: 12) altında kalmaması için z-index yüksek tutulur
+                    yaprakDiv.style.zIndex = 100; 
                     yaprakDiv.classList.remove("cevirdi");
-                    yaprakDiv.style.zIndex = toplamYaprak - i;
+
+                    // Animasyon tamamen bittikten sonra z-index eski orijinal yerine alınır
+                    const transitionBitince = function() {
+                        yaprakDiv.style.zIndex = toplamYaprak - i;
+                        yaprakDiv.removeEventListener("transitionend", transitionBitince);
+                    };
+                    yaprakDiv.addEventListener("transitionend", transitionBitince);
                 }
             }
         });
@@ -359,20 +365,19 @@ window.addEventListener("load", function () {
         isRewinding = true;
         let index = yaprakElementleri.length - 1;
 
-        // Her 100 milisaniyede bir sırayla yaprakları sağa geri döndür (hızlı ve akıcı)
         let rewindInterval = setInterval(function () {
             if (index >= 0) {
+                yaprakElementleri[index].style.zIndex = 100; // Geri sarılırken de üstte kalsınlar
                 yaprakElementleri[index].classList.remove("cevirdi");
                 yaprakElementleri[index].style.zIndex = toplamYaprak - index;
                 index--;
             } else {
                 clearInterval(rewindInterval);
 
-                // Tüm sayfalar sağda toplandıktan kısa bir süre sonra kapağı zarifçe kapat
                 setTimeout(function () {
                     kapsayici.classList.remove("acildi");
                     kapakAlan.classList.remove("dondu");
-                    isRewinding = false; // Kilidi aç
+                    isRewinding = false;
                 }, 400);
             }
         }, 100);
