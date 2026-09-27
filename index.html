@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Şiir Nefestir</title>
+<title>Şiir Nefestir - Kusursuz Uyum</title>
 
 <style>
 html,
@@ -306,38 +306,27 @@ body {
 </div>
 
 <script>
-// TEMA DEĞİŞTİRME FONKSİYONU (Arka Plan ve Dinamik Kapak Rengi Senkronizasyonu)
+// TEMA DEĞİŞTİRME FONKSİYONU
 function temaDegis(temaAdi) {
     const altKapak = document.getElementById("altKapakImg");
     const ustKapak = document.getElementById("ustKapakImg");
     const arkaKapak = document.getElementById("arkaKapakImg");
 
     if (temaAdi === 'ahsap') {
-        // 1. Orijinal Ahşap Oda & Ahşap Kapak
         document.body.style.backgroundImage = "url('arka_plan.jpg')";
-        
-        // Kapak renk filtrelerini sıfırla (Orijinal kapak.jpg)
         altKapak.style.filter = "none";
         ustKapak.style.filter = "none";
         arkaKapak.style.filter = "none";
-
     } else if (temaAdi === 'gece') {
-        // 2. Gece / Mum Atmosferi (Loş Amber Tonu)
         document.body.style.backgroundImage = "url('arka_plan.jpg')";
-        
-        // Kapağa gece/mum hissiyatı için koyu kehribar filtre
-        altKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
-        ustKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
-        arkaKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
-
+        altKapak.style.filter = "brightness(0.6) sepia(0.85) hue-rotate(-25deg)";
+        ustKapak.style.filter = "brightness(0.6) sepia(0.85) hue-rotate(-25deg)";
+        arkaKapak.style.filter = "brightness(0.6) sepia(0.85) hue-rotate(-25deg)";
     } else if (temaAdi === 'kulube') {
-        // 3. Gönderdiğin Muazzam Deniz Kulübesi Görseli[cite: 1]
-        document.body.style.backgroundImage = "url('Gemini_Generated_Image_nmcnb2nmcnb2nmcn.jpg')";
-        
-        // Kapağa deniz temasına uygun şık bir okyanus mavisi tonu verilir
-        altKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
-        ustKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
-        arkaKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
+        document.body.style.backgroundImage = "url('Gemini_Generated_Image_nmcnb2nmcnb2nmcn.jpg')";[cite: 1]
+        altKapak.style.filter = "brightness(0.85) saturate(1.5) hue-rotate(175deg)";
+        ustKapak.style.filter = "brightness(0.85) saturate(1.5) hue-rotate(175deg)";
+        arkaKapak.style.filter = "brightness(0.85) saturate(1.5) hue-rotate(175deg)";
     }
 }
 
@@ -459,7 +448,6 @@ window.addEventListener("load", function () {
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
-.
         if (kapsayici.classList.contains("acildi")) {
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
