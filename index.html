@@ -84,18 +84,18 @@ body {
     display: block;
 }
 
-/* SAĞ SAYFA - Tam olarak 1.6cm küçültüldü ve sol kenarı tam orta eksende hizalandı */
+/* SAĞ SAYFA - Çalışma mekaniği korunarak tam 2 cm sola çekildi */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
-    left: 1.6cm; /* Sağdan 1.6cm küçültüldüğü için soldan 1.6cm kaydırılarak orta çizgiye yapıştırıldı */
+    left: 2cm; /* Tam 2 cm sola kaydırıldı */
     width: calc(100% - 1.6cm);
     height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenar (orta eksen) sabit */
+    transform-origin: left center; /* Sol kenar (orta eksen) sabit kalmaya devam ediyor */
     transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
@@ -211,7 +211,7 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- SAĞ SAYFA -->
+    <!-- SAĞ SAYFA (2 cm sola çekildi) -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
         <div class="sayfa-on">
             <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
