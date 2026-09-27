@@ -58,13 +58,13 @@ body {
     display: block;
 }
 
-/* 2. STPAGEFLIP SAYFALARI (Yukarı ve Aşağı 5'er cm Uzatıldı) */
+/* 2. STPAGEFLIP SAYFALARI (Yukarı/Aşağı 5'er cm, Sağa doğru 6 cm uzatıldı) */
 #fiziksel-kitap {
     position: absolute;
-    top: -5cm; /* Yukarı doğru toplam 5 cm taşırma */
+    top: -5cm; 
     left: calc(-100% + 0.2cm);
-    width: calc(200% - 0.3cm);
-    height: calc(100% + 10cm); /* Aşağı ve yukarı toplam 10 cm uzatma */
+    width: calc(200% + 5.8cm); /* Sağa doğru yaklaşık 6 cm genişletme */
+    height: calc(100% + 10cm); 
     z-index: 0;
     opacity: 0;
     pointer-events: none;
@@ -167,7 +167,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇILMIŞ VE EN SON BOYUTA GETİRİLMİŞ KİTAP SAYFALARI -->
+    <!-- 2. AÇILMIŞ VE SAĞA DOĞRU 6 CM UZATILMIŞ KİTAP SAYFALARI -->
     <div id="fiziksel-kitap">
         <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 1"></div>
         <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 1"></div>
