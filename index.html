@@ -84,18 +84,19 @@ body {
     display: block;
 }
 
-/* SAĞ SAYFA - Çalışma mekaniği korunarak tam 2 cm sola çekildi */
+/* SAĞ SAYFA - Mekaniği bozmadan translateX ile tam 2 cm sola kaydırıldı */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
-    left: 2cm; /* Tam 2 cm sola kaydırıldı */
+    left: 0;
     width: calc(100% - 1.6cm);
     height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenar (orta eksen) sabit kalmaya devam ediyor */
+    transform-origin: left center; /* Sol kenar ekseni sabit */
+    transform: translateX(-2cm); /* Fiziksel olarak tam 2 cm sola kaydırıldı */
     transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
@@ -103,12 +104,14 @@ body {
     opacity: 1;
     z-index: 6;
     pointer-events: auto;
+    /* Açıldığında hem translateX(-2cm) korunuyor hem de opaklık geçişi yapılıyor */
     transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 1.1s;
     cursor: pointer;
 }
 
+/* Tıklandığında 3D dönme hareketi (translateX -2cm başlangıç konumunu koruyarak döner) */
 .sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg);
+    transform: rotateY(-180deg) translateX(-2cm);
     z-index: 20;
 }
 
@@ -211,7 +214,7 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- SAĞ SAYFA (2 cm sola çekildi) -->
+    <!-- SAĞ SAYFA -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
         <div class="sayfa-on">
             <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
