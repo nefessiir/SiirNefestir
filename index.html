@@ -54,45 +54,47 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP ARKA PLANI */
-.acik-kitap {
+/* 2. KATMAN: SOL İÇ SAYFA (Alt kapak ile aynı ölçüde, sol tarafta) */
+.sol-ic-sayfa {
     position: absolute;
-    top: -0.5cm;
-    left: calc(-50% - 3.95cm);
-    width: calc(200% + 1cm);
-    height: calc(100% + 1cm);
-    z-index: 0; 
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: auto;
+    z-index: 0;
     pointer-events: none;
-    
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* 3. KATMAN: İÇ SAYFALAR (Kapalıyken altta, açılınca en üstte) */
-.ic-sayfalar-kapsayici {
-    position: absolute;
-    top: -0.5cm;
-    left: calc(-50% - 3.95cm);
-    width: calc(200% + 1cm);
-    height: calc(100% + 1cm);
-    z-index: 0; /* Kapalıyken kapağın altında kalır */
-    pointer-events: none;
-    display: flex;
-    
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
-}
-
-.ic-sayfalar-kapsayici img {
-    width: 50%;
-    height: 100%;
+.sol-ic-sayfa img {
+    width: 100%;
+    height: auto;
     display: block;
-    object-fit: fill;
+}
+
+/* 3. KATMAN: SAĞ İÇ SAYFA (Alt kapak ile birebir aynı ölçü ve konumda) */
+.sag-ic-sayfa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
+}
+
+.sag-ic-sayfa img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* Kapak açıldığında tetiklenen stiller */
-.kitap-kapsayici.acildi .acik-kitap,
-.kitap-kapsayici.acildi .ic-sayfalar-kapsayici {
+.kitap-kapsayici.acildi .sol-ic-sayfa,
+.kitap-kapsayici.acildi .sag-ic-sayfa {
     opacity: 1;
     z-index: 5; /* Açılınca en üste çıkarlar */
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
@@ -170,12 +172,13 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP ARKA PLANI -->
-    <img src="acik_kitap1.png" class="acik-kitap">
-
-    <!-- 3. İÇ SAYFALAR -->
-    <div class="ic-sayfalar-kapsayici">
+    <!-- 2. SOL İÇ SAYFA -->
+    <div class="sol-ic-sayfa">
         <img src="icsayfasol.png" alt="Sol İç Sayfa">
+    </div>
+
+    <!-- 3. SAĞ İÇ SAYFA (Alt kapak boyutunda) -->
+    <div class="sag-ic-sayfa">
         <img src="icsayfasag.png" alt="Sağ İç Sayfa">
     </div>
 
