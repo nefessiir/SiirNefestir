@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
+<!-- StPageFlip Kütüphanesi CDN Bağlantısı -->
+<script src="https://cdn.jsdelivr.net/npm/page-flip@0.7.4/dist/js/page-flip.browser.min.js"></script>
+
 <style>
 html,
 body {
@@ -250,13 +253,33 @@ window.addEventListener("load", function () {
 
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
+    // StPageFlip Motoru Entegrasyonu (Görsel yapı ve dosya adları sabit tutuldu)
+    const stBookElement = document.getElementById("sagSayfaAlan");
+    if (window.St && window.St.PageFlip && stBookElement) {
+        const pageFlip = new St.PageFlip(stBookElement, {
+            width: stBookElement.offsetWidth || 400,
+            height: stBookElement.offsetHeight || 600,
+            size: "stretch",
+            maxShadowOpacity: 0.5,
+            showCover: false,
+            mobileSupport: true
+        });
+        
+        // Mevcut sayfa elemanlarını StPageFlip'e tanıtıyoruz
+        try {
+            pageFlip.loadFromHTML(document.querySelectorAll('.sag-sayfa-alan > div'));
+        } catch(err) {
+            console.log("StPageFlip yükleme hatası: ", err);
+        }
+    }
+
     // Kapak açma animasyonu
     kapakAlan.addEventListener("click", function () {
         kapakAlan.classList.toggle("dondu");
         kapsayici.classList.toggle("acildi");
     });
 
-    // Sağ sayfaya tıklandığında sola dönme
+    // Sağ sayfaya tıklandığında sola dönme (Özel tetikleyici)
     sagSayfaAlan.addEventListener("click", function (e) {
         e.stopPropagation();
         sagSayfaAlan.classList.toggle("cevirdi");
