@@ -65,21 +65,12 @@ body {
     z-index: 0;
     opacity: 0;
     pointer-events: none;
-    transform-style: preserve-3d;
-    transform-origin: right center;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 0s;
 }
 
 .kitap-kapsayici.acildi .sol-sayfa-alan {
     opacity: 1;
     z-index: 5;
     pointer-events: auto;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 1.1s;
-    cursor: pointer;
-}
-
-.sol-sayfa-alan.cevirdi {
-    transform: rotateY(180deg);
 }
 
 .sol-sayfa-alan img {
@@ -87,10 +78,9 @@ body {
     height: 100%;
     object-fit: fill;
     display: block;
-    backface-visibility: visible; /* Kaybolmayı önler */
 }
 
-/* 3. SAĞ SAYFA (Sola dönen ve sol tarafta kalan yaprak) */
+/* 3. SAĞ SAYFA (Çift Taraflı Yaprak - Sola Döner) */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
@@ -102,28 +92,40 @@ body {
     pointer-events: none;
     transform-style: preserve-3d;
     transform-origin: left center; /* Sol kenarından menteşelidir */
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 0s;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .kitap-kapsayici.acildi .sag-sayfa-alan {
     opacity: 1;
     z-index: 6;
     pointer-events: auto;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 1.1s;
     cursor: pointer;
 }
 
-/* Sağ sayfa sola çevrildiğinde sol tarafta kalır */
+/* Sağ sayfa sola çevrildiğinde */
 .sag-sayfa-alan.cevirdi {
     transform: rotateY(-180deg);
 }
 
-.sag-sayfa-alan img {
+/* Sayfanın Ön ve Arka Yüzleri */
+.sayfa-on, .sayfa-arka {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Dönerken çakışmayı önler */
+}
+
+.sayfa-on img, .sayfa-arka img {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
-    backface-visibility: visible; /* Havada kaybolmasını engeller, solda görünür kalır */
+}
+
+.sayfa-arka {
+    transform: rotateY(180deg);
 }
 
 /* 4. ÜSTTEKİ HAREKETLİ KAPAK */
@@ -143,7 +145,7 @@ body {
 }
 
 .kapak,
-.kapak-arka {
+.kapak-arka-kapak {
     width: 100%;
     height: 100%;
     object-fit: fill;
@@ -155,7 +157,7 @@ body {
     position: relative;
 }
 
-.kapak-arka {
+.kapak-arka-kapak {
     position: absolute;
     top: 0;
     left: 0;
@@ -204,9 +206,14 @@ body {
         <img src="sol_sayfa.png" alt="Sol Sayfa">
     </div>
 
-    <!-- 3. SAĞ SAYFA -->
+    <!-- 3. SAĞ SAYFA (Çift Yüzlü Yaprak) -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
-        <img src="sag_sayfa.png" alt="Sağ Sayfa">
+        <div class="sayfa-on">
+            <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
+        </div>
+        <div class="sayfa-arka">
+            <img src="sol_sayfa.png" alt="Sağ Sayfa Arka"> <!-- Sola geçtiğinde görünecek yüz -->
+        </div>
     </div>
 
     <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
@@ -221,7 +228,7 @@ body {
             <span class="imza">S.O.A</span>
         </div>
 
-        <img src="kapak.jpg" class="kapak-arka">
+        <img src="kapak.jpg" class="kapak-arka-kapak">
     </div>
 
 </div>
@@ -230,7 +237,6 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
-    const solSayfaAlan = document.getElementById("solSayfaAlan");
     const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
@@ -246,16 +252,10 @@ window.addEventListener("load", function () {
         kapsayici.classList.toggle("acildi");
     });
 
-    // Sağ sayfaya tıklandığında sola devrilip orada kalır
+    // Sağ sayfaya tıklandığında sola dönüp orada kalır
     sagSayfaAlan.addEventListener("click", function (e) {
         e.stopPropagation();
         sagSayfaAlan.classList.toggle("cevirdi");
-    });
-
-    // Sol sayfaya tıklandığında sağa geri döner
-    solSayfaAlan.addEventListener("click", function (e) {
-        e.stopPropagation();
-        solSayfaAlan.classList.toggle("cevirdi");
     });
 });
 </script>
