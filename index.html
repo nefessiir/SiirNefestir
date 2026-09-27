@@ -58,13 +58,13 @@ body {
     display: block;
 }
 
-/* 2. STPAGEFLIP AÇILMIŞ KİTAP GÖVDESİ (Tam Açık Boyut Oranı) */
+/* 2. STPAGEFLIP SAYFALARI (Yukarı ve Aşağı 2.5'ar cm Uzatıldı) */
 #fiziksel-kitap {
     position: absolute;
-    top: 0.5cm;
+    top: -2.5cm; /* Yukarı doğru 2.5 cm taşırma */
     left: calc(-100% + 0.2cm);
     width: calc(200% - 0.3cm);
-    height: calc(100% - 1cm);
+    height: calc(100% + 5cm); /* Aşağı ve yukarı toplam 5 cm uzatma */
     z-index: 0;
     opacity: 0;
     pointer-events: none;
@@ -78,7 +78,7 @@ body {
     transition: opacity 0.3s ease-in-out 1.5s;
 }
 
-/* Sayfa Şablonları (Açık Kitap Ebatlarında) */
+/* Sayfa Şablonları */
 .sayfa-oge {
     background-color: #fdfbf7;
     overflow: hidden;
@@ -167,7 +167,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇILMIŞ KİTAP SAYFALARI -->
+    <!-- 2. AÇILMIŞ VE UZATILMIŞ KİTAP SAYFALARI -->
     <div id="fiziksel-kitap">
         <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 1"></div>
         <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 1"></div>
@@ -180,7 +180,7 @@ body {
     <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
-        <div class="kapak-yazi">
+        <div class="sky-yazi kapak-yazi">
             Şiir'e hatıra.<br><br>
             kelimelerden..<br>
             hayattan..<br>
@@ -211,7 +211,7 @@ window.addEventListener("load", function () {
         kapsayici.classList.toggle("acildi");
     });
 
-    // Açılmış kapak ebatlarına tam oturan motor başlatıcısı
+    // Sayfa Motorunu Başlatma (Uzatılmış yükseklik otomatik algılanır)
     setTimeout(() => {
         const container = document.getElementById("fiziksel-kitap");
         const w = container.clientWidth / 2;
