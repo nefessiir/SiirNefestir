@@ -54,13 +54,13 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: SAĞ İÇ SAYFA (Alttan 1 cm kısaltılmış hali) */
+/* 2. KATMAN: SAĞ İÇ SAYFA (1 cm aşağı kaydırıldı, alttan 1 cm kısaltıldı) */
 .sag-ic-sayfa {
     position: absolute;
-    top: 0;
+    top: 1cm; /* 1 cm aşağı kaydırma */
     left: 0;
     width: 100%;
-    height: calc(100% - 1cm); /* 3 cm kısaltmadan 2 cm geri uzatıldı, toplamda alttan 1 cm kırpıldı */
+    height: calc(100% - 1cm); 
     z-index: 0;
     pointer-events: none;
     opacity: 0;
