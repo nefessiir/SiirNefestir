@@ -84,7 +84,7 @@ body {
     display: block;
 }
 
-/* YENİ YOL: İki Katmanlı Mimari */
+/* SAĞ SAYFA - Dönüş mekaniği korundu */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
@@ -95,7 +95,7 @@ body {
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Tam orta çizgi (cilt) ekseni */
+    transform-origin: left center;
     transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
@@ -112,12 +112,12 @@ body {
     z-index: 20;
 }
 
-/* Sayfanın gerçek boyut ve konumunu yöneten iç katman */
+/* Sayfa içeriği: Sağ kenardan 0,5 cm daha genişletildi (1.5cm yapıldı) */
 .sayfa-icerik {
     position: absolute;
     top: 0;
-    left: 0; /* Kitabın ortasından başlar */
-    width: calc(100% - 2cm); /* İstediğin ölçüde küçültülmüş boyut */
+    left: 0;
+    width: calc(100% - 1.5cm); /* Sağ kenar boşluğu 0.5 cm azaltılarak genişletildi */
     height: 100%;
     transform-style: preserve-3d;
 }
@@ -221,7 +221,7 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- SAĞ SAYFA (Yeni İki Katmanlı Mimari) -->
+    <!-- SAĞ SAYFA -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
         <div class="sayfa-icerik">
             <div class="sayfa-on">
