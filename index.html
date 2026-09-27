@@ -38,8 +38,8 @@ body {
     z-index: 2;
 }
 
-/* 1. KATMAN: SOLDA SABİT DURAN ALT KAPAK */
-.sol-kapak {
+/* 1. KATMAN: SAĞDA SABİT DURAN ALT KAPAK */
+.sag-kapak {
     position: absolute;
     top: 0;
     left: 0;
@@ -48,19 +48,33 @@ body {
     z-index: 1;
 }
 
-.sol-kapak img {
+.sag-kapak img {
     width: 100%;
     height: auto;
     display: block;
 }
 
-/* 2. KATMAN: SOL İÇ SAYFA (Boyuna dokunulmadı, sağdan ve soldan 0.1'er cm küçültüldü) */
+/* 2. KATMAN: AÇIK KİTAP ARKA PLANI (Sol ve sağ sayfayı kapsayan zemin) */
+.acik-kitap {
+    position: absolute;
+    top: -0.5cm;
+    left: calc(-100% - 0.5cm);
+    width: calc(200% + 1cm);
+    height: calc(100% + 1cm);
+    z-index: 0; 
+    pointer-events: none;
+    
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
+}
+
+/* 3. KATMAN: SOL İÇ SAYFA (Sağ kapağın soluna bitişik sol sayfada konumlandı) */
 .sol-ic-sayfa {
     position: absolute;
     top: 0.5cm;
-    left: 0.1cm; /* Soldan 0.1 cm içeride */
+    left: calc(-100% + 0.1cm); /* Sol sayfa konumuna geçip 0.1 cm içeride başlar */
     width: calc(100% - 0.2cm); /* Sağdan ve soldan 0.1'er cm daraltıldı */
-    height: calc(100% - 1cm); /* Boyut sabit bırakıldı, alttan 1 cm kırpıldı */
+    height: calc(100% - 1cm); /* Alttan 1 cm kırpıldı */
     z-index: 0;
     pointer-events: none;
     opacity: 0;
@@ -74,14 +88,20 @@ body {
     display: block;
 }
 
-/* Kapak açıldığında tetiklenen stiller */
-.kitap-kapsayici.acildi .sol-ic-sayfa {
+/* Kapak açıldığında tetiklenen stiller (Senkronize açılış ve doğru katman sıralaması) */
+.kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
-    z-index: 5; /* Açılınca en üste çıkar */
+    z-index: 5; 
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
-/* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
+.kitap-kapsayici.acildi .sol-ic-sayfa {
+    opacity: 1;
+    z-index: 6; /* Sol iç sayfa her zaman en üstte yer alır */
+    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
+}
+
+/* 4. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
 .kapak-alan {
     position: relative;
     width: 100%;
@@ -148,17 +168,20 @@ body {
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
-    <!-- 1. ALT KAPAK -->
-    <div class="sol-kapak">
+    <!-- 1. ALT KAPAK (Sağda sabit) -->
+    <div class="sag-kapak">
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. SOL İÇ SAYFA -->
+    <!-- 2. AÇIK KİTAP ARKA PLANI (Zemin) -->
+    <img src="acik_kitap1.png" class="acik-kitap">
+
+    <!-- 3. SOL İÇ SAYFA (Sol tarafta, ölçüleri ayarlanmış) -->
     <div class="sol-ic-sayfa">
         <img src="icsayfasol.png" alt="Sol İç Sayfa">
     </div>
 
-    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
+    <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
