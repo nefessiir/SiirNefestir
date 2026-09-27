@@ -24,7 +24,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1500px;
+    perspective: 1200px;
 }
 
 /* ORTAK KAPSAYICI ALAN */
@@ -54,8 +54,8 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: İÇ SAYFALARIN ALANI (Açık Kitap Kapsayıcısı) */
-.ic-sayfalar-alani {
+/* 2. KATMAN: AÇIK KİTAP (0.5 cm sağa çekilmiş, her yöne 0.5cm büyük) */
+.acik-kitap {
     position: absolute;
     top: -0.5cm;
     left: calc(-50% - 3.95cm);
@@ -63,66 +63,38 @@ body {
     height: calc(100% + 1cm);
     z-index: 1; 
     pointer-events: none;
-    display: flex;
-    transform-style: preserve-3d;
     
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* Kapak açıldığında iç sayfalar belirir */
-.kitap-kapsayici.acildi .ic-sayfalar-alani {
-    opacity: 1;
-    z-index: 4; 
-    pointer-events: auto; /* Sayfa çevirme için tıklanabilir olur */
-    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
-}
-
-/* Sol İç Sayfa (Sabit) */
-.ic-sol-sayfa {
-    width: 50%;
-    height: 100%;
-    position: relative;
-}
-.ic-sol-sayfa img {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-/* Sağ İç Sayfa / Çevrilecek Yaprak Kapsayıcısı */
-.ic-sag-sayfa-alan {
-    width: 50%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transform-origin: left center; /* Kitabın ortasından (omurgasından) döner */
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-    cursor: pointer;
-}
-
-.ic-sag-sayfa-alan.cevirildi {
-    transform: rotateY(-180deg);
-}
-
-/* Sağ Sayfa Ön ve Arka Yüzleri */
-.sayfa-on, .sayfa-arka {
+/* YENİ EKLENEN SAĞ İÇ SAYFA GÖRSELİ (Açık kitabın tam sağ yarısı üzerine oturur) */
+.sag-ic-sayfa {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
+    top: -0.5cm;
+    /* Sol yarının bittiği yerden başlar (açık kitabın tam ortasından sağa doğru) */
+    left: calc(50% - 3.95cm);
+    width: calc(100% + 0.5cm);
+    height: calc(100% + 1cm);
+    z-index: 2; /* Açık kitaptan ve kapaktan daha üstte yer alır */
+    pointer-events: none;
+    
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-.sayfa-on img, .sayfa-arka img {
+.sag-ic-sayfa img {
     width: 100%;
     height: 100%;
     display: block;
 }
 
-.sayfa-arka {
-    transform: rotateY(180deg);
+/* Kapak açıldığında tetiklenen stiller */
+.kitap-kapsayici.acildi .acik-kitap,
+.kitap-kapsayici.acildi .sag-ic-sayfa {
+    opacity: 1;
+    z-index: 5; /* En üste çıkarlar */
+    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -142,7 +114,7 @@ body {
 }
 
 .kapak,
-.kapak-arka-kapak {
+.kapak-arka {
     width: 100%;
     height: auto;
     display: block;
@@ -153,7 +125,7 @@ body {
     position: relative;
 }
 
-.kapak-arka-kapak {
+.kapak-arka {
     position: absolute;
     top: 0;
     left: 0;
@@ -197,22 +169,12 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. İÇ SAYFALAR (Sol sabit, Sağ çevrilebilir) -->
-    <div class="ic-sayfalar-alani" id="icSayfalarAlani">
-        <!-- Sol Sayfa -->
-        <div class="ic-sol-sayfa">
-            <img src="ic_sayfa_sol.jpg" alt="Sol Sayfa">
-        </div>
-        <!-- Sağ Çevrilebilir Sayfa -->
-        <div class="ic-sag-sayfa-alan" id="sagSayfaAlan">
-            <div class="sayfa-on">
-                <img src="ic_sayfa_sag.jpg" alt="Sağ Sayfa Ön">
-            </div>
-            <div class="sayfa-arka">
-                <!-- Arka tarafa başka bir görsel koyabilirsiniz, örn: sonraki sayfa veya boş arka plan -->
-                <img src="ic_sayfa_sol.jpg" alt="Sağ Sayfa Arka">
-            </div>
-        </div>
+    <!-- 2. AÇIK KİTAP ARKA PLANI -->
+    <img src="acik_kitap1.png" class="acik-kitap">
+
+    <!-- YENİ: SAĞ İÇ SAYFA GÖRSELİ (Açık kitabın sağ tarafının tam üzerine oturur) -->
+    <div class="sag-ic-sayfa">
+        <img src="ic_sayfa_sag.jpg" alt="Sağ İç Sayfa">
     </div>
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
@@ -227,7 +189,7 @@ body {
             <span class="imza">S.O.A</span>
         </div>
 
-        <img src="kapak.jpg" class="kapak-arka-kapak">
+        <img src="kapak.jpg" class="kapak-arka">
     </div>
 
 </div>
@@ -236,7 +198,6 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
-    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
@@ -245,19 +206,9 @@ window.addEventListener("load", function () {
 
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // Kapak açma/kapatma
-    kapakAlan.addEventListener("click", function (e) {
-        e.stopPropagation();
+    kapakAlan.addEventListener("click", function () {
         kapakAlan.classList.toggle("dondu");
         kapsayici.classList.toggle("acildi");
-    });
-
-    // Sağ sayfayı çevirme (Tıklayınca)
-    sagSayfaAlan.addEventListener("click", function (e) {
-        e.stopPropagation();
-        if (kapsayici.classList.contains("acildi")) {
-            sagSayfaAlan.classList.toggle("cevirildi");
-        }
     });
 });
 </script>
