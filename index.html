@@ -58,7 +58,7 @@ body {
     display: block;
 }
 
-/* 2. STPAGEFLIP GERÇEK KIVRILAN SAYFA GÖVDESİ */
+/* 2. STPAGEFLIP AÇILMIŞ KİTAP GÖVDESİ (Tam Açık Boyut Oranı) */
 #fiziksel-kitap {
     position: absolute;
     top: 0.5cm;
@@ -75,10 +75,10 @@ body {
     opacity: 1;
     z-index: 5;
     pointer-events: auto;
-    transition: opacity 0.3s ease-in-out 1.5s; /* Kapak açıldıktan sonra görünür olur */
+    transition: opacity 0.3s ease-in-out 1.5s;
 }
 
-/* Sayfa Şablonları (Motorun İçinde Kıvrılacak Sayfalar) */
+/* Sayfa Şablonları (Açık Kitap Ebatlarında) */
 .sayfa-oge {
     background-color: #fdfbf7;
     overflow: hidden;
@@ -167,7 +167,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. KIVRILAN GERÇEK SAYFALAR (Burayı istediğiniz kadar çoğaltabilirsiniz) -->
+    <!-- 2. AÇILMIŞ KİTAP SAYFALARI -->
     <div id="fiziksel-kitap">
         <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 1"></div>
         <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 1"></div>
@@ -211,7 +211,7 @@ window.addEventListener("load", function () {
         kapsayici.classList.toggle("acildi");
     });
 
-    // Kıvrılan Sayfa Motorunu Başlatma
+    // Açılmış kapak ebatlarına tam oturan motor başlatıcısı
     setTimeout(() => {
         const container = document.getElementById("fiziksel-kitap");
         const w = container.clientWidth / 2;
@@ -223,12 +223,12 @@ window.addEventListener("load", function () {
                 height: Math.round(h),
                 size: "stretch",
                 minWidth: 100,
-                maxWidth: 2000,
+                maxWidth: 2500,
                 minHeight: 100,
-                maxHeight: 2000,
+                maxHeight: 2500,
                 showCover: false,
                 mobileScrollSupport: false,
-                maxShadowOpacity: 0.5,
+                maxShadowOpacity: 0.4,
                 flippingTime: 1000
             });
 
