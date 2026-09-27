@@ -16,7 +16,7 @@ body {
 
 body {
     overflow: hidden;
-    /* Varsayılan Tema: Seninle Oluşturduğumuz Orijinal Oda (Gece Lambası & Ay Işığı) */
+    /* Varsayılan Tema: Orijinal Ahşap Masa */
     background-image: url("arka_plan.jpg");
     background-size: 100% 100%;
     background-position: center center;
@@ -83,6 +83,7 @@ body {
     height: 100%;
     object-fit: fill;
     display: block;
+    transition: filter 0.5s ease;
 }
 
 /* AÇIK KİTAP GÖVDESİ */
@@ -221,6 +222,7 @@ body {
     object-fit: fill;
     display: block;
     backface-visibility: hidden;
+    transition: filter 0.5s ease;
 }
 
 .kapak {
@@ -275,7 +277,7 @@ body {
 
     <!-- 1. ALT KAPAK -->
     <div class="sag-kapak">
-        <img src="kapak.jpg">
+        <img src="kapak.jpg" id="altKapakImg">
     </div>
 
     <!-- AÇIK KİTAP GÖVDESİ -->
@@ -288,7 +290,7 @@ body {
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
-        <img src="kapak.jpg" class="kapak">
+        <img src="kapak.jpg" class="kapak" id="ustKapakImg">
         
         <div class="kapak-yazi">
             Şiir'e hatıra.<br><br>
@@ -298,23 +300,44 @@ body {
             <span class="imza">S.O.A</span>
         </div>
 
-        <img src="kapak.jpg" class="kapak-arka-kapak">
+        <img src="kapak.jpg" class="kapak-arka-kapak" id="arkaKapakImg">
     </div>
 
 </div>
 
 <script>
-// TEMA DEĞİŞTİRME FONKSİYONU (O Odayı Koruyan, Sadece Atmosfer ve Pencere Manzarasını Değiştiren Sihir)
+// TEMA DEĞİŞTİRME FONKSİYONU (Arka Plan ve Dinamik Kapak Rengi Senkronizasyonu)
 function temaDegis(temaAdi) {
+    const altKapak = document.getElementById("altKapakImg");
+    const ustKapak = document.getElementById("ustKapakImg");
+    const arkaKapak = document.getElementById("arkaKapakImg");
+
     if (temaAdi === 'ahsap') {
-        // Seninle kurduğumuz orijinal oda (Gece lambası & ay ışığı)
+        // 1. Orijinal Ahşap Oda & Ahşap Kapak
         document.body.style.backgroundImage = "url('arka_plan.jpg')";
+        
+        // Kapak renk filtrelerini sıfırla (Orijinal kapak.jpg)
+        altKapak.style.filter = "none";
+        ustKapak.style.filter = "none";
+        arkaKapak.style.filter = "none";
+
     } else if (temaAdi === 'gece') {
-        // Aynı oda ama gece lambası sönmüş, masada sıcak mum alevi parlıyor
-        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1920&auto=format&fit=crop')";
+        // 2. Gece / Mum Atmosferi (Loş Amber Tonu)
+        document.body.style.backgroundImage = "url('arka_plan.jpg')";
+        
+        // Kapağa gece/mum hissiyatı için koyu kehribar filtre
+        altKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
+        ustKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
+        arkaKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
+
     } else if (temaAdi === 'kulube') {
-        // Aynı oda ama pencereden içeri ferah bir deniz manzarası süzülüyor
-        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1920&auto=format&fit=crop')";
+        // 3. Gönderdiğin Muazzam Deniz Kulübesi Görseli[cite: 1]
+        document.body.style.backgroundImage = "url('Gemini_Generated_Image_nmcnb2nmcnb2nmcn.jpg')";
+        
+        // Kapağa deniz temasına uygun şık bir okyanus mavisi tonu verilir
+        altKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
+        ustKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
+        arkaKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
     }
 }
 
@@ -436,6 +459,7 @@ window.addEventListener("load", function () {
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
+.
         if (kapsayici.classList.contains("acildi")) {
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
