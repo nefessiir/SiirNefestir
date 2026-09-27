@@ -55,7 +55,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTAP GÖVDESİ (acik_kitap1.png) - Biraz daha yavaşlatıldı */
+/* AÇIK KİTAP GÖVDESİ (acik_kitap1.png) - Kapanış hızı kapakla senkronize yavaşlatıldı */
 .acik-kitap-alan {
     position: absolute;
     top: 0.5cm;
@@ -68,7 +68,7 @@ body {
     transform: scale(1.1882);
     transform-origin: left center;
     clip-path: inset(0 0 0 100%);
-    transition: opacity 0.3s ease-in-out, clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: opacity 0.8s ease-in-out, clip-path 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 .kitap-kapsayici.acildi .acik-kitap-alan {
@@ -84,12 +84,12 @@ body {
     display: block;
 }
 
-/* SAĞ SAYFA - Sadece sağdan 0,3 cm kısaltıldı (Sol, üst, alt sabit) */
+/* SAĞ SAYFA - Sağdan toplam 0.6 cm kısaltıldı ve soldan taşma sorunu düzeltildi */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
     left: 0;
-    width: calc(100% - 0.3cm);
+    width: calc(100% - 0.6cm);
     height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
@@ -107,8 +107,9 @@ body {
     cursor: pointer;
 }
 
+/* Döndüğünde küçültülen ölçüye (100% - 0.6cm) göre tam oturması için translateX ayarlandı */
 .sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg);
+    transform: rotateY(-180deg) translateX(calc(-100% + 0.6cm));
     z-index: 20;
 }
 
@@ -132,7 +133,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* ÜSTTEKİ HAREKETLİ KAPAK - Açılma süresi biraz daha yavaşlatıldı (2.0s) */
+/* ÜSTTEKİ HAREKETLİ KAPAK - Kapanış süresi yavaşlatıldı (2.0s) */
 .kapak-alan {
     position: relative;
     width: 100%;
@@ -211,7 +212,7 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- SAĞ SAYFA (Sağdan 0.3 cm kısaltılmış) -->
+    <!-- SAĞ SAYFA -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
         <div class="sayfa-on">
             <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
