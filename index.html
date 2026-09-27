@@ -55,7 +55,7 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP */
+/* 2. KATMAN: AÇIK KİTAP (0.5 cm sağa çekilmiş, her yöne 0.5cm büyük) */
 .acik-kitap {
     position: absolute;
     top: -0.5cm;
@@ -79,14 +79,15 @@ body {
 /* 2.5. KATMAN: SOL İÇ SAYFA */
 .ic-sayfa-sol {
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: auto;
+    top: -0.5cm;
+    left: calc(-50% - 3.95cm);
+    width: calc(100% + 0.5cm);
+    height: calc(100% + 1cm);
     z-index: 5;
     pointer-events: none;
+
     opacity: 0;
-    transition: opacity 1.5s ease-in-out;
+    transition: opacity 0.4s ease-in-out 0s;
 }
 
 .kitap-kapsayici.acildi .ic-sayfa-sol {
@@ -197,4 +198,18 @@ window.addEventListener("load", function () {
     const kapakAlan = document.getElementById("kapakAlan");
     const kapakImg = document.querySelector(".kapak");
 
-    const yukseklik = kapakImg.getBoundingClient
+    const yukseklik = kapakImg.getBoundingClientRect().height;
+    const ikiCm = 2 * 96 / 2.54;
+    const oran = (yukseklik + ikiCm) / yukseklik;
+
+    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
+
+    kapakAlan.addEventListener("click", function () {
+        kapakAlan.classList.toggle("dondu");
+        kapsayici.classList.toggle("acildi");
+    });
+});
+</script>
+
+</body>
+</html>
