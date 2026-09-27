@@ -38,23 +38,7 @@ body {
     z-index: 2;
 }
 
-/* 1. KATMAN: SAĞDA SABİT DURAN ALT KAPAK */
-.sag-kapak {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-    z-index: 1;
-}
-
-.sag-kapak img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* 2. KATMAN: AÇIK KİTAP ARKA PLANI (Sol ve sağ sayfayı kapsayan zemin) */
+/* AÇIK KİTAP ARKA PLANI (Zemin / Perdeleme efekti) */
 .acik-kitap {
     position: absolute;
     top: -0.5cm;
@@ -63,45 +47,18 @@ body {
     height: calc(100% + 1cm);
     z-index: 0; 
     pointer-events: none;
-    
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* 3. KATMAN: SOL İÇ SAYFA (Sağ kapağın soluna bitişik sol sayfada konumlandı) */
-.sol-ic-sayfa {
-    position: absolute;
-    top: 0.5cm;
-    left: calc(-100% + 0.1cm); /* Sol sayfa konumuna geçip 0.1 cm içeride başlar */
-    width: calc(100% - 0.2cm); /* Sağdan ve soldan 0.1'er cm daraltıldı */
-    height: calc(100% - 1cm); /* Alttan 1 cm kırpıldı */
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
-    overflow: hidden; /* Taşmayı engeller */
-}
-
-.sol-ic-sayfa img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Kapak açıldığında tetiklenen stiller (Senkronize açılış ve doğru katman sıralaması) */
+/* Kapak açıldığında açık kitap arka planı belirir */
 .kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
-    z-index: 5; 
+    z-index: 1; 
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
-.kitap-kapsayici.acildi .sol-ic-sayfa {
-    opacity: 1;
-    z-index: 6; /* Sol iç sayfa her zaman en üstte yer alır */
-    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
-}
-
-/* 4. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
+/* HAREKETLİ KAPAK */
 .kapak-alan {
     position: relative;
     width: 100%;
@@ -168,20 +125,10 @@ body {
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
-    <!-- 1. ALT KAPAK (Sağda sabit) -->
-    <div class="sag-kapak">
-        <img src="kapak.jpg">
-    </div>
-
-    <!-- 2. AÇIK KİTAP ARKA PLANI (Zemin) -->
+    <!-- AÇIK KİTAP ARKA PLANI -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
-    <!-- 3. SOL İÇ SAYFA (Sol tarafta, ölçüleri ayarlanmış) -->
-    <div class="sol-ic-sayfa">
-        <img src="icsayfasol.png" alt="Sol İç Sayfa">
-    </div>
-
-    <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
+    <!-- ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
