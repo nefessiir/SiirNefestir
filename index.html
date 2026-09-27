@@ -84,45 +84,35 @@ body {
     display: block;
 }
 
-/* ÇOKLU SAYFA KONTEYNERİ */
-.sayfalar-kapsayici {
+/* TEK VE KUSURSUZ ÇALIŞAN 3D HAREKETLİ SAYFA YAPRAĞI */
+.sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
     left: 0;
     width: 100%;
     height: calc(100% - 1cm);
-    z-index: 6;
+    z-index: 0;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.kitap-kapsayici.acildi .sayfalar-kapsayici {
-    opacity: 1;
-    pointer-events: auto;
-    transition: opacity 0.3s ease-in-out 1.1s;
-}
-
-/* HER BİR YAPRAK (Mükemmel çalışan 3D Mimari) */
-.sayfa-yaprak {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     transform-style: preserve-3d;
     transform-origin: left center;
-    transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
+}
+
+.kitap-kapsayici.acildi .sag-sayfa-alan {
+    opacity: 1;
+    z-index: 6;
+    pointer-events: auto;
+    transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 1.1s;
     cursor: pointer;
-    z-index: 10;
 }
 
-.sayfa-yaprak.cevirdi {
+.sag-sayfa-alan.cevirdi {
     transform: rotateY(-180deg);
-    z-index: 5; /* Çevrildiğinde arkaya geçer */
+    z-index: 20;
 }
 
-/* Sayfa İçerik Boyutu (Önceki kusursuz ölçü) */
+/* Sayfa İçeriği (Önceki kusursuz 1.5cm boşluklu yapı) */
 .sayfa-icerik {
     position: absolute;
     top: 0;
@@ -152,7 +142,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR (İsteğe göre özelleştirilebilir) */
+/* SAYFA İÇİ YAZILAR */
 .sayfa-yazi {
     position: absolute;
     top: 15%;
@@ -248,8 +238,19 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- DİNAMİK SAYVALAR KONTEYNERİ (50 Sayfa / 25 Yaprak) -->
-    <div class="sayfalar-kapsayici" id="sayfalarKapsayici"></div>
+    <!-- TEK YAPRAK MOTORU (Dinamik Metin Güncellemeli) -->
+    <div class="sag-sayfa-alan" id="sagSayfaAlan">
+        <div class="sayfa-icerik">
+            <div class="sayfa-on">
+                <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
+                <div class="sayfa-yazi" id="sagYazi"></div>
+            </div>
+            <div class="sayfa-arka">
+                <img src="sol_sayfa.png" alt="Sağ Sayfa Arka">
+                <div class="sayfa-yazi" id="solYazi"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
@@ -272,67 +273,77 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
-    const sayfalarKapsayici = document.getElementById("sayfalarKapsayici");
+    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
+    const sagYazi = document.getElementById("sagYazi");
+    const solYazi = document.getElementById("solYazi");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
     const ikiCm = 2 * 96 / 2.54;
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // 50 Sayfa için Örnek İçerikler Dizisi (İstediğin zaman buradaki metinleri düzenleyebilir, silebilir veya çoğaltabilirsin)
-    const toplamYaprakSayisi = 25; // 25 yaprak = 50 sayfa
-    let yapraklarDizisi = [];
+    // 50 Sayfalık Şiir / Metin Dizisi Oluşturma (İstediğin zaman burayı değiştirebilir veya silebilirsin)
+    const toplamSayfaCifti = 25; // 25 yaprak = 50 sayfa
+    let sayfaVerileri = [];
 
-    for (let i = 1; i <= toplamYaprakSayisi; i++) {
-        yapraklarDizisi.push({
-            onMetin: `Sayfa ${i * 2 - 1}<br><br>Şiirimizin ${i * 2 - 1}. sayfası burada yer alıyor.<br>Dilediğiniz gibi metin yazabilirsiniz.`,
-            arkaMetin: `Sayfa ${i * 2}<br><br>Şiirimizin ${i * 2}. sayfası (arka yüzü).<br>Okudukça akıp gidecek.`
+    for (let i = 1; i <= toplamSayfaCifti; i++) {
+        sayfaVerileri.push({
+            sag: `Sayfa ${i * 2 - 1}<br><br>Bu sağ sayfadaki şiir / metin.<br>Okumaya devam edin.`,
+            sol: `Sayfa ${i * 2}<br><br>Bu da sol sayfaya (arka yüze) denk gelen metin.`
         });
     }
 
-    // Yaprakları DOM'a Dinamik Olarak Basma (Ters sıra: En üstteki yaprak ilk çevrilecek olan)
-    for (let i = toplamYaprakSayisi - 1; i >= 0; i--) {
-        const yaprakDiv = document.createElement("div");
-        yaprakDiv.className = "sayfa-yaprak";
-        yaprakDiv.style.zIndex = toplamYaprakSayisi - i; // Katman sıralaması
+    let currentIndex = 0; // Hangi yaprak çiftindeyiz?
 
-        yaprakDiv.innerHTML = `
-            <div class="sayfa-icerik">
-                <div class="sayfa-on">
-                    <img src="sag_sayfa.png" alt="Sayfa Ön">
-                    <div class="sayfa-yazi">${yapraklarDizisi[i].onMetin}</div>
-                </div>
-                <div class="sayfa-arka">
-                    <img src="sol_sayfa.png" alt="Sayfa Arka">
-                    <div class="sayfa-yazi">${yapraklarDizisi[i].arkaMetin}</div>
-                </div>
-            </div>
-        `;
+    function sayfayiGuncelle() {
+        sagYazi.innerHTML = sayfaVerileri[currentIndex].sag;
+        solYazi.innerHTML = sayfaVerileri[currentIndex].sol;
+    }
 
-        // Tıklama Olayı: Sağda ise sola çevir, solda (çevrilmişse) ise sağa geri çevir
-        yaprakDiv.addEventListener("click", function (e) {
-            e.stopPropagation();
-            
-            // Eğer bu yaprak henüz sağdaysa ve üstündeki (daha ilerideki) yapraklar kapalıysa çevir
-            if (!yaprakDiv.classList.contains("cevirdi")) {
-                yaprakDiv.classList.add("cevirdi");
-            } else {
-                // Eğer sol taraftaysa ve en üstteki çevrilmiş yaprak bu ise geri çevir
-                yaprakDiv.classList.remove("cevirdi");
+    // İlk yüklemede ilk sayfayı bas
+    sayfayiGuncelle();
+
+    // Sayfaya tıklama mantığı (İleri / Geri)
+    sagSayfaAlan.addEventListener("click", function (e) {
+        e.stopPropagation();
+
+        if (!sagSayfaAlan.classList.contains("cevirdi")) {
+            // SAĞDAN SOLA ÇEVİR (Eğer son sayfada değilsek)
+            if (currentIndex < sayfaVerileri.length - 1) {
+                sagSayfaAlan.classList.add("cevirdi");
+                
+                // Animasyon tam ortasındayken (arka yüz görünürken) metni bir sonraki sayfaya geçiriyoruz ki okuyucu çaktırmasın
+                setTimeout(function () {
+                    currentIndex++;
+                    sayfayiGuncelle();
+                    // Metin güncellendikten hemen sonra sayfayı anında sağa (açılmamış konuma) sıfırlıyoruz
+                    sagSayfaAlan.classList.remove("cevirdi");
+                }, 500); // 1 saniyelik animasyonun tam yarısı (0.5sn)
             }
-        });
+        }
+    });
 
-        sayfalarKapsayici.appendChild(yaprakDiv);
-    }
+    // Sol tarafa (artık sol tarafta kalan alana veya direkt yaprağa) tıklandığında GERİ DÖNME
+    // Alternatif olarak sol tarafa tıklandığında bir önceki sayfaya dönmek istersek:
+    /*
+    solYazi.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (currentIndex > 0) {
+            currentIndex--;
+            sayfayiGuncelle();
+        }
+    });
+    */
 
     // Kapak Açma / Kapanma Mantığı
     kapakAlan.addEventListener("click", function () {
         if (kapsayici.classList.contains("acildi")) {
-            // Kitabı kapatırken tüm sayfaları da başlangıç pozisyonuna getir
-            document.querySelectorAll(".sayfa-yaprak").forEach(y => y.classList.remove("cevirdi"));
+            sagSayfaAlan.classList.remove("cevirdi");
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
+            currentIndex = 0;
+            sayfayiGuncelle();
         } else {
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
