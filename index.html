@@ -54,13 +54,13 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: SAĞ İÇ SAYFA (Alttan 3 cm küçültüldü) */
+/* 2. KATMAN: SAĞ İÇ SAYFA (Alttan 1 cm kısaltılmış hali) */
 .sag-ic-sayfa {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: calc(100% - 3cm); /* Yükseklik alttan 3 cm kısaltıldı */
+    height: calc(100% - 1cm); /* 3 cm kısaltmadan 2 cm geri uzatıldı, toplamda alttan 1 cm kırpıldı */
     z-index: 0;
     pointer-events: none;
     opacity: 0;
@@ -153,7 +153,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. SAĞ İÇ SAYFA (Alttan 3 cm kırpılmış) -->
+    <!-- 2. SAĞ İÇ SAYFA -->
     <div class="sag-ic-sayfa">
         <img src="icsayfasag.png" alt="Sağ İç Sayfa">
     </div>
