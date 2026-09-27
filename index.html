@@ -58,7 +58,7 @@ body {
     display: block;
 }
 
-/* 2. STPAGEFLIP GERÇEK KİTAP GÖVDESİ (Açık Kitap Görseli Olmadan, Doğrudan Sayfalar) */
+/* 2. STPAGEFLIP GERÇEK KİTAP GÖVDESİ */
 #fiziksel-kitap {
     position: absolute;
     top: 0.5cm;
@@ -166,19 +166,19 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. GERÇEK KİTAP SAYFALARI (İstediğin kadar sol/sağ sayfa ekleyebilirsin) -->
+    <!-- 2. GERÇEK KİTAP SAYFALARI (İstediğiniz kadar çoğaltarak dolgunluk verebilirsiniz) -->
     <div id="fiziksel-kitap">
-        <!-- 1. Bölüm -->
-        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 1"></div>
-        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 1"></div>
+        <!-- 1. Çift -->
+        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa"></div>
+        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa"></div>
         
-        <!-- 2. Bölüm (İstediğin kadar çoğaltarak 60 sayfaya kadar uzatabilirsin) -->
-        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 2"></div>
-        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 2"></div>
+        <!-- 2. Çift (Boşluk kalmaması için artırıldı) -->
+        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa"></div>
+        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa"></div>
 
-        <!-- 3. Bölüm -->
-        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 3"></div>
-        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 3"></div>
+        <!-- 3. Çift -->
+        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa"></div>
+        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa"></div>
     </div>
 
     <!-- 3. ÜSTTEKİ AÇILAN ÖN KAPAK -->
@@ -226,14 +226,14 @@ window.addEventListener("load", function () {
             const pageFlip = new St.PageFlip(container, {
                 width: Math.round(w),
                 height: Math.round(h),
-                size: "fixed",
+                size: "stretch", // Sayfaların alanı tam doldurmasını sağlar, boşlukları engeller
                 minWidth: 100,
                 maxWidth: 2000,
                 minHeight: 100,
                 maxHeight: 2000,
                 showCover: false,
                 mobileScrollSupport: false,
-                maxShadowOpacity: 0.5, // Sayfalar üst üste binerken oluşan gerçekçi gölge kalınlığı
+                maxShadowOpacity: 0.6, // Gölge derinliği artırılarak dolgunluk hissi verildi
                 flippingTime: 1000
             });
 
