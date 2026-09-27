@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
-<!-- Gerçek Kıvrılan Sayfa Motoru (StPageFlip) -->
-<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
-
 <style>
 html,
 body {
@@ -58,42 +55,83 @@ body {
     display: block;
 }
 
-/* 2. STPAGEFLIP SAYFALARI (Yukarı/Aşağı 5'er cm, Sağa doğru 6 cm uzatıldı) */
-#fiziksel-kitap {
+/* 2. SOL SAYFA (Yukarı/Aşağı 5'er cm uzatıldı) */
+.sol-sayfa-alan {
     position: absolute;
-    top: -5cm; 
+    top: -5cm;
     left: calc(-100% + 0.2cm);
-    width: calc(200% + 5.8cm); /* Sağa doğru yaklaşık 6 cm genişletme */
-    height: calc(100% + 10cm); 
+    width: calc(100% - 0.2cm);
+    height: calc(100% + 10cm);
     z-index: 0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease-in-out;
 }
 
-.kitap-kapsayici.acildi #fiziksel-kitap {
+.kitap-kapsayici.acildi .sol-sayfa-alan {
     opacity: 1;
     z-index: 5;
     pointer-events: auto;
     transition: opacity 0.3s ease-in-out 1.5s;
 }
 
-/* Sayfa Şablonları */
-.sayfa-oge {
-    background-color: #fdfbf7;
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-}
-
-.sayfa-oge img {
+.sol-sayfa-alan img {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
 }
 
-/* 3. ÜSTTEKİ HAREKETLİ KAPAK */
+/* 3. SAĞ SAYFA (Yukarı/Aşağı 5'er cm, Sağa doğru 6 cm uzatıldı) */
+.sag-sayfa-alan {
+    position: absolute;
+    top: -5cm;
+    left: 0.1cm;
+    width: calc(100% + 6cm);
+    height: calc(100% + 10cm);
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
+}
+
+.kitap-kapsayici.acildi .sag-sayfa-alan {
+    opacity: 1;
+    z-index: 6;
+    pointer-events: auto;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 1.5s;
+    cursor: pointer;
+}
+
+.sag-sayfa-alan.cevirdi {
+    transform: rotateY(-180deg);
+    z-index: 20;
+}
+
+/* Ön ve Arka Yüz */
+.sayfa-on, .sayfa-arka {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.sayfa-on img, .sayfa-arka img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+}
+
+.sayfa-arka {
+    transform: rotateY(180deg);
+}
+
+/* 4. ÜSTTEKİ HAREKETLİ KAPAK */
 .kapak-alan {
     position: relative;
     width: 100%;
@@ -102,7 +140,7 @@ body {
     transform-origin: left center;
     cursor: pointer;
     transition: transform 1.5s ease-in-out;
-    z-index: 10;
+    z-index: 30;
 }
 
 .kapak-alan.dondu {
@@ -167,16 +205,22 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇILMIŞ VE SAĞA DOĞRU 6 CM UZATILMIŞ KİTAP SAYFALARI -->
-    <div id="fiziksel-kitap">
-        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 1"></div>
-        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 1"></div>
-        
-        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 2"></div>
-        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 2"></div>
+    <!-- 2. SOL SAYFA -->
+    <div class="sol-sayfa-alan" id="solSayfaAlan">
+        <img src="sol_sayfa.png" alt="Sol Sayfa">
     </div>
 
-    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
+    <!-- 3. SAĞ SAYFA -->
+    <div class="sag-sayfa-alan" id="sagSayfaAlan">
+        <div class="sayfa-on">
+            <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
+        </div>
+        <div class="sayfa-arka">
+            <img src="sol_sayfa.png" alt="Sağ Sayfa Arka">
+        </div>
+    </div>
+
+    <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
@@ -197,6 +241,7 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
+    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
@@ -211,30 +256,11 @@ window.addEventListener("load", function () {
         kapsayici.classList.toggle("acildi");
     });
 
-    // Sayfa Motorunu Başlatma
-    setTimeout(() => {
-        const container = document.getElementById("fiziksel-kitap");
-        const w = container.clientWidth / 2;
-        const h = container.clientHeight;
-
-        if (w > 0 && h > 0) {
-            const pageFlip = new St.PageFlip(container, {
-                width: Math.round(w),
-                height: Math.round(h),
-                size: "stretch",
-                minWidth: 100,
-                maxWidth: 2500,
-                minHeight: 100,
-                maxHeight: 2500,
-                showCover: false,
-                mobileScrollSupport: false,
-                maxShadowOpacity: 0.4,
-                flippingTime: 1000
-            });
-
-            pageFlip.loadFromHTML(container.querySelectorAll('.sayfa-oge'));
-        }
-    }, 600);
+    // Sağ sayfaya tıklandığında sola dönme
+    sagSayfaAlan.addEventListener("click", function (e) {
+        e.stopPropagation();
+        sagSayfaAlan.classList.toggle("cevirdi");
+    });
 });
 </script>
 
