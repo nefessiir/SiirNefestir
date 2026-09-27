@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
-<!-- Sayfa Kıvırma ve Çevirme Motoru (StPageFlip) -->
-<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
-
 <style>
 html,
 body {
@@ -27,7 +24,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1200px;
+    perspective: 1500px;
 }
 
 /* ORTAK KAPSAYICI ALAN */
@@ -58,7 +55,7 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP */
+/* 2. KATMAN: AÇIK KİTAP ARKA PLANI */
 .acik-kitap {
     position: absolute;
     top: -0.5cm;
@@ -67,51 +64,77 @@ body {
     height: calc(100% + 1cm);
     z-index: 1; 
     pointer-events: none;
-    
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* Kapak açıldığında tetiklenen stiller */
 .kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
     z-index: 4;
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
-/* 2.2. STPAGEFLIP İÇ SAYFA KONTEYNERİ (Açık kitabın tam üstüne oturur) */
-#fiziksel-sayfalar {
+/* 2.3. SOL SAYFA (Sabit Sol Alan) */
+.sol-sayfa-alan {
     position: absolute;
     top: 0.5cm;
     left: calc(-100% + 0.2cm);
-    width: calc(200% - 0.3cm);
+    width: calc(100% - 0.2cm);
     height: calc(100% - 1cm);
     z-index: 0;
-    pointer-events: none;
     opacity: 0;
-    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out 0s;
 }
 
-.kitap-kapsayici.acildi #fiziksel-sayfalar {
+.kitap-kapsayici.acildi .sol-sayfa-alan {
     opacity: 1;
     z-index: 5;
     pointer-events: auto;
-    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
+    transition: opacity 0.4s ease-in-out 1.1s;
 }
 
-/* Motor içi sayfa öğeleri */
-.sayfa-oge {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: #fdfbf7;
-}
-
-.sayfa-oge img {
+.sol-sayfa-alan img {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
+}
+
+/* 2.5. SAĞ SAYFA (Sağda duran ve sola çevrilen hareketli yaprak) */
+.sag-sayfa-alan {
+    position: absolute;
+    top: 0.5cm;
+    left: 0.1cm;
+    width: calc(100% - 0.2cm);
+    height: calc(100% - 1cm);
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    transform-origin: left center; /* Sol kenarından menteşelenir */
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 0s;
+}
+
+.kitap-kapsayici.acildi .sag-sayfa-alan {
+    opacity: 1;
+    z-index: 6;
+    pointer-events: auto;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 1.1s;
+    cursor: pointer;
+}
+
+/* Sağ sayfa sola çevrildiğinde çalışacak sınıf */
+.sag-sayfa-alan.cevirdi {
+    transform: rotateY(-180deg);
+}
+
+.sag-sayfa-alan img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+    backface-visibility: hidden; /* Arkası döndüğünde görünmesin veya arka yüzü ayarlansın */
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -123,7 +146,7 @@ body {
     transform-origin: left center;
     cursor: pointer;
     transition: transform 1.5s ease-in-out;
-    z-index: 3;
+    z-index: 10;
 }
 
 .kapak-alan.dondu {
@@ -190,23 +213,14 @@ body {
     <!-- 2. AÇIK KİTAP -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
-    <!-- 2.3 & 2.5. ŞİİR DEFTERİ SAYFA AKIŞI (StPageFlip Motoru) -->
-    <div id="fiziksel-sayfalar">
-        <!-- Boş/Geçiş Sayfası (Kapak açıldığında ilk görünen sol sayfa yaprağı) -->
-        <div class="sayfa-oge">
-            <img src="sol_sayfa.png" alt="Sol Sayfa">
-        </div>
-        <!-- 1. Şiir Sayfası (Sağ taraf) -->
-        <div class="sayfa-oge">
-            <img src="sag_sayfa.png" alt="Sağ Sayfa">
-        </div>
-        <!-- Sonraki Sayfalar (Şiirin devamı için çoğaltılabilir) -->
-        <div class="sayfa-oge">
-            <img src="sol_sayfa.png" alt="Sol Sayfa Devam">
-        </div>
-        <div class="sayfa-oge">
-            <img src="sag_sayfa.png" alt="Sağ Sayfa Devam">
-        </div>
+    <!-- 2.3. SOL SAYFA (Sabit) -->
+    <div class="sol-sayfa-alan">
+        <img src="sol_sayfa.png" alt="Sol Sayfa">
+    </div>
+
+    <!-- 2.5. SAĞ SAYFA (Sağda durur, tıklayınca sola doğru katlanıp kapanır) -->
+    <div class="sag-sayfa-alan" id="sagSayfaAlan">
+        <img src="sag_sayfa.png" alt="Sağ Sayfa">
     </div>
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
@@ -230,6 +244,7 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
+    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
@@ -244,30 +259,11 @@ window.addEventListener("load", function () {
         kapsayici.classList.toggle("acildi");
     });
 
-    // StPageFlip Şiir Defteri Fiziğini Başlatma
-    setTimeout(() => {
-        const container = document.getElementById("fiziksel-sayfalar");
-        const w = container.clientWidth / 2;
-        const h = container.clientHeight;
-
-        if (w > 0 && h > 0) {
-            const pageFlip = new St.PageFlip(container, {
-                width: Math.round(w),
-                height: Math.round(h),
-                size: "fixed",
-                minWidth: 100,
-                maxWidth: 2000,
-                minHeight: 100,
-                maxHeight: 2000,
-                showCover: false,
-                mobileScrollSupport: false,
-                maxShadowOpacity: 0.4,
-                flippingTime: 1000
-            });
-
-            pageFlip.loadFromHTML(container.querySelectorAll('.sayfa-oge'));
-        }
-    }, 500);
+    // Sağ sayfaya tıklandığında sol tarafa doğru yaprak gibi kapanması/açılması
+    sagSayfaAlan.addEventListener("click", function (e) {
+        e.stopPropagation(); // Kapsayıcıya tıklama gitmesin
+        sagSayfaAlan.classList.toggle("cevirdi");
+    });
 });
 </script>
 
