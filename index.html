@@ -102,10 +102,10 @@ body {
 <body>
 
 <div class="kitap-kapsayici">
-    <!-- SAYFALARIN TANIMLANDIĞI ALAN (Mouse ile tutup bükerek çevirme motoru burayı okur) -->
+    <!-- SAYFALARIN TANIMLANDIĞI ALAN -->
     <div id="gercek-kitap">
         
-        <!-- Sayfa 1: Ön Kapak (Sert Kapak Efekti) -->
+        <!-- Sayfa 1: Ön Kapak (Sert Kapak - Kıvrılmaz, tek parça döner) -->
         <div class="sayfa-oge" data-density="hard">
             <div class="kapak-sayfa">
                 <img src="kapak.jpg" alt="Ön Kapak">
@@ -119,17 +119,17 @@ body {
             </div>
         </div>
 
-        <!-- Sayfa 2: Sol İç Sayfa (Ölçüleri ve konumu ayarlanmış) -->
-        <div class="sayfa-oge">
+        <!-- Sayfa 2: Sol İç Sayfa (Yumuşak Kağıt - Kıvrılarak çevrilir) -->
+        <div class="sayfa-oge" data-density="soft">
             <img src="sol_sayfa.png" alt="Sol İç Sayfa">
         </div>
 
-        <!-- Sayfa 3: Sağ İç Sayfa (Ölçüleri ve konumu ayarlanmış) -->
-        <div class="sayfa-oge">
+        <!-- Sayfa 3: Sağ İç Sayfa (Yumuşak Kağıt - Kıvrılarak çevrilir) -->
+        <div class="sayfa-oge" data-density="soft">
             <img src="sag_sayfa.png" alt="Sağ İç Sayfa">
         </div>
 
-        <!-- Sayfa 4: Arka Kapak (Sert Kapak Efekti) -->
+        <!-- Sayfa 4: Arka Kapak (Sert Kapak - Kıvrılmaz, tek parça döner) -->
         <div class="sayfa-oge" data-density="hard">
             <img src="kapak.jpg" alt="Arka Kapak">
         </div>
@@ -139,35 +139,29 @@ body {
 
 <script>
 window.addEventListener("load", function () {
-    // Kitap görsellerinin orijinal oranını baz alarak dinamik boyutlandırma
     const testImg = new Image();
     testImg.src = "kapak.jpg";
     
     testImg.onload = function () {
-        // Ekran yüksekliğine göre ideal kitap yüksekliği (Örn: Ekranın %75'i)
         let hedefYukseklik = window.innerHeight * 0.75;
         let aspectRasyon = testImg.width / testImg.height;
         let hedefGenislik = hedefYukseklik * aspectRasyon;
 
-        // StPageFlip Motorunu Başlatma
         const pageFlip = new St.PageFlip(document.getElementById('gercek-kitap'), {
-            width: Math.round(hedefGenislik),   // Tek bir sayfanın genişliği
-            height: Math.round(hedefYukseklik), // Sayfanın yüksekliği
+            width: Math.round(hedefGenislik),
+            height: Math.round(hedefYukseklik),
             size: "fixed",
             minWidth: 300,
             maxWidth: 1000,
             minHeight: 400,
             maxHeight: 1200,
-            showCover: true,          // İlk ve son sayfayı kapak olarak tanır
-            mobileScrollSupport: false, // Mobilde sayfanın kaymasını engeller, direkt çevirtir
-            maxShadowOpacity: 0.5,    // Gerçekçi sayfa gölge efekti
-            flippingTime: 1200        // Sayfa çevrilme hisé süresi (milisaniye)
+            showCover: true,
+            mobileScrollSupport: false,
+            maxShadowOpacity: 0.5,
+            flippingTime: 1200
         });
 
-        // HTML içindeki sayfa elementlerini motora yükle
         pageFlip.loadFromHTML(document.querySelectorAll('.sayfa-oge'));
-
-        // Kapsayıcıyı görünür yap
         document.getElementById('gercek-kitap').style.display = "block";
     };
 });
