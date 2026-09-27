@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -71,8 +72,26 @@ body {
 /* Kapak açıldığında tetiklenen stiller */
 .kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
-    z-index: 4; /* Açık kitap en üste çıkar */
+    z-index: 4;
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
+}
+
+/* 2.5. KATMAN: SOL İÇ SAYFA */
+.ic-sayfa-sol {
+    position: absolute;
+    top: -0.5cm;
+    left: calc(-50% - 3.95cm);
+    width: calc(100% + 0.5cm);
+    height: calc(100% + 1cm);
+    z-index: 5;
+    pointer-events: none;
+
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out 0s;
+}
+
+.kitap-kapsayici.acildi .ic-sayfa-sol {
+    opacity: 1;
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -136,34 +155,40 @@ body {
     transform: translate(0.3cm, 1.7em);
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
-    <!-- 1. ALT KAPAK -->
-    <div class="sag-kapak">
-        <img src="kapak.jpg">
+```
+<!-- 1. ALT KAPAK -->
+<div class="sag-kapak">
+    <img src="kapak.jpg">
+</div>
+
+<!-- 2. AÇIK KİTAP -->
+<img src="acik_kitap1.png" class="acik-kitap">
+
+<!-- 2.5. SOL İÇ SAYFA -->
+<img src="icsayfasol.png" class="ic-sayfa-sol">
+
+<!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
+<div class="kapak-alan" id="kapakAlan">
+    <img src="kapak.jpg" class="kapak">
+    
+    <div class="kapak-yazi">
+        Şiir'e hatıra<br>
+        kelimelerden..<br>
+        hayattan..<br>
+        babasından.<br><br><br>
+        <span class="imza">S.O.A</span>
     </div>
 
-    <!-- 2. AÇIK KİTAP (0.5 cm sağa çekildi) -->
-    <img src="acik_kitap1.png" class="acik-kitap">
-
-    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
-    <div class="kapak-alan" id="kapakAlan">
-        <img src="kapak.jpg" class="kapak">
-        
-        <div class="kapak-yazi">
-            Şiir'e hatıra<br>
-            kelimelerden..<br>
-            hayattan..<br>
-            babasından.<br><br><br>
-            <span class="imza">S.O.A</span>
-        </div>
-
-        <img src="kapak.jpg" class="kapak-arka">
-    </div>
+    <img src="kapak.jpg" class="kapak-arka">
+</div>
+```
 
 </div>
 
