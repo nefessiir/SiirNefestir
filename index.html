@@ -54,17 +54,18 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: SAĞ İÇ SAYFA (Üst, sağ ve sol kenarlara dokunulmadı) */
+/* 2. KATMAN: SAĞ İÇ SAYFA (Alttan 3 cm küçültüldü) */
 .sag-ic-sayfa {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: auto;
+    height: calc(100% - 3cm); /* Yükseklik alttan 3 cm kısaltıldı */
     z-index: 0;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
+    overflow: hidden; /* Taşmayı engeller */
 }
 
 .sag-ic-sayfa img {
@@ -152,7 +153,7 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. SAĞ İÇ SAYFA -->
+    <!-- 2. SAĞ İÇ SAYFA (Alttan 3 cm kırpılmış) -->
     <div class="sag-ic-sayfa">
         <img src="icsayfasag.png" alt="Sağ İç Sayfa">
     </div>
