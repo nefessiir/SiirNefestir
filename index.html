@@ -87,16 +87,16 @@ body {
     display: block;
 }
 
-/* ÖNSÖZ SOL SAYFA ALANI */
+/* ÖNSÖZ SOL SAYFA ALANI (0.2 cm sağa kaydırıldı ve iki sayfaya yayılacak şekilde ayarlandı) */
 .onsoz-alan {
     position: absolute;
-    top: 13%;
-    left: calc(-100% + 1.2cm);
-    width: calc(100% - 1.5cm);
-    height: 75%;
+    top: 9%; /* Bir satır yukarıda başlar */
+    left: calc(-100% + 1.4cm); /* 0.2 cm sağa alındı */
+    width: calc(200% - 3cm);
+    height: 80%;
     font-family: 'Caveat', cursive, serif;
     font-size: clamp(12px, 1.3vw, 19px);
-    line-height: 1.45;
+    line-height: 1.42;
     color: #16324f; /* Mavi mürekkep rengi */
     text-shadow: 0 0 1px rgba(22, 50, 79, 0.3);
     box-sizing: border-box;
@@ -108,6 +108,8 @@ body {
     white-space: pre-line;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    column-count: 2; /* Sol sayfadan sağ sayfaya akış */
+    column-gap: 3.5cm;
 }
 
 .kitap-kapsayici.acildi .onsoz-alan {
@@ -181,16 +183,16 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR - ÖLÇÜLÜ VE MAVİ MÜREKKEP */
+/* SAYFA İÇİ YAZILAR - 1 SATIR YUKARI ALINDI */
 .sayfa-yazi {
     position: absolute;
-    top: 13%;
+    top: 9%;
     left: 10%;
     width: 80%;
-    height: 75%;
+    height: 80%;
     font-family: 'Caveat', cursive, serif;
     font-size: clamp(13px, 1.4vw, 21px);
-    line-height: 1.5;
+    line-height: 1.45;
     color: #16324f;
     text-shadow: 0 0 1px rgba(22, 50, 79, 0.3);
     box-sizing: border-box;
@@ -281,7 +283,7 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- AÇIK KİTABIN SOL KANADI (ÖNSÖZ ALANI) -->
+    <!-- AÇIK KİTABIN ÖNSÖZ ALANI (Tam istediğin mısra düzeniyle) -->
     <div class="onsoz-alan" id="onsozAlan"></div>
 
     <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
@@ -352,17 +354,22 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // Önsöz Metni
+    // Gönderdiğin orijinal formatlı önsöz metni
     const onsozMetni = `Kızıma…
 Sevgili Şiir,
-Belki bu satırları okuduğunda ben yanında olacağım, belki de hayat bizi birbirimizden uzaklaştırmış olacak.
+Belki bu satırları okuduğunda ben yanında olacağım, belki de
+hayat bizi birbirimizden uzaklaştırmış olacak.
 Ama şunu bilmeni isterim:
-Ben bu şiirleri insanlara bir şey anlatmak için değil, içimde birikenleri kaybetmemek için yazdım.
+Ben bu şiirleri insanlara bir şey anlatmak için değil,
+içimde birikenleri kaybetmemek için yazdım.
 Ve bazılarını yıllar sonra sen bul diye sakladım.
-Çünkü sana bırakabileceğim en güzel şeylerden birinin, benim dünyamı anlatan kelimeler olduğunu düşündüm.
-Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki, o şiir senden önce yazılmış olsa bile, sana da aittir.
-Çünkü sen benim hayatıma girdikten sonra yazdığım hiçbir şey eskisi gibi olmadı.
-
+Çünkü sana bırakabileceğim en güzel şeylerden birinin, benim
+dünyamı anlatan kelimeler olduğunu düşündüm.
+Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
+o şiir senden önce yazılmış olsa bile, sana da aittir.
+Çünkü sen benim hayatıma girdikten sonra yazdığım hiçbir şey
+eskisi gibi olmadı.
+ 
 Baban.`;
 
     let daktiloBaslatildi = false;
@@ -373,7 +380,7 @@ Baban.`;
 
         onsozDiv.innerHTML = "";
         let i = 0;
-        let hiz = 35; // Daktilo yazım hızı (milisaniye cinsinden, küçüldükçe hızlanır)
+        let hiz = 28; // Akıcı daktilo hızı
 
         function harfEkle() {
             if (i < onsozMetni.length) {
@@ -387,7 +394,6 @@ Baban.`;
                 setTimeout(harfEkle, hiz);
             }
         }
-        // Kitap açılış animasyonunun (1.2sn) bitimine yakın daktiloyu başlat
         setTimeout(harfEkle, 1000);
     }
 
@@ -507,7 +513,7 @@ Baban.`;
         } else {
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
-            daktiloEfektiBaslat(); // Kitap açıldığı an daktilo ile önsöz yazılmaya başlar
+            daktiloEfektiBaslat();
         }
     });
 });
