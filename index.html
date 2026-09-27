@@ -16,6 +16,7 @@ body {
 
 body {
     overflow: hidden;
+    /* Varsayılan Tema: Klasik Ahşap Masa */
     background-image: url("arka_plan.jpg");
     background-size: 100% 100%;
     background-position: center center;
@@ -25,6 +26,35 @@ body {
     justify-content: center;
     align-items: center;
     perspective: 1500px;
+    transition: background-image 0.5s ease-in-out;
+}
+
+/* TEMA SEÇİM BUTONU (Sağ Üst Köşe) */
+.tema-buton-kapsayici {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.tema-btn {
+    background: rgba(40, 25, 10, 0.85);
+    color: #d6ad38;
+    border: 1px solid #d6ad38;
+    padding: 8px 14px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.tema-btn:hover {
+    background: #d6ad38;
+    color: #28190a;
 }
 
 /* KİTAP KAPSAYICISI */
@@ -234,6 +264,13 @@ body {
 
 <body>
 
+<!-- TEMA SEÇİM BUTONLARI -->
+<div class="tema-buton-kapsayici">
+    <button class="tema-btn" onclick="temaDegis('arka_plan.jpg')">Ahşap Masa</button>
+    <button class="tema-btn" onclick="temaDegis('gece_bg.jpg')">Gece / Mum</button>
+    <button class="tema-btn" onclick="temaDegis('kulube_bg.jpg')">Deniz Kulübesi</button>
+</div>
+
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
     <!-- 1. ALT KAPAK -->
@@ -267,6 +304,11 @@ body {
 </div>
 
 <script>
+// TEMA DEĞİŞTİRME FONKSİYONU
+function temaDegis(resimAdi) {
+    document.body.style.backgroundImage = `url('${resimAdi}')`;
+}
+
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
@@ -328,7 +370,7 @@ window.addEventListener("load", function () {
             if (!yaprakDiv.classList.contains("cevirdi")) {
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
-                    yaprakDiv.style.zIndex = 50 + i; // Dönerken üstte kalması için
+                    yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
                     if (i === toplamYaprak - 1) {
@@ -342,11 +384,9 @@ window.addEventListener("load", function () {
                 let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
                 
                 if (enUstSolYaprak === yaprakDiv) {
-                    // Dönerken altındaki sayfaların (örn: 12) altında kalmaması için z-index yüksek tutulur
-                    yaprakDiv.style.zIndex = 100; 
+                    yaprakDiv.style.zIndex = 100;
                     yaprakDiv.classList.remove("cevirdi");
 
-                    // Animasyon tamamen bittikten sonra z-index eski orijinal yerine alınır
                     const transitionBitince = function() {
                         yaprakDiv.style.zIndex = toplamYaprak - i;
                         yaprakDiv.removeEventListener("transitionend", transitionBitince);
@@ -367,7 +407,7 @@ window.addEventListener("load", function () {
 
         let rewindInterval = setInterval(function () {
             if (index >= 0) {
-                yaprakElementleri[index].style.zIndex = 100; // Geri sarılırken de üstte kalsınlar
+                yaprakElementleri[index].style.zIndex = 100;
                 yaprakElementleri[index].classList.remove("cevirdi");
                 yaprakElementleri[index].style.zIndex = toplamYaprak - index;
                 index--;
