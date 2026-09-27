@@ -55,7 +55,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTAP GÖVDESİ (acik_kitap1.png) */
+/* AÇIK KİTAP GÖVDESİ */
 .acik-kitap-alan {
     position: absolute;
     top: 0.5cm;
@@ -84,18 +84,18 @@ body {
     display: block;
 }
 
-/* SAĞ SAYFA - Sağdan toplam 1.6 cm küçültüldü ve 3D eksen kayması düzeltildi */
+/* SAĞ SAYFA - Eksen hatasını önlemek için kapsayıcı tam boy, içerik 1.6cm içeride */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
     left: 0;
-    width: calc(100% - 1.6cm);
+    width: 100%;
     height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenar (orta eksen) sabit */
+    transform-origin: left center; /* Sol kenar (orta cilt çizgisi) kusursuz sabit */
     transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
@@ -107,9 +107,8 @@ body {
     cursor: pointer;
 }
 
-/* Yerin dibine girme sorunu çözüldü: Net bir şekilde sol tarafa oturacak matris */
 .sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg) translateX(-100%);
+    transform: rotateY(-180deg);
     z-index: 20;
 }
 
@@ -117,7 +116,8 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    /* Sağdan 1.6 cm içeride durması ve tam oturması sağlandı */
+    width: calc(100% - 1.6cm);
     height: 100%;
     backface-visibility: hidden;
 }
@@ -129,8 +129,11 @@ body {
     display: block;
 }
 
+/* Döndüğünde arka yüzün simetrik ve kusursuz oturması */
 .sayfa-arka {
     transform: rotateY(180deg);
+    left: auto;
+    right: 0; 
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
