@@ -68,32 +68,10 @@ body {
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* EN ÜST KATMAN: SAĞ İÇ SAYFA GÖRSELİ */
-.sag-ic-sayfa {
-    position: absolute;
-    top: -0.5cm;
-    left: calc(-3.95cm);
-    width: calc(100% + 0.5cm);
-    height: calc(100% + 1cm);
-    z-index: 5; 
-    pointer-events: none;
-    
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
-}
-
-.sag-ic-sayfa img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: fill;
-}
-
 /* Kapak açıldığında tetiklenen stiller */
-.kitap-kapsayici.acildi .acik-kitap,
-.kitap-kapsayici.acildi .sag-ic-sayfa {
+.kitap-kapsayici.acildi .acik-kitap {
     opacity: 1;
-    z-index: 5;
+    z-index: 4; /* Açık kitap en üste çıkar */
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
@@ -169,15 +147,10 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP ARKA PLANI -->
+    <!-- 2. AÇIK KİTAP (0.5 cm sağa çekildi) -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
-    <!-- 3. SAĞ İÇ SAYFA GÖRSELİ (Dosya adı doğru yazıldı: icsayfasag.jpg) -->
-    <div class="sag-ic-sayfa">
-        <img src="icsayfasag.jpg" alt="Sağ İç Sayfa">
-    </div>
-
-    <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
+    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
