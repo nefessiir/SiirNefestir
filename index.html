@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
+<!-- Sayfa Kıvırma ve Çevirme Motoru (StPageFlip) -->
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+
 <style>
 html,
 body {
@@ -27,7 +30,7 @@ body {
     perspective: 1500px;
 }
 
-/* ORTAK KAPSAYICI ALAN */
+/* KİTAP KAPSAYICISI */
 .kitap-kapsayici {
     position: relative;
     width: 20%;
@@ -38,7 +41,7 @@ body {
     z-index: 2;
 }
 
-/* 1. KATMAN: SAĞDA SABİT DURAN ALT KAPAK */
+/* 1. SAĞDA SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -55,31 +58,12 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP ARKA PLANI */
-.acik-kitap {
-    position: absolute;
-    top: -0.5cm;
-    left: calc(-100% - 0.5cm);
-    width: calc(200% + 1cm);
-    height: calc(100% + 1cm);
-    z-index: 1; 
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
-}
-
-.kitap-kapsayici.acildi .acik-kitap {
-    opacity: 1;
-    z-index: 4;
-    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
-}
-
-/* 2.3. SOL SAYFA (Sabit Sol Alan) */
-.sol-sayfa-alan {
+/* 2. STPAGEFLIP GERÇEK KİTAP GÖVDESİ (Açık Kitap Görseli Olmadan, Doğrudan Sayfalar) */
+#fiziksel-kitap {
     position: absolute;
     top: 0.5cm;
     left: calc(-100% + 0.2cm);
-    width: calc(100% - 0.2cm);
+    width: calc(200% - 0.3cm);
     height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
@@ -87,57 +71,29 @@ body {
     transition: opacity 0.4s ease-in-out 0s;
 }
 
-.kitap-kapsayici.acildi .sol-sayfa-alan {
+.kitap-kapsayici.acildi #fiziksel-kitap {
     opacity: 1;
     z-index: 5;
     pointer-events: auto;
     transition: opacity 0.4s ease-in-out 1.1s;
 }
 
-.sol-sayfa-alan img {
+/* Sayfa Şablonları */
+.sayfa-oge {
+    background-color: #fdfbf7;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.sayfa-oge img {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
 }
 
-/* 2.5. SAĞ SAYFA (Sağda duran ve sola çevrilen hareketli yaprak) */
-.sag-sayfa-alan {
-    position: absolute;
-    top: 0.5cm;
-    left: 0.1cm;
-    width: calc(100% - 0.2cm);
-    height: calc(100% - 1cm);
-    z-index: 0;
-    opacity: 0;
-    pointer-events: none;
-    transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenarından menteşelenir */
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 0s;
-}
-
-.kitap-kapsayici.acildi .sag-sayfa-alan {
-    opacity: 1;
-    z-index: 6;
-    pointer-events: auto;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 1.1s;
-    cursor: pointer;
-}
-
-/* Sağ sayfa sola çevrildiğinde çalışacak sınıf */
-.sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg);
-}
-
-.sag-sayfa-alan img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    display: block;
-    backface-visibility: hidden; /* Arkası döndüğünde görünmesin veya arka yüzü ayarlansın */
-}
-
-/* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
+/* 3. ÜSTTEKİ HAREKETLİ KAPAK */
 .kapak-alan {
     position: relative;
     width: 100%;
@@ -205,25 +161,27 @@ body {
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
-    <!-- 1. ALT KAPAK -->
+    <!-- 1. ALT KAPAK (Sabit arka taban) -->
     <div class="sag-kapak">
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP -->
-    <img src="acik_kitap1.png" class="acik-kitap">
+    <!-- 2. GERÇEK KİTAP SAYFALARI (İstediğin kadar sol/sağ sayfa ekleyebilirsin) -->
+    <div id="fiziksel-kitap">
+        <!-- 1. Bölüm -->
+        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 1"></div>
+        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 1"></div>
+        
+        <!-- 2. Bölüm (İstediğin kadar çoğaltarak 60 sayfaya kadar uzatabilirsin) -->
+        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 2"></div>
+        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 2"></div>
 
-    <!-- 2.3. SOL SAYFA (Sabit) -->
-    <div class="sol-sayfa-alan">
-        <img src="sol_sayfa.png" alt="Sol Sayfa">
+        <!-- 3. Bölüm -->
+        <div class="sayfa-oge"><img src="sol_sayfa.png" alt="Sol Sayfa 3"></div>
+        <div class="sayfa-oge"><img src="sag_sayfa.png" alt="Sağ Sayfa 3"></div>
     </div>
 
-    <!-- 2.5. SAĞ SAYFA (Sağda durur, tıklayınca sola doğru katlanıp kapanır) -->
-    <div class="sag-sayfa-alan" id="sagSayfaAlan">
-        <img src="sag_sayfa.png" alt="Sağ Sayfa">
-    </div>
-
-    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
+    <!-- 3. ÜSTTEKİ AÇILAN ÖN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
@@ -244,7 +202,6 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
-    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
@@ -259,11 +216,30 @@ window.addEventListener("load", function () {
         kapsayici.classList.toggle("acildi");
     });
 
-    // Sağ sayfaya tıklandığında sol tarafa doğru yaprak gibi kapanması/açılması
-    sagSayfaAlan.addEventListener("click", function (e) {
-        e.stopPropagation(); // Kapsayıcıya tıklama gitmesin
-        sagSayfaAlan.classList.toggle("cevirdi");
-    });
+    // Çok Sayfalı Kitap Motorunu Başlatma
+    setTimeout(() => {
+        const container = document.getElementById("fiziksel-kitap");
+        const w = container.clientWidth / 2;
+        const h = container.clientHeight;
+
+        if (w > 0 && h > 0) {
+            const pageFlip = new St.PageFlip(container, {
+                width: Math.round(w),
+                height: Math.round(h),
+                size: "fixed",
+                minWidth: 100,
+                maxWidth: 2000,
+                minHeight: 100,
+                maxHeight: 2000,
+                showCover: false,
+                mobileScrollSupport: false,
+                maxShadowOpacity: 0.5, // Sayfalar üst üste binerken oluşan gerçekçi gölge kalınlığı
+                flippingTime: 1000
+            });
+
+            pageFlip.loadFromHTML(container.querySelectorAll('.sayfa-oge'));
+        }
+    }, 500);
 });
 </script>
 
