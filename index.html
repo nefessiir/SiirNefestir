@@ -16,17 +16,15 @@ body {
 
 body {
     overflow: hidden;
-    /* Varsayılan Tema: Klasik Ahşap Masa */
-    background-image: url("arka_plan.jpg");
-    background-size: 100% 100%;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #111;
+    /* Varsayılan Tema: Ahşap Masa (Eski arka_plan.jpg yerine güvenli şık gradyan/renk altyapısı) */
+    background: linear-gradient(135deg, #2c1d11 0%, #1a1008 100%);
+    background-size: cover;
+    background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
     perspective: 1500px;
-    transition: background-image 0.5s ease-in-out;
+    transition: background 0.8s ease-in-out;
 }
 
 /* TEMA SEÇİM BUTONU (Sağ Üst Köşe) */
@@ -266,9 +264,9 @@ body {
 
 <!-- TEMA SEÇİM BUTONLARI -->
 <div class="tema-buton-kapsayici">
-    <button class="tema-btn" onclick="temaDegis('arka_plan.jpg')">Ahşap Masa</button>
-    <button class="tema-btn" onclick="temaDegis('gece_bg.jpg')">Gece / Mum</button>
-    <button class="tema-btn" onclick="temaDegis('kulube_bg.jpg')">Deniz Kulübesi</button>
+    <button class="tema-btn" onclick="temaDegis('ahsap')">Ahşap Masa</button>
+    <button class="tema-btn" onclick="temaDegis('gece')">Gece / Mum</button>
+    <button class="tema-btn" onclick="temaDegis('kulube')">Deniz Kulübesi</button>
 </div>
 
 <div class="kitap-kapsayici" id="kitapKapsayici">
@@ -304,9 +302,18 @@ body {
 </div>
 
 <script>
-// TEMA DEĞİŞTİRME FONKSİYONU
-function temaDegis(resimAdi) {
-    document.body.style.backgroundImage = `url('${resimAdi}')`;
+// TEMA DEĞİŞTİRME FONKSİYONU (Harika Atmosferler)
+function temaDegis(temaAdi) {
+    if (temaAdi === 'ahsap') {
+        // Sıcak Klasik Ahşap Masa Tonu
+        document.body.style.background = "linear-gradient(135deg, #2c1d11 0%, #1a1008 100%)";
+    } else if (temaAdi === 'gece') {
+        // Gece ve Mum Işığı Atmosferi (Koyu lacivert + sıcak mum sarısı ışıma)
+        document.body.style.background = "radial-gradient(circle at 70% 30%, #3a2510 0%, #0d111a 70%, #05070a 100%)";
+    } else if (temaAdi === 'kulube') {
+        // Deniz Kenarı Kulübe Atmosferi (Ferah Akdeniz mavisi ve ahşap pencere hissi)
+        document.body.style.background = "linear-gradient(135deg, #1b4d6e 0%, #0f2a3d 50%, #221710 100%)";
+    }
 }
 
 window.addEventListener("load", function () {
