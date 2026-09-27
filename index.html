@@ -16,7 +16,6 @@ body {
 
 body {
     overflow: hidden;
-    /* Varsayılan Tema: Orijinal Ahşap Masa */
     background-image: url("arka_plan.jpg");
     background-size: 100% 100%;
     background-position: center center;
@@ -26,35 +25,6 @@ body {
     justify-content: center;
     align-items: center;
     perspective: 1500px;
-    transition: background-image 0.8s ease-in-out;
-}
-
-/* TEMA SEÇİM BUTONU (Sağ Üst Köşe) */
-.tema-buton-kapsayici {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: flex;
-    gap: 10px;
-}
-
-.tema-btn {
-    background: rgba(40, 25, 10, 0.85);
-    color: #d6ad38;
-    border: 1px solid #d6ad38;
-    padding: 8px 14px;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 13px;
-    border-radius: 4px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-}
-
-.tema-btn:hover {
-    background: #d6ad38;
-    color: #28190a;
 }
 
 /* KİTAP KAPSAYICISI */
@@ -83,7 +53,6 @@ body {
     height: 100%;
     object-fit: fill;
     display: block;
-    transition: filter 0.5s ease;
 }
 
 /* AÇIK KİTAP GÖVDESİ */
@@ -222,7 +191,6 @@ body {
     object-fit: fill;
     display: block;
     backface-visibility: hidden;
-    transition: filter 0.5s ease;
 }
 
 .kapak {
@@ -266,18 +234,11 @@ body {
 
 <body>
 
-<!-- TEMA SEÇİM BUTONLARI -->
-<div class="tema-buton-kapsayici">
-    <button class="tema-btn" onclick="temaDegis('ahsap')">Ahşap Masa</button>
-    <button class="tema-btn" onclick="temaDegis('gece')">Gece / Mum</button>
-    <button class="tema-btn" onclick="temaDegis('kulube')">Deniz Kulübesi</button>
-</div>
-
 <div class="kitap-kapsayici" id="kitapKapsayici">
 
     <!-- 1. ALT KAPAK -->
     <div class="sag-kapak">
-        <img src="kapak.jpg" id="altKapakImg">
+        <img src="kapak.jpg">
     </div>
 
     <!-- AÇIK KİTAP GÖVDESİ -->
@@ -290,7 +251,7 @@ body {
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
-        <img src="kapak.jpg" class="kapak" id="ustKapakImg">
+        <img src="kapak.jpg" class="kapak">
         
         <div class="kapak-yazi">
             Şiir'e hatıra.<br><br>
@@ -300,47 +261,12 @@ body {
             <span class="imza">S.O.A</span>
         </div>
 
-        <img src="kapak.jpg" class="kapak-arka-kapak" id="arkaKapakImg">
+        <img src="kapak.jpg" class="kapak-arka-kapak">
     </div>
 
 </div>
 
 <script>
-// TEMA DEĞİŞTİRME FONKSİYONU (Arka Plan ve Dinamik Kapak Rengi Senkronizasyonu)
-function temaDegis(temaAdi) {
-    const altKapak = document.getElementById("altKapakImg");
-    const ustKapak = document.getElementById("ustKapakImg");
-    const arkaKapak = document.getElementById("arkaKapakImg");
-
-    if (temaAdi === 'ahsap') {
-        // 1. Orijinal Ahşap Oda & Ahşap Kapak
-        document.body.style.backgroundImage = "url('arka_plan.jpg')";
-        
-        // Kapak renk filtrelerini sıfırla (Orijinal kapak.jpg)
-        altKapak.style.filter = "none";
-        ustKapak.style.filter = "none";
-        arkaKapak.style.filter = "none";
-
-    } else if (temaAdi === 'gece') {
-        // 2. Gece / Mum Atmosferi (Loş Amber Tonu)
-        document.body.style.backgroundImage = "url('arka_plan.jpg')";
-        
-        // Kapağa gece/mum hissiyatı için koyu kehribar filtre
-        altKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
-        ustKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
-        arkaKapak.style.filter = "brightness(0.65) sepia(0.7) hue-rotate(-20deg)";
-
-    } else if (temaAdi === 'kulube') {
-        // 3. Gönderdiğin Muazzam Deniz Kulübesi Görseli[cite: 1]
-        document.body.style.backgroundImage = "url('Gemini_Generated_Image_nmcnb2nmcnb2nmcn.jpg')";
-        
-        // Kapağa deniz temasına uygun şık bir okyanus mavisi tonu verilir
-        altKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
-        ustKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
-        arkaKapak.style.filter = "brightness(0.9) saturate(1.4) hue-rotate(170deg)";
-    }
-}
-
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
@@ -402,7 +328,7 @@ window.addEventListener("load", function () {
             if (!yaprakDiv.classList.contains("cevirdi")) {
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
-                    yaprakDiv.style.zIndex = 50 + i;
+                    yaprakDiv.style.zIndex = 50 + i; // Dönerken üstte kalması için
                     yaprakDiv.classList.add("cevirdi");
 
                     if (i === toplamYaprak - 1) {
@@ -416,9 +342,11 @@ window.addEventListener("load", function () {
                 let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
                 
                 if (enUstSolYaprak === yaprakDiv) {
-                    yaprakDiv.style.zIndex = 100;
+                    // Dönerken altındaki sayfaların (örn: 12) altında kalmaması için z-index yüksek tutulur
+                    yaprakDiv.style.zIndex = 100; 
                     yaprakDiv.classList.remove("cevirdi");
 
+                    // Animasyon tamamen bittikten sonra z-index eski orijinal yerine alınır
                     const transitionBitince = function() {
                         yaprakDiv.style.zIndex = toplamYaprak - i;
                         yaprakDiv.removeEventListener("transitionend", transitionBitince);
@@ -439,7 +367,7 @@ window.addEventListener("load", function () {
 
         let rewindInterval = setInterval(function () {
             if (index >= 0) {
-                yaprakElementleri[index].style.zIndex = 100;
+                yaprakElementleri[index].style.zIndex = 100; // Geri sarılırken de üstte kalsınlar
                 yaprakElementleri[index].classList.remove("cevirdi");
                 yaprakElementleri[index].style.zIndex = toplamYaprak - index;
                 index--;
@@ -459,7 +387,6 @@ window.addEventListener("load", function () {
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
-.
         if (kapsayici.classList.contains("acildi")) {
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
