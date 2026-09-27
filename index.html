@@ -55,7 +55,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTAP GÖVDESİ (acik_kitap1.png) - Perdeleme hızı ve zamanlaması ayarlandı */
+/* AÇIK KİTAP GÖVDESİ (acik_kitap1.png) - Perdeleme animasyonu */
 .acik-kitap-alan {
     position: absolute;
     top: 0.5cm;
@@ -68,7 +68,6 @@ body {
     transform: scale(1.1882);
     transform-origin: left center;
     clip-path: inset(0 0 0 100%);
-    /* Açılırken kapaktan biraz sonra (0.4s) başlar, 0.8s'de hızla açılır. Kapanırken anında kaybolur. */
     transition: opacity 0.2s ease-in-out, clip-path 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
@@ -85,67 +84,18 @@ body {
     display: block;
 }
 
-/* 2. SOL SAYFA - Merkez eksen (sağ kenar sabit) ve 2 cm kısa */
-.sol-sayfa-alan {
-    position: absolute;
-    top: 1.2cm;
-    left: calc(-100% + 0.9cm);
-    width: calc(100% - 1.6cm);
-    height: calc(100% - 2.4cm);
-    z-index: 0;
-    opacity: 0;
-    pointer-events: none;
-    transform-style: preserve-3d;
-    transform-origin: right center; /* Sağ kenar (orta merkez) sabit kalacak */
-    transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
-}
-
-.kitap-kapsayici.acildi .sol-sayfa-alan {
-    opacity: 1;
-    z-index: 5;
-    pointer-events: auto;
-    /* Açık kitaptan 0.5s sonra (0.4s + 0.5s = 0.9s) görünmeye başlar */
-    transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 0.9s;
-    cursor: pointer;
-}
-
-.sol-sayfa-alan.cevirdi {
-    transform: rotateY(180deg);
-    z-index: 20;
-}
-
-.sol-sayfa-on, .sol-sayfa-arka {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-}
-
-.sol-sayfa-on img, .sol-sayfa-arka img {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    display: block;
-}
-
-.sol-sayfa-arka {
-    transform: rotateY(180deg);
-}
-
-/* 3. SAĞ SAYFA - Merkez eksen (sol kenar sabit) ve 2 cm kısa */
+/* SAĞ SAYFA - Normal Boyutunda ve 3D Çevirme Animasyonlu */
 .sag-sayfa-alan {
     position: absolute;
-    top: 1.2cm;
-    left: 0.8cm;
-    width: calc(100% - 1.6cm);
-    height: calc(100% - 2.4cm);
+    top: 0.5cm;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenar (orta merkez) sabit kalacak */
+    transform-origin: left center; /* Orta eksenden (sol kenardan) dönme */
     transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
@@ -153,7 +103,6 @@ body {
     opacity: 1;
     z-index: 6;
     pointer-events: auto;
-    /* Açık kitaptan 0.5s sonra (0.4s + 0.5s = 0.9s) görünmeye başlar */
     transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 0.9s;
     cursor: pointer;
 }
@@ -183,7 +132,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* 4. ÜSTTEKİ HAREKETLİ KAPAK */
+/* ÜSTTEKİ HAREKETLİ KAPAK */
 .kapak-alan {
     position: relative;
     width: 100%;
@@ -262,17 +211,7 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- 2. SOL SAYFA -->
-    <div class="sol-sayfa-alan" id="solSayfaAlan">
-        <div class="sol-sayfa-on">
-            <img src="sol_sayfa.png" alt="Sol Sayfa Ön">
-        </div>
-        <div class="sol-sayfa-arka">
-            <img src="sag_sayfa.png" alt="Sol Sayfa Arka">
-        </div>
-    </div>
-
-    <!-- 3. SAĞ SAYFA -->
+    <!-- SAĞ SAYFA (Normal Boyutunda) -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
         <div class="sayfa-on">
             <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
@@ -282,7 +221,7 @@ body {
         </div>
     </div>
 
-    <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
+    <!-- ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
@@ -303,7 +242,6 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
-    const solSayfaAlan = document.getElementById("solSayfaAlan");
     const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
@@ -316,28 +254,19 @@ window.addEventListener("load", function () {
     // Kapak Açma / Kapanma Mantığı
     kapakAlan.addEventListener("click", function () {
         if (kapsayici.classList.contains("acildi")) {
-            // KAPATIRKEN: Önce sayfaları düzelt, kapağı kapat ve açık kitabı anında yok et (sol taraf görünmesin)
             sagSayfaAlan.classList.remove("cevirdi");
-            solSayfaAlan.classList.remove("cevirdi");
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
         } else {
-            // AÇARKEN
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
         }
     });
 
-    // Sağ sayfaya tıklandığında sola dönme (Sol kenar sabit)
+    // Sağ sayfaya tıklandığında sola dönme
     sagSayfaAlan.addEventListener("click", function (e) {
         e.stopPropagation();
         sagSayfaAlan.classList.toggle("cevirdi");
-    });
-
-    // Sol sayfaya tıklandığında sağa dönme (Sağ kenar sabit)
-    solSayfaAlan.addEventListener("click", function (e) {
-        e.stopPropagation();
-        solSayfaAlan.classList.toggle("cevirdi");
     });
 });
 </script>
