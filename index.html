@@ -24,7 +24,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1200px;
+    perspective: 1500px;
 }
 
 /* ORTAK KAPSAYICI ALAN */
@@ -54,8 +54,8 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: AÇIK KİTAP (0.5 cm sağa çekilmiş, her yöne 0.5cm büyük) */
-.acik-kitap {
+/* 2. KATMAN: İÇ SAYFALARIN ALANI (Açık Kitap Kapsayıcısı) */
+.ic-sayfalar-alani {
     position: absolute;
     top: -0.5cm;
     left: calc(-50% - 3.95cm);
@@ -63,16 +63,66 @@ body {
     height: calc(100% + 1cm);
     z-index: 1; 
     pointer-events: none;
+    display: flex;
+    transform-style: preserve-3d;
     
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* Kapak açıldığında tetiklenen stiller */
-.kitap-kapsayici.acildi .acik-kitap {
+/* Kapak açıldığında iç sayfalar belirir */
+.kitap-kapsayici.acildi .ic-sayfalar-alani {
     opacity: 1;
-    z-index: 4; /* Açık kitap en üste çıkar */
+    z-index: 4; 
+    pointer-events: auto; /* Sayfa çevirme için tıklanabilir olur */
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
+}
+
+/* Sol İç Sayfa (Sabit) */
+.ic-sol-sayfa {
+    width: 50%;
+    height: 100%;
+    position: relative;
+}
+.ic-sol-sayfa img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Sağ İç Sayfa / Çevrilecek Yaprak Kapsayıcısı */
+.ic-sag-sayfa-alan {
+    width: 50%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transform-origin: left center; /* Kitabın ortasından (omurgasından) döner */
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: pointer;
+}
+
+.ic-sag-sayfa-alan.cevirildi {
+    transform: rotateY(-180deg);
+}
+
+/* Sağ Sayfa Ön ve Arka Yüzleri */
+.sayfa-on, .sayfa-arka {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.sayfa-on img, .sayfa-arka img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.sayfa-arka {
+    transform: rotateY(180deg);
 }
 
 /* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
@@ -92,7 +142,7 @@ body {
 }
 
 .kapak,
-.kapak-arka {
+.kapak-arka-kapak {
     width: 100%;
     height: auto;
     display: block;
@@ -103,7 +153,7 @@ body {
     position: relative;
 }
 
-.kapak-arka {
+.kapak-arka-kapak {
     position: absolute;
     top: 0;
     left: 0;
@@ -147,8 +197,23 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. AÇIK KİTAP (0.5 cm sağa çekildi) -->
-    <img src="acik_kitap1.png" class="acik-kitap">
+    <!-- 2. İÇ SAYFALAR (Sol sabit, Sağ çevrilebilir) -->
+    <div class="ic-sayfalar-alani" id="icSayfalarAlani">
+        <!-- Sol Sayfa -->
+        <div class="ic-sol-sayfa">
+            <img src="ic_sayfa_sol.jpg" alt="Sol Sayfa">
+        </div>
+        <!-- Sağ Çevrilebilir Sayfa -->
+        <div class="ic-sag-sayfa-alan" id="sagSayfaAlan">
+            <div class="sayfa-on">
+                <img src="ic_sayfa_sag.jpg" alt="Sağ Sayfa Ön">
+            </div>
+            <div class="sayfa-arka">
+                <!-- Arka tarafa başka bir görsel koyabilirsiniz, örn: sonraki sayfa veya boş arka plan -->
+                <img src="ic_sayfa_sol.jpg" alt="Sağ Sayfa Arka">
+            </div>
+        </div>
+    </div>
 
     <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
@@ -162,7 +227,7 @@ body {
             <span class="imza">S.O.A</span>
         </div>
 
-        <img src="kapak.jpg" class="kapak-arka">
+        <img src="kapak.jpg" class="kapak-arka-kapak">
     </div>
 
 </div>
@@ -171,6 +236,7 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
+    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
@@ -179,9 +245,19 @@ window.addEventListener("load", function () {
 
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    kapakAlan.addEventListener("click", function () {
+    // Kapak açma/kapatma
+    kapakAlan.addEventListener("click", function (e) {
+        e.stopPropagation();
         kapakAlan.classList.toggle("dondu");
         kapsayici.classList.toggle("acildi");
+    });
+
+    // Sağ sayfayı çevirme (Tıklayınca)
+    sagSayfaAlan.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (kapsayici.classList.contains("acildi")) {
+            sagSayfaAlan.classList.toggle("cevirildi");
+        }
     });
 });
 </script>
