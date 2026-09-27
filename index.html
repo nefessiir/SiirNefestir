@@ -84,19 +84,18 @@ body {
     display: block;
 }
 
-/* SAĞ SAYFA - Tam olarak 1 cm sola kaydırıldı */
+/* YENİ YOL: İki Katmanlı Mimari */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
     left: 0;
-    width: calc(100% - 1.6cm);
+    width: 100%;
     height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenar ekseni sabit */
-    transform: translateX(-1cm); /* Fiziksel olarak tam 1 cm sola kaydırıldı */
+    transform-origin: left center; /* Tam orta çizgi (cilt) ekseni */
     transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
@@ -108,10 +107,19 @@ body {
     cursor: pointer;
 }
 
-/* Tıklandığında 3D dönme hareketi (1 cm kayma korunarak döner) */
 .sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg) translateX(-1cm);
+    transform: rotateY(-180deg);
     z-index: 20;
+}
+
+/* Sayfanın gerçek boyut ve konumunu yöneten iç katman */
+.sayfa-icerik {
+    position: absolute;
+    top: 0;
+    left: 0; /* Kitabın ortasından başlar */
+    width: calc(100% - 2cm); /* İstediğin ölçüde küçültülmüş boyut */
+    height: 100%;
+    transform-style: preserve-3d;
 }
 
 .sayfa-on, .sayfa-arka {
@@ -213,13 +221,15 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- SAĞ SAYFA (1 cm sola kaydırıldı) -->
+    <!-- SAĞ SAYFA (Yeni İki Katmanlı Mimari) -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
-        <div class="sayfa-on">
-            <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
-        </div>
-        <div class="sayfa-arka">
-            <img src="sol_sayfa.png" alt="Sağ Sayfa Arka">
+        <div class="sayfa-icerik">
+            <div class="sayfa-on">
+                <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
+            </div>
+            <div class="sayfa-arka">
+                <img src="sol_sayfa.png" alt="Sağ Sayfa Arka">
+            </div>
         </div>
     </div>
 
