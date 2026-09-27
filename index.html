@@ -2,10 +2,10 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Şiir Nefestir</title>
 
-<!-- StPageFlip Kütüphanesi CDN Bağlantısı -->
+<!-- StPageFlip Kütüphanesi -->
 <script src="https://cdn.jsdelivr.net/npm/page-flip@0.7.4/dist/js/page-flip.browser.min.js"></script>
 
 <style>
@@ -15,10 +15,11 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    touch-action: none; /* Mobilde kaydırma yerine sayfa çevirmeyi yakalamak için */
 }
 
 body {
-    overflow: hidden;
     background-image: url("arka_plan.jpg");
     background-size: 100% 100%;
     background-position: center center;
@@ -58,7 +59,7 @@ body {
     display: block;
 }
 
-/* 2. SOL SAYFA (Orijinal Ölçüler) */
+/* 2. SOL SAYFA */
 .sol-sayfa-alan {
     position: absolute;
     top: 0.5cm;
@@ -85,7 +86,7 @@ body {
     display: block;
 }
 
-/* 3. SAĞ SAYFA (Orijinal Ölçüler) */
+/* 3. SAĞ SAYFA (StPageFlip'in hedef alanı) */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
@@ -95,43 +96,28 @@ body {
     z-index: 0;
     opacity: 0;
     pointer-events: none;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .kitap-kapsayici.acildi .sag-sayfa-alan {
     opacity: 1;
     z-index: 6;
     pointer-events: auto;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out 1.5s;
-    cursor: pointer;
+    transition: opacity 0.3s ease-in-out 1.5s;
 }
 
-.sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg);
-    z-index: 20;
-}
-
-/* Ön ve Arka Yüz */
-.sayfa-on, .sayfa-arka {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* StPageFlip içerisindeki sayfa sayımları için stil */
+.sayfa-oge {
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    background-color: white;
 }
 
-.sayfa-on img, .sayfa-arka img {
+.sayfa-oge img {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
-}
-
-.sayfa-arka {
-    transform: rotateY(180deg);
 }
 
 /* 4. ÜSTTEKİ HAREKETLİ KAPAK */
@@ -213,13 +199,15 @@ body {
         <img src="sol_sayfa.png" alt="Sol Sayfa">
     </div>
 
-    <!-- 3. SAĞ SAYFA -->
+    <!-- 3. SAĞ SAYFA (StPageFlip Motorunun Çalışacağı Alan) -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
-        <div class="sayfa-on">
-            <img src="sag_sayfa.png" alt="Sağ Sayfa Ön">
+        <!-- Sayfa 1: Sağ Sayfa Ön -->
+        <div class="sayfa-oge">
+            <img src="sag_sayfa.png" alt="Sağ Sayfa">
         </div>
-        <div class="sayfa-arka">
-            <img src="sol_sayfa.png" alt="Sağ Sayfa Arka">
+        <!-- Sayfa 2: Çevrildiğinde görünecek arka yüz veya sonraki sayfa -->
+        <div class="sayfa-oge">
+            <img src="sol_sayfa.png" alt="Arka Yüz">
         </div>
     </div>
 
@@ -244,45 +232,49 @@ body {
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
-    const sagSayfaAlan = document.getElementById("sagSayfaAlan");
     const kapakImg = document.querySelector(".kapak");
+    const sagSayfaDiv = document.getElementById("sagSayfaAlan");
 
+    // Ölçeklendirme hesaplaması
     const yukseklik = kapakImg.getBoundingClientRect().height;
     const ikiCm = 2 * 96 / 2.54;
     const oran = (yukseklik + ikiCm) / yukseklik;
-
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // StPageFlip Motoru Entegrasyonu (Görsel yapı ve dosya adları sabit tutuldu)
-    const stBookElement = document.getElementById("sagSayfaAlan");
-    if (window.St && window.St.PageFlip && stBookElement) {
-        const pageFlip = new St.PageFlip(stBookElement, {
-            width: stBookElement.offsetWidth || 400,
-            height: stBookElement.offsetHeight || 600,
+    // StPageFlip Motorunu Başlatma
+    let pageFlip = null;
+    try {
+        pageFlip = new St.PageFlip(sagSayfaDiv, {
+            width: sagSayfaDiv.offsetWidth || 400,
+            height: sagSayfaDiv.offsetHeight || 600,
             size: "stretch",
+            minWidth: 100,
+            maxWidth: 1000,
+            minHeight: 150,
+            maxHeight: 1500,
             maxShadowOpacity: 0.5,
             showCover: false,
-            mobileSupport: true
+            mobileSupport: true, // Android ve tabletlerde parmakla sürüklemeyi aktif eder
+            useMouseEvents: true // Mouse ile tutarak çevirmeyi aktif eder
         });
-        
-        // Mevcut sayfa elemanlarını StPageFlip'e tanıtıyoruz
-        try {
-            pageFlip.loadFromHTML(document.querySelectorAll('.sag-sayfa-alan > div'));
-        } catch(err) {
-            console.log("StPageFlip yükleme hatası: ", err);
-        }
+
+        // Sayfa elementlerini motora tanıtıyoruz
+        pageFlip.loadFromHTML(sagSayfaDiv.querySelectorAll('.sayfa-oge'));
+    } catch (e) {
+        console.log("Flip motoru başlatılamadı:", e);
     }
 
     // Kapak açma animasyonu
     kapakAlan.addEventListener("click", function () {
         kapakAlan.classList.toggle("dondu");
         kapsayici.classList.toggle("acildi");
-    });
-
-    // Sağ sayfaya tıklandığında sola dönme (Özel tetikleyici)
-    sagSayfaAlan.addEventListener("click", function (e) {
-        e.stopPropagation();
-        sagSayfaAlan.classList.toggle("cevirdi");
+        
+        // Kapak açıldığında flip motorunun boyutlarını yenile
+        setTimeout(() => {
+            if (pageFlip) {
+                pageFlip.update();
+            }
+        }, 400);
     });
 });
 </script>
