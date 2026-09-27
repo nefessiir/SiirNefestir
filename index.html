@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
-<!-- Türkçe karakterleri (Ğ, Ş, Ç, İ, Ö, Ü, ğ, ş, ç, ı, ö, ü) ve el yazısı stilini kusursuz destekleyen Google Font (Caveat veya Marck Script) -->
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Marck+Script&display=swap" rel="stylesheet">
+<!-- Türkçe karakterleri (Ğ, Ş, Ç, İ, Ö, Ü, ğ, ş, ç, ı, ö, ü) ve el yazısı stilini destekleyen Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 html,
@@ -160,7 +160,7 @@ body {
     left: 10%;
     width: 80%;
     height: 75%;
-    font-family: 'Caveat', cursive, serif; /* Türkçe karakter destekli şık el yazısı */
+    font-family: 'Caveat', cursive, serif;
     font-size: clamp(13px, 1.4vw, 21px);
     line-height: 1.5;
     color: #16324f; /* Mavi mürekkep rengi */
@@ -171,17 +171,7 @@ body {
     overflow: hidden;
     word-break: normal;
     overflow-wrap: break-word;
-}
-
-/* DİVİT KALEM GÖRSELİ (Yazarken harflerin önünde ilerler) */
-.divit-kalem {
-    position: absolute;
-    width: 35px; /* Kalemin sayfaya göre boyutu */
-    height: auto;
-    display: none;
-    pointer-events: none;
-    z-index: 999;
-    transform: translate(-10px, -30px); /* Uç kısmının harfe denk gelmesi için ayar */
+    white-space: pre-line; /* Enter tuşlarını ve mısraları korur */
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -283,42 +273,34 @@ body {
 
 </div>
 
-<!-- Divit Kalem Nesnesi -->
-<img src="yazan_kalem3.png" id="divitKalem" class="divit-kalem" alt="Kalem">
-
 <script>
 // Akıllı Metin Düzenleme ve Kural Uygulama Fonksiyonu (Madde 5)
 function metniKuralaGoreBicimlendir(metin) {
     if (!metin) return "";
     
-    // Tarih formatı (gg.aa.yyyy) ve Başlıkları büyük harfe çevirme mantığı
     let satirlar = metin.split('\n');
     let yeniSatirlar = [];
     let sonrakiKucukteBaslasin = false;
 
     for (let i = 0; i < satirlar.length; i++) {
-        let satir = satirlar.trim();
+        let satir = satirlar[i].trim();
         if (satir === "") {
             yeniSatirlar.push("");
             continue;
         }
 
-        // Eğer ilk satırsa veya başlık ise BÜYÜK HARF yapalım
+        // İlk satır/başlık büyük harf
         if (i === 0) {
             satir = satir.toLocaleUpperCase('tr-TR');
         } else {
-            // Noktadan sonraki veya normal satır başları büyük harf
-            // Eğer önceki satır üç nokta (...) ile bittiyse küçük harfle başlat
             if (sonrakiKucukteBaslasin) {
-                // İlk harfi küçük bırak
                 sonrakiKucukteBaslasin = false;
             } else {
-                // Cümle başını büyük yap
                 satir = satir.charAt(0).toLocaleUpperCase('tr-TR') + satir.slice(1);
             }
         }
 
-        // Üç nokta kontrolü (...)
+        // Üç nokta (...) kontrolü
         if (satir.endsWith("...")) {
             sonrakiKucukteBaslasin = true;
         }
@@ -326,7 +308,7 @@ function metniKuralaGoreBicimlendir(metin) {
         yeniSatirlar.push(satir);
     }
 
-    return yeniSatirlar.join('<br>');
+    return yeniSatirlar.join('\n');
 }
 
 window.addEventListener("load", function () {
@@ -334,25 +316,22 @@ window.addEventListener("load", function () {
     const kapakAlan = document.getElementById("kapakAlan");
     const sayfalarKapsayici = document.getElementById("sayfalarKapsayici");
     const kapakImg = document.querySelector(".kapak");
-    const divitKalem = document.getElementById("divitKalem");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
     const ikiCm = 2 * 96 / 2.54;
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // ŞİİRLERİNİ VE METİNLERİNİ BURAYA İSTEDİĞİN SAYFADAN BAŞLATARAK VEREBİLİRSİN (Madde 1 ve 2)
-    // toplam 25 yaprak = 50 sayfa var. Hangi sayfaya ne geleceğini buradan yönetiyoruz:
+    // 50 Sayfa (25 Yaprak Çifti) Verisi
     const toplamYaprak = 25;
     let hamSayfaVerileri = {};
 
-    // ÖRNEK: 1. Yaprağın Ön yüzü (Yani 1. Sayfa) Sağ sayfadır ve buradan başlar:
+    // ŞİİRLERİNİ HANGİ SAYFADAN BAŞLATMAK İSTİYORSAN BURADAN YÖNETEBİLİRSİN:
     hamSayfaVerileri[1] = {
-        on: "ŞİİRİMİN BAŞLIĞI\n12.05.2026\n\nMavi bir düş gibi başladık...\nkağıda döküldü mısralar.",
+        on: "İLK ŞİİRİMİN ADI\n12.05.2026\n\nMavi bir düş gibi başladık...\nkağıda döküldü mısralar.",
         arka: "Zamanın akıp giden kıyısında,\nyalnızca şiir kaldı geriye..."
     };
 
-    // ÖRNEK: 2. Yaprak (3. ve 4. sayfalar)
     hamSayfaVerileri[2] = {
         on: "İKİNCİ BÖLÜM\n13.05.2026\n\nBuradan devam ediyor şiirler...",
         arka: "Sayfa sınırına sığmayan kısımlar\narkaya otomatik geçer."
@@ -362,8 +341,8 @@ window.addEventListener("load", function () {
 
     for (let i = 1; i <= toplamYaprak; i++) {
         let veri = hamSayfaVerileri[i] || { 
-            on: `SAYFA ${i * 2 - 1}\n\nBoş sayfa metni...`, 
-            arka: `SAYFA ${i * 2}\n\nBoş sayfa metni...` 
+            on: `SAYFA ${i * 2 - 1}\n\nŞiir metni buraya...`, 
+            arka: `SAYFA ${i * 2}\n\nŞiir metni buraya...` 
         };
 
         yaprakVerileri.push({
@@ -375,7 +354,6 @@ window.addEventListener("load", function () {
 
     let yaprakElementleri = [];
     let isRewinding = false;
-    let yazmaAnimasyonuAktif = false;
 
     // Yaprakları DOM'a Oluşturup Yerleştirme
     for (let i = 0; i < toplamYaprak; i++) {
@@ -396,21 +374,17 @@ window.addEventListener("load", function () {
             </div>
         `;
 
-        // Sayfaya Tıklandığında Canlı Divit Kalemle Yazma Efekti (Madde 5 ve Kalem Efekti)
+        // Yaprağa tıklama mantığı (Sayfa çevirme)
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
-            if (isRewinding || yazmaAnimasyonuAktif) return;
+            if (isRewinding) return;
 
             // Sağdan sola çevir
             if (!yaprakDiv.classList.contains("cevirdi")) {
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
                     yaprakDiv.style.zIndex = 50 + i;
-                    
-                    // Yazı yazma simülasyonunu başlat
-                    canliYazmaEfektiBaslat(yaprakDiv, function() {
-                        yaprakDiv.classList.add("cevirdi");
-                    });
+                    yaprakDiv.classList.add("cevirdi");
 
                     if (i === toplamYaprak - 1) {
                         otomatikGeriyeSar();
@@ -439,35 +413,6 @@ window.addEventListener("load", function () {
         yaprakElementleri.push(yaprakDiv);
     }
 
-    // DİVİT KALEM İLE CANLI YAZMA ANİMASYONU FONKSİYONU
-    function canliYazmaEfektiBaslat(yaprakDiv, callback) {
-        yazmaAnimasyonuAktif = true;
-        const yaziAlani = yaprakDiv.querySelector(".sayfa-on .sayfa-yazi");
-        const orijinalHTML = yaziAlani.innerHTML;
-        
-        // Önce yazıyı gizle, kalem harf harf yazıyormuş gibi açacağız
-        yaziAlani.innerHTML = "";
-        divitKalem.style.display = "block";
-
-        let karakterIndex = 0;
-        let timer = setInterval(function() {
-            karakterIndex += 3; // Hız ayarı
-            if (karakterIndex >= orijinalHTML.length) {
-                karakterIndex = orijinalHTML.length;
-                clearInterval(timer);
-                divitKalem.style.display = "none";
-                yazmaAnimasyonuAktif = false;
-                if (callback) callback();
-            }
-            yaziAlani.innerHTML = orijinalHTML.substring(0, karakterIndex);
-
-            // Kalemi yazının son harfinin olduğu konuma konumlandır
-            let rect = yaziAlani.getBoundingClientRect();
-            divitKalem.style.left = (rect.left + (rect.width * 0.4)) + "px";
-            divitKalem.style.top = (rect.top + (rect.height * 0.5)) + "px";
-        }, 20);
-    }
-
     // OTOMATİK GERİYE SARMA (REWIND) FONKSİYONU
     function otomatikGeriyeSar() {
         isRewinding = true;
@@ -493,7 +438,7 @@ window.addEventListener("load", function () {
 
     // Kapak Açma / Kapanma Mantığı
     kapakAlan.addEventListener("click", function () {
-        if (isRewinding || yazmaAnimasyonuAktif) return;
+        if (isRewinding) return;
 
         if (kapsayici.classList.contains("acildi")) {
             yaprakElementleri.forEach((y, index) => {
