@@ -109,11 +109,11 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
-/* ÖNSÖZ SAĞ SAYFA ALANI (İkinci yarı otomatik buraya akar) */
+/* ÖNSÖZ SAĞ SAYFA ALANI */
 .onsoz-sag-alan {
     position: absolute;
     top: 9%;
-    left: 0.8cm; /* Sağ sayfanın başlangıç konumu */
+    left: 0.8cm;
     width: calc(100% - 2.8cm);
     height: 80%;
     font-family: 'Caveat', cursive, serif;
@@ -316,7 +316,7 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
     </div>
 
-    <!-- AÇIK KİTABIN ÖNSÖZ ALANLARI (Sol ve Sağ Sayfa Olarak Ayrıldı) -->
+    <!-- AÇIK KİTABIN ÖNSÖZ ALANLARI (Başlangıçta tamamen boş) -->
     <div class="onsoz-sol-alan" id="onsozSolAlan"></div>
     <div class="onsoz-sag-alan" id="onsozSagAlan"></div>
 
@@ -389,23 +389,25 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // Önsöz Metni
-    const onsozMetni = `Kızıma…
-Sevgili Şiir,
-Belki bu satırları okuduğunda ben yanında olacağım, belki de
-hayat bizi birbirimizden uzaklaştırmış olacak.
-Ama şunu bilmeni isterim:
-Ben bu şiirleri insanlara bir şey anlatmak için değil,
-içimde birikenleri kaybetmemek için yazdım.
-Ve bazılarını yıllar sonra sen bul diye sakladım.
-Çünkü sana bırakabileceğim en güzel şeylerden birinin, benim
-dünyamı anlatan kelimeler olduğunu düşündüm.
-Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
-o şiir senden önce yazılmış olsa bile, sana da aittir.
-Çünkü sen benim hayatıma girdikten sonra yazdığım hiçbir şey
-eskisi gibi olmadı.
- 
-Baban.`;
+    // Önsöz Metni (Güvenli dizi formatında tanımlandı)
+    const onsozSatirlari = [
+        "Kızıma…",
+        "Sevgili Şiir,",
+        "Belki bu satırları okuduğunda ben yanında olacağım, belki de",
+        "hayat bizi birbirimizden uzaklaştırmış olacak.",
+        "Ama şunu bilmeni isterim:",
+        "Ben bu şiirleri insanlara bir şey anlatmak için değil,",
+        "içimde birikenleri kaybetmemek için yazdım.",
+        "Ve bazılarını yıllar sonra sen bul diye sakladım.",
+        "Çünkü sana bırakabileceğim en güzel şeylerden birinin, benim",
+        "dünyamı anlatan kelimeler olduğunu düşündüm.",
+        "Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,",
+        "o şiir senden önce yazılmış olsa bile, sana da aittir.",
+        "Çünkü sen benim hayatıma girdikten sonra yazdığım hiçbir şey",
+        "eskisi gibi olmadı.",
+        "",
+        "Baban."
+    ];
 
     let daktiloBaslatildi = false;
 
@@ -415,13 +417,11 @@ Baban.`;
 
         onsozSolDiv.innerHTML = "";
         onsozSagDiv.innerHTML = "";
-
-        let satirlarDizi = onsozMetni.split('\n');
         
-        // Metni ortadan iki sayfaya tam dengeli bölüyoruz
-        let yari = Math.ceil(satirlarDizi.length / 2);
-        let solSatirlar = satirlarDizi.slice(0, yari);
-        let sagSatirlar = satirlarDizi.slice(yari);
+        // Metni ortadan ikiye güvenli bölme
+        let yari = Math.ceil(onsozSatirlari.length / 2);
+        let solSatirlar = onsozSatirlari.slice(0, yari);
+        let sagSatirlar = onsozSatirlari.slice(yari);
 
         let solElementler = [];
         let sagElementler = [];
@@ -450,7 +450,7 @@ Baban.`;
                 solIndex++;
                 setTimeout(solSiradakiSatiriGoster, 120);
             } else {
-                // Sol sayfa bitince sağ sayfaya geç
+                // Sol sayfa bittikten sonra sağ sayfaya geçiş
                 let sagIndex = 0;
                 function sagSiradakiSatiriGoster() {
                     if (sagIndex < sagElementler.length) {
@@ -459,10 +459,12 @@ Baban.`;
                         setTimeout(sagSiradakiSatiriGoster, 120);
                     }
                 }
-                setTimeout(sagSiradakiSatiriGoster, 200);
+                setTimeout(sagSiradakiSatiriGoster, 250);
             }
         }
-        setTimeout(solSiradakiSatiriGoster, 800);
+        
+        // Kapak açılış animasyonunun tamamlanmasını bekleyip başlatıyoruz
+        setTimeout(solSiradakiSatiriGoster, 1200);
     }
 
     // 50 Sayfa (25 Yaprak Çifti) Verisi
