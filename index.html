@@ -16,15 +16,17 @@ body {
 
 body {
     overflow: hidden;
-    /* Varsayılan Tema: Ahşap Masa (Eski arka_plan.jpg yerine güvenli şık gradyan/renk altyapısı) */
-    background: linear-gradient(135deg, #2c1d11 0%, #1a1008 100%);
-    background-size: cover;
-    background-position: center;
+    /* Varsayılan Tema: Orijinal Ahşap Masa */
+    background-image: url("arka_plan.jpg");
+    background-size: 100% 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #111;
     display: flex;
     justify-content: center;
     align-items: center;
     perspective: 1500px;
-    transition: background 0.8s ease-in-out;
+    transition: background-image 0.6s ease-in-out;
 }
 
 /* TEMA SEÇİM BUTONU (Sağ Üst Köşe) */
@@ -302,17 +304,17 @@ body {
 </div>
 
 <script>
-// TEMA DEĞİŞTİRME FONKSİYONU (Harika Atmosferler)
+// TEMA DEĞİŞTİRME FONKSİYONU (Gerçek Fotoğraf Kalitesinde Atmosferler)
 function temaDegis(temaAdi) {
     if (temaAdi === 'ahsap') {
-        // Sıcak Klasik Ahşap Masa Tonu
-        document.body.style.background = "linear-gradient(135deg, #2c1d11 0%, #1a1008 100%)";
+        // Senin orijinal ahşap masa görselin
+        document.body.style.backgroundImage = "url('arka_plan.jpg')";
     } else if (temaAdi === 'gece') {
-        // Gece ve Mum Işığı Atmosferi (Koyu lacivert + sıcak mum sarısı ışıma)
-        document.body.style.background = "radial-gradient(circle at 70% 30%, #3a2510 0%, #0d111a 70%, #05070a 100%)";
+        // Sıcak mum ışıklı koyu ahşap masa / gece ortamı
+        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1519682337058-a94d519337bc?q=80&w=1920&auto=format&fit=crop')";
     } else if (temaAdi === 'kulube') {
-        // Deniz Kenarı Kulübe Atmosferi (Ferah Akdeniz mavisi ve ahşap pencere hissi)
-        document.body.style.background = "linear-gradient(135deg, #1b4d6e 0%, #0f2a3d 50%, #221710 100%)";
+        // Deniz manzaralı sahil kulübesi / pencere önü atmosferi
+        document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop')";
     }
 }
 
