@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
-<!-- Gerçekçi Sayfa Kıvrılma ve Çevirme Motoru (StPageFlip) -->
+<!-- Sayfa Kıvırma ve Çevirme Motoru (StPageFlip) -->
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
 <style>
@@ -30,24 +30,81 @@ body {
     perspective: 1200px;
 }
 
-/* KİTAP ANA KAPSAYICISI */
+/* ORTAK KAPSAYICI ALAN */
 .kitap-kapsayici {
     position: relative;
-    transform: translateX(4cm);
+    width: 20%;
+    height: auto;
+    transform: translateX(8cm);
     transform-style: preserve-3d;
+    transform-origin: right bottom;
     z-index: 2;
 }
 
-/* SAYFA YAPILARI (StPageFlip İçin) */
-#gercek-kitap {
-    display: none; /* Motor verileri okurken gizli tutar, hazırlanınca gösterir */
-}
-
-.sayfa-oge {
-    background-color: #fdfbf7;
-    overflow: hidden;
+/* 1. KATMAN: SAĞDA SABİT DURAN ALT KAPAK */
+.sag-kapak {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
+}
+
+.sag-kapak img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    display: block;
+}
+
+/* 2. KATMAN: AÇIK KİTAP */
+.acik-kitap {
+    position: absolute;
+    top: -0.5cm;
+    left: calc(-100% - 0.5cm);
+    width: calc(200% + 1cm);
+    height: calc(100% + 1cm);
+    z-index: 1; 
+    pointer-events: none;
+    
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
+}
+
+/* Kapak açıldığında tetiklenen stiller */
+.kitap-kapsayici.acildi .acik-kitap {
+    opacity: 1;
+    z-index: 4;
+    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
+}
+
+/* 2.2. STPAGEFLIP İÇ SAYFA KONTEYNERİ (Açık kitabın tam üstüne oturur) */
+#fiziksel-sayfalar {
+    position: absolute;
+    top: 0.5cm;
+    left: calc(-100% + 0.2cm);
+    width: calc(200% - 0.3cm);
+    height: calc(100% - 1cm);
+    z-index: 0;
+    pointer-events: none; /* Kapalıyken tıklanmaz */
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
+}
+
+.kitap-kapsayici.acildi #fiziksel-sayfalar {
+    opacity: 1;
+    z-index: 5;
+    pointer-events: auto; /* Kapak açılınca sayfalar tutulup çevrilebilir olur */
+    transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
+}
+
+/* Motor içi sayfa öğeleri */
+.sayfa-oge {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: transparent;
 }
 
 .sayfa-oge img {
@@ -57,29 +114,51 @@ body {
     display: block;
 }
 
-/* ÖZEL KAPAK SAYFASI VE ÜZERİNDEKİ YAZI STİLİ */
-.kapak-sayfa {
+/* 3. KATMAN: ÜSTTEKİ HAREKETLİ KAPAK */
+.kapak-alan {
     position: relative;
     width: 100%;
     height: 100%;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    cursor: pointer;
+    transition: transform 1.5s ease-in-out;
+    z-index: 3;
 }
 
-.kapak-sayfa img {
+.kapak-alan.dondu {
+    transform: rotateY(-180deg);
+}
+
+.kapak,
+.kapak-arka {
     width: 100%;
     height: 100%;
     object-fit: fill;
     display: block;
+    backface-visibility: hidden;
+}
+
+.kapak {
+    position: relative;
+}
+
+.kapak-arka {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotateY(180deg);
 }
 
 .kapak-yazi {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: calc(50% + 1cm);
     transform: translate(-50%, -50%);
     width: 85%;
     text-align: left;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(10px, 1.1vw, 20px);
+    font-size: clamp(10px, 1.25vw, 22px);
     line-height: 1.7;
     color: #d6ad38;
     text-shadow:
@@ -88,7 +167,7 @@ body {
         0 0 1px rgba(245, 198, 65, 0.8),
         0 1px 2px rgba(45, 25, 3, 0.9);
     letter-spacing: 0.3px;
-    pointer-events: none;
+    backface-visibility: hidden;
 }
 
 .kapak-yazi .imza {
@@ -101,69 +180,88 @@ body {
 
 <body>
 
-<div class="kitap-kapsayici">
-    <!-- SAYFALARIN TANIMLANDIĞI ALAN -->
-    <div id="gercek-kitap">
-        
-        <!-- Sayfa 1: Ön Kapak (Sert Kapak - Kıvrılmaz, tek parça döner) -->
-        <div class="sayfa-oge" data-density="hard">
-            <div class="kapak-sayfa">
-                <img src="kapak.jpg" alt="Ön Kapak">
-                <div class="kapak-yazi">
-                    Şiir'e hatıra<br><br>
-                    kelimelerden..<br>
-                    hayattan..<br>
-                    babasından.<br><br><br>
-                    <span class="imza">S.O.A</span>
-                </div>
-            </div>
-        </div>
+<div class="kitap-kapsayici" id="kitapKapsayici">
 
-        <!-- Sayfa 2: Sol İç Sayfa (Yumuşak Kağıt - Kıvrılarak çevrilir) -->
-        <div class="sayfa-oge" data-density="soft">
-            <img src="sol_sayfa.png" alt="Sol İç Sayfa">
-        </div>
-
-        <!-- Sayfa 3: Sağ İç Sayfa (Yumuşak Kağıt - Kıvrılarak çevrilir) -->
-        <div class="sayfa-oge" data-density="soft">
-            <img src="sag_sayfa.png" alt="Sağ İç Sayfa">
-        </div>
-
-        <!-- Sayfa 4: Arka Kapak (Sert Kapak - Kıvrılmaz, tek parça döner) -->
-        <div class="sayfa-oge" data-density="hard">
-            <img src="kapak.jpg" alt="Arka Kapak">
-        </div>
-
+    <!-- 1. ALT KAPAK -->
+    <div class="sag-kapak">
+        <img src="kapak.jpg">
     </div>
+
+    <!-- 2. AÇIK KİTAP -->
+    <img src="acik_kitap1.png" class="acik-kitap">
+
+    <!-- 2.3 & 2.5. BİRLEŞTİRİLMİŞ FİZİKSEL SAYFALAR (StPageFlip Motoru) -->
+    <div id="fiziksel-sayfalar">
+        <div class="sayfa-oge">
+            <img src="sol_sayfa.png" alt="Sol Sayfa">
+        </div>
+        <div class="sayfa-oge">
+            <img src="sag_sayfa.png" alt="Sağ Sayfa">
+        </div>
+    </div>
+
+    <!-- 3. ÜSTTEKİ AÇILAN KAPAK -->
+    <div class="kapak-alan" id="kapakAlan">
+        <img src="kapak.jpg" class="kapak">
+        
+        <div class="kapak-yazi">
+            Şiir'e hatıra.<br><br>
+            kelimelerden..<br>
+            hayattan..<br>
+            babasından.<br><br><br>
+            <span class="imza">S.O.A</span>
+        </div>
+
+        <img src="kapak.jpg" class="kapak-arka">
+    </div>
+
 </div>
 
 <script>
 window.addEventListener("load", function () {
-    const testImg = new Image();
-    testImg.src = "kapak.jpg";
+    const kapsayici = document.getElementById("kitapKapsayici");
+    const kapakAlan = document.getElementById("kapakAlan");
+    const kapakImg = document.querySelector(".kapak");
+
+    const yukseklik = kapakImg.getBoundingClientRect().height;
+    const ikiCm = 2 * 96 / 2.54;
+    const oran = (yukseklik + ikiCm) / yukseklik;
+
+    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
+
+    // Kapak açma animasyonu
+    kapakAlan.addEventListener("click", function () {
+        kapakAlan.classList.toggle("dondu");
+        kapsayici.classList.toggle("acildi");
+    });
+
+    // StPageFlip İç Sayfa Fiziğini Başlatma
+    const solSayfaImg = document.querySelector(".sol-sayfa img") || kapsayici.querySelector(".sayfa-oge img");
     
-    testImg.onload = function () {
-        let hedefYukseklik = window.innerHeight * 0.75;
-        let aspectRasyon = testImg.width / testImg.height;
-        let hedefGenislik = hedefYukseklik * aspectRasyon;
+    // Görsel boyutları üzerinden motoru yapılandır
+    setTimeout(() => {
+        const container = document.getElementById("fiziksel-sayfalar");
+        const w = container.clientWidth / 2;
+        const h = container.clientHeight;
 
-        const pageFlip = new St.PageFlip(document.getElementById('gercek-kitap'), {
-            width: Math.round(hedefGenislik),
-            height: Math.round(hedefYukseklik),
-            size: "fixed",
-            minWidth: 300,
-            maxWidth: 1000,
-            minHeight: 400,
-            maxHeight: 1200,
-            showCover: true,
-            mobileScrollSupport: false,
-            maxShadowOpacity: 0.5,
-            flippingTime: 1200
-        });
+        if (w > 0 && h > 0) {
+            const pageFlip = new St.PageFlip(container, {
+                width: Math.round(w),
+                height: Math.round(h),
+                size: "fixed",
+                minWidth: 100,
+                maxWidth: 2000,
+                minHeight: 100,
+                maxHeight: 2000,
+                showCover: false,
+                mobileScrollSupport: false,
+                maxShadowOpacity: 0.4,
+                flippingTime: 1000
+            });
 
-        pageFlip.loadFromHTML(document.querySelectorAll('.sayfa-oge'));
-        document.getElementById('gercek-kitap').style.display = "block";
-    };
+            pageFlip.loadFromHTML(container.querySelectorAll('.sayfa-oge'));
+        }
+    }, 500);
 });
 </script>
 
