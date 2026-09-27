@@ -54,13 +54,13 @@ body {
     display: block;
 }
 
-/* 2. KATMAN: SAĞ İÇ SAYFA (0.5 cm yukarı kaydırıldı, alttan 1 cm kısaltıldı) */
+/* 2. KATMAN: SAĞ İÇ SAYFA (Boyuna dokunulmadı, sağdan ve soldan 0.1'er cm küçültüldü) */
 .sag-ic-sayfa {
     position: absolute;
-    top: 0.5cm; /* 0.5 cm yukarı kaydırma */
-    left: 0;
-    width: 100%;
-    height: calc(100% - 1cm); 
+    top: 0.5cm;
+    left: 0.1cm; /* Soldan 0.1 cm içeride */
+    width: calc(100% - 0.2cm); /* Sağdan ve soldan 0.1'er cm daraltıldı */
+    height: calc(100% - 1cm); /* Boyut sabit bırakıldı */
     z-index: 0;
     pointer-events: none;
     opacity: 0;
