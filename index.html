@@ -55,7 +55,7 @@ body {
     display: block;
 }
 
-/* 2. SOL SAYFA (Sabit veya sola dönen yaprak) */
+/* 2. SOL SAYFA (Sabit Sol Alan) */
 .sol-sayfa-alan {
     position: absolute;
     top: 0.5cm;
@@ -66,7 +66,7 @@ body {
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: right center; /* Sağ kenarından menteşelidir (sağa dönmek için) */
+    transform-origin: right center;
     transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 0s;
 }
 
@@ -78,7 +78,6 @@ body {
     cursor: pointer;
 }
 
-/* Sol sayfa sağa çevrildiğinde */
 .sol-sayfa-alan.cevirdi {
     transform: rotateY(180deg);
 }
@@ -88,10 +87,10 @@ body {
     height: 100%;
     object-fit: fill;
     display: block;
-    backface-visibility: hidden;
+    backface-visibility: visible; /* Kaybolmayı önler */
 }
 
-/* 3. SAĞ SAYFA (Sağda duran ve sola çevrilen yaprak) */
+/* 3. SAĞ SAYFA (Sola dönen ve sol tarafta kalan yaprak) */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
@@ -102,7 +101,7 @@ body {
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenarından menteşelidir (sola dönmek için) */
+    transform-origin: left center; /* Sol kenarından menteşelidir */
     transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.4s ease-in-out 0s;
 }
 
@@ -114,7 +113,7 @@ body {
     cursor: pointer;
 }
 
-/* Sağ sayfa sola çevrildiğinde */
+/* Sağ sayfa sola çevrildiğinde sol tarafta kalır */
 .sag-sayfa-alan.cevirdi {
     transform: rotateY(-180deg);
 }
@@ -124,7 +123,7 @@ body {
     height: 100%;
     object-fit: fill;
     display: block;
-    backface-visibility: hidden;
+    backface-visibility: visible; /* Havada kaybolmasını engeller, solda görünür kalır */
 }
 
 /* 4. ÜSTTEKİ HAREKETLİ KAPAK */
@@ -200,12 +199,12 @@ body {
         <img src="kapak.jpg">
     </div>
 
-    <!-- 2. SOL SAYFA (Tıklayınca sağa döner) -->
+    <!-- 2. SOL SAYFA -->
     <div class="sol-sayfa-alan" id="solSayfaAlan">
         <img src="sol_sayfa.png" alt="Sol Sayfa">
     </div>
 
-    <!-- 3. SAĞ SAYFA (Tıklayınca sola döner) -->
+    <!-- 3. SAĞ SAYFA -->
     <div class="sag-sayfa-alan" id="sagSayfaAlan">
         <img src="sag_sayfa.png" alt="Sağ Sayfa">
     </div>
@@ -247,13 +246,13 @@ window.addEventListener("load", function () {
         kapsayici.classList.toggle("acildi");
     });
 
-    // Sağ sayfaya tıklandığında sola doğru kapanır
+    // Sağ sayfaya tıklandığında sola devrilip orada kalır
     sagSayfaAlan.addEventListener("click", function (e) {
         e.stopPropagation();
         sagSayfaAlan.classList.toggle("cevirdi");
     });
 
-    // Sol sayfaya tıklandığında sağa doğru geri döner
+    // Sol sayfaya tıklandığında sağa geri döner
     solSayfaAlan.addEventListener("click", function (e) {
         e.stopPropagation();
         solSayfaAlan.classList.toggle("cevirdi");
