@@ -55,7 +55,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTAP GÖVDESİ (acik_kitap1.png) - Kapanış hızı kapakla senkronize yavaşlatıldı */
+/* AÇIK KİTAP GÖVDESİ (acik_kitap1.png) */
 .acik-kitap-alan {
     position: absolute;
     top: 0.5cm;
@@ -84,12 +84,12 @@ body {
     display: block;
 }
 
-/* SAĞ SAYFA - Sağdan toplam 0.6 cm kısaltıldı ve soldan taşma sorunu düzeltildi */
+/* SAĞ SAYFA - Sağdan toplam 1.6 cm küçültüldü ve 3D eksen kayması düzeltildi */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
     left: 0;
-    width: calc(100% - 0.6cm);
+    width: calc(100% - 1.6cm);
     height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
@@ -107,9 +107,9 @@ body {
     cursor: pointer;
 }
 
-/* Döndüğünde küçültülen ölçüye (100% - 0.6cm) göre tam oturması için translateX ayarlandı */
+/* Yerin dibine girme sorunu çözüldü: Net bir şekilde sol tarafa oturacak matris */
 .sag-sayfa-alan.cevirdi {
-    transform: rotateY(-180deg) translateX(calc(-100% + 0.6cm));
+    transform: rotateY(-180deg) translateX(-100%);
     z-index: 20;
 }
 
@@ -133,7 +133,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* ÜSTTEKİ HAREKETLİ KAPAK - Kapanış süresi yavaşlatıldı (2.0s) */
+/* ÜSTTEKİ HAREKETLİ KAPAK */
 .kapak-alan {
     position: relative;
     width: 100%;
