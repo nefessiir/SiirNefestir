@@ -61,21 +61,21 @@ body {
     left: calc(-50% - 3.95cm);
     width: calc(200% + 1cm);
     height: calc(100% + 1cm);
-    z-index: 1; 
+    z-index: 0; 
     pointer-events: none;
     
     opacity: 0;
     transition: opacity 0.4s ease-in-out 0s, z-index 0s 0.4s;
 }
 
-/* 3. KATMAN: İÇ SAYFALAR (Açık kitapla birebir aynı ölçü ve konumda) */
+/* 3. KATMAN: İÇ SAYFALAR (Kapalıyken altta, açılınca en üstte) */
 .ic-sayfalar-kapsayici {
     position: absolute;
     top: -0.5cm;
     left: calc(-50% - 3.95cm);
     width: calc(200% + 1cm);
     height: calc(100% + 1cm);
-    z-index: 5; /* Her şeyin en üstünde */
+    z-index: 0; /* Kapalıyken kapağın altında kalır */
     pointer-events: none;
     display: flex;
     
@@ -94,7 +94,7 @@ body {
 .kitap-kapsayici.acildi .acik-kitap,
 .kitap-kapsayici.acildi .ic-sayfalar-kapsayici {
     opacity: 1;
-    z-index: 5; 
+    z-index: 5; /* Açılınca en üste çıkarlar */
     transition: opacity 0.4s ease-in-out 1.1s, z-index 0s 0s;
 }
 
@@ -173,14 +173,14 @@ body {
     <!-- 2. AÇIK KİTAP ARKA PLANI -->
     <img src="acik_kitap1.png" class="acik-kitap">
 
-    <!-- 3. İÇ SAYFALAR (Açık kitapla birebir aynı ölçü ve konumda, sol ve sağ ayrı) -->
+    <!-- 3. İÇ SAYFALAR -->
     <div class="ic-sayfalar-kapsayici">
         <img src="icsayfasol.png" alt="Sol İç Sayfa">
         <img src="icsayfasag.png" alt="Sağ İç Sayfa">
     </div>
 
     <!-- 4. ÜSTTEKİ AÇILAN KAPAK -->
-    <div class="kap-alan" id="kapakAlan">
+    <div class="kapak-alan" id="kapakAlan">
         <img src="kapak.jpg" class="kapak">
         
         <div class="kapak-yazi">
