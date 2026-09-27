@@ -84,18 +84,18 @@ body {
     display: block;
 }
 
-/* SAĞ SAYFA - Eksen hatasını önlemek için kapsayıcı tam boy, içerik 1.6cm içeride */
+/* SAĞ SAYFA - Tam olarak 1.6cm küçültüldü ve sol kenarı tam orta eksende hizalandı */
 .sag-sayfa-alan {
     position: absolute;
     top: 0.5cm;
-    left: 0;
-    width: 100%;
+    left: 1.6cm; /* Sağdan 1.6cm küçültüldüğü için soldan 1.6cm kaydırılarak orta çizgiye yapıştırıldı */
+    width: calc(100% - 1.6cm);
     height: calc(100% - 1cm);
     z-index: 0;
     opacity: 0;
     pointer-events: none;
     transform-style: preserve-3d;
-    transform-origin: left center; /* Sol kenar (orta cilt çizgisi) kusursuz sabit */
+    transform-origin: left center; /* Sol kenar (orta eksen) sabit */
     transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.3s ease-in-out;
 }
 
@@ -116,8 +116,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    /* Sağdan 1.6 cm içeride durması ve tam oturması sağlandı */
-    width: calc(100% - 1.6cm);
+    width: 100%;
     height: 100%;
     backface-visibility: hidden;
 }
@@ -129,11 +128,8 @@ body {
     display: block;
 }
 
-/* Döndüğünde arka yüzün simetrik ve kusursuz oturması */
 .sayfa-arka {
     transform: rotateY(180deg);
-    left: auto;
-    right: 0; 
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
