@@ -86,19 +86,19 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (Optik denge için 11.2pt ve 1.42 satır aralığı) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
 .sol-kanat-yazi {
     position: absolute;
-    top: 0.3cm;
+    top: 0.7cm;
     left: calc(0.75cm + 0.3cm + 1cm);
-    width: calc(50% - 1.8cm);
-    height: calc(100% - 0.6cm);
+    width: calc(50% - 2.5cm);
+    height: calc(100% - 1.4cm);
     font-family: 'Caveat', cursive, serif;
-    font-size: 11.2pt;
-    line-height: 1.42;
+    font-size: 12pt;
+    line-height: 1.35;
     color: #1a4b82;
     text-align: left;
-    text-shadow: 0 0 2px rgba(26, 75, 130, 0.25);
+    text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
     box-sizing: border-box;
     pointer-events: none;
     overflow: hidden;
@@ -181,7 +181,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR (Sağ taraf: 12pt ve 1.42 satır aralığı) */
+/* SAYFA İÇİ YAZILAR */
 .sayfa-yazi {
     position: absolute;
     top: 0.3cm;
@@ -190,10 +190,10 @@ body {
     height: calc(100% - 0.6cm);
     font-family: 'Caveat', cursive, serif;
     font-size: 12pt;
-    line-height: 1.42;
+    line-height: 1.35;
     color: #1a4b82;
     text-align: left;
-    text-shadow: 0 0 2px rgba(26, 75, 130, 0.25);
+    text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
     box-sizing: border-box;
     pointer-events: none;
     backface-visibility: hidden;
@@ -345,6 +345,7 @@ Baban.`;
     let kelimeParcalari = onsozMetni.match(/([^\s]+|\s+)/g) || [];
     let globalKelimeIndex = 0;
 
+    // Kelime kelime daktilo ile element dolduran fonksiyon
     function metinYazdir(parcalar, element, hiz = 55, callback = null) {
         daktiloDevamEdiyor = true;
 
@@ -355,6 +356,7 @@ Baban.`;
                 let parca = parcalar[globalKelimeIndex];
                 element.textContent += parca;
 
+                // Alan taştıysa kelimeyi geri al ve bu sayfayı tamamla
                 if (element.scrollHeight > element.clientHeight) {
                     element.textContent = element.textContent.slice(0, -parca.length);
                     daktiloDevamEdiyor = false;
@@ -373,6 +375,7 @@ Baban.`;
         yazdirAdim();
     }
 
+    // Sağ taraf dinamik sayfalarını oluşturma
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
@@ -391,6 +394,7 @@ Baban.`;
             </div>
         `;
 
+        // Sayfa Tıklama (Sayfa Çevirme Mantığı)
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
 
@@ -403,6 +407,7 @@ Baban.`;
                     yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
+                    // Sayfa dönüş animasyonu (1.0 saniye) TAMAMLANDIKTAN ANDA çalışır
                     setTimeout(() => {
                         const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
                         
@@ -466,6 +471,7 @@ Baban.`;
         }, 100);
     }
 
+    // Kapak Açılma Tıklaması
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
@@ -489,9 +495,11 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalKelimeIndex = 0;
+            // Kitap açıldıktan 3.8 saniye sonra önce SOL KANAT başlar
             setTimeout(() => {
                 if (solKanatYazi) {
                     metinYazdir(kelimeParcalari, solKanatYazi, 55, () => {
+                        // Sol kanat dolunca, kalan kelimeler otomatik olarak 1. SAĞ SAYFAYA (0. yaprağın ön yüzü) yazılmaya başlar!
                         if (globalKelimeIndex < kelimeParcalari.length && ilkSagSayfaYazi) {
                             metinYazdir(kelimeParcalari, ilkSagSayfaYazi, 55);
                         }
