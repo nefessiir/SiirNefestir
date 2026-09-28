@@ -348,17 +348,15 @@ Baban.`;
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        // DİKKAT: Artık görsel dosyaları ve yazı alanları tam istediğiniz gibi tersine (Sol: sol_sayfa / Sağ: sag_sayfa) ayarlandı.
-        // - sayfa-on (ön yüz): Kitap açıldığında sağ tarafta duran yüz (sag_sayfa.png)
-        // - sayfa-arka (arka yüz): Sayfa sola çevrildiğinde sol tarafta görünen yüz (sol_sayfa.png)
+        // Her yaprağın hem ön (sağ sayfa) hem de arka (sol sayfa) yüzü var
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
-                    <img src="sag_sayfa.png" alt="Sayfa Sağ">
+                    <img src="sag_sayfa.png" alt="Sayfa Ön">
                     <div class="sayfa-yazi" id="yazi-on-${i}"></div>
                 </div>
                 <div class="sayfa-arka">
-                    <img src="sol_sayfa.png" alt="Sayfa Sol">
+                    <img src="sol_sayfa.png" alt="Sayfa Arka">
                     <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
                 </div>
             </div>
@@ -379,13 +377,13 @@ Baban.`;
 
                     // Sayfa dönüş animasyonu (1.0 saniye) TAMAMLANDIKTAN ANDA çalışır
                     setTimeout(() => {
-                        // 1. ADIM: Çevrilen yaprağın ARKASINA (yani soldaki sayfaya, yani arka yüze) yazmaya çalış
+                        // 1. ADIM: Önce çevrilen yaprağın ARKASINA (sol sayfa) yazmaya çalış
                         const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
                         
                         if (globalKelimeIndex < kelimeParcalari.length && arkaYaziElementi) {
                             metinYazdir(kelimeParcalari, arkaYaziElementi, 55, () => {
-                                // 2. ADIM: Sol sayfa da dolduysa ve hala yazı kaldıysa, 
-                                // BİR SONRAKİ YAPRAĞIN ÖN YÜZÜNE (yani sağ sayfaya) geç ve daktiloya devam et
+                                // 2. ADIM: Eğer arka sayfa da dolduysa ve hala yazı kaldıysa, 
+                                // BİR SONRAKİ YAPRAĞIN ÖN YÜZÜNE (sağ sayfa) geç ve daktiloya devam et
                                 let sonrakiIndex = i + 1;
                                 if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
                                     const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
@@ -448,14 +446,13 @@ Baban.`;
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
-        // DİKKAT: Artık yazı ilk olarak 0. yaprağın ARKA yüzünde (yani sol sayfada) başlıyor!
-        const ilkSolSayfaYazi = document.getElementById("yazi-arka-0");
+        const ilkSayfaYazi = document.getElementById("yazi-on-0");
 
         if (kapsayici.classList.contains("acildi")) {
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
             globalKelimeIndex = 0;
-            if (ilkSolSayfaYazi) ilkSolSayfaYazi.textContent = "";
+            if (ilkSayfaYazi) ilkSayfaYazi.textContent = "";
 
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
@@ -468,10 +465,10 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalKelimeIndex = 0;
-            // Kitap açıldıktan 3.8 saniye sonra ilk yazımız sol sayfada daktilo ile belirir
+            // Kitap açıldıktan 3.8 saniye sonra ilk sayfanın (0. yaprağın ön yüzü) daktilosu başlar
             setTimeout(() => {
-                if (ilkSolSayfaYazi) {
-                    metinYazdir(kelimeParcalari, ilkSolSayfaYazi, 55);
+                if (ilkSayfaYazi) {
+                    metinYazdir(kelimeParcalari, ilkSayfaYazi, 55);
                 }
             }, 3800);
         }
