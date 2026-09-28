@@ -152,7 +152,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR - İstediğiniz gibi 0.3cm içeriden başlatılarak alan genişletildi */
+/* SAYFA İÇİ YAZILAR - İstediğiniz genişletilmiş alan ölçüleri */
 .sayfa-yazi {
     position: absolute;
     top: 0.3cm;
@@ -309,13 +309,13 @@ Baban.`;
     let aktifDaktiloTimeout = null;
     let daktiloDevamEdiyor = false;
 
-    // Boşlukları ve kelimeleri kusursuz koruyarak parçalama
     let kelimeParcalari = onsozMetni.match(/([^\s]+|\s+)/g) || [];
     let globalKelimeIndex = 0;
     let aktifYazanOnElement = null;
     let aktifYazanArkaElement = null;
 
-    function kelimeBazliDaktilo(parcalar, onElement, arkaElement, hiz = 25) {
+    // Daktilo hızı yavaşlatıldı (Örn: 25ms yerine 55ms yapıldı, daha sakin akacak)
+    function kelimeBazliDaktilo(parcalar, onElement, arkaElement, hiz = 55) {
         daktiloDevamEdiyor = true;
         aktifYazanOnElement = onElement;
         aktifYazanArkaElement = arkaElement;
@@ -364,7 +364,7 @@ Baban.`;
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
 
-            // HER SAYFA İÇİN SABIRSIZ OKUYUCU: Aktif yazılan sayfada tıklayınca o sayfadakiler anında tamamlansın
+            // Sadece tıklanılan/aktif yazılan sayfada metni anında tamamlama
             if (daktiloDevamEdiyor) {
                 if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
                 daktiloDevamEdiyor = false;
@@ -378,7 +378,7 @@ Baban.`;
                     }
                     globalKelimeIndex++;
                 }
-                return; // Sayfa çevirmeyi engelle, okumaya devam etsin
+                return;
             }
 
             if (isRewinding) return;
@@ -460,12 +460,12 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalKelimeIndex = 0;
-            // Kitap açıldıktan sonra başlangıç 1 saniye daha geciktirildi (Toplam 2.8 saniye sonra başlar)
+            // Kitap açıldıktan sonra gecikme 1 saniye daha artırıldı (Toplam 3.8 saniye sonra başlar)
             setTimeout(() => {
                 if (ilkOnYazi && ilkArkaYazi) {
-                    kelimeBazliDaktilo(kelimeParcalari, ilkOnYazi, ilkArkaYazi, 25);
+                    kelimeBazliDaktilo(kelimeParcalari, ilkOnYazi, ilkArkaYazi, 55);
                 }
-            }, 2800);
+            }, 3800);
         }
     });
 });
