@@ -274,7 +274,7 @@ body {
 </div>
 
 <script>
-// Akıllı Metin Düzenleme ve Kural Uygulama Fonksiyonu (Madde 5)
+// Akıllı Metin Düzenleme ve Kural Uygulama Fonksiyonu
 function metniKuralaGoreBicimlendir(metin) {
     if (!metin) return "";
     
@@ -289,7 +289,6 @@ function metniKuralaGoreBicimlendir(metin) {
             continue;
         }
 
-        // İlk satır/başlık büyük harf
         if (i === 0) {
             satir = satir.toLocaleUpperCase('tr-TR');
         } else {
@@ -300,7 +299,6 @@ function metniKuralaGoreBicimlendir(metin) {
             }
         }
 
-        // Üç nokta (...) kontrolü
         if (satir.endsWith("...")) {
             sonrakiKucukteBaslasin = true;
         }
@@ -322,33 +320,15 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // 50 Sayfa (25 Yaprak Çifti) Verisi
+    // 50 Sayfa (25 Yaprak Çifti) Verisi - Tamamen Boş/Tertemiz
     const toplamYaprak = 25;
-    let hamSayfaVerileri = {};
-
-    // ŞİİRLERİNİ HANGİ SAYFADAN BAŞLATMAK İSTİYORSAN BURADAN YÖNETEBİLİRSİN:
-    hamSayfaVerileri[1] = {
-        on: "İLK ŞİİRİMİN ADI\n12.05.2026\n\nMavi bir düş gibi başladık...\nkağıda döküldü mısralar.",
-        arka: "Zamanın akıp giden kıyısında,\nyalnızca şiir kaldı geriye..."
-    };
-
-    hamSayfaVerileri[2] = {
-        on: "İKİNCİ BÖLÜM\n13.05.2026\n\nBuradan devam ediyor şiirler...",
-        arka: "Sayfa sınırına sığmayan kısımlar\narkaya otomatik geçer."
-    };
-
     let yaprakVerileri = [];
 
     for (let i = 1; i <= toplamYaprak; i++) {
-        let veri = hamSayfaVerileri[i] || { 
-            on: `SAYFA ${i * 2 - 1}\n\nŞiir metni buraya...`, 
-            arka: `SAYFA ${i * 2}\n\nŞiir metni buraya...` 
-        };
-
         yaprakVerileri.push({
             id: i,
-            onMetin: metniKuralaGoreBicimlendir(veri.on),
-            arkaMetin: metniKuralaGoreBicimlendir(veri.arka)
+            onMetin: "",
+            arkaMetin: ""
         });
     }
 
