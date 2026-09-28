@@ -319,21 +319,18 @@ Baban.`;
     let daktiloBasladi = false;
     let aktifDaktiloTimeout = null;
 
-    // Akıllı Daktilo: Ön sayfaya sığmayan metni otomatik olarak arka sayfaya (sol sayfaya) taşır
-    function akilliDaktilo(metin, onElement, arkaElement, index = 0, hiz = 25) {
+    // Kelime aralarındaki boşlukları kusursuz koruyan akıllı daktilo fonksiyonu
+    function kelimeKelimeDaktilo(metin, onElement, arkaElement, index = 0, hiz = 20) {
         if (index < metin.length) {
-            // Önce ön sayfaya yazmayı deneriz
-            onElement.textContent += metin.charAt(index);
+            let karakter = metin.charAt(index);
+            onElement.textContent += karakter;
 
-            // Eğer ön sayfa içeriği taşıyorsa (scrollHeight > clientHeight)
             if (onElement.scrollHeight > onElement.clientHeight) {
-                // Son eklenen karakteri ön sayfadan geri alıp sileriz
                 onElement.textContent = onElement.textContent.slice(0, -1);
-                // Ve karakteri arka sayfaya eklemeye başlarız
-                arkaElement.textContent += metin.charAt(index);
+                arkaElement.textContent += karakter;
             }
 
-            aktifDaktiloTimeout = setTimeout(() => akilliDaktilo(metin, onElement, arkaElement, index + 1, hiz), hiz);
+            aktifDaktiloTimeout = setTimeout(() => kelimeKelimeDaktilo(metin, onElement, arkaElement, index + 1, hiz), hiz);
         }
     }
 
@@ -437,7 +434,7 @@ Baban.`;
             if (!daktiloBasladi && ilkOnYazi && ilkArkaYazi) {
                 daktiloBasladi = true;
                 setTimeout(() => {
-                    akilliDaktilo(onsozMetni, ilkOnYazi, ilkArkaYazi, 0, 25);
+                    kelimeKelimeDaktilo(onsozMetni, ilkOnYazi, ilkArkaYazi, 0, 20);
                 }, 1200);
             }
         }
