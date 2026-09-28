@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
-<!-- Türkçe karakterleri (Ğ, Ş, Ç, İ, Ö, Ü, ğ, ş, ç, ı, ö, ü) ve el yazısı stilini destekleyen Google Font -->
+<!-- Türkçe karakterleri ve el yazısı stilini destekleyen Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -153,7 +153,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR - ÖLÇÜLÜ, PARLAK MAVİ MÜREKKEP VE HER İKİ YANA YASLI */
+/* SAYFA İÇİ YAZILAR - DÜŞÜK PUNO, DARALTILMIŞ SATIR ARALIĞI VE İKİ YANA YASLI */
 .sayfa-yazi {
     position: absolute;
     top: 13%;
@@ -161,19 +161,19 @@ body {
     width: 80%;
     height: 75%;
     font-family: 'Caveat', cursive, serif;
-    font-size: clamp(13px, 1.4vw, 21px);
-    line-height: 1.5;
-    color: #1a4b82; /* Canlı ve parlak mavi mürekkep tonu */
+    font-size: clamp(11px, 1.15vw, 17px); /* Yazı boyutu küçültüldü */
+    line-height: 1.25; /* Satır aralıkları sıkılaştırıldı */
+    color: #1a4b82; /* Canlı mavi mürekkep */
     text-align: justify; /* Her iki yana yasla */
     text-justify: inter-word;
-    text-shadow: 0 0 4px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6); /* Matlığı alan hafif parlaklık efekti */
+    text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
     box-sizing: border-box;
     pointer-events: none;
     backface-visibility: hidden;
     overflow: hidden;
     word-break: normal;
     overflow-wrap: break-word;
-    white-space: pre-line; /* Enter tuşlarını ve mısraları korur */
+    white-space: pre-line;
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -256,7 +256,7 @@ body {
         <div class="sayfa-yazi" id="onsozYaziAlani"></div>
     </div>
 
-    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ (Sağ sayfadan devam eden kısımlar) -->
+    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
     <div class="sayfalar-kapsayici" id="sayfalarKapsayici"></div>
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
@@ -277,41 +277,6 @@ body {
 </div>
 
 <script>
-// Akıllı Metin Düzenleme ve Kural Uygulama Fonksiyonu
-function metniKuralaGoreBicimlendir(metin) {
-    if (!metin) return "";
-    
-    let satirlar = metin.split('\n');
-    let yeniSatirlar = [];
-    let sonrakiKucukteBaslasin = false;
-
-    for (let i = 0; i < satirlar.length; i++) {
-        let satir = satirlar[i].trim();
-        if (satir === "") {
-            yeniSatirlar.push("");
-            continue;
-        }
-
-        if (i === 0) {
-            satir = satir.toLocaleUpperCase('tr-TR');
-        } else {
-            if (sonrakiKucukteBaslasin) {
-                sonrakiKucukteBaslasin = false;
-            } else {
-                satir = satir.charAt(0).toLocaleUpperCase('tr-TR') + satir.slice(1);
-            }
-        }
-
-        if (satir.endsWith("...")) {
-            sonrakiKucukteBaslasin = true;
-        }
-
-        yeniSatirlar.push(satir);
-    }
-
-    return yeniSatirlar.join('\n');
-}
-
 window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
@@ -342,15 +307,14 @@ Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki, o şiir senden ön
 
 Baban.`;
 
-    // 50 Sayfa (25 Yaprak Çifti) Verisi - Sağ sayfadan başlayan normal içerikler
     const toplamYaprak = 25;
     let yaprakVerileri = [];
 
     for (let i = 1; i <= toplamYaprak; i++) {
         yaprakVerileri.push({
             id: i,
-            onMetin: "",   // Sağ sayfalar (İlk yaprak önsözden sonra ilk sağ sayfa olur)
-            arkaMetin: ""  // Arka sayfalar
+            onMetin: "",
+            arkaMetin: ""
         });
     }
 
@@ -359,15 +323,13 @@ Baban.`;
     let daktiloBasladi = false;
     let daktiloTimeout = null;
 
-    // Daktilo Efekti Fonksiyonu
-    function daktiloYazdir(metin, element, i = 0, hiz = 35) {
+    function daktiloYazdir(metin, element, i = 0, hiz = 30) {
         if (i < metin.length) {
             element.textContent += metin.charAt(i);
             daktiloTimeout = setTimeout(() => daktiloYazdir(metin, element, i + 1, hiz), hiz);
         }
     }
 
-    // Yaprakları DOM'a Oluşturup Yerleştirme
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
@@ -386,12 +348,10 @@ Baban.`;
             </div>
         `;
 
-        // Yaprağa tıklama mantığı (Sayfa çevirme)
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
             if (isRewinding) return;
 
-            // Sağdan sola çevir
             if (!yaprakDiv.classList.contains("cevirdi")) {
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
@@ -402,9 +362,7 @@ Baban.`;
                         otomatikGeriyeSar();
                     }
                 }
-            } 
-            // Soldan sağa geri çevir
-            else {
+            } else {
                 let cevrilmisYapraklar = yaprakElementleri.filter(y => y.classList.contains("cevirdi"));
                 let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
                 
@@ -425,7 +383,6 @@ Baban.`;
         yaprakElementleri.push(yaprakDiv);
     }
 
-    // OTOMATİK GERİYE SARMA (REWIND) FONKSİYONU
     function otomatikGeriyeSar() {
         isRewinding = true;
         let index = yaprakElementleri.length - 1;
@@ -448,7 +405,6 @@ Baban.`;
         }, 100);
     }
 
-    // Kapak Açma / Kapanma Mantığı
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
@@ -467,12 +423,11 @@ Baban.`;
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
 
-            // Kapak açıldıktan sonra sol sayfada daktilo efektini başlat
             if (!daktiloBasladi) {
                 daktiloBasladi = true;
                 setTimeout(() => {
-                    daktiloYazdir(onsozMetni, onsozYaziAlani, 0, 30);
-                }, 1200); // Kitap açılma animasyonundan hemen sonra başlar
+                    daktiloYazdir(onsozMetni, onsozYaziAlani, 0, 25);
+                }, 1200);
             }
         }
     });
