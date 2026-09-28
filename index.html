@@ -40,7 +40,7 @@ body {
     z-index: 2;
 }
 
-/* 1. SAĞDA SABİT DURAN ALT KAPAK */
+/* 1. SAĞda SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -152,7 +152,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR - 12 PUNTOYA YÜKSELTİLDİ */
+/* SAYFA İÇİ YAZILAR - 12 PUNTO */
 .sayfa-yazi {
     position: absolute;
     top: 12%;
@@ -160,7 +160,7 @@ body {
     width: 76%;
     height: 76%;
     font-family: 'Caveat', cursive, serif;
-    font-size: 12pt; /* Bir tık büyütüldü */
+    font-size: 12pt;
     line-height: 1.35;
     color: #1a4b82;
     text-align: left;
@@ -304,40 +304,35 @@ Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki, o şiir senden ön
 Baban.`;
 
     const toplamYaprak = 25;
-    let yaprakVerileri = [];
-
-    for (let i = 1; i <= toplamYaprak; i++) {
-        yaprakVerileri.push({
-            id: i,
-            onMetin: "",
-            arkaMetin: ""
-        });
-    }
-
     let yaprakElementleri = [];
     let isRewinding = false;
     let daktiloBasladi = false;
     let aktifDaktiloTimeout = null;
     let daktiloDevamEdiyor = false;
-    let globalMetinIndex = 0;
 
-    // Sabırsız okuyucu desteği olan akıllı daktilo fonksiyonu
-    function akilliDaktilo(metin, onElement, arkaElement, hiz = 20) {
+    // Metni kelimelere ve boşluklara ayıran parçalama mantığı (Kelimeleri bölmez)
+    let kelimeParcalari = onsozMetni.match(/(\s+|\S+)/g) || [];
+    let globalKelimeIndex = 0;
+
+    function kelimeBazliDaktilo(parcalar, onElement, arkaElement, hiz = 25) {
         daktiloDevamEdiyor = true;
 
         function yazdirAdim() {
-            if (!daktiloDevamEdiyor) return; // Eğer daktilo sonlandırıldıysa çık
+            if (!daktiloDevamEdiyor) return;
 
-            if (globalMetinIndex < metin.length) {
-                let karakter = metin.charAt(globalMetinIndex);
-                onElement.textContent += karakter;
+            if (globalKelimeIndex < parcalar.length) {
+                let parca = parcalar[globalKelimeIndex];
+                
+                // Önce ön sayfaya ekleyip taşıp taşmadığına bakıyoruz
+                onElement.textContent += parca;
 
                 if (onElement.scrollHeight > onElement.clientHeight) {
-                    onElement.textContent = onElement.textContent.slice(0, -1);
-                    arkaElement.textContent += karakter;
+                    // Eğer sığmadıysa, ön sayfadan bu parçayı geri alıp arka sayfaya ekliyoruz
+                    onElement.textContent = onElement.textContent.slice(0, -parca.length);
+                    arkaElement.textContent += parca;
                 }
 
-                globalMetinIndex++;
+                globalKelimeIndex++;
                 aktifDaktiloTimeout = setTimeout(yazdirAdim, hiz);
             } else {
                 daktiloDevamEdiyor = false;
@@ -368,7 +363,7 @@ Baban.`;
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
 
-            // SABIRSIZ OKUYUCU ÖZELLİĞİ: Daktilo devam ederken tıklanırsa metni anında tamamla
+            // SABIRSIZ OKUYUCU: Tıklandığında metnin kalanını kelime kelime anında tamamla
             if (daktiloDevamEdiyor) {
                 if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
                 daktiloDevamEdiyor = false;
@@ -376,17 +371,16 @@ Baban.`;
                 const ilkOnYazi = document.getElementById("yazi-on-0");
                 const ilkArkaYazi = document.getElementById("yazi-arka-0");
 
-                // Kalan tüm metni sığana kadar daktilosuz doğrudan yerleştir
-                while (globalMetinIndex < onsozMetni.length) {
-                    let karakter = onsozMetni.charAt(globalMetinIndex);
-                    ilkOnYazi.textContent += karakter;
+                while (globalKelimeIndex < kelimeParcalari.length) {
+                    let parca = kelimeParcalari[globalKelimeIndex];
+                    ilkOnYazi.textContent += parca;
                     if (ilkOnYazi.scrollHeight > ilkOnYazi.clientHeight) {
-                        ilkOnYazi.textContent = ilkOnYazi.textContent.slice(0, -1);
-                        ilkArkaYazi.textContent += karakter;
+                        ilkOnYazi.textContent = ilkOnYazi.textContent.slice(0, -parca.length);
+                        ilkArkaYazi.textContent += parca;
                     }
-                    globalMetinIndex++;
+                    globalKelimeIndex++;
                 }
-                return; // Sayfa çevirme işlemini engelle ki anında okunabilsin
+                return;
             }
 
             if (isRewinding) return;
@@ -453,7 +447,7 @@ Baban.`;
         if (kapsayici.classList.contains("acildi")) {
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
-            globalMetinIndex = 0;
+            globalKelimeIndex = 0;
             if (ilkOnYazi) ilkOnYazi.textContent = "";
             if (ilkArkaYazi) ilkArkaYazi.textContent = "";
             daktiloBasladi = false;
@@ -470,9 +464,9 @@ Baban.`;
 
             if (!daktiloBasladi && ilkOnYazi && ilkArkaYazi) {
                 daktiloBasladi = true;
-                globalMetinIndex = 0;
+                globalKelimeIndex = 0;
                 setTimeout(() => {
-                    akilliDaktilo(onsozMetni, ilkOnYazi, ilkArkaYazi, 20);
+                    kelimeBazliDaktilo(kelimeParcalari, ilkOnYazi, ilkArkaYazi, 25);
                 }, 1200);
             }
         }
