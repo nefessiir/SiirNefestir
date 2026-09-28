@@ -86,6 +86,36 @@ body {
     display: block;
 }
 
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (Sağ sayfa ölçüleriyle birebir uyarlanmıştır) */
+.sol-kanat-yazi {
+    position: absolute;
+    top: 0.5cm;
+    /* Açık kitabın tam sol yarısının içinde, sağ sayfanın iç kenar/padding oranlarıyla aynı hizada */
+    left: calc(0.75cm + 0.3cm); 
+    width: calc(50% - 1.5cm);
+    height: calc(100% - 1cm);
+    font-family: 'Caveat', cursive, serif;
+    font-size: 12pt;
+    line-height: 1.35;
+    color: #1a4b82;
+    text-align: left;
+    text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
+    box-sizing: border-box;
+    pointer-events: none;
+    overflow: hidden;
+    word-break: normal;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.kitap-kapsayici.acildi .sol-kanat-yazi {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out 1.1s;
+}
+
 /* ÇOKLU SAYFA KONTEYNERİ */
 .sayfalar-kapsayici {
     position: absolute;
@@ -152,7 +182,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR */
+/* SAYFA İÇİ YAZILAR (Sağ taraf sayfaları için) */
 .sayfa-yazi {
     position: absolute;
     top: 0.3cm;
@@ -251,9 +281,11 @@ body {
     <!-- AÇIK KİTAP GÖVDESİ -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
+        <!-- Sabit Sol Kanat Yazı Alanı -->
+        <div class="sol-kanat-yazi" id="solKanatYazi"></div>
     </div>
 
-    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
+    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ (Sağ taraf sayfaları) -->
     <div class="sayfalar-kapsayici" id="sayfalarKapsayici"></div>
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
@@ -278,6 +310,7 @@ window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
     const sayfalarKapsayici = document.getElementById("sayfalarKapsayici");
+    const solKanatYazi = document.getElementById("solKanatYazi");
     const kapakImg = document.querySelector(".kapak");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
@@ -342,13 +375,12 @@ Baban.`;
         yazdirAdim();
     }
 
-    // Sayfaları Oluşturma
+    // Sağ taraf dinamik sayfalarını oluşturma (0. yaprak ilk sağ sayfa, 1. yaprak ikinci sağ sayfa...)
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        // Her yaprağın hem ön (sağ sayfa) hem de arka (sol sayfa) yüzü var
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
@@ -357,7 +389,6 @@ Baban.`;
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
-                    <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
                 </div>
             </div>
         `;
@@ -377,21 +408,14 @@ Baban.`;
 
                     // Sayfa dönüş animasyonu (1.0 saniye) TAMAMLANDIKTAN ANDA çalışır
                     setTimeout(() => {
-                        // 1. ADIM: Önce çevrilen yaprağın ARKASINA (sol sayfa) yazmaya çalış
-                        const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
-                        
-                        if (globalKelimeIndex < kelimeParcalari.length && arkaYaziElementi) {
-                            metinYazdir(kelimeParcalari, arkaYaziElementi, 55, () => {
-                                // 2. ADIM: Eğer arka sayfa da dolduysa ve hala yazı kaldıysa, 
-                                // BİR SONRAKİ YAPRAĞIN ÖN YÜZÜNE (sağ sayfa) geç ve daktiloya devam et
-                                let sonrakiIndex = i + 1;
-                                if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
-                                    const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
-                                    if (sonrakiOnYaziElementi) {
-                                        metinYazdir(kelimeParcalari, sonrakiOnYaziElementi, 55);
-                                    }
-                                }
-                            });
+                        // Çevrilen bu sayfanın devamı, sıradaki sağ sayfada (i. yaprağın ön yüzü bitti, i. yaprak sağdan sola çevrildi, 
+                        // şimdi açık kitabın yeni sağ sayfasına yani i+1. yaprağın ön yüzüne geçiyoruz)
+                        let sonrakiIndex = i + 1;
+                        if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
+                            const sonrakiYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
+                            if (sonrakiYaziElementi) {
+                                metinYazdir(kelimeParcalari, sonrakiYaziElementi, 55);
+                            }
                         }
                     }, 1000); // 1 saniye sayfa dönüş süresi
 
@@ -446,13 +470,11 @@ Baban.`;
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
-        const ilkSayfaYazi = document.getElementById("yazi-on-0");
-
         if (kapsayici.classList.contains("acildi")) {
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
             globalKelimeIndex = 0;
-            if (ilkSayfaYazi) ilkSayfaYazi.textContent = "";
+            if (solKanatYazi) solKanatYazi.textContent = "";
 
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
@@ -465,10 +487,13 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalKelimeIndex = 0;
-            // Kitap açıldıktan 3.8 saniye sonra ilk sayfanın (0. yaprağın ön yüzü) daktilosu başlar
+            // Kitap açıldıktan 3.8 saniye sonra ilk yazı SOL KANATTA daktilo ile başlar
             setTimeout(() => {
-                if (ilkSayfaYazi) {
-                    metinYazdir(kelimeParcalari, ilkSayfaYazi, 55);
+                if (solKanatYazi) {
+                    metinYazdir(kelimeParcalari, solKanatYazi, 55, () => {
+                        // Sol kanat dolduğunda, okuyucu sayfayı çevirince ilk sağ sayfaya (0. yaprağın ön yüzü) geçmesi için hazır hale gelir.
+                        // (Dilerseniz sol kanat dolunca otomatik sağ sayfaya geçmesini de sağlayabiliriz ama sizin istediğiniz tıklama ile dönüştü.)
+                    });
                 }
             }, 3800);
         }
