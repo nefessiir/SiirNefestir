@@ -312,8 +312,8 @@ Baban.`;
     let kelimeParcalari = onsozMetni.match(/([^\s]+|\s+)/g) || [];
     let globalKelimeIndex = 0;
 
-    // Sadece tek bir sayfaya (örneğin ön yüzüne) daktilo ile yazma fonksiyonu
-    function sayfayaYazdir(parcalar, element, hiz = 55, onBitisCallback = null) {
+    // Kelime kelime daktilo ile element dolduran fonksiyon
+    function metinYazdir(parcalar, element, hiz = 55, callback = null) {
         daktiloDevamEdiyor = true;
 
         function yazdirAdim() {
@@ -321,14 +321,13 @@ Baban.`;
 
             if (globalKelimeIndex < parcalar.length) {
                 let parca = parcalar[globalKelimeIndex];
-                
                 element.textContent += parca;
 
-                // Eğer sayfa boyutu dolduysa (taşma yaptıysa), son eklenen kelimeyi geri al ve bu sayfayı tamamla
+                // Alan taştıysa kelimeyi geri al ve bu sayfayı tamamla
                 if (element.scrollHeight > element.clientHeight) {
                     element.textContent = element.textContent.slice(0, -parca.length);
                     daktiloDevamEdiyor = false;
-                    if (onBitisCallback) onBitisCallback();
+                    if (callback) callback();
                     return;
                 }
 
@@ -336,7 +335,7 @@ Baban.`;
                 aktifDaktiloTimeout = setTimeout(yazdirAdim, hiz);
             } else {
                 daktiloDevamEdiyor = false;
-                if (onBitisCallback) onBitisCallback();
+                if (callback) callback();
             }
         }
 
@@ -349,7 +348,7 @@ Baban.`;
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        // Her yaprağın sadece ön yüzüne yazı alanı koyuyoruz (arka yüzü boş dönüyor)
+        // Her yaprağın hem ön (sağ sayfa) hem de arka (sol sayfa) yüzü var
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
@@ -358,6 +357,7 @@ Baban.`;
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
+                    <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
                 </div>
             </div>
         `;
@@ -375,14 +375,23 @@ Baban.`;
                     yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
-                    // Sayfa dönüş animasyonu (1.0 saniye) TAMAMLANDIKTAN ANDA bir sonraki sayfada daktilo başlar
+                    // Sayfa dönüş animasyonu (1.0 saniye) TAMAMLANDIKTAN ANDA çalışır
                     setTimeout(() => {
-                        let sonrakiIndex = i + 1;
-                        if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
-                            const sonrakiSayfaYazi = document.getElementById(`yazi-on-${sonrakiIndex}`);
-                            if (sonrakiSayfaYazi) {
-                                sayfayaYazdir(kelimeParcalari, sonrakiSayfaYazi, 55);
-                            }
+                        // 1. ADIM: Önce çevrilen yaprağın ARKASINA (sol sayfa) yazmaya çalış
+                        const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
+                        
+                        if (globalKelimeIndex < kelimeParcalari.length && arkaYaziElementi) {
+                            metinYazdir(kelimeParcalari, arkaYaziElementi, 55, () => {
+                                // 2. ADIM: Eğer arka sayfa da dolduysa ve hala yazı kaldıysa, 
+                                // BİR SONRAKİ YAPRAĞIN ÖN YÜZÜNE (sağ sayfa) geç ve daktiloya devam et
+                                let sonrakiIndex = i + 1;
+                                if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
+                                    const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
+                                    if (sonrakiOnYaziElementi) {
+                                        metinYazdir(kelimeParcalari, sonrakiOnYaziElementi, 55);
+                                    }
+                                }
+                            });
                         }
                     }, 1000); // 1 saniye sayfa dönüş süresi
 
@@ -456,10 +465,10 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalKelimeIndex = 0;
-            // Kitap açıldıktan 3.8 saniye sonra ilk sayfanın daktilosu başlar
+            // Kitap açıldıktan 3.8 saniye sonra ilk sayfanın (0. yaprağın ön yüzü) daktilosu başlar
             setTimeout(() => {
                 if (ilkSayfaYazi) {
-                    sayfayaYazdir(kelimeParcalari, ilkSayfaYazi, 55);
+                    metinYazdir(kelimeParcalari, ilkSayfaYazi, 55);
                 }
             }, 3800);
         }
