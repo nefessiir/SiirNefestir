@@ -152,7 +152,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR - İstediğiniz genişletilmiş alan ölçüleri */
+/* SAYFA İÇİ YAZILAR */
 .sayfa-yazi {
     position: absolute;
     top: 0.3cm;
@@ -311,42 +311,49 @@ Baban.`;
 
     let kelimeParcalari = onsozMetni.match(/([^\s]+|\s+)/g) || [];
     let globalKelimeIndex = 0;
-    
-    // O an yazılmakta olan sayfanın hedef elementlerini ve durdurma sınırını takip ediyoruz
-    let aktifYazanOnElement = null;
-    let aktifYazanArkaElement = null;
-    let aktifSayfaKelimeSiniri = kelimeParcalari.length; // O anki sayfanın metin bitiş sınırı
 
-    function kelimeBazliDaktilo(parcalar, onElement, arkaElement, bitisSiniri, hiz = 55) {
+    // Daktilo Fonksiyonu (Belirli bir elemente kelime kelime yazar)
+    function kelimeBazliDaktilo(parcalar, onElement, arkaElement, hiz = 55, callback = null) {
         daktiloDevamEdiyor = true;
-        aktifYazanOnElement = onElement;
-        aktifYazanArkaElement = arkaElement;
-        aktifSayfaKelimeSiniri = bitisSiniri;
 
         function yazdirAdim() {
             if (!daktiloDevamEdiyor) return;
 
-            // Sadece bu sayfa için belirlenen sınıra kadar yaz
-            if (globalKelimeIndex < parcalar.length && globalKelimeIndex < aktifSayfaKelimeSiniri) {
+            // Eğer sayfa alanı dolduysa daktilo durur ve callback çalışır
+            if (globalKelimeIndex < parcalar.length) {
                 let parca = parcalar[globalKelimeIndex];
                 
                 onElement.textContent += parca;
 
+                // Alan taştıysa arka sayfaya geç
                 if (onElement.scrollHeight > onElement.clientHeight) {
                     onElement.textContent = onElement.textContent.slice(0, -parca.length);
                     arkaElement.textContent += parca;
+                    
+                    // Ön sayfa doldu, arka sayfaya geçildiğinde daktiloyu durdurup sayfa çevirme izni verebiliriz
+                    // İsteğe bağlı olarak burada da durdurulabilir
                 }
 
                 globalKelimeIndex++;
+                
+                // Eğer mevcut sayfa elementi (on veya arka) dolduysa (clientHeight sınırına ulaştıysa) daktiloyu durdur
+                if (onElement.scrollHeight > onElement.clientHeight || arkaElement.scrollHeight > arkaElement.clientHeight) {
+                    daktiloDevamEdiyor = false;
+                    if (callback) callback();
+                    return;
+                }
+
                 aktifDaktiloTimeout = setTimeout(yazdirAdim, hiz);
             } else {
                 daktiloDevamEdiyor = false;
+                if (callback) callback();
             }
         }
 
         yazdirAdim();
     }
 
+    // Sayfaları Oluşturma
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
@@ -365,27 +372,12 @@ Baban.`;
             </div>
         `;
 
+        // Sayfa Tıklama (Sayfa Çevirme Mantığı)
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
 
-            // Sadece tıklanıldığında Daktilo yazma efektini durdur ve SADECE O SAYFAYI doldur
-            if (daktiloDevamEdiyor) {
-                if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
-                daktiloDevamEdiyor = false;
-
-                // Sadece o anki sayfa için ayrılmış sınıra kadar olan kelimeleri anında bas
-                while (globalKelimeIndex < kelimeParcalari.length && globalKelimeIndex < aktifSayfaKelimeSiniri) {
-                    let parca = kelimeParcalari[globalKelimeIndex];
-                    aktifYazanOnElement.textContent += parca;
-                    if (aktifYazanOnElement.scrollHeight > aktifYazanOnElement.clientHeight) {
-                        aktifYazanOnElement.textContent = aktifYazanOnElement.textContent.slice(0, -parca.length);
-                        aktifYazanArkaElement.textContent += parca;
-                    }
-                    globalKelimeIndex++;
-                }
-                return; // Sayfa çevirmeyi engelle, okuyucu o sayfayı okusun
-            }
-
+            // Eğer hâlâ o sayfa yazılıyorsa tıklama engellenir veya erken müdahale yapılmaz
+            if (daktiloDevamEdiyor) return; 
             if (isRewinding) return;
 
             if (!yaprakDiv.classList.contains("cevirdi")) {
@@ -394,9 +386,17 @@ Baban.`;
                     yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
-                    // Sayfa çevrildiği an (örneğin sonraki yaprak), eğer varsa o yaprağın daktilosunu başlatabiliriz
-                    // (Şimdilik sonraki yapraklara geçişte otomatik akış simülasyonu için 
-                    //  veya sonraki sayfaların metin sınırını hesaplayarak tetikleyebilirsiniz)
+                    // Sayfa çevrilme animasyon süresi (1.0 saniye) bittikten sonra arkadaki/sıradaki daktilo başlasın
+                    setTimeout(() => {
+                        let sonrakiIndex = i + 1;
+                        if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
+                            const sonrakiOnYazi = document.getElementById(`yazi-on-${sonrakiIndex}`);
+                            const sonrakiArkaYazi = document.getElementById(`yazi-arka-${sonrakiIndex}`);
+                            if (sonrakiOnYazi && sonrakiArkaYazi) {
+                                kelimeBazliDaktilo(kelimeParcalari, sonrakiOnYazi, sonrakiArkaYazi, 55);
+                            }
+                        }
+                    }, 1000); // 1.0 saniye sayfa dönüş animasyonunun bitiş süresi
 
                     if (i === toplamYaprak - 1) {
                         otomatikGeriyeSar();
@@ -445,6 +445,7 @@ Baban.`;
         }, 100);
     }
 
+    // Kapak Açılma Tıklaması
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
@@ -469,10 +470,10 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalKelimeIndex = 0;
+            // Kitap açıldıktan sonra 3.8 saniye gecikmeyle 1. sayfanın daktilosu başlar
             setTimeout(() => {
                 if (ilkOnYazi && ilkArkaYazi) {
-                    // İlk sayfa için tüm kelime dizisini sınır olarak veriyoruz
-                    kelimeBazliDaktilo(kelimeParcalari, ilkOnYazi, ilkArkaYazi, kelimeParcalari.length, 55);
+                    kelimeBazliDaktilo(kelimeParcalari, ilkOnYazi, ilkArkaYazi, 55);
                 }
             }, 3800);
         }
