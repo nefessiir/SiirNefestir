@@ -153,7 +153,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR - ÖLÇÜLÜ VE MAVİ MÜREKKEP */
+/* SAYFA İÇİ YAZILAR - ÖLÇÜLÜ, PARLAK MAVİ MÜREKKEP VE HER İKİ YANA YASLI */
 .sayfa-yazi {
     position: absolute;
     top: 13%;
@@ -163,8 +163,10 @@ body {
     font-family: 'Caveat', cursive, serif;
     font-size: clamp(13px, 1.4vw, 21px);
     line-height: 1.5;
-    color: #16324f; /* Mavi mürekkep rengi */
-    text-shadow: 0 0 1px rgba(22, 50, 79, 0.3);
+    color: #1a4b82; /* Canlı ve parlak mavi mürekkep tonu */
+    text-align: justify; /* Her iki yana yasla */
+    text-justify: inter-word;
+    text-shadow: 0 0 4px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6); /* Matlığı alan hafif parlaklık efekti */
     box-sizing: border-box;
     pointer-events: none;
     backface-visibility: hidden;
@@ -248,12 +250,13 @@ body {
         <img src="kapak.jpg" alt="Alt Kapak">
     </div>
 
-    <!-- AÇIK KİTAP GÖVDESİ -->
+    <!-- AÇIK KİTAP GÖVDESİ (Sol sayfada önsözün yer alacağı alan) -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
+        <div class="sayfa-yazi" id="onsozYaziAlani"></div>
     </div>
 
-    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
+    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ (Sağ sayfadan devam eden kısımlar) -->
     <div class="sayfalar-kapsayici" id="sayfalarKapsayici"></div>
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
@@ -314,26 +317,55 @@ window.addEventListener("load", function () {
     const kapakAlan = document.getElementById("kapakAlan");
     const sayfalarKapsayici = document.getElementById("sayfalarKapsayici");
     const kapakImg = document.querySelector(".kapak");
+    const onsozYaziAlani = document.getElementById("onsozYaziAlani");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
     const ikiCm = 2 * 96 / 2.54;
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // 50 Sayfa (25 Yaprak Çifti) Verisi - Tamamen Boş/Tertemiz
+    // Önsöz Metni
+    const onsozMetni = `Kızıma…
+
+Sevgili Şiir,
+
+Belki bu satırları okuduğunda ben yanında olacağım, belki de hayat bizi birbirimizden uzaklaştırmış olacak.
+
+Ama şunu bilmeni isterim:
+Ben bu şiirleri insanlara bir şey anlatmak için değil, içimde birikenleri kaybetmemek için yazdım. Ve bazılarını yıllar sonra sen bul diye sakladım.
+
+Çünkü sana bırakabileceğim en güzel şeylerden birinin, benim dünyamı anlatan kelimeler olduğunu düşündüm.
+
+Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki, o şiir senden önce yazılmış olsa bile, sana da aittir.
+
+Çünkü sen benim hayatıma girdikten sonra yazdığım hiçbir şey eskisi gibi olmadı.
+
+Baban.`;
+
+    // 50 Sayfa (25 Yaprak Çifti) Verisi - Sağ sayfadan başlayan normal içerikler
     const toplamYaprak = 25;
     let yaprakVerileri = [];
 
     for (let i = 1; i <= toplamYaprak; i++) {
         yaprakVerileri.push({
             id: i,
-            onMetin: "",
-            arkaMetin: ""
+            onMetin: "",   // Sağ sayfalar (İlk yaprak önsözden sonra ilk sağ sayfa olur)
+            arkaMetin: ""  // Arka sayfalar
         });
     }
 
     let yaprakElementleri = [];
     let isRewinding = false;
+    let daktiloBasladi = false;
+    let daktiloTimeout = null;
+
+    // Daktilo Efekti Fonksiyonu
+    function daktiloYazdir(metin, element, i = 0, hiz = 35) {
+        if (i < metin.length) {
+            element.textContent += metin.charAt(i);
+            daktiloTimeout = setTimeout(() => daktiloYazdir(metin, element, i + 1, hiz), hiz);
+        }
+    }
 
     // Yaprakları DOM'a Oluşturup Yerleştirme
     for (let i = 0; i < toplamYaprak; i++) {
@@ -421,6 +453,10 @@ window.addEventListener("load", function () {
         if (isRewinding) return;
 
         if (kapsayici.classList.contains("acildi")) {
+            if (daktiloTimeout) clearTimeout(daktiloTimeout);
+            onsozYaziAlani.textContent = "";
+            daktiloBasladi = false;
+
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
                 y.style.zIndex = toplamYaprak - index;
@@ -430,6 +466,14 @@ window.addEventListener("load", function () {
         } else {
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
+
+            // Kapak açıldıktan sonra sol sayfada daktilo efektini başlat
+            if (!daktiloBasladi) {
+                daktiloBasladi = true;
+                setTimeout(() => {
+                    daktiloYazdir(onsozMetni, onsozYaziAlani, 0, 30);
+                }, 1200); // Kitap açılma animasyonundan hemen sonra başlar
+            }
         }
     });
 });
