@@ -86,13 +86,13 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1 cm sağa, yukarıdan-aşağıdan 0.2 cm daraltılmış) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
 .sol-kanat-yazi {
     position: absolute;
-    top: 0.7cm; /* 0.5cm + 0.2cm yukarıdan daraltma */
-    left: calc(0.75cm + 0.3cm + 1cm); /* 1 cm sağa çekildi */
-    width: calc(50% - 2.5cm); /* Genişlik buna göre ayarlandı */
-    height: calc(100% - 1.4cm); /* 1cm + 0.4cm (üstten/alttan 0.2şer cm) daraltıldı */
+    top: 0.7cm;
+    left: calc(0.75cm + 0.3cm + 1cm);
+    width: calc(50% - 2.5cm);
+    height: calc(100% - 1.4cm);
     font-family: 'Caveat', cursive, serif;
     font-size: 12pt;
     line-height: 1.35;
@@ -318,7 +318,8 @@ window.addEventListener("load", function () {
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
     const onsozMetni = 
-`Kızıma…
+`
+Kızıma…
 
 Sevgili Şiir,
 
@@ -408,7 +409,6 @@ Baban.`;
 
                     // Sayfa dönüş animasyonu (1.0 saniye) TAMAMLANDIKTAN ANDA çalışır
                     setTimeout(() => {
-                        // Çevrilen yaprağın arka yüzüne (sol sayfa) yazmaya çalış, sığmazsa sonraki sayfanın önüne geç
                         const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
                         
                         if (globalKelimeIndex < kelimeParcalari.length && arkaYaziElementi) {
