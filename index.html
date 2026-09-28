@@ -40,7 +40,7 @@ body {
     z-index: 2;
 }
 
-/* 1. SAĞda SABİT DURAN ALT KAPAK */
+/* 1. SAĞDA SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -310,7 +310,6 @@ Baban.`;
     let aktifDaktiloTimeout = null;
     let daktiloDevamEdiyor = false;
 
-    // Metni kelimelere ve boşluklara ayıran parçalama mantığı (Kelimeleri bölmez)
     let kelimeParcalari = onsozMetni.match(/(\s+|\S+)/g) || [];
     let globalKelimeIndex = 0;
 
@@ -323,11 +322,9 @@ Baban.`;
             if (globalKelimeIndex < parcalar.length) {
                 let parca = parcalar[globalKelimeIndex];
                 
-                // Önce ön sayfaya ekleyip taşıp taşmadığına bakıyoruz
                 onElement.textContent += parca;
 
                 if (onElement.scrollHeight > onElement.clientHeight) {
-                    // Eğer sığmadıysa, ön sayfadan bu parçayı geri alıp arka sayfaya ekliyoruz
                     onElement.textContent = onElement.textContent.slice(0, -parca.length);
                     arkaElement.textContent += parca;
                 }
@@ -363,7 +360,6 @@ Baban.`;
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
 
-            // SABIRSIZ OKUYUCU: Tıklandığında metnin kalanını kelime kelime anında tamamla
             if (daktiloDevamEdiyor) {
                 if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
                 daktiloDevamEdiyor = false;
@@ -465,9 +461,10 @@ Baban.`;
             if (!daktiloBasladi && ilkOnYazi && ilkArkaYazi) {
                 daktiloBasladi = true;
                 globalKelimeIndex = 0;
+                // Açık kitabın açılma/perdeleme animasyonunun tam bitiş süresi (1.8 saniye) beklendikten sonra yazı başlar
                 setTimeout(() => {
                     kelimeBazliDaktilo(kelimeParcalari, ilkOnYazi, ilkArkaYazi, 25);
-                }, 1200);
+                }, 1800);
             }
         }
     });
