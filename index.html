@@ -86,14 +86,13 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (Sağ sayfa ölçüleriyle birebir uyarlanmıştır) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1 cm sağa, yukarıdan-aşağıdan 0.2 cm daraltılmış) */
 .sol-kanat-yazi {
     position: absolute;
-    top: 0.5cm;
-    /* Açık kitabın tam sol yarısının içinde, sağ sayfanın iç kenar/padding oranlarıyla aynı hizada */
-    left: calc(0.75cm + 0.3cm); 
-    width: calc(50% - 1.5cm);
-    height: calc(100% - 1cm);
+    top: 0.7cm; /* 0.5cm + 0.2cm yukarıdan daraltma */
+    left: calc(0.75cm + 0.3cm + 1cm); /* 1 cm sağa çekildi */
+    width: calc(50% - 2.5cm); /* Genişlik buna göre ayarlandı */
+    height: calc(100% - 1.4cm); /* 1cm + 0.4cm (üstten/alttan 0.2şer cm) daraltıldı */
     font-family: 'Caveat', cursive, serif;
     font-size: 12pt;
     line-height: 1.35;
@@ -182,7 +181,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR (Sağ taraf sayfaları için) */
+/* SAYFA İÇİ YAZILAR */
 .sayfa-yazi {
     position: absolute;
     top: 0.3cm;
@@ -285,7 +284,7 @@ body {
         <div class="sol-kanat-yazi" id="solKanatYazi"></div>
     </div>
 
-    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ (Sağ taraf sayfaları) -->
+    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
     <div class="sayfalar-kapsayici" id="sayfalarKapsayici"></div>
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
@@ -375,7 +374,7 @@ Baban.`;
         yazdirAdim();
     }
 
-    // Sağ taraf dinamik sayfalarını oluşturma (0. yaprak ilk sağ sayfa, 1. yaprak ikinci sağ sayfa...)
+    // Sağ taraf dinamik sayfalarını oluşturma
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
@@ -389,6 +388,7 @@ Baban.`;
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
+                    <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
                 </div>
             </div>
         `;
@@ -408,16 +408,21 @@ Baban.`;
 
                     // Sayfa dönüş animasyonu (1.0 saniye) TAMAMLANDIKTAN ANDA çalışır
                     setTimeout(() => {
-                        // Çevrilen bu sayfanın devamı, sıradaki sağ sayfada (i. yaprağın ön yüzü bitti, i. yaprak sağdan sola çevrildi, 
-                        // şimdi açık kitabın yeni sağ sayfasına yani i+1. yaprağın ön yüzüne geçiyoruz)
-                        let sonrakiIndex = i + 1;
-                        if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
-                            const sonrakiYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
-                            if (sonrakiYaziElementi) {
-                                metinYazdir(kelimeParcalari, sonrakiYaziElementi, 55);
-                            }
+                        // Çevrilen yaprağın arka yüzüne (sol sayfa) yazmaya çalış, sığmazsa sonraki sayfanın önüne geç
+                        const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
+                        
+                        if (globalKelimeIndex < kelimeParcalari.length && arkaYaziElementi) {
+                            metinYazdir(kelimeParcalari, arkaYaziElementi, 55, () => {
+                                let sonrakiIndex = i + 1;
+                                if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
+                                    const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
+                                    if (sonrakiOnYaziElementi) {
+                                        metinYazdir(kelimeParcalari, sonrakiOnYaziElementi, 55);
+                                    }
+                                }
+                            });
                         }
-                    }, 1000); // 1 saniye sayfa dönüş süresi
+                    }, 1000);
 
                     if (i === toplamYaprak - 1) {
                         otomatikGeriyeSar();
@@ -470,11 +475,14 @@ Baban.`;
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
+        const ilkSagSayfaYazi = document.getElementById("yazi-on-0");
+
         if (kapsayici.classList.contains("acildi")) {
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
             globalKelimeIndex = 0;
             if (solKanatYazi) solKanatYazi.textContent = "";
+            if (ilkSagSayfaYazi) ilkSagSayfaYazi.textContent = "";
 
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
@@ -487,12 +495,14 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalKelimeIndex = 0;
-            // Kitap açıldıktan 3.8 saniye sonra ilk yazı SOL KANATTA daktilo ile başlar
+            // Kitap açıldıktan 3.8 saniye sonra önce SOL KANAT başlar
             setTimeout(() => {
                 if (solKanatYazi) {
                     metinYazdir(kelimeParcalari, solKanatYazi, 55, () => {
-                        // Sol kanat dolduğunda, okuyucu sayfayı çevirince ilk sağ sayfaya (0. yaprağın ön yüzü) geçmesi için hazır hale gelir.
-                        // (Dilerseniz sol kanat dolunca otomatik sağ sayfaya geçmesini de sağlayabiliriz ama sizin istediğiniz tıklama ile dönüştü.)
+                        // Sol kanat dolunca, kalan kelimeler otomatik olarak 1. SAĞ SAYFAYA (0. yaprağın ön yüzü) yazılmaya başlar!
+                        if (globalKelimeIndex < kelimeParcalari.length && ilkSagSayfaYazi) {
+                            metinYazdir(kelimeParcalari, ilkSagSayfaYazi, 55);
+                        }
                     });
                 }
             }, 3800);
