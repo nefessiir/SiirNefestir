@@ -427,35 +427,27 @@ Baban.`;
         yaprakElementleri.push(yaprakDiv);
     }
 
-    // TIKLAMA AKIŞ KONTROLÜ (Sağ taraf ileri, Sol taraf geri)
+    // TIKLAMA AKIŞ KONTROLÜ (Hangi tarafa tıklanırsa tıklansın ileri doğru açılır)
     let tiklamaAdimi = 0;
 
     kapsayici.addEventListener("click", function (e) {
         if (!kapsayici.classList.contains("acildi") || isRewinding) return;
         e.stopPropagation();
-
-        const rect = kapsayici.getBoundingClientRect();
-        const tiklamaX = e.clientX - rect.left;
-        const ortaNokta = rect.width / 2;
-
-        const solTarafaTiklandi = tiklamaX < ortaNokta;
-
-        if (solTarafaTiklandi) {
-            geriGit();
-        } else {
-            ileriGit();
-        }
+        ileriGit();
     });
 
     function ileriGit() {
         if (tiklamaAdimi === 0) {
+            // 1. Tık: Sol sayfa yazısı açılır (Sayfa 1)
             solKanatYazi.classList.add("goster");
             tiklamaAdimi++;
         } else if (tiklamaAdimi === 1) {
+            // 2. Tık: İlk yaprağın ÖN yüzü açılır (Sayfa 2)
             const ilkSagYazi = document.getElementById("yazi-on-0");
             if (ilkSagYazi) ilkSagYazi.classList.add("goster");
             tiklamaAdimi++;
         } else {
+            // Sonraki adımlar: Yaprak çevirme ve arka/ön yüz geçişleri
             let aktifYaprakIndex = yaprakElementleri.findIndex(y => !y.classList.contains("cevirdi"));
             
             if (aktifYaprakIndex !== -1) {
@@ -479,42 +471,6 @@ Baban.`;
                         sonrakiOnYazi.classList.add("goster");
                     }
                 }
-            }
-        }
-    }
-
-    function geriGit() {
-        if (tiklamaAdimi === 1) {
-            solKanatYazi.classList.remove("goster");
-            tiklamaAdimi = 0;
-        } else if (tiklamaAdimi === 2) {
-            const ilkSagYazi = document.getElementById("yazi-on-0");
-            if (ilkSagYazi) ilkSagYazi.classList.remove("goster");
-            tiklamaAdimi = 1;
-        } else if (tiklamaAdimi > 2) {
-            let cevrilmisYapraklar = yaprakElementleri.map((y, idx) => ({ yaprak: y, index: idx })).filter(item => item.yaprak.classList.contains("cevirdi"));
-            
-            if (cevrilmisYapraklar.length > 0) {
-                let sonCevrilen = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
-                let yaprak = sonCevrilen.yaprak;
-                let idx = sonCevrilen.index;
-
-                let sonrakiOnYazi = document.getElementById(`yazi-on-${idx + 1}`);
-                if (sonrakiOnYazi && sonrakiOnYazi.classList.contains("goster")) {
-                    sonrakiOnYazi.classList.remove("goster");
-                } else {
-                    let arkaYazi = document.getElementById(`yazi-arka-${idx}`);
-                    if (arkaYazi) arkaYazi.classList.remove("goster");
-
-                    setTimeout(() => {
-                        yaprak.style.zIndex = toplamYaprak - idx;
-                        yaprak.classList.remove("cevirdi");
-                    }, 200);
-                }
-            } else {
-                tiklamaAdimi = 2;
-                const ilkSagYazi = document.getElementById("yazi-on-0");
-                if (ilkSagYazi) ilkSagYazi.classList.remove("goster");
             }
         }
     }
