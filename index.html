@@ -102,8 +102,8 @@ body {
     box-sizing: border-box;
     pointer-events: none;
     overflow: hidden;
-    word-break: keep-all;
-    overflow-wrap: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
     hyphens: none;
     white-space: pre-wrap;
     z-index: 4;
@@ -216,8 +216,8 @@ body {
     pointer-events: none;
     backface-visibility: hidden;
     overflow: hidden;
-    word-break: keep-all;
-    overflow-wrap: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
     hyphens: none;
     white-space: pre-wrap;
     font-size: 11pt; 
@@ -339,7 +339,6 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
-    // Fazla boşluklar kaldırıldı ve özel sınıf etiket yapısıyla daktilo efektine uygun hale getirildi
     const hamGovdeMetni = 
 `Sevgili Şiir,
 Bu satırları okuduğunda belki ben yanında olacağım, belki de
