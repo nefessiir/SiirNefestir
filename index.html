@@ -86,7 +86,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (Sabit 1. Sayfa) */
 .sol-kanat-yazi {
     position: absolute;
     top: 0.4cm;
@@ -107,12 +107,6 @@ body {
     hyphens: none;
     white-space: pre-wrap;
     z-index: 4;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out;
-}
-
-.sol-kanat-yazi.goster {
-    opacity: 1;
 }
 
 /* BAŞLIKLARIN ORTALANMASI VE BÜYÜTÜLMESİ */
@@ -228,12 +222,6 @@ body {
     hyphens: none;
     white-space: pre-wrap;
     font-size: 10.5pt;
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out;
-}
-
-.sayfa-yazi.goster {
-    opacity: 1;
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -313,9 +301,8 @@ body {
     <!-- AÇIK KİTAP GÖVDESİ -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
-        <!-- Sabit Sol Kanat Yazı Alanı -->
+        <!-- Sabit Sol Kanat Yazı Alanı (Sayfa 1) -->
         <div class="sol-kanat-yazi" id="solKanatYazi"></div>
-        <!-- Sabit Sol Sayfa Numarası (Sayfa 1) -->
         <div class="sayfa-numara">1</div>
     </div>
 
@@ -352,16 +339,16 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    const baslikMetni = "KIZIM'a…\n\n";
-    
-    const solSayfaMetni = 
+    // METİNLER
+    const girisBaslik = "KIZIM'a…\n\n";
+    const girisMetin = 
 `Sevgili Şiir,
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
 belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
-    const sagSayfaMetni = 
+    const siirMetni = 
 `Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
 içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
@@ -383,196 +370,146 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    const toplamYaprak = 25;
+    // İlk sayfa (Sayfa 1 - Sol)
+    solKanatYazi.innerHTML = `<span class="sayfa-baslik">${girisBaslik.replace(/\n/g, "<br>")}</span>${girisMetin.replace(/\n/g, "<br>")}`;
+
+    const toplamYaprak = 15; 
     let yaprakElementleri = [];
-    let isRewinding = false;
 
-    // İçerikleri sol sayfaya yerleştir
-    function solSayfayiHazirla() {
-        solKanatYazi.innerHTML = `<span class="sayfa-baslik">${baslikMetni.replace(/\n/g, "<br>")}</span>${solSayfaMetni.replace(/\n/g, "<br>")}`;
-    }
-    solSayfayiHazirla();
-
-    // SAYFALARI OLUŞTUR
+    // YAPRAKLARI OLUŞTUR (Ön ve Arka yüzler tamamen dolu olarak hazır gelir)
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        let onSayfaNo = (i * 2) + 2;   // Ön yüz (Örn: 2, 4, 6...)
-        let arkaSayfaNo = (i * 2) + 3; // Arka yüz (Örn: 3, 5, 7...)
+        let onSayfaNo = (i * 2) + 2;   // Örn: 2, 4, 6... (Sağ sayfa)
+        let arkaSayfaNo = (i * 2) + 3; // Örn: 3, 5, 7... (Çevrilince sol sayfa)
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
                     <img src="sag_sayfa.png" alt="Sayfa Ön">
-                    <div class="sayfa-yazi" id="yazi-on-${i}"></div>
+                    <div class="sayfa-yazi"><span class="sayfa-baslik">Şiir Sayfa ${onSayfaNo}</span>${siirMetni.replace(/\n/g, "<br>")}</div>
                     <div class="sayfa-numara">${onSayfaNo}</div>
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
-                    <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
+                    <div class="sayfa-yazi"><span class="sayfa-baslik">Şiir Sayfa ${arkaSayfaNo}</span>${siirMetni.replace(/\n/g, "<br>")}</div>
                     <div class="sayfa-numara">${arkaSayfaNo}</div>
                 </div>
             </div>
         `;
 
-        const yaziOn = yaprakDiv.querySelector(`#yazi-on-${i}`);
-        const yaziArka = yaprakDiv.querySelector(`#yazi-arka-${i}`);
-        
-        yaziOn.innerHTML = `<span class="sayfa-baslik">Şiir ${onSayfaNo} (Ön)</span>` + sagSayfaMetni.replace(/\n/g, "<br>");
-        yaziArka.innerHTML = `<span class="sayfa-baslik">Şiir ${arkaSayfaNo} (Arka)</span>` + sagSayfaMetni.replace(/\n/g, "<br>");
-
         sayfalarKapsayici.appendChild(yaprakDiv);
         yaprakElementleri.push(yaprakDiv);
     }
 
-    // TIKLAMA AKIŞ KONTROLÜ (Sağ Taraf İleri, Sol Taraf Geri / Kapatma)
-    let tiklamaAdimi = 0;
+    // ADIM MANTIĞI:
+    // 0: Sadece 1. sayfa açık (Sağ taraf boş)
+    // 1: Sağ tarafta 2. sayfa dolu görünür
+    // 2: 2. sayfa yaprağı sola döner, arkasından 3. sayfa dolu gelir
+    // 3: 3. sayfa dolu görünür
+    // 4: 4. sayfa yaprağı sola döner, arkasından 5. sayfa dolu gelir ... şeklinde ilerler/geriler.
+    let akisSirasi = 0; 
+    const maxAdim = toplamYaprak * 2; // Her yaprak için 2 tıklama (1: Sağ dolar, 2: Yaprak döner)
 
     kapsayici.addEventListener("click", function (e) {
-        if (!kapsayici.classList.contains("acildi") || isRewinding) return;
+        if (!kapsayici.classList.contains("acildi")) return;
         e.stopPropagation();
 
         const rect = kapsayici.getBoundingClientRect();
         const tiklamaX = e.clientX - rect.left;
         const ortaNokta = rect.width / 2;
 
-        const solTarafaTiklandi = tiklamaX < ortaNokta;
-
-        if (solTarafaTiklandi) {
+        if (tiklamaX < ortaNokta) {
+            // SOL TARAFA TIKLANDI -> Geri git (Sayfaları soldan sağa geri kapat)
             geriGit();
         } else {
+            // SAĞ TARAFA TIKLANDI -> İleri git (Asla boş sayfa bırakmadan doldur/çevir)
             ileriGit();
         }
     });
 
     function ileriGit() {
-        if (tiklamaAdimi === 0) {
-            solKanatYazi.classList.add("goster");
-            tiklamaAdimi++;
-        } else if (tiklamaAdimi === 1) {
-            const ilkSagYazi = document.getElementById("yazi-on-0");
-            if (ilkSagYazi) ilkSagYazi.classList.add("goster");
-            tiklamaAdimi++;
-        } else {
-            let aktifYaprakIndex = yaprakElementleri.findIndex(y => !y.classList.contains("cevirdi"));
-            
-            if (aktifYaprakIndex !== -1) {
-                let yaprak = yaprakElementleri[aktifYaprakIndex];
-                let arkaYazi = document.getElementById(`yazi-arka-${aktifYaprakIndex}`);
-                let sonrakiOnYazi = document.getElementById(`yazi-on-${aktifYaprakIndex + 1}`);
-
-                if (!yaprak.classList.contains("cevirdi")) {
-                    yaprak.style.zIndex = 50 + aktifYaprakIndex;
-                    yaprak.classList.add("cevirdi");
-                    
-                    setTimeout(() => {
-                        if (arkaYazi) arkaYazi.classList.add("goster");
-                    }, 500);
-
-                    if (aktifYaprakIndex === toplamYaprak - 1) {
-                        setTimeout(otomatikGeriyeSar, 1500);
-                    }
-                } else {
-                    if (sonrakiOnYazi && !sonrakiOnYazi.classList.contains("goster")) {
-                        sonrakiOnYazi.classList.add("goster");
-                    }
-                }
-            }
+        if (akisSirasi < maxAdim) {
+            akisSirasi++;
+            guncelleKitapGorunumu();
         }
     }
 
     function geriGit() {
-        if (tiklamaAdimi === 1) {
-            solKanatYazi.classList.remove("goster");
-            tiklamaAdimi = 0;
-        } else if (tiklamaAdimi === 2) {
-            const ilkSagYazi = document.getElementById("yazi-on-0");
-            if (ilkSagYazi) ilkSagYazi.classList.remove("goster");
-            tiklamaAdimi = 1;
-        } else if (tiklamaAdimi > 2) {
-            let cevrilmisYapraklar = yaprakElementleri.map((y, idx) => ({ yaprak: y, index: idx })).filter(item => item.yaprak.classList.contains("cevirdi"));
-            
-            if (cevrilmisYapraklar.length > 0) {
-                let sonCevrilen = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
-                let yaprak = sonCevrilen.yaprak;
-                let idx = sonCevrilen.index;
-
-                let sonrakiOnYazi = document.getElementById(`yazi-on-${idx + 1}`);
-                if (sonrakiOnYazi && sonrakiOnYazi.classList.contains("goster")) {
-                    sonrakiOnYazi.classList.remove("goster");
-                } else {
-                    let arkaYazi = document.getElementById(`yazi-arka-${idx}`);
-                    if (arkaYazi) arkaYazi.classList.remove("goster");
-
-                    setTimeout(() => {
-                        yaprak.style.zIndex = toplamYaprak - idx;
-                        yaprak.classList.remove("cevirdi");
-                    }, 200);
-                }
-            } else {
-                tiklamaAdimi = 2;
-                const ilkSagYazi = document.getElementById("yazi-on-0");
-                if (ilkSagYazi) ilkSagYazi.classList.remove("goster");
-            }
+        if (akisSirasi > 0) {
+            akisSirasi--;
+            guncelleKitapGorunumu();
         } else {
-            // Tamamen baştayken sol tarafa tıklanırsa kitabı kapat
+            // En baştayken sola tıklanırsa kitabı tamamen kapat
             kitabiKapat();
+        }
+    }
+
+    // Akış sırasına göre hangi yaprakların dönük, hangi sağ sayfaların görünür olacağını tam senkronize ayarlayan motor
+    function guncelleKitapGorunumu() {
+        for (let i = 0; i < toplamYaprak; i++) {
+            let yaprak = yaprakElementleri[i];
+            let sagSayfaAdimi = (i * 2) + 1; // Bu yaprağın sağda görünme adımı
+            let yaprakDonmeAdimi = (i * 2) + 2; // Bu yaprağın sola dönme adımı
+
+            let onYuz = yaprak.querySelector(".sayfa-on .sayfa-yazi");
+            let numaraOn = yaprak.querySelector(".sayfa-on .sayfa-numara");
+            let arkaYuz = yaprak.querySelector(".sayfa-arka .sayfa-yazi");
+            let numaraArka = yaprak.querySelector(".sayfa-arka .sayfa-numara");
+
+            if (akisSirasi >= yaprakDonmeAdimi) {
+                // Yaprak tamamen sola çevrilmiş durumda
+                yaprak.style.zIndex = 50 + i;
+                yaprak.classList.add("cevirdi");
+                // Görünürlükleri tam açık tut
+                onYuz.style.opacity = "1";
+                if(numaraOn) numaraOn.style.opacity = "1";
+                arkaYuz.style.opacity = "1";
+                if(numaraArka) numaraArka.style.opacity = "1";
+            } else if (akisSirasi >= sagSayfaAdimi) {
+                // Yaprak henüz sağda duruyor ama sağ yüzü dolu/görünür
+                yaprak.style.zIndex = toplamYaprak - i;
+                yaprak.classList.remove("cevirdi");
+                onYuz.style.opacity = "1";
+                if(numaraOn) numaraOn.style.opacity = "1";
+                arkaYuz.style.opacity = "0"; // Arkası henüz görünmüyor
+                if(numaraArka) numaraArka.style.opacity = "0";
+            } else {
+                // Henüz bu yaprağa sıra gelmedi, sağda kapalı duruyor
+                yaprak.style.zIndex = toplamYaprak - i;
+                yaprak.classList.remove("cevirdi");
+                onYuz.style.opacity = "0"; 
+                if(numaraOn) numaraOn.style.opacity = "0";
+                arkaYuz.style.opacity = "0";
+                if(numaraArka) numaraArka.style.opacity = "0";
+            }
         }
     }
 
     function kitabiKapat() {
         kapsayici.classList.remove("acildi");
         kapakAlan.classList.remove("dondu");
-        solKanatYazi.classList.remove("goster");
-        tiklamaAdimi = 0;
+        akisSirasi = 0;
         
         yaprakElementleri.forEach((y, index) => {
             y.classList.remove("cevirdi");
             y.style.zIndex = toplamYaprak - index;
-            const yOn = document.getElementById(`yazi-on-${index}`);
-            const yArka = document.getElementById(`yazi-arka-${index}`);
-            if (yOn) yOn.classList.remove("goster");
-            if (yArka) yArka.classList.remove("goster");
+            y.querySelectorAll(".sayfa-yazi, .sayfa-numara").forEach(el => el.style.opacity = "0");
         });
-    }
-
-    function otomatikGeriyeSar() {
-        isRewinding = true;
-        let index = yaprakElementleri.length - 1;
-
-        let rewindInterval = setInterval(function () {
-            if (index >= 0) {
-                yaprakElementleri[index].style.zIndex = 100;
-                yaprakElementleri[index].classList.remove("cevirdi");
-                
-                const yOn = document.getElementById(`yazi-on-${index}`);
-                const yArka = document.getElementById(`yazi-arka-${index}`);
-                if (yOn) yOn.classList.remove("goster");
-                if (yArka) yArka.classList.remove("goster");
-
-                yaprakElementleri[index].style.zIndex = toplamYaprak - index;
-                index--;
-            } else {
-                clearInterval(rewindInterval);
-                setTimeout(kitabiKapat, 400);
-                isRewinding = false;
-            }
-        }, 100);
     }
 
     // KAPAK TIKLAMA MANTIĞI
     kapakAlan.addEventListener("click", function (e) {
         e.stopPropagation();
-        if (isRewinding) return;
-
         if (kapsayici.classList.contains("acildi")) {
             kitabiKapat();
         } else {
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
-            tiklamaAdimi = 0;
+            akisSirasi = 0;
+            guncelleKitapGorunumu();
         }
     });
 });
