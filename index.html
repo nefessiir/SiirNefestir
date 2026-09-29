@@ -86,13 +86,13 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (Punto: 12pt) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1 satır yukarı alındı: top: 0.2cm) */
 .sol-kanat-yazi {
     position: absolute;
-    top: 0.7cm;
+    top: 0.2cm;
     left: calc(0.75cm + 0.3cm + 1cm);
     width: calc(50% - 2.5cm);
-    height: calc(100% - 1.4cm);
+    height: calc(100% - 0.9cm);
     font-family: 'Dancing Script', cursive, serif;
     font-size: 12pt;
     line-height: 1.35;
@@ -115,14 +115,15 @@ body {
     transition: opacity 0.3s ease-in-out 1.1s;
 }
 
-/* BAŞLIKLARIN ORTALANMASI */
+/* BAŞLIKLARIN ORTALANMASI VE BÜYÜTÜLMESİ */
 .sol-kanat-yazi .sayfa-baslik,
 .sayfa-yazi .sayfa-baslik {
     text-align: center;
     display: block;
     width: 100%;
     font-weight: 700;
-    margin-bottom: 0.5em;
+    font-size: 1.25em; /* Başlık metne göre daha büyük */
+    margin-bottom: 0.4em;
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -217,7 +218,7 @@ body {
     font-size: 14pt;
 }
 
-/* Sol Sayfa (Arka Yüz): 12pt olarak güncellendi */
+/* Sol Sayfa (Arka Yüz): 12pt */
 .sayfa-arka .sayfa-yazi {
     font-size: 12pt;
 }
@@ -336,7 +337,7 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    const baslikMetni = "Kızıma…\n\n";
+    const baslikMetni = "KIZIM'a…\n\n";
     
     const hamGovdeMetni = 
 `Sevgili Şiir,
@@ -400,9 +401,10 @@ Baban.`;
                 globalBaslikIndex++;
                 aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 50);
             } else {
+                // Başlık bittikten sonra tam 1 saniye (1000 ms) bekleyip gövdeye geçiş
                 setTimeout(() => {
                     govdeYazdirAdim();
-                }, 200);
+                }, 1000);
             }
         }
 
