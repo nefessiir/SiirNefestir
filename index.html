@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Şiir Nefestir</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
 html,
@@ -93,8 +93,8 @@ body {
     left: calc(0.75cm + 0.3cm + 1cm);
     width: calc(50% - 2.5cm);
     height: calc(100% - 1.4cm);
-    font-family: 'Caveat', cursive, serif;
-    font-size: 12pt;
+    font-family: 'Dancing Script', cursive, serif;
+    font-size: 14pt;
     line-height: 1.35;
     color: #1a4b82;
     text-align: left;
@@ -198,8 +198,8 @@ body {
     left: 0.3cm;
     width: calc(100% - 0.6cm);
     height: calc(100% - 0.6cm);
-    font-family: 'Caveat', cursive, serif;
-    font-size: 12pt;
+    font-family: 'Dancing Script', cursive, serif;
+    font-size: 14pt;
     line-height: 1.35;
     color: #1a4b82;
     text-align: left;
@@ -329,8 +329,6 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "Kızıma…\n\n";
     
-    // Kod editöründeki girinti boşluklarını temizleyen, 
-    // ancak sizin koyduğunuz enter'ları koruyan akıllı temizleme:
     const hamGovdeMetni = 
 `Sevgili Şiir,
 Bu satırları okuduğunda belki ben yanında olacağım, belki de
@@ -356,7 +354,6 @@ hatırla…
  
 Baban.`;
 
-    // Her satırın başındaki kod boşlukları temizleniyor, boş satırlar korunuyor
     const govdeMetni = hamGovdeMetni
         .split('\n')
         .map(satir => satir.trim())
@@ -374,7 +371,6 @@ Baban.`;
     let globalBaslikIndex = 0;
     let globalGovdeIndex = 0;
 
-    // Kademeli daktilo fonksiyonu: Başlık hızı 50ms, Gövde hızı 85ms
     function metinYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
 
@@ -393,7 +389,7 @@ Baban.`;
                     baslikSpan.textContent += karakter;
                 }
                 globalBaslikIndex++;
-                aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 50); // Başlık hızı: 50ms
+                aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 50);
             } else {
                 setTimeout(() => {
                     govdeYazdirAdim();
@@ -421,7 +417,7 @@ Baban.`;
                 }
 
                 globalGovdeIndex++;
-                aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85); // Gövde hızı: 85ms
+                aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
             } else {
                 daktiloDevamEdiyor = false;
                 if (callback) callback();
@@ -431,7 +427,6 @@ Baban.`;
         baslikYazdirAdim();
     }
 
-    // Sağ taraf dinamik sayfalarını oluşturma
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
@@ -450,7 +445,6 @@ Baban.`;
             </div>
         `;
 
-        // Sayfa Tıklama (Sayfa Çevirme Mantığı)
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
 
@@ -526,7 +520,6 @@ Baban.`;
         }, 100);
     }
 
-    // Kapak Açılma Tıklaması
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
