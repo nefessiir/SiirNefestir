@@ -128,6 +128,21 @@ body {
     margin-bottom: 0.4em;
 }
 
+/* SAYFA NUMARASI STİLİ */
+.sayfa-numara {
+    position: absolute;
+    bottom: 0.4cm;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Dancing Script', cursive, serif;
+    font-size: 10pt;
+    color: #1a4b82;
+    text-shadow: 0 0 2px rgba(26, 75, 130, 0.3);
+    pointer-events: none;
+    letter-spacing: 2px;
+}
+
 /* ÇOKLU SAYFA KONTEYNERİ */
 .sayfalar-kapsayici {
     position: absolute;
@@ -200,7 +215,7 @@ body {
     top: 0.3cm;
     left: 0.3cm;
     width: calc(100% - 0.6cm);
-    height: calc(100% - 0.6cm);
+    height: calc(100% - 1.1cm); /* Alttaki sayfa numarasına yer bırakmak için */
     font-family: 'Dancing Script', cursive, serif;
     line-height: 1.35;
     color: #1a4b82;
@@ -296,6 +311,8 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
         <!-- Sabit Sol Kanat Yazı Alanı -->
         <div class="sol-kanat-yazi" id="solKanatYazi"></div>
+        <!-- Sabit Sol Sayfa Numarası (Sayfa 1) -->
+        <div class="sayfa-numara">🪶 1 🪶</div>
     </div>
 
     <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
@@ -353,6 +370,7 @@ Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.
 Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
+Centilmen ol, sevgiyle kal...
 Çünkü sen benim , yazdığım en güzel şiirsin…
 
 Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
@@ -374,12 +392,10 @@ Baban.`;
     let globalBaslikIndex = 0;
     let globalSolIndex = 0;
 
-    // Sağ sayfa metin akışı için takip nesnesi
     let sagMetinDurumu = {
         karakterIndex: 0
     };
 
-    // Sol sayfayı başlıkla beraber yazdıran fonksiyon
     function solMetniYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
 
@@ -428,7 +444,6 @@ Baban.`;
         baslikYazdirAdim();
     }
 
-    // Sağ sayfa (ve taşarsa sonraki yapraklar) için harf harf yazdıran fonksiyon
     function sagMetniYazdirKademeli(element, durumObj, callback = null) {
         daktiloDevamEdiyor = true;
 
@@ -443,11 +458,10 @@ Baban.`;
                     element.innerHTML += karakter;
                 }
 
-                // Sayfa taşıp taşmadı kontrolü
                 if (element.scrollHeight > element.clientHeight) {
-                    element.innerHTML = element.innerHTML.slice(0, -1); // Taşanı geri al
+                    element.innerHTML = element.innerHTML.slice(0, -1);
                     daktiloDevamEdiyor = false;
-                    if (callback) callback(false); // Sayfa doldu, devam edecek
+                    if (callback) callback(false);
                     return;
                 }
 
@@ -455,7 +469,7 @@ Baban.`;
                 aktifDaktiloTimeout = setTimeout(adimla, 85);
             } else {
                 daktiloDevamEdiyor = false;
-                if (callback) callback(true); // Tüm metin bitti
+                if (callback) callback(true);
             }
         }
 
@@ -467,15 +481,22 @@ Baban.`;
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
+        // Ön yüz tek sayfa numaraları (2, 4, 6...), Arka yüz tek/çift devamı (3, 5, 7...)
+        // Sabit sol sayfa 1 olduğu için, ilk yaprağın ön yüzü 2, çevrilen arka yüzü 3 olur.
+        let onSayfaNo = (i * 2) + 2;
+        let arkaSayfaNo = (i * 2) + 3;
+
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
                     <img src="sag_sayfa.png" alt="Sayfa Ön">
                     <div class="sayfa-yazi" id="yazi-on-${i}"></div>
+                    <div class="sayfa-numara">🪶 ${onSayfaNo} 🪶</div>
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
                     <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
+                    <div class="sayfa-numara">🪶 ${arkaSayfaNo} 🪶</div>
                 </div>
             </div>
         `;
@@ -586,7 +607,6 @@ Baban.`;
             setTimeout(() => {
                 if (solKanatYazi) {
                     solMetniYazdirKademeli(solKanatYazi, () => {
-                        // Sol sayfa yazımı bittiğinde, ilk sağ sayfada (ilk yaprağın ön yüzünde) yazıyı başlat
                         if (sagMetinDurumu.karakterIndex < sagKarakterler.length && ilkSagSayfaYazi) {
                             sagMetniYazdirKademeli(ilkSagSayfaYazi, sagMetinDurumu);
                         }
