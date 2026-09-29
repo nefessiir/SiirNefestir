@@ -77,7 +77,6 @@ body {
     opacity: 1;
     clip-path: inset(0 0 0 0);
     transition: opacity 0.4s ease-in-out 0.6s, clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.6s;
-    pointer-events: auto;
 }
 
 .acik-kitap-alan img {
@@ -87,7 +86,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1. Sayfa) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
 .sol-kanat-yazi {
     position: absolute;
     top: 0.4cm;
@@ -107,15 +106,6 @@ body {
     hyphens: none;
     white-space: pre-wrap;
     z-index: 4;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
-    cursor: pointer;
-}
-
-.sol-kanat-yazi.goster {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 /* BAŞLIKLARIN ORTALANMASI VE BÜYÜTÜLMESİ */
@@ -231,14 +221,6 @@ body {
     hyphens: none;
     white-space: pre-wrap;
     font-size: 11pt; 
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
-}
-
-.sayfa-yazi.goster {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -318,7 +300,7 @@ body {
     <!-- AÇIK KİTAP GÖVDESİ -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
-        <!-- Sabit Sol Kanat Yazı Alanı (1. Sayfa) -->
+        <!-- Sabit Sol Kanat Yazı Alanı -->
         <div class="sol-kanat-yazi" id="solKanatYazi"></div>
         <div class="sayfa-numara">🪶 1 🪶</div>
     </div>
@@ -362,7 +344,7 @@ window.addEventListener("load", function () {
 `Sevgili Şiir,
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
 belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
-ama yine de gülümseyerek tek başına okuyacaksın.
+ama yine de gülümseyerek tek başına okuyaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
     const sagSayfaMetni = 
@@ -376,9 +358,9 @@ Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.
-Chünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
-Chünkü sen benim , yazdığım en güzel şiirsin…
+Çünkü sen benim , yazdığım en güzel şiirsin…
 
 Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
 
@@ -386,57 +368,63 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    // 1. Sayfa (Sol kanat) metni hazırlığı (Başlangıçta boş ve görünmez)
-    solKanatYazi.innerHTML = `<span class="sayfa-baslik">${baslikMetni.replace(/\n/g, '<br>')}</span>${solSayfaMetni.replace(/\n/g, '<br>')}`;
-
-    // Sağ metinleri sayfalar arasına paylaştırmak için satırlara/paragraflara bölelim
-    const sagParagraflar = sagSayfaMetni.split('\n\n');
     const toplamYaprak = 25;
     let yaprakElementleri = [];
     let isRewinding = false;
+    let satirZamanasimlari = [];
 
-    let sagSayfaMetinleri = [];
-    let mevcutParca = "";
-    
-    sagParagraflar.forEach(paragraf => {
-        let satirListesi = paragraf.split('\n');
-        satirListesi.forEach(satir => {
-            if ((mevcutParca + satir).length > 280) {
-                sagSayfaMetinleri.push(mevcutParca.trim());
-                mevcutParca = satir + "\n";
+    // Satır satır 0.2 saniye arayla yazdıran fonksiyon (Sabırsız okuyucu tıklayabilir)
+    function satirSatirYazdir(element, tamMetin, callback) {
+        // Önceki çalışan satır zamanlayıcılarını temizle
+        satirZamanasimlari.forEach(id => clearTimeout(id));
+        satirZamanasimlari = [];
+
+        element.innerHTML = "";
+        let satirlar = tamMetin.split('\n');
+        let index = 0;
+
+        function ekle() {
+            if (index < satirlar.length) {
+                element.innerHTML += (index === 0 ? "" : "\n") + satirlar[index];
+                index++;
+                let tId = setTimeout(ekle, 200); // 0.2 saniye arayla
+                satirZamanasimlari.push(tId);
             } else {
-                mevcutParca += satir + "\n";
+                if (callback) callback();
             }
-        });
-        if (mevcutParca.trim() !== "") {
-            mevcutParca += "\n";
         }
-    });
-    if (mevcutParca.trim() !== "") {
-        sagSayfaMetinleri.push(mevcutParca.trim());
+        ekle();
     }
+
+    // Tam metni direkt tek seferde doldurma (Sabırsız okuyucu tıklandığında tetiklenir)
+    function metniHemenDoldur(element, tamMetin) {
+        satirZamanasimlari.forEach(id => clearTimeout(id));
+        satirZamanasimlari = [];
+        element.innerHTML = tamMetin;
+    }
+
+    const tamSolMetin = `<span class="sayfa-baslik">${baslikMetni}</span>${solSayfaMetni}`;
 
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        let onSayfaNo = (i * 2) + 2;   // Sağ sayfa (Ön yüz)
-        let arkaSayfaNo = (i * 2) + 3; // Sol sayfa (Arka yüz)
+        let onSayfaNo = (i * 2) + 2;
+        let arkaSayfaNo = (i * 2) + 3;
 
-        let onMetin = sagSayfaMetinleri[i * 2] ? sagSayfaMetinleri[i * 2].replace(/\n/g, '<br>') : "";
-        let arkaMetin = sagSayfaMetinleri[(i * 2) + 1] ? sagSayfaMetinleri[(i * 2) + 1].replace(/\n/g, '<br>') : "";
+        let sayfaIcerikMetni = (i === 0) ? sagSayfaMetni : "";
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
                     <img src="sag_sayfa.png" alt="Sayfa Ön">
-                    <div class="sayfa-yazi" id="yazi-on-${i}">${onMetin}</div>
+                    <div class="sayfa-yazi" id="yazi-on-${i}"></div>
                     <div class="sayfa-numara">🪶 ${onSayfaNo} 🪶</div>
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
-                    <div class="sayfa-yazi" id="yazi-arka-${i}">${arkaMetin}</div>
+                    <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
                     <div class="sayfa-numara">🪶 ${arkaSayfaNo} 🪶</div>
                 </div>
             </div>
@@ -447,18 +435,19 @@ Baban.`;
             if (isRewinding) return;
 
             if (!yaprakDiv.classList.contains("cevirdi")) {
-                // İLERİ SAYFA HAREKETİ
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
                     
-                    // Önce mevcut aktif sayfanın yazısı tam dolu mu kontrol et (Eğer boşsa veya yeni açıldıysa önce yazıyı doldur)
-                    let yaziOn = yaprakDiv.querySelector('.sayfa-on .sayfa-yazi');
-                    if (yaziOn && onMetin !== "" && !yaziOn.classList.contains("goster")) {
-                        yaziOn.classList.add("goster");
-                        return; // İlk tıklamada sadece yazı yukarıdan aşağıya açılır, sayfa çevrilmez!
+                    let yaziOn = document.getElementById(`yazi-on-${i}`);
+                    
+                    // Eğer 1. yaprakta (i === 0) metin henüz dolmadıysa veya eksikse:
+                    if (i === 0 && yaziOn.textContent.trim() !== sagSayfaMetni.trim()) {
+                        // Sabırsız okuyucu: Tıklandığında yazı anında tamamlansın, sayfa çevrilmesin!
+                        metniHemenDoldur(yaziOn, sagSayfaMetni);
+                        return;
                     }
 
-                    // İkinci tıklamada sayfa çevrilir
+                    // Yazı tamamen bittiyse veya boşsa, şimdi sayfayı çevir
                     yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
@@ -467,7 +456,7 @@ Baban.`;
                     }
                 }
             } else {
-                // GERİ SAYFA ÇEVİRME
+                // Geri çevirme mantığı
                 let cevrilmisYapraklar = yaprakElementleri.filter(y => y.classList.contains("cevirdi"));
                 let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
                 
@@ -484,34 +473,9 @@ Baban.`;
             }
         });
 
-        // Sayfa içi yazı alanına tıklandığında yazı yukarıdan aşağıya (fade-in ile) görünsün
-        const yaziOnElement = yaprakDiv.querySelector(`#yazi-on-${i}`);
-        yaziOnElement.addEventListener("click", function(e) {
-            e.stopPropagation();
-            if (!yaziOnElement.classList.contains("goster")) {
-                yaziOnElement.classList.add("goster");
-            }
-        });
-
-        const yaziArkaElement = yaprakDiv.querySelector(`#yazi-arka-${i}`);
-        yaziArkaElement.addEventListener("click", function(e) {
-            e.stopPropagation();
-            if (!yaziArkaElement.classList.contains("goster")) {
-                yaziArkaElement.classList.add("goster");
-            }
-        });
-
         sayfalarKapsayici.appendChild(yaprakDiv);
         yaprakElementleri.push(yaprakDiv);
     }
-
-    // 1. Sayfa (Sol kanat) yazı alanına tıklandığında yazı yukarıdan aşağıya görünsün
-    solKanatYazi.addEventListener("click", function(e) {
-        e.stopPropagation();
-        if (!solKanatYazi.classList.contains("goster")) {
-            solKanatYazi.classList.add("goster");
-        }
-    });
 
     function otomatikGeriyeSar() {
         isRewinding = true;
@@ -529,12 +493,10 @@ Baban.`;
                 setTimeout(function () {
                     kapsayici.classList.remove("acildi");
                     kapakAlan.classList.remove("dondu");
-                    solKanatYazi.classList.remove("goster");
+                    solKanatYazi.innerHTML = "";
                     yaprakElementleri.forEach(y => {
                         let yOn = y.querySelector('.sayfa-on .sayfa-yazi');
-                        let yArka = y.querySelector('.sayfa-arka .sayfa-yazi');
-                        if(yOn) yOn.classList.remove("goster");
-                        if(yArka) yArka.classList.remove("goster");
+                        if(yOn) yOn.innerHTML = "";
                     });
                     isRewinding = false;
                 }, 400);
@@ -546,21 +508,39 @@ Baban.`;
         if (isRewinding) return;
 
         if (kapsayici.classList.contains("acildi")) {
-            solKanatYazi.classList.remove("goster");
+            satirZamanasimlari.forEach(id => clearTimeout(id));
+            solKanatYazi.innerHTML = "";
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
                 y.style.zIndex = toplamYaprak - index;
                 let yOn = y.querySelector('.sayfa-on .sayfa-yazi');
-                let yArka = y.querySelector('.sayfa-arka .sayfa-yazi');
-                if(yOn) yOn.classList.remove("goster");
-                if(yArka) yArka.classList.remove("goster");
+                if(yOn) yOn.innerHTML = "";
             });
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
         } else {
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
+
+            // Kapak açıldığı anda sol kanatta satır satır akış başlasın
+            setTimeout(() => {
+                satirSatirYazdir(solKanatYazi, tamSolMetin);
+            }, 1200);
+
+            // İlk yaprağın (Sayfa 2) sağ sayfasında da kapak açıldıktan hemen sonra satır satır akış başlasın
+            setTimeout(() => {
+                let ilkSayfaYaziOn = document.getElementById("yazi-on-0");
+                if(ilkSayfaYaziOn) {
+                    satirSatirYazdir(ilkSayfaYaziOn, sagSayfaMetni);
+                }
+            }, 1500);
         }
+    });
+
+    // Sol kanat yazı alanına tıklandığında sabırsız okuyucu için yazıyı anında tamamlama
+    solKanatYazi.addEventListener("click", function(e) {
+        e.stopPropagation();
+        metniHemenDoldur(solKanatYazi, tamSolMetin);
     });
 });
 </script>
