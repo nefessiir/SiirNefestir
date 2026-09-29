@@ -102,9 +102,9 @@ body {
     box-sizing: border-box;
     pointer-events: none;
     overflow: hidden;
-    word-break: keep-all; /* Kelimelerin keyfi bölünmesini engeller */
-    overflow-wrap: normal; /* Kelimeleri ortadan ikiye bölmez */
-    hyphens: none; /* Otomatik tireleme kapatıldı */
+    word-break: keep-all;
+    overflow-wrap: normal;
+    hyphens: none;
     white-space: pre-wrap;
     z-index: 4;
     opacity: 0;
@@ -124,6 +124,7 @@ body {
     width: 100%;
     font-weight: 700;
     font-size: 1.25em;
+    margin-top: 1.2em; /* Sadece başlığı aşağı kaydırmak için eklendi */
     margin-bottom: 0.4em;
 }
 
@@ -209,20 +210,11 @@ body {
     pointer-events: none;
     backface-visibility: hidden;
     overflow: hidden;
-    word-break: keep-all; /* Kelimelerin keyfi bölünmesini engeller */
-    overflow-wrap: normal; /* Kelimeleri ortadan ikiye bölmez */
-    hyphens: none; /* Otomatik tireleme kapatıldı */
+    word-break: keep-all;
+    overflow-wrap: normal;
+    hyphens: none;
     white-space: pre-wrap;
-}
-
-/* Sağ Sayfa (Ön Yüz): 13pt */
-.sayfa-on .sayfa-yazi {
-    font-size: 13pt;
-}
-
-/* Sol Sayfa (Arka Yüz): 11pt */
-.sayfa-arka .sayfa-yazi {
-    font-size: 11pt;
+    font-size: 11pt; /* Ön ve arka yüz font boyutu eşitlendi (11pt) */
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -470,18 +462,12 @@ Baban.`;
                     yaprakDiv.classList.add("cevirdi");
 
                     setTimeout(() => {
-                        const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
-                        
-                        if (globalGovdeIndex < govdeKarakterler.length && arkaYaziElementi) {
-                            metinYazdirKademeli(arkaYaziElementi, () => {
-                                let sonrakiIndex = i + 1;
-                                if (sonrakiIndex < toplamYaprak && globalGovdeIndex < govdeKarakterler.length) {
-                                    const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
-                                    if (sonrakiOnYaziElementi) {
-                                        metinYazdirKademeli(sonrakiOnYaziElementi);
-                                    }
-                                }
-                            });
+                        let sonrakiIndex = i + 1;
+                        if (sonrakiIndex < toplamYaprak && globalGovdeIndex < govdeKarakterler.length) {
+                            const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
+                            if (sonrakiOnYaziElementi) {
+                                metinYazdirKademeli(sonrakiOnYaziElementi);
+                            }
                         }
                     }, 1000);
 
@@ -562,7 +548,7 @@ Baban.`;
                 if (solKanatYazi) {
                     metinYazdirKademeli(solKanatYazi, () => {
                         if (globalGovdeIndex < govdeKarakterler.length && ilkSagSayfaYazi) {
-                            metinYazgridKademeli(ilkSagSayfaYazi);
+                            metinYazdirKademeli(ilkSagSayfaYazi);
                         }
                     });
                 }
