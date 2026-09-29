@@ -399,8 +399,8 @@ Baban.`;
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        let onSayfaNo = (i * 2) + 2;
-        let arkaSayfaNo = (i * 2) + 3;
+        let onSayfaNo = (i * 2) + 2;   // Ön yüz (Örn: 2, 4, 6...)
+        let arkaSayfaNo = (i * 2) + 3; // Arka yüz (Örn: 3, 5, 7...)
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
@@ -420,14 +420,14 @@ Baban.`;
         const yaziOn = yaprakDiv.querySelector(`#yazi-on-${i}`);
         const yaziArka = yaprakDiv.querySelector(`#yazi-arka-${i}`);
         
-        yaziOn.innerHTML = `<span class="sayfa-baslik">Şiir ${i+1} (Ön)</span>` + sagSayfaMetni.replace(/\n/g, "<br>");
-        yaziArka.innerHTML = `<span class="sayfa-baslik">Şiir ${i+1} (Arka)</span>` + sagSayfaMetni.replace(/\n/g, "<br>");
+        yaziOn.innerHTML = `<span class="sayfa-baslik">Şiir ${onSayfaNo} (Ön)</span>` + sagSayfaMetni.replace(/\n/g, "<br>");
+        yaziArka.innerHTML = `<span class="sayfa-baslik">Şiir ${arkaSayfaNo} (Arka)</span>` + sagSayfaMetni.replace(/\n/g, "<br>");
 
         sayfalarKapsayici.appendChild(yaprakDiv);
         yaprakElementleri.push(yaprakDiv);
     }
 
-    // TIKLAMA AKIŞ KONTROLÜ (Sol ve Sağ Tıklama Ayrımıyla İleri / Geri)
+    // TIKLAMA AKIŞ KONTROLÜ (Sağ taraf ileri, Sol taraf geri)
     let tiklamaAdimi = 0;
 
     kapsayici.addEventListener("click", function (e) {
@@ -499,13 +499,18 @@ Baban.`;
                 let yaprak = sonCevrilen.yaprak;
                 let idx = sonCevrilen.index;
 
-                let arkaYazi = document.getElementById(`yazi-arka-${idx}`);
-                if (arkaYazi) arkaYazi.classList.remove("goster");
+                let sonrakiOnYazi = document.getElementById(`yazi-on-${idx + 1}`);
+                if (sonrakiOnYazi && sonrakiOnYazi.classList.contains("goster")) {
+                    sonrakiOnYazi.classList.remove("goster");
+                } else {
+                    let arkaYazi = document.getElementById(`yazi-arka-${idx}`);
+                    if (arkaYazi) arkaYazi.classList.remove("goster");
 
-                setTimeout(() => {
-                    yaprak.style.zIndex = toplamYaprak - idx;
-                    yaprak.classList.remove("cevirdi");
-                }, 200);
+                    setTimeout(() => {
+                        yaprak.style.zIndex = toplamYaprak - idx;
+                        yaprak.classList.remove("cevirdi");
+                    }, 200);
+                }
             } else {
                 tiklamaAdimi = 2;
                 const ilkSagYazi = document.getElementById("yazi-on-0");
