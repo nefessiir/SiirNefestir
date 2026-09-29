@@ -124,8 +124,14 @@ body {
     width: 100%;
     font-weight: 700;
     font-size: 1.25em;
-    margin-top: 1.2em; /* Sadece başlığı aşağı kaydırmak için eklendi */
+    margin-top: 1.2em; 
     margin-bottom: 0.4em;
+}
+
+/* ÖZEL CÜMLE YUKARI ÇEKME SINIFI */
+.ozel-yukari-cek {
+    display: inline-block;
+    margin-top: -0.2cm;
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -214,7 +220,7 @@ body {
     overflow-wrap: normal;
     hyphens: none;
     white-space: pre-wrap;
-    font-size: 11pt; /* Ön ve arka yüz font boyutu eşitlendi (11pt) */
+    font-size: 11pt; 
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -333,6 +339,7 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
+    // "Ve bazılarını..." cümlesini HTML etiketiyle yukarı çekebilmek için yapı güncellendi
     const hamGovdeMetni = 
 `Sevgili Şiir,
 Bu satırları okuduğunda belki ben yanında olacağım, belki de
@@ -341,7 +348,7 @@ Ama şunu bilmeni isterim ;
 Ben bu şiirleri insanlara bir şey anlatmak için değil,
 içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
  
-Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben
+<span class="ozel-yukari-cek">Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben</span>
 buldum.
  
 Sana bırakabileceğim hatıralar arasından birinin de , bu şiirlerim
@@ -358,11 +365,6 @@ hatırla…
  
 Baban.`;
 
-    const govdeMetni = hamGovdeMetni
-        .split('\n')
-        .map(satir => satir.trim())
-        .join('\n');
-
     const toplamYaprak = 25;
     let yaprakElementleri = [];
     let isRewinding = false;
@@ -370,10 +372,19 @@ Baban.`;
     let daktiloDevamEdiyor = false;
 
     let baslikKarakterler = baslikMetni.split("");
-    let govdeKarakterler = govdeMetni.split("");
+    
+    // HTML etiketlerini bozmadan karakter bazlı daktilo için metin parçalama mantığı
+    function metniHTMLParcala(htmlStr) {
+        let tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlStr;
+        return tempDiv.childNodes;
+    }
+
+    let govdeParcalar = Array.from(metniHTMLParcala(hamGovdeMetni));
 
     let globalBaslikIndex = 0;
-    let globalGovdeIndex = 0;
+    let globalGovdeParcaIndex = 0;
+    let globalGovdeKarakterIndex = 0;
 
     function metinYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
@@ -404,24 +415,51 @@ Baban.`;
         function govdeYazdirAdim() {
             if (!daktiloDevamEdiyor) return;
 
-            if (globalGovdeIndex < govdeKarakterler.length) {
-                let karakter = govdeKarakterler[globalGovdeIndex];
-                
-                if (karakter === "\n") {
-                    element.innerHTML += "<br>";
-                } else {
-                    element.innerHTML += karakter;
-                }
+            if (globalGovdeParcaIndex < govdeParcalar.length) {
+                let parca = govdeParcalar[globalGovdeParcaIndex];
 
-                if (element.scrollHeight > element.clientHeight) {
-                    element.innerHTML = element.innerHTML.slice(0, -1);
-                    daktiloDevamEdiyor = false;
-                    if (callback) callback();
-                    return;
-                }
+                if (parca.nodeType === Node.TEXT_NODE) {
+                    let text = parca.textContent;
+                    if (globalGovdeKarakterIndex < text.length) {
+                        let karakter = text[globalGovdeKarakterIndex];
+                        if (karakter === "\n") {
+                            element.innerHTML += "<br>";
+                        } else {
+                            element.innerHTML += karakter;
+                        }
 
-                globalGovdeIndex++;
-                aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                        if (element.scrollHeight > element.clientHeight) {
+                            element.innerHTML = element.innerHTML.slice(0, -1);
+                            daktiloDevamEdiyor = false;
+                            if (callback) callback();
+                            return;
+                        }
+
+                        globalGovdeKarakterIndex++;
+                        aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                    } else {
+                        globalGovdeKarakterIndex = 0;
+                        globalGovdeParcaIndex++;
+                        aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                    }
+                } else if (parca.nodeType === Node.ELEMENT_NODE) {
+                    // Özel HTML elemanları (örneğin ozel-yukari-cek sınıfı)
+                    let elementHTML = parca.outerHTML;
+                    // Basitçe elementi ekleyip sığıp sığmadığını kontrol edelim
+                    let testSpan = document.createElement("span");
+                    testSpan.innerHTML = elementHTML;
+                    element.appendChild(testSpan);
+
+                    if (element.scrollHeight > element.clientHeight) {
+                        element.removeChild(testSpan);
+                        daktiloDevamEdiyor = false;
+                        if (callback) callback();
+                        return;
+                    }
+
+                    globalGovdeParcaIndex++;
+                    aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                }
             } else {
                 daktiloDevamEdiyor = false;
                 if (callback) callback();
@@ -462,12 +500,18 @@ Baban.`;
                     yaprakDiv.classList.add("cevirdi");
 
                     setTimeout(() => {
-                        let sonrakiIndex = i + 1;
-                        if (sonrakiIndex < toplamYaprak && globalGovdeIndex < govdeKarakterler.length) {
-                            const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
-                            if (sonrakiOnYaziElementi) {
-                                metinYazdirKademeli(sonrakiOnYaziElementi);
-                            }
+                        const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
+                        
+                        if ((globalGovdeParcaIndex < govdeParcalar.length) && arkaYaziElementi) {
+                            metinYazdirKademeli(arkaYaziElementi, () => {
+                                let sonrakiIndex = i + 1;
+                                if (sonrakiIndex < toplamYaprak && globalGovdeParcaIndex < govdeParcalar.length) {
+                                    const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
+                                    if (sonrakiOnYaziElementi) {
+                                        metinYazdirKademeli(sonrakiOnYaziElementi);
+                                    }
+                                }
+                            });
                         }
                     }, 1000);
 
@@ -527,7 +571,8 @@ Baban.`;
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
             globalBaslikIndex = 0;
-            globalGovdeIndex = 0;
+            globalGovdeParcaIndex = 0;
+            globalGovdeKarakterIndex = 0;
             if (solKanatYazi) solKanatYazi.innerHTML = "";
             if (ilkSagSayfaYazi) ilkSagSayfaYazi.innerHTML = "";
 
@@ -542,12 +587,13 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalBaslikIndex = 0;
-            globalGovdeIndex = 0;
+            globalGovdeParcaIndex = 0;
+            globalGovdeKarakterIndex = 0;
 
             setTimeout(() => {
                 if (solKanatYazi) {
                     metinYazdirKademeli(solKanatYazi, () => {
-                        if (globalGovdeIndex < govdeKarakterler.length && ilkSagSayfaYazi) {
+                        if (globalGovdeParcaIndex < govdeParcalar.length && ilkSagSayfaYazi) {
                             metinYazdirKademeli(ilkSagSayfaYazi);
                         }
                     });
