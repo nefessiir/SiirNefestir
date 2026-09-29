@@ -143,7 +143,7 @@ body {
     letter-spacing: 2px;
 }
 
-/* 4. SAYFA ÖZEL FOTOĞRAF ALANI (GERÇEKLİĞİNİ BOZMADAN ORTALI) */
+/* 4. SAYFA ÖZEL FOTOĞRAF ALANI */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -162,10 +162,10 @@ body {
 .sayfa-fotograf img {
     max-width: 100%;
     max-height: 100%;
-    object-fit: contain; /* Fotoğrafın en-boy oranını ve gerçekliğini korur */
+    object-fit: contain;
     display: block;
     border-radius: 4px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Hafif derinlik hissi */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -509,7 +509,6 @@ Baban.`;
         let onSayfaNo = (i * 2) + 2;
         let arkaSayfaNo = (i * 2) + 3;
 
-        // 4. sayfaya (i = 1'in arka yüzü, yani arkaSayfaNo === 4 olduğunda) fotoğrafı yerleştiriyoruz
         let icerikOn = `<div class="sayfa-yazi" id="yazi-on-${i}"></div>`;
         let icerikArka = `<div class="sayfa-yazi" id="yazi-arka-${i}"></div>`;
 
