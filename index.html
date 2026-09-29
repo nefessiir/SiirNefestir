@@ -108,12 +108,11 @@ body {
     white-space: pre-wrap;
     z-index: 4;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
+    transition: opacity 0.8s ease-in-out;
 }
 
-.kitap-kapsayici.acildi .sol-kanat-yazi {
+.sol-kanat-yazi.goster {
     opacity: 1;
-    transition: opacity 1s ease-in-out 1.2s;
 }
 
 /* BAŞLIKLARIN ORTALANMASI VE BÜYÜTÜLMESİ */
@@ -315,9 +314,8 @@ body {
     <!-- AÇIK KİTAP GÖVDESİ -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
-        <!-- Sabit Sol Kanat Yazı Alanı -->
+        <!-- Sabit Sol Kanat Yazı Alanı (1. Sayfa) -->
         <div class="sol-kanat-yazi" id="solKanatYazi"></div>
-        <!-- Sabit Sol Sayfa Numarası (Sayfa 1) -->
         <div class="sayfa-numara">🪶 1 🪶</div>
     </div>
 
@@ -384,37 +382,38 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
+    // Metinleri hazırla
+    solKanatYazi.innerHTML = `<span class="sayfa-baslik">${baslikMetni.replace(/\n/g, '<br>')}</span>${solSayfaMetni.replace(/\n/g, '<br>')}`;
+
     const toplamYaprak = 25;
     let yaprakElementleri = [];
     let isRewinding = false;
 
-    // Metinleri ve başlıkları HTML elementlerine yerleştir
-    solKanatYazi.innerHTML = `<span class="sayfa-baslik">${baslikMetni.replace(/\n/g, '<br>')}</span>${solSayfaMetni.replace(/\n/g, '<br>')}`;
+    // Hangi sayfa numarasına kadar okunduğunu takip eden hafıza
+    let maksimumOkunanSayfa = 1;
 
-    // Sağ sayfalara metinleri dağıtma mantığı (Sayfa başına sığacak kadar metin bölüştürülebilir ya da tüm metin sırayla akıtılabilir)
-    // Şimdilik ilk arka sayfaya tüm sağ metni koyalım veya dağıtalım:
-    // Mevcut mantığınızdaki gibi sayfalar oluşturuluyor:
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        let onSayfaNo = (i * 2) + 2;
-        let arkaSayfaNo = (i * 2) + 3;
+        let onSayfaNo = (i * 2) + 2;   // Sağ sayfa (Ön yüz)
+        let arkaSayfaNo = (i * 2) + 3; // Sol sayfa (Arka yüz)
 
-        // İlk arka sayfaya (yaprak 0'ın arkası) sağ metni koyalım
-        let sayfaIcerikMetni = (i === 0) ? sagSayfaMetni.replace(/\n/g, '<br>') : "";
+        // Sağ sayfa metni (ilk yaprağın ön yüzüne ana metni veriyoruz)
+        let onMetin = (i === 0) ? sagSayfaMetni.replace(/\n/g, '<br>') : "";
+        let arkaMetin = ""; // İleride ihtiyaç olursa eklenebilir
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
                     <img src="sag_sayfa.png" alt="Sayfa Ön">
-                    <div class="sayfa-yazi" id="yazi-on-${i}"></div>
+                    <div class="sayfa-yazi" id="yazi-on-${i}">${onMetin}</div>
                     <div class="sayfa-numara">🪶 ${onSayfaNo} 🪶</div>
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
-                    <div class="sayfa-yazi" id="yazi-arka-${i}">${sayfaIcerikMetni}</div>
+                    <div class="sayfa-yazi" id="yazi-arka-${i}">${arkaMetin}</div>
                     <div class="sayfa-numara">🪶 ${arkaSayfaNo} 🪶</div>
                 </div>
             </div>
@@ -425,24 +424,30 @@ Baban.`;
             if (isRewinding) return;
 
             if (!yaprakDiv.classList.contains("cevirdi")) {
+                // İLERİ SAYFA ÇEVİRME
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
                     yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
-                    // Sayfa çevrildiğinde arkasındaki yazı belirtsin
-                    setTimeout(() => {
-                        const arkaYazi = document.getElementById(`yazi-arka-${i}`);
-                        if (arkaYazi) {
-                            arkaYazi.classList.add("goster");
-                        }
-                    }, 500);
-
-                    if (i === toplamYaprak - 1) {
-                        otomatikGeriyeSar();
+                    // Hedef sayfa numarası (bu yaprak çevrildiğinde sağa gelen yeni sayfa)
+                    let yeniGelenSayfaNo = onSayfaNo; 
+                    if (yeniGelenSayfaNo > maksimumOkunanSayfa) {
+                        maksimumOkunanSayfa = yeniGelenSayfaNo;
                     }
+
+                    // Tıklama mantığına göre; eğer bu sayfa daha önce okunmadıysa ilk tıklamada boş başlar,
+                    // ancak kullanıcı "tıkla yazı gelsin" kuralını istediği için:
+                    // Çevrildikten sonra elementin yazısını görünür yapalım:
+                    setTimeout(() => {
+                        const yaziOn = document.getElementById(`yazi-on-${i}`);
+                        if (yaziOn) {
+                            yaziOn.classList.add("goster");
+                        }
+                    }, 400);
                 }
             } else {
+                // GERİ SAYFA ÇEVİRME (Sayfalar silinmez, hafızada kalır)
                 let cevrilmisYapraklar = yaprakElementleri.filter(y => y.classList.contains("cevirdi"));
                 let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
                 
@@ -463,54 +468,34 @@ Baban.`;
         yaprakElementleri.push(yaprakDiv);
     }
 
-    function otomatikGeriyeSar() {
-        isRewinding = true;
-        let index = yaprakElementleri.length - 1;
-
-        let rewindInterval = setInterval(function () {
-            if (index >= 0) {
-                yaprakElementleri[index].style.zIndex = 100;
-                yaprakElementleri[index].classList.remove("cevirdi");
-                // Yazıların belirme sınıflarını temizle
-                const arkaYazi = document.getElementById(`yazi-arka-${index}`);
-                if (arkaYazi) arkaYazi.classList.remove("goster");
-
-                yaprakElementleri[index].style.zIndex = toplamYaprak - index;
-                index--;
-            } else {
-                clearInterval(rewindInterval);
-
-                setTimeout(function () {
-                    kapsayici.classList.remove("acildi");
-                    kapakAlan.classList.remove("dondu");
-                    solKanatYazi.classList.remove("goster");
-                    isRewinding = false;
-                }, 400);
-            }
-        }, 100);
-    }
-
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
         if (kapsayici.classList.contains("acildi")) {
+            // Kitabı kapatırken durumları sıfırla
             solKanatYazi.classList.remove("goster");
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
                 y.style.zIndex = toplamYaprak - index;
-                const arkaYazi = document.getElementById(`yazi-arka-${index}`);
-                if (arkaYazi) arkaYazi.classList.remove("goster");
             });
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
         } else {
+            // Kitabı aç (Kapak kalktı, 1. sayfa sol kanatta boş görünüyor)
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
 
-            // Kapak açıldıktan sonra sol sayfa yazısını yumuşakça belirlet
-            setTimeout(() => {
-                solKanatYazi.classList.add("goster");
-            }, 1200);
+            // 1. Sayfa (Sol kanat) ilk başta boş açılır, kullanıcı tekrar tıkladığında veya kısa süre sonra dolması isteniyorsa:
+            // Sizin kuralınıza göre: "Tıkla --- 1. Sayfa doldu" mantığı için sol kanada tıklama özelliği ekleyelim:
+        }
+    });
+
+    // 1. Sayfanın bulunduğu sol kanada (veya açık kitap alanına) ilk tıklamada yazının belirlemesi için:
+    const acikKitapAlan = document.getElementById("acikKitapAlan");
+    acikKitapAlan.style.cursor = "pointer";
+    acikKitapAlan.addEventListener("click", function(e) {
+        if (!solKanatYazi.classList.contains("goster")) {
+            solKanatYazi.classList.add("goster");
         }
     });
 });
