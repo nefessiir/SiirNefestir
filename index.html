@@ -344,17 +344,17 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
-    // "Sevgili Şiir..." ile "...buldum" arası yukarı çekildi ve "Ve bazılarını..." cümlesi tamamen karaktere bölündü
+    // "Sevgili Şiir," ile devam eden metin arasına boşluk ve satır atlaması güvenli şekilde işlendi
     const hamGovdeMetni = 
 `<span class="ozel-ilk-yukari">Sevgili Şiir,
+
 Bu satırları okuduğunda belki ben yanında olacağım, belki de
 hayat bizi birbirimizden uzaklaştırmış olacak.
 Ama şunu bilmeni isterim ;
 Ben bu şiirleri insanlara bir şey anlatmak için değil,
 içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.</span>
  
-<span class="ozel-yukari-cek">Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben</span>
-buldum.
+<span class="ozel-yukari-cek">Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben</span> buldum.
  
 Sana bırakabileceğim hatıralar arasından birinin de , bu şiirlerim
 ve bu şiirleri benim sesimden duyman olacağını düşündüm.. belki de en güzeli..
@@ -377,7 +377,6 @@ Baban.`;
 
     let baslikKarterler = baslikMetni.split("");
     
-    // HTML etiketlerini ve içerisindeki düz metinleri harf harf işleyebilmek için yapı güncellendi
     function metniHTMLParcala(htmlStr) {
         let tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlStr;
@@ -448,7 +447,6 @@ Baban.`;
                         aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
                     }
                 } else if (parca.nodeType === Node.ELEMENT_NODE) {
-                    // Özel HTML elemanları (örn. ozel-ilk-yukari veya ozel-yukari-cek sınıflı spanler) harf harf daktilo ediliyor
                     if (!aktifEklenenOzelSpan) {
                         aktifEklenenOzelSpan = document.createElement("span");
                         aktifEklenenOzelSpan.className = parca.className;
