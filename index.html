@@ -86,7 +86,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (Punto: 11pt, Düzeltilmiş top mesafesi) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
 .sol-kanat-yazi {
     position: absolute;
     top: 0.5cm;
@@ -102,8 +102,9 @@ body {
     box-sizing: border-box;
     pointer-events: none;
     overflow: hidden;
-    word-break: normal;
-    overflow-wrap: break-word;
+    word-break: keep-all; /* Kelimelerin keyfi bölünmesini engeller */
+    overflow-wrap: normal; /* Kelimeleri ortadan ikiye bölmez */
+    hyphens: none; /* Otomatik tireleme kapatıldı */
     white-space: pre-wrap;
     z-index: 4;
     opacity: 0;
@@ -208,17 +209,18 @@ body {
     pointer-events: none;
     backface-visibility: hidden;
     overflow: hidden;
-    word-break: normal;
-    overflow-wrap: break-word;
+    word-break: keep-all; /* Kelimelerin keyfi bölünmesini engeller */
+    overflow-wrap: normal; /* Kelimeleri ortadan ikiye bölmez */
+    hyphens: none; /* Otomatik tireleme kapatıldı */
     white-space: pre-wrap;
 }
 
-/* Sağ Sayfa (Ön Yüz): 13pt olarak güncellendi */
+/* Sağ Sayfa (Ön Yüz): 13pt */
 .sayfa-on .sayfa-yazi {
     font-size: 13pt;
 }
 
-/* Sol Sayfa (Arka Yüz): 11pt olarak güncellendi */
+/* Sol Sayfa (Arka Yüz): 11pt */
 .sayfa-arka .sayfa-yazi {
     font-size: 11pt;
 }
@@ -560,7 +562,7 @@ Baban.`;
                 if (solKanatYazi) {
                     metinYazdirKademeli(solKanatYazi, () => {
                         if (globalGovdeIndex < govdeKarakterler.length && ilkSagSayfaYazi) {
-                            metinYazdirKademeli(ilkSagSayfaYazi);
+                            metinYazgridKademeli(ilkSagSayfaYazi);
                         }
                     });
                 }
