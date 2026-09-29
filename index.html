@@ -318,8 +318,7 @@ window.addEventListener("load", function () {
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
     const onsozMetni = 
-`
-Kızıma…
+`Kızıma…
 
 Sevgili Şiir,
 
@@ -342,30 +341,35 @@ Baban.`;
     let aktifDaktiloTimeout = null;
     let daktiloDevamEdiyor = false;
 
-    let kelimeParcalari = onsozMetni.match(/([^\s]+|\s+)/g) || [];
-    let globalKelimeIndex = 0;
+    // Metni tekli karakterler halinde diziye çeviriyoruz
+    let karakterDizisi = onsozMetni.split("");
+    let globalKarakterIndex = 0;
 
-    // Kelime kelime daktilo ile element dolduran fonksiyon
-    function metinYazdir(parcalar, element, hiz = 55, callback = null) {
+    // Karakter karakter daktilo ile element dolduran fonksiyon (İstediğiniz hızlar eklendi)
+    function metinYazdir(karakterler, element, callback = null) {
         daktiloDevamEdiyor = true;
 
         function yazdirAdim() {
             if (!daktiloDevamEdiyor) return;
 
-            if (globalKelimeIndex < parcalar.length) {
-                let parca = parcalar[globalKelimeIndex];
-                element.textContent += parca;
+            if (globalKarakterIndex < karakterler.length) {
+                let karakter = karakterler[globalKarakterIndex];
+                element.textContent += karakter;
 
-                // Alan taştıysa kelimeyi geri al ve bu sayfayı tamamla
+                // Alan taştıysa karakteri geri al ve bu sayfayı tamamla
                 if (element.scrollHeight > element.clientHeight) {
-                    element.textContent = element.textContent.slice(0, -parca.length);
+                    element.textContent = element.textContent.slice(0, -1);
                     daktiloDevamEdiyor = false;
                     if (callback) callback();
                     return;
                 }
 
-                globalKelimeIndex++;
-                aktifDaktiloTimeout = setTimeout(yazdirAdim, hiz);
+                globalKarakterIndex++;
+                
+                // "Kızıma..." kelimesi (ilk 7 karakter) bitene kadar hız 40ms, sonrakiler 25ms
+                let guncelHiz = globalKarakterIndex <= 7 ? 40 : 25;
+
+                aktifDaktiloTimeout = setTimeout(yazdirAdim, guncelHiz);
             } else {
                 daktiloDevamEdiyor = false;
                 if (callback) callback();
@@ -411,13 +415,13 @@ Baban.`;
                     setTimeout(() => {
                         const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
                         
-                        if (globalKelimeIndex < kelimeParcalari.length && arkaYaziElementi) {
-                            metinYazdir(kelimeParcalari, arkaYaziElementi, 55, () => {
+                        if (globalKarakterIndex < karakterDizisi.length && arkaYaziElementi) {
+                            metinYazdir(karakterDizisi, arkaYaziElementi, () => {
                                 let sonrakiIndex = i + 1;
-                                if (sonrakiIndex < toplamYaprak && globalKelimeIndex < kelimeParcalari.length) {
+                                if (sonrakiIndex < toplamYaprak && globalKarakterIndex < karakterDizisi.length) {
                                     const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
                                     if (sonrakiOnYaziElementi) {
-                                        metinYazdir(kelimeParcalari, sonrakiOnYaziElementi, 55);
+                                        metinYazdir(karakterDizisi, sonrakiOnYaziElementi);
                                     }
                                 }
                             });
@@ -480,7 +484,7 @@ Baban.`;
         if (kapsayici.classList.contains("acildi")) {
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
-            globalKelimeIndex = 0;
+            globalKarakterIndex = 0;
             if (solKanatYazi) solKanatYazi.textContent = "";
             if (ilkSagSayfaYazi) ilkSagSayfaYazi.textContent = "";
 
@@ -494,14 +498,14 @@ Baban.`;
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
 
-            globalKelimeIndex = 0;
+            globalKarakterIndex = 0;
             // Kitap açıldıktan 3.8 saniye sonra önce SOL KANAT başlar
             setTimeout(() => {
                 if (solKanatYazi) {
-                    metinYazdir(kelimeParcalari, solKanatYazi, 55, () => {
-                        // Sol kanat dolunca, kalan kelimeler otomatik olarak 1. SAĞ SAYFAYA (0. yaprağın ön yüzü) yazılmaya başlar!
-                        if (globalKelimeIndex < kelimeParcalari.length && ilkSagSayfaYazi) {
-                            metinYazdir(kelimeParcalari, ilkSagSayfaYazi, 55);
+                    metinYazdir(karakterDizisi, solKanatYazi, () => {
+                        // Sol kanat dolunca, kalan karakterler otomatik olarak 1. SAĞ SAYFAYA yazılmaya başlar!
+                        if (globalKarakterIndex < karakterDizisi.length && ilkSagSayfaYazi) {
+                            metinYazdir(karakterDizisi, ilkSagSayfaYazi);
                         }
                     });
                 }
