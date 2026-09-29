@@ -347,6 +347,7 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
+    // 1. Sayfa (Sol Kanat)
     const solSayfaMetni = 
 `Sevgili Şiir,
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
@@ -354,6 +355,7 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
+    // Sonraki Sayfaların Metinleri (İstediğiniz kadar ekleyebilir veya çoğaltabilirsiniz)
     const sayfaMetinleri = [
         // Sayfa 2 (1. Yaprak Ön)
         `Bilmeni isterim ki;
@@ -378,7 +380,11 @@ Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
 
 Hasretle gamzelerinden ve o küçük çenenden öperim.
 
-Baban.`
+Baban.`,
+
+        // Dilerseniz buraya 5. sayfa, 6. sayfa vb. için yeni metinler ekleyebilirsiniz:
+        // `Buraya 5. sayfa metnini yazabilirsiniz...`,
+        // `Buraya 6. sayfa metnini yazabilirsiniz...`
     ];
 
     const toplamYaprak = 25;
@@ -386,12 +392,10 @@ Baban.`
     let isRewinding = false;
     let aktifTimeouts = [];
     
-    // Akış aşaması takibi
-    // 0: Kitap kapalı
-    // 1: Kitap açıldı, 1. sayfa (sol kanat) bekleniyor / yazılıyor
-    // 2: Sayfa 2 bekleniyor / yazılıyor
-    // 3: Sayfa 3 bekleniyor / yazılıyor
-    // 4: Sayfa 4 bekleniyor / yazılıyor
+    // Akış Asaması:
+    // 0: Kapak kapalı
+    // 1: Kitap açıldı, sol sayfa henüz başlamadı (İlk tıklama bekleniyor)
+    // 2 ve üzeri: Sayfa indekslerine göre ilerler.
     let akisAsamasi = 0;
     
     let mevcutYazmaDurumu = {
@@ -438,47 +442,88 @@ Baban.`
         adim();
     }
 
-    // Tıklandığında çalışacak aşamalı kontrol fonksiyonu
-    function sonrakiAsamayaGec() {
-        // Eğer o an daktilo yazı yazıyorsa, tıklayınca sadece yazıyı o sayfada anında bitir
+    // 1. Sayfayı (Sol Kanat) başlatan fonksiyon
+    function solSayfayiBaslat() {
+        solKanatYazi.innerHTML = "";
+        let baslikSpan = document.createElement("span");
+        baslikSpan.className = "sayfa-baslik";
+        solKanatYazi.appendChild(baslikSpan);
+
+        let bK = baslikMetni.split("");
+        let bIdx = 0;
+        
+        function baslikYaz() {
+            if (bIdx < bK.length) {
+                let k = bK[bIdx];
+                baslikSpan.innerHTML += (k === "\n") ? "<br>" : k;
+                bIdx++;
+                let t = setTimeout(baslikYaz, 40);
+                aktifTimeouts.push(t);
+            } else {
+                metinYazdirKademeli(solKanatYazi, solSayfaMetni);
+            }
+        }
+        baslikYaz();
+    }
+
+    // Tıklandığında çalışacak akıllı aşama kontrolü
+    function tiklamaIsleminiYurut() {
+        // Eğer o an daktilo yazıyorsa, tıklayınca yazıyı o sayfada anında bitir
         if (aktifSayfayiHemenBitir()) {
             return;
         }
 
-        // Eğer yazma bitmişse, bir sonraki aşamaya / sayfaya geç
         if (akisAsamasi === 1) {
-            // Aşama 1 bitti, şimdi Aşama 2 (Sayfa 2 / 1. Yaprak Ön) başlasın
+            // Kitap açıldıktan sonraki İLK tıklama: 1. Sayfayı başlat
             akisAsamasi = 2;
+            solSayfayiBaslat();
+        } 
+        else if (akisAsamasi === 2) {
+            // 1. sayfa bitti, şimdi tıklayınca Sayfa 2 (1. Yaprak Ön) başlasın
+            akisAsamasi = 3;
             let yOn0 = document.getElementById("yazi-on-0");
-            if (yOn0) {
+            if (yOn0 && sayfaMetinleri[0]) {
                 metinYazdirKademeli(yOn0, sayfaMetinleri[0]);
             }
         } 
-        else if (akisAsamasi === 2) {
-            // Aşama 2 bitti, şimdi Aşama 3 (Sayfa 3 / 1. Yaprak Arka) başlasın
-            akisAsamasi = 3;
+        else if (akisAsamasi === 3) {
+            // Sayfa 2 bitti, şimdi tıklayınca sayfa çevrilip Sayfa 3 (1. Yaprak Arka) başlasın
+            akisAsamasi = 4;
             yaprakElementleri[0].style.zIndex = 50;
             yaprakElementleri[0].classList.add("cevirdi");
 
             setTimeout(() => {
                 let yArka0 = document.getElementById("yazi-arka-0");
-                if (yArka0) {
+                if (yArka0 && sayfaMetinleri[1]) {
                     metinYazdirKademeli(yArka0, sayfaMetinleri[1]);
                 }
             }, 800);
         } 
-        else if (akisAsamasi === 3) {
-            // Aşama 3 bitti, şimdi Aşama 4 (Sayfa 4 / 2. Yaprak Ön) başlasın
-            akisAsamasi = 4;
+        else if (akisAsamasi === 4) {
+            // Sayfa 3 bitti, şimdi tıklayınca yaprak çevrilip Sayfa 4 (2. Yaprak Ön) başlasın
+            akisAsamasi = 5;
             yaprakElementleri[1].style.zIndex = 51;
             yaprakElementleri[1].classList.add("cevirdi");
 
             setTimeout(() => {
                 let yOn1 = document.getElementById("yazi-on-1");
-                if (yOn1) {
+                if (yOn1 && sayfaMetinleri[2]) {
                     metinYazdirKademeli(yOn1, sayfaMetinleri[2]);
                 }
             }, 800);
+        }
+        else {
+            // 4. sayfadan sonraki tıklamalarda boş sayfa kalmadıysa veya ileri gitmek istenirse 
+            // sıradaki yaprakları otomatik çevirerek kilidi çözer
+            let yaprakIndex = akisAsamasi - 4;
+            if (yaprakIndex < yaprakElementleri.length) {
+                yaprakElementleri[yaprakIndex].style.zIndex = 50 + yaprakIndex;
+                yaprakElementleri[yaprakIndex].classList.add("cevirdi");
+                akisAsamasi++;
+            } else {
+                // Kitap sonuna gelindiğinde isterseniz otomatik geriye sarma başlatabilirsiniz:
+                otomatikGeriyeSar();
+            }
         }
     }
 
@@ -508,7 +553,7 @@ Baban.`
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
             if (isRewinding) return;
-            sonrakiAsamayaGec();
+            tiklamaIsleminiYurut();
         });
 
         sayfalarKapsayici.appendChild(yaprakDiv);
@@ -531,6 +576,7 @@ Baban.`
                     kapsayici.classList.remove("acildi");
                     kapakAlan.classList.remove("dondu");
                     isRewinding = false;
+                    akisAsamasi = 0;
                 }, 400);
             }
         }, 100);
@@ -540,65 +586,16 @@ Baban.`
         if (isRewinding) return;
 
         if (kapsayici.classList.contains("acildi")) {
-            // Kitap zaten açıkken tıklandığında sıradaki sayfaya geç
-            sonrakiAsamayaGec();
+            tiklamaIsleminiYurut();
         } else {
-            // Kitap kapalıyken tıklandığında kapağı aç ve 1. sayfa için HAZIR BEKLE (Otomatik başlatma)
+            // Kapak kapalıyken tıklandığında kapağı aç ve 1. sayfa için HAZIR BEKLE
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
-            akisAsamasi = 1; // 1. aşamadayız ancak kullanıcı tıklayana kadar hiçbir şey yazmıyor.
-
-            // Sol sayfa içeriğini hazırla ama başlatma (Kullanıcı tıkladığında başlayacak)
-            solKanatYazi.innerHTML = "";
-            let baslikSpan = document.createElement("span");
-            baslikSpan.className = "sayfa-baslik";
-            solKanatYazi.appendChild(baslikSpan);
-
-            // Başlığı ve metni tek seferde yazmaya hazır hale getirmek için saklıyoruz
-            // Kullanıcı kapak açıldıktan sonra ilk tıkladığında burası tetiklenecek:
-            // (İlk tıklamada sonrakiAsamayaGec fonksiyonu çağrıldığı için özelleştiriyoruz)
-        }
-    });
-
-    // 1. sayfanın (sol kanat) ilk tıklamada yazılmasını sağlayan özel kanca:
-    // Kapak açıldıktan sonraki İLK tıklama sol sayfanın daktilosunu başlatır.
-    const orijinalSonrakiAsamayaGec = sonrakiAsamayaGec;
-    
-    window.ozelIlkTiklamaKontrolu = function() {
-        if (akisAsamasi === 1 && !mevcutYazmaDurumu.element && solKanatYazi.innerHTML === "") {
-            // Sol sayfa başlık ve gövde daktilosunu başlat
-            let baslikSpan = solKanatYazi.querySelector(".sayfa-baslik");
-            let bK = baslikMetni.split("");
-            let bIdx = 0;
             
-            function baslikYaz() {
-                if (bIdx < bK.length) {
-                    let k = bK[bIdx];
-                    baslikSpan.innerHTML += (k === "\n") ? "<br>" : k;
-                    bIdx++;
-                    let t = setTimeout(baslikYaz, 40);
-                    aktifTimeouts.push(t);
-                } else {
-                    metinYazdirKademeli(solKanatYazi, solSayfaMetni);
-                }
-            }
-            baslikYaz();
-            return true;
+            temizleZamanasimlari();
+            solKanatYazi.innerHTML = "";
+            akisAsamasi = 1; // Kullanıcının ilk tıklamasıyla 1. sayfa başlayacak.
         }
-        return false;
-    };
-
-    // Güncellenmiş aşama geçiş fonksiyonu
-    function gelismisAsamaGecisi() {
-        if (window.ozelIlkTiklamaKontrolu()) {
-            return;
-        }
-        orijinalSonrakiAsamayaGec();
-    }
-
-    // Dinamik yaprakların click olayını güncellenmiş fonksiyonla değiştiriyoruz
-    yaprakElementleri.forEach((yaprakDiv) => {
-        // Eski dinleyici yerine yenisini eklemek için cloneNode kullanabiliriz veya doğrudan bağlayabiliriz
     });
 });
 </script>
