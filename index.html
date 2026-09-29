@@ -77,6 +77,7 @@ body {
     opacity: 1;
     clip-path: inset(0 0 0 0);
     transition: opacity 0.4s ease-in-out 0.6s, clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.6s;
+    pointer-events: auto;
 }
 
 .acik-kitap-alan img {
@@ -100,7 +101,6 @@ body {
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
     box-sizing: border-box;
-    pointer-events: none;
     overflow: hidden;
     word-break: normal;
     overflow-wrap: break-word;
@@ -109,6 +109,7 @@ body {
     z-index: 4;
     opacity: 0;
     transition: opacity 0.8s ease-in-out;
+    cursor: pointer;
 }
 
 .sol-kanat-yazi.goster {
@@ -221,7 +222,6 @@ body {
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
     box-sizing: border-box;
-    pointer-events: none;
     backface-visibility: hidden;
     overflow: hidden;
     word-break: normal;
@@ -372,7 +372,7 @@ Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.
-Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+Chünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
 Çünkü sen benim , yazdığım en güzel şiirsin…
 
@@ -382,15 +382,40 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    // Metinleri hazırla
+    // 1. Sayfa (Sol kanat) metni hazırlığı
     solKanatYazi.innerHTML = `<span class="sayfa-baslik">${baslikMetni.replace(/\n/g, '<br>')}</span>${solSayfaMetni.replace(/\n/g, '<br>')}`;
 
+    // Sağ metinleri sayfalar arasına paylaştırmak için kelimelere/satırlara bölelim
+    // Her sayfa görsel alanına sığacak büyüklükte parçalara ayırıyoruz
+    const sagParagraflar = sagSayfaMetni.split('\n\n');
+    
     const toplamYaprak = 25;
     let yaprakElementleri = [];
     let isRewinding = false;
+    let maksimumOkunanSayfa = 1; // Hafıza takibi için
 
-    // Hangi sayfa numarasına kadar okunduğunu takip eden hafıza
-    let maksimumOkunanSayfa = 1;
+    // Sağ taraftaki sayfalar için metinleri sırayla oluşturalım (Sayfa 2, Sayfa 3, Sayfa 4...)
+    // Her sayfanın metnini diziye atıyoruz.
+    let sagSayfaMetinleri = [];
+    let mevcutParca = "";
+    
+    sagParagraflar.forEach(paragraf => {
+        let satirListesi = paragraf.split('\n');
+        satirListesi.forEach(satir => {
+            if ((mevcutParca + satir).length > 280) { // Yaklaşık bir sayfa karakter sınırı
+                sagSayfaMetinleri.push(mevcutParca.trim());
+                mevcutParca = satir + "\n";
+            } else {
+                mevcutParca += satir + "\n";
+            }
+        });
+        if (mevcutParca.trim() !== "") {
+            mevcutParca += "\n";
+        }
+    });
+    if (mevcutParca.trim() !== "") {
+        sagSayfaMetinleri.push(mevcutParca.trim());
+    }
 
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
@@ -400,9 +425,9 @@ Baban.`;
         let onSayfaNo = (i * 2) + 2;   // Sağ sayfa (Ön yüz)
         let arkaSayfaNo = (i * 2) + 3; // Sol sayfa (Arka yüz)
 
-        // Sağ sayfa metni (ilk yaprağın ön yüzüne ana metni veriyoruz)
-        let onMetin = (i === 0) ? sagSayfaMetni.replace(/\n/g, '<br>') : "";
-        let arkaMetin = ""; // İleride ihtiyaç olursa eklenebilir
+        // Bu sayfalara karşılık gelen metinleri alalım
+        let onMetin = sagSayfaMetinleri[i * 2] ? sagSayfaMetinleri[i * 2].replace(/\n/g, '<br>') : "";
+        let arkaMetin = sagSayfaMetinleri[(i * 2) + 1] ? sagSayfaMetinleri[(i * 2) + 1].replace(/\n/g, '<br>') : "";
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
@@ -430,21 +455,15 @@ Baban.`;
                     yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
-                    // Hedef sayfa numarası (bu yaprak çevrildiğinde sağa gelen yeni sayfa)
                     let yeniGelenSayfaNo = onSayfaNo; 
                     if (yeniGelenSayfaNo > maksimumOkunanSayfa) {
                         maksimumOkunanSayfa = yeniGelenSayfaNo;
                     }
 
-                    // Tıklama mantığına göre; eğer bu sayfa daha önce okunmadıysa ilk tıklamada boş başlar,
-                    // ancak kullanıcı "tıkla yazı gelsin" kuralını istediği için:
-                    // Çevrildikten sonra elementin yazısını görünür yapalım:
-                    setTimeout(() => {
-                        const yaziOn = document.getElementById(`yazi-on-${i}`);
-                        if (yaziOn) {
-                            yaziOn.classList.add("goster");
-                        }
-                    }, 400);
+                    // Tıklama Kuralı: Eğer daha önce okunmamışsa (maksimum okunan sayfadan büyükse) ilk açılışta boş kalır,
+                    // sonraki tıklamada veya zaten okunmuşsa yazı görünür. 
+                    // Kullanıcı yeni bir sayfaya geldiğinde boş görmek istiyor, sonra tıklayınca dolacak:
+                    // Sayfa açıldıktan hemen sonra yazıyı göstermiyoruz; kullanıcı bu sayfaya tekrar tıkladığında yazı belirecek.
                 }
             } else {
                 // GERİ SAYFA ÇEVİRME (Sayfalar silinmez, hafızada kalır)
@@ -464,9 +483,34 @@ Baban.`;
             }
         });
 
+        // Sayfa içi yazılara tıklandığında yazıların belirme efekti (Boş gelen sayfayı doldurma)
+        const yaziOnElement = yaprakDiv.querySelector(`#yazi-on-${i}`);
+        yaziOnElement.addEventListener("click", function(e) {
+            e.stopPropagation();
+            if (!yaziOnElement.classList.contains("goster")) {
+                yaziOnElement.classList.add("goster");
+            }
+        });
+
+        const yaziArkaElement = yaprakDiv.querySelector(`#yazi-arka-${i}`);
+        yaziArkaElement.addEventListener("click", function(e) {
+            e.stopPropagation();
+            if (!yaziArkaElement.classList.contains("goster")) {
+                yaziArkaElement.classList.add("goster");
+            }
+        });
+
         sayfalarKapsayici.appendChild(yaprakDiv);
         yaprakElementleri.push(yaprakDiv);
     }
+
+    // 1. Sayfa (Sol kanat) yazı alanına tıklandığında yazı belirsin
+    solKanatYazi.addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (!solKanatYazi.classList.contains("goster")) {
+            solKanatYazi.classList.add("goster");
+        }
+    });
 
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
@@ -477,6 +521,10 @@ Baban.`;
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
                 y.style.zIndex = toplamYaprak - index;
+                let onY = y.querySelector('.sayfa-yazi');
+                let arkaY = y.querySelectorAll('.sayfa-yazi')[1];
+                if(onY) onY.classList.remove("goster");
+                if(arkaY) arkaY.classList.remove("goster");
             });
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
@@ -484,18 +532,6 @@ Baban.`;
             // Kitabı aç (Kapak kalktı, 1. sayfa sol kanatta boş görünüyor)
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
-
-            // 1. Sayfa (Sol kanat) ilk başta boş açılır, kullanıcı tekrar tıkladığında veya kısa süre sonra dolması isteniyorsa:
-            // Sizin kuralınıza göre: "Tıkla --- 1. Sayfa doldu" mantığı için sol kanada tıklama özelliği ekleyelim:
-        }
-    });
-
-    // 1. Sayfanın bulunduğu sol kanada (veya açık kitap alanına) ilk tıklamada yazının belirlemesi için:
-    const acikKitapAlan = document.getElementById("acikKitapAlan");
-    acikKitapAlan.style.cursor = "pointer";
-    acikKitapAlan.addEventListener("click", function(e) {
-        if (!solKanatYazi.classList.contains("goster")) {
-            solKanatYazi.classList.add("goster");
         }
     });
 });
