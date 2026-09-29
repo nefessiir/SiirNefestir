@@ -86,7 +86,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (Sabit 1. Sayfa) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1. Sayfa) */
 .sol-kanat-yazi {
     position: absolute;
     top: 0.4cm;
@@ -107,6 +107,12 @@ body {
     hyphens: none;
     white-space: pre-wrap;
     z-index: 4;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.sol-kanat-yazi.goster {
+    opacity: 1;
 }
 
 /* BAŞLIKLARIN ORTALANMASI VE BÜYÜTÜLMESİ */
@@ -222,6 +228,12 @@ body {
     hyphens: none;
     white-space: pre-wrap;
     font-size: 10.5pt;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.sayfa-yazi.goster {
+    opacity: 1;
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -301,7 +313,7 @@ body {
     <!-- AÇIK KİTAP GÖVDESİ -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
-        <!-- Sabit Sol Kanat Yazı Alanı (Sayfa 1) -->
+        <!-- Sabit Sol Kanat Yazı Alanı (1. Sayfa) -->
         <div class="sol-kanat-yazi" id="solKanatYazi"></div>
         <div class="sayfa-numara">1</div>
     </div>
@@ -370,31 +382,31 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    // İlk sayfa (Sayfa 1 - Sol)
+    // 1. Sayfa içeriği hazır ama başta gizli (boş başlar)
     solKanatYazi.innerHTML = `<span class="sayfa-baslik">${girisBaslik.replace(/\n/g, "<br>")}</span>${girisMetin.replace(/\n/g, "<br>")}`;
 
     const toplamYaprak = 15; 
     let yaprakElementleri = [];
 
-    // YAPRAKLARI OLUŞTUR (Ön ve Arka yüzler tamamen dolu olarak hazır gelir)
+    // YAPRAKLARI OLUŞTUR
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        let onSayfaNo = (i * 2) + 2;   // Örn: 2, 4, 6... (Sağ sayfa)
-        let arkaSayfaNo = (i * 2) + 3; // Örn: 3, 5, 7... (Çevrilince sol sayfa)
+        let onSayfaNo = (i * 2) + 2;   // Sağ sayfa numarası (Örn: 2, 4, 6...)
+        let arkaSayfaNo = (i * 2) + 3; // Sol sayfa numarası (Örn: 3, 5, 7...)
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
                     <img src="sag_sayfa.png" alt="Sayfa Ön">
-                    <div class="sayfa-yazi"><span class="sayfa-baslik">Şiir Sayfa ${onSayfaNo}</span>${siirMetni.replace(/\n/g, "<br>")}</div>
+                    <div class="sayfa-yazi" id="yazi-on-${i}"><span class="sayfa-baslik">Şiir Sayfa ${onSayfaNo}</span>${siirMetni.replace(/\n/g, "<br>")}</div>
                     <div class="sayfa-numara">${onSayfaNo}</div>
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
-                    <div class="sayfa-yazi"><span class="sayfa-baslik">Şiir Sayfa ${arkaSayfaNo}</span>${siirMetni.replace(/\n/g, "<br>")}</div>
+                    <div class="sayfa-yazi" id="yazi-arka-${i}"><span class="sayfa-baslik">Şiir Sayfa ${arkaSayfaNo}</span>${siirMetni.replace(/\n/g, "<br>")}</div>
                     <div class="sayfa-numara">${arkaSayfaNo}</div>
                 </div>
             </div>
@@ -404,14 +416,17 @@ Baban.`;
         yaprakElementleri.push(yaprakDiv);
     }
 
-    // ADIM MANTIĞI:
-    // 0: Sadece 1. sayfa açık (Sağ taraf boş)
-    // 1: Sağ tarafta 2. sayfa dolu görünür
-    // 2: 2. sayfa yaprağı sola döner, arkasından 3. sayfa dolu gelir
-    // 3: 3. sayfa dolu görünür
-    // 4: 4. sayfa yaprağı sola döner, arkasından 5. sayfa dolu gelir ... şeklinde ilerler/geriler.
-    let akisSirasi = 0; 
-    const maxAdim = toplamYaprak * 2; // Her yaprak için 2 tıklama (1: Sağ dolar, 2: Yaprak döner)
+    // ADIM / DURUM YÖNETİMİ
+    // akisSirasi 0: Kitap açıldı, 1. sayfa dahil her şey boş.
+    let akisSirasi = 0;
+    const maxAdim = 1 + (toplamYaprak * 2); 
+    // Adım listesi mantığı:
+    // 0: 1. sayfa boş
+    // 1: 1. sayfa dolu
+    // 2: 2. sayfa (ilk yaprağın ön yüzü) sağda boş görünür
+    // 3: 2. sayfa dolar
+    // 4: 2. sayfa sola çevrilir, 3. sayfa (yaprağın arka yüzü) solda boş görünür
+    // 5: 3. sayfa dolar ... şeklinde tık tık ilerler.
 
     kapsayici.addEventListener("click", function (e) {
         if (!kapsayici.classList.contains("acildi")) return;
@@ -422,10 +437,8 @@ Baban.`;
         const ortaNokta = rect.width / 2;
 
         if (tiklamaX < ortaNokta) {
-            // SOL TARAFA TIKLANDI -> Geri git (Sayfaları soldan sağa geri kapat)
             geriGit();
         } else {
-            // SAĞ TARAFA TIKLANDI -> İleri git (Asla boş sayfa bırakmadan doldur/çevir)
             ileriGit();
         }
     });
@@ -433,57 +446,61 @@ Baban.`;
     function ileriGit() {
         if (akisSirasi < maxAdim) {
             akisSirasi++;
-            guncelleKitapGorunumu();
+            guncelleGorunum();
         }
     }
 
     function geriGit() {
         if (akisSirasi > 0) {
             akisSirasi--;
-            guncelleKitapGorunumu();
+            guncelleGorunum();
         } else {
-            // En baştayken sola tıklanırsa kitabı tamamen kapat
             kitabiKapat();
         }
     }
 
-    // Akış sırasına göre hangi yaprakların dönük, hangi sağ sayfaların görünür olacağını tam senkronize ayarlayan motor
-    function guncelleKitapGorunumu() {
+    // OKUNAN SAYFALARI HATIRLAYAN VE BOŞ/DOLU DENGESİNİ KURAN MOTOR
+    function guncelleGorunum() {
+        // 1. Sayfa kontrolü (Adım >= 1 ise dolu, yoksa boş)
+        if (akisSirasi >= 1) {
+            solKanatYazi.classList.add("goster");
+        } else {
+            solKanatYazi.classList.remove("goster");
+        }
+
         for (let i = 0; i < toplamYaprak; i++) {
             let yaprak = yaprakElementleri[i];
-            let sagSayfaAdimi = (i * 2) + 1; // Bu yaprağın sağda görünme adımı
-            let yaprakDonmeAdimi = (i * 2) + 2; // Bu yaprağın sola dönme adımı
+            let sagGelisAdimi = 2 + (i * 2);       // Sağ sayfaya boş gelme adımı
+            let sagDolusAdimi = sagGelisAdimi + 1; // Sağ sayfanın dolma adımı
+            let solCevrilisAdimi = sagDolusAdimi + 1; // Sol tarafa çevrilme adımı
 
-            let onYuz = yaprak.querySelector(".sayfa-on .sayfa-yazi");
-            let numaraOn = yaprak.querySelector(".sayfa-on .sayfa-numara");
-            let arkaYuz = yaprak.querySelector(".sayfa-arka .sayfa-yazi");
-            let numaraArka = yaprak.querySelector(".sayfa-arka .sayfa-numara");
+            let yaziOn = document.getElementById(`yazi-on-${i}`);
+            let yaziArka = document.getElementById(`yazi-arka-${i}`);
 
-            if (akisSirasi >= yaprakDonmeAdimi) {
-                // Yaprak tamamen sola çevrilmiş durumda
+            if (akisSirasi >= solCevrilisAdimi) {
+                // Bu yaprak sola çevrilmiş durumda (arkasındaki sol sayfa okunmuş/açık kalır)
                 yaprak.style.zIndex = 50 + i;
                 yaprak.classList.add("cevirdi");
-                // Görünürlükleri tam açık tut
-                onYuz.style.opacity = "1";
-                if(numaraOn) numaraOn.style.opacity = "1";
-                arkaYuz.style.opacity = "1";
-                if(numaraArka) numaraArka.style.opacity = "1";
-            } else if (akisSirasi >= sagSayfaAdimi) {
-                // Yaprak henüz sağda duruyor ama sağ yüzü dolu/görünür
+                yaziOn.classList.add("goster");   // Zaten okundu, hafızada kalır
+                yaziArka.classList.add("goster"); // Zaten okundu, hafızada kalır
+            } else if (akisSirasi >= sagDolusAdimi) {
+                // Sağ sayfada duruyor ve YAZISI DOLU
                 yaprak.style.zIndex = toplamYaprak - i;
                 yaprak.classList.remove("cevirdi");
-                onYuz.style.opacity = "1";
-                if(numaraOn) numaraOn.style.opacity = "1";
-                arkaYuz.style.opacity = "0"; // Arkası henüz görünmüyor
-                if(numaraArka) numaraArka.style.opacity = "0";
+                yaziOn.classList.add("goster");
+                yaziArka.classList.remove("goster");
+            } else if (akisSirasi >= sagGelisAdimi) {
+                // Sağ sayfaya yeni geldi ama BOŞ (henüz yazısı dolmadı)
+                yaprak.style.zIndex = toplamYaprak - i;
+                yaprak.classList.remove("cevirdi");
+                yaziOn.classList.remove("goster");
+                yaziArka.classList.remove("goster");
             } else {
-                // Henüz bu yaprağa sıra gelmedi, sağda kapalı duruyor
+                // Henüz bu yaprağa sıra gelmedi
                 yaprak.style.zIndex = toplamYaprak - i;
                 yaprak.classList.remove("cevirdi");
-                onYuz.style.opacity = "0"; 
-                if(numaraOn) numaraOn.style.opacity = "0";
-                arkaYuz.style.opacity = "0";
-                if(numaraArka) numaraArka.style.opacity = "0";
+                yaziOn.classList.remove("goster");
+                yaziArka.classList.remove("goster");
             }
         }
     }
@@ -493,10 +510,12 @@ Baban.`;
         kapakAlan.classList.remove("dondu");
         akisSirasi = 0;
         
+        solKanatYazi.classList.remove("goster");
         yaprakElementleri.forEach((y, index) => {
             y.classList.remove("cevirdi");
             y.style.zIndex = toplamYaprak - index;
-            y.querySelectorAll(".sayfa-yazi, .sayfa-numara").forEach(el => el.style.opacity = "0");
+            document.getElementById(`yazi-on-${index}`).classList.remove("goster");
+            document.getElementById(`yazi-arka-${index}`).classList.remove("goster");
         });
     }
 
@@ -509,7 +528,7 @@ Baban.`;
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
             akisSirasi = 0;
-            guncelleKitapGorunumu();
+            guncelleGorunum();
         }
     });
 });
