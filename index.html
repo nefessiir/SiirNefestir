@@ -86,7 +86,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (Özenle Sığdırıldı) */
 .sol-kanat-yazi {
     position: absolute;
     top: 0.4cm;
@@ -94,8 +94,8 @@ body {
     width: calc(50% - 2.5cm);
     height: calc(100% - 0.8cm);
     font-family: 'Dancing Script', cursive, serif;
-    font-size: 10.5pt;
-    line-height: 1.3;
+    font-size: 9.5pt; /* Taşmayı önlemek için ideal küçüklükte */
+    line-height: 1.25;
     color: #1a4b82;
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
@@ -123,12 +123,12 @@ body {
     display: block;
     width: 100%;
     font-weight: 700;
-    font-size: 1.25em;
-    margin-top: 0.8em; 
-    margin-bottom: 0.3em;
+    font-size: 1.15em;
+    margin-top: 0.5em; 
+    margin-bottom: 0.2em;
 }
 
-/* SAYFA NUMARASI STİLİ (Tüyler Kaldırıldı) */
+/* SAYFA NUMARASI STİLİ */
 .sayfa-numara {
     position: absolute;
     bottom: 0.4cm;
@@ -217,7 +217,7 @@ body {
     width: calc(100% - 0.6cm);
     height: calc(100% - 1.1cm);
     font-family: 'Dancing Script', cursive, serif;
-    line-height: 1.35;
+    line-height: 1.3;
     color: #1a4b82;
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
@@ -229,7 +229,7 @@ body {
     overflow-wrap: break-word;
     hyphens: none;
     white-space: pre-wrap;
-    font-size: 11pt; 
+    font-size: 10.5pt; 
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -384,6 +384,8 @@ Baban.`;
     let isRewinding = false;
     let aktifDaktiloTimeout = null;
     let daktiloDevamEdiyor = false;
+    let solSayfaYazmaBitti = false;
+    let ilkSolSayfaKilitli = true;
 
     let baslikKarakterler = baslikMetni.split("");
     let solKarakterler = solSayfaMetni.split("");
@@ -396,8 +398,10 @@ Baban.`;
         karakterIndex: 0
     };
 
+    // SOL SAYFAYI KADEMELİ YAZDIRMA
     function solMetniYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
+        ilkSolSayfaKilitli = true;
 
         let baslikSpan = document.createElement("span");
         baslikSpan.className = "sayfa-baslik";
@@ -414,11 +418,11 @@ Baban.`;
                     baslikSpan.textContent += karakter;
                 }
                 globalBaslikIndex++;
-                aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 50);
+                aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 40);
             } else {
                 setTimeout(() => {
                     solGovdeYazdirAdim();
-                }, 1000);
+                }, 500);
             }
         }
 
@@ -434,9 +438,11 @@ Baban.`;
                 }
 
                 globalSolIndex++;
-                aktifDaktiloTimeout = setTimeout(solGovdeYazdirAdim, 85);
+                aktifDaktiloTimeout = setTimeout(solGovdeYazdirAdim, 55);
             } else {
                 daktiloDevamEdiyor = false;
+                solSayfaYazmaBitti = true;
+                ilkSolSayfaKilitli = false;
                 if (callback) callback();
             }
         }
@@ -444,6 +450,24 @@ Baban.`;
         baslikYazdirAdim();
     }
 
+    // İLK SOL SAYFAYI ANINDA TAMAMLAMA (Tıklayınca)
+    function solSayfayiAnindaGoster() {
+        if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
+        solKanatYazi.innerHTML = "";
+        
+        let baslikSpan = document.createElement("span");
+        baslikSpan.className = "sayfa-baslik";
+        baslikSpan.innerHTML = baslikMetni.replace(/\n/g, "<br>");
+        solKanatYazi.appendChild(baslikSpan);
+        
+        solKanatYazi.innerHTML += solSayfaMetni.replace(/\n/g, "<br>");
+        
+        daktiloDevamEdiyor = false;
+        solSayfaYazmaBitti = true;
+        ilkSolSayfaKilitli = false;
+    }
+
+    // SAĞ SAYFALARI KADEMELİ YAZDIRMA
     function sagMetniYazdirKademeli(element, durumObj, callback = null) {
         daktiloDevamEdiyor = true;
 
@@ -466,7 +490,7 @@ Baban.`;
                 }
 
                 durumObj.karakterIndex++;
-                aktifDaktiloTimeout = setTimeout(adimla, 85);
+                aktifDaktiloTimeout = setTimeout(adimla, 55);
             } else {
                 daktiloDevamEdiyor = false;
                 if (callback) callback(true);
@@ -476,6 +500,7 @@ Baban.`;
         adimla();
     }
 
+    // SAYFALARI OLUŞTUR
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
@@ -499,12 +524,36 @@ Baban.`;
             </div>
         `;
 
+        // SAYFA TIKLAMA MANTIĞI
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
-
-            if (daktiloDevamEdiyor) return; 
             if (isRewinding) return;
 
+            // 1. Durum: İlk sol sayfa yazılırken tıklanırsa -> Yazıyı anında tamamla
+            if (ilkSolSayfaKilitli && daktiloDevamEdiyor) {
+                solSayfayiAnindaGoster();
+                return;
+            }
+
+            // 2. Durum: Diğer sayfalarda daktilo devam ediyorsa -> Tıklayınca o sayfanın kalanını anında bitir
+            if (daktiloDevamEdiyor) {
+                if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
+                daktiloDevamEdiyor = false;
+                
+                // Aktif yazılan metni tamamen doldur
+                let aktifYazanElement = document.querySelector(".sayfa-yaprak.cevirdi:not(._bitti) .sayfa-yazi"); 
+                // Güvenli tamamlama için kalan metni yapıştır
+                let kalanMetin = sagKarakterler.slice(sagMetinDurumu.karakterIndex).join("").replace(/\n/g, "<br>");
+                // Hangi element yazıyorsa bulup tamamlayalım:
+                let acikYaziElementi = document.getElementById(`yazi-arka-${i}`) || document.getElementById(`yazi-on-${i+1}`);
+                if (acikYaziElementi) {
+                    // Zaten yazılmış kısmı koruyup üstüne ekleyelim ya da direkt kalan indexe göre eşitleyelim
+                    sagMetinDurumu.karakterIndex = sagKarakterler.length;
+                }
+                return;
+            }
+
+            // 3. Durum: Normal sayfa çevirme (Yazı bitmişse veya başka sayfadaysak)
             if (!yaprakDiv.classList.contains("cevirdi")) {
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
@@ -525,7 +574,7 @@ Baban.`;
                                 }
                             });
                         }
-                    }, 1000);
+                    }, 800);
 
                     if (i === toplamYaprak - 1) {
                         otomatikGeriyeSar();
@@ -574,6 +623,7 @@ Baban.`;
         }, 100);
     }
 
+    // KAPAK TIKLAMA MANTIĞI
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
@@ -582,6 +632,8 @@ Baban.`;
         if (kapsayici.classList.contains("acildi")) {
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
+            solSayfaYazmaBitti = false;
+            ilkSolSayfaKilitli = true;
             globalBaslikIndex = 0;
             globalSolIndex = 0;
             sagMetinDurumu.karakterIndex = 0;
