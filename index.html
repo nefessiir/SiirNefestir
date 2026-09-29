@@ -77,7 +77,6 @@ body {
     opacity: 1;
     clip-path: inset(0 0 0 0);
     transition: opacity 0.4s ease-in-out 0.6s, clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.6s;
-    pointer-events: auto;
 }
 
 .acik-kitap-alan img {
@@ -101,19 +100,13 @@ body {
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
     box-sizing: border-box;
+    pointer-events: none;
     overflow: hidden;
     word-break: normal;
     overflow-wrap: break-word;
     hyphens: none;
     white-space: pre-wrap;
     z-index: 4;
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-    cursor: pointer;
-}
-
-.sol-kanat-yazi.goster {
-    opacity: 1;
 }
 
 /* BAŞLIKLARIN ORTALANMASI VE BÜYÜTÜLMESİ */
@@ -222,6 +215,7 @@ body {
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
     box-sizing: border-box;
+    pointer-events: none;
     backface-visibility: hidden;
     overflow: hidden;
     word-break: normal;
@@ -229,12 +223,6 @@ body {
     hyphens: none;
     white-space: pre-wrap;
     font-size: 11pt; 
-    opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-}
-
-.sayfa-yazi.goster {
-    opacity: 1;
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -314,8 +302,9 @@ body {
     <!-- AÇIK KİTAP GÖVDESİ -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
-        <!-- Sabit Sol Kanat Yazı Alanı (1. Sayfa) -->
+        <!-- Sabit Sol Kanat Yazı Alanı -->
         <div class="sol-kanat-yazi" id="solKanatYazi"></div>
+        <!-- Sabit Sol Sayfa Numarası (Sayfa 1) -->
         <div class="sayfa-numara">🪶 1 🪶</div>
     </div>
 
@@ -358,7 +347,7 @@ window.addEventListener("load", function () {
 `Sevgili Şiir,
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
 belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
-ama yine de gülümseyerek tek başına okuyacaksın.
+ama yine de gülümseyerek tek başına okuyaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
     const sagSayfaMetni = 
@@ -372,7 +361,7 @@ Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.
-Chünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
 Çünkü sen benim , yazdığım en güzel şiirsin…
 
@@ -382,63 +371,54 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    // 1. Sayfa (Sol kanat) metni hazırlığı
-    solKanatYazi.innerHTML = `<span class="sayfa-baslik">${baslikMetni.replace(/\n/g, '<br>')}</span>${solSayfaMetni.replace(/\n/g, '<br>')}`;
-
-    // Sağ metinleri sayfalar arasına paylaştırmak için kelimelere/satırlara bölelim
-    // Her sayfa görsel alanına sığacak büyüklükte parçalara ayırıyoruz
-    const sagParagraflar = sagSayfaMetni.split('\n\n');
-    
     const toplamYaprak = 25;
     let yaprakElementleri = [];
     let isRewinding = false;
-    let maksimumOkunanSayfa = 1; // Hafıza takibi için
+    let aktifDaktiloZamanasimlari = [];
 
-    // Sağ taraftaki sayfalar için metinleri sırayla oluşturalım (Sayfa 2, Sayfa 3, Sayfa 4...)
-    // Her sayfanın metnini diziye atıyoruz.
-    let sagSayfaMetinleri = [];
-    let mevcutParca = "";
-    
-    sagParagraflar.forEach(paragraf => {
-        let satirListesi = paragraf.split('\n');
-        satirListesi.forEach(satir => {
-            if ((mevcutParca + satir).length > 280) { // Yaklaşık bir sayfa karakter sınırı
-                sagSayfaMetinleri.push(mevcutParca.trim());
-                mevcutParca = satir + "\n";
-            } else {
-                mevcutParca += satir + "\n";
+    // Daktilo efekti fonksiyonu (Her tıklandığında veya sayfa açıldığında baştan yazar)
+    function daktiloBaslat(element, metin, hiz = 25) {
+        // Önceki çalışan daktiloları durdur
+        aktifDaktiloZamanasimlari.forEach(id => clearTimeout(id));
+        aktifDaktiloZamanasimlari = [];
+
+        element.innerHTML = "";
+        let i = 0;
+
+        function yazdir() {
+            if (i < metin.length) {
+                element.innerHTML += metin.charAt(i);
+                i++;
+                let timeoutId = setTimeout(yazdir, hiz);
+                aktifDaktiloZamanasimlari.push(timeoutId);
             }
-        });
-        if (mevcutParca.trim() !== "") {
-            mevcutParca += "\n";
         }
-    });
-    if (mevcutParca.trim() !== "") {
-        sagSayfaMetinleri.push(mevcutParca.trim());
+        yazdir();
     }
+
+    // Sol kanat yazısını hazırla
+    const tamSolMetin = `<span class="sayfa-baslik">${baslikMetni}</span>${solSayfaMetni}`;
 
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        let onSayfaNo = (i * 2) + 2;   // Sağ sayfa (Ön yüz)
-        let arkaSayfaNo = (i * 2) + 3; // Sol sayfa (Arka yüz)
+        let onSayfaNo = (i * 2) + 2;
+        let arkaSayfaNo = (i * 2) + 3;
 
-        // Bu sayfalara karşılık gelen metinleri alalım
-        let onMetin = sagSayfaMetinleri[i * 2] ? sagSayfaMetinleri[i * 2].replace(/\n/g, '<br>') : "";
-        let arkaMetin = sagSayfaMetinleri[(i * 2) + 1] ? sagSayfaMetinleri[(i * 2) + 1].replace(/\n/g, '<br>') : "";
+        let sayfaIcerikMetni = (i === 0) ? sagSayfaMetni : "";
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
                     <img src="sag_sayfa.png" alt="Sayfa Ön">
-                    <div class="sayfa-yazi" id="yazi-on-${i}">${onMetin}</div>
+                    <div class="sayfa-yazi" id="yazi-on-${i}"></div>
                     <div class="sayfa-numara">🪶 ${onSayfaNo} 🪶</div>
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
-                    <div class="sayfa-yazi" id="yazi-arka-${i}">${arkaMetin}</div>
+                    <div class="sayfa-yazi" id="yazi-arka-${i}">${sayfaIcerikMetni}</div>
                     <div class="sayfa-numara">🪶 ${arkaSayfaNo} 🪶</div>
                 </div>
             </div>
@@ -449,24 +429,24 @@ Baban.`;
             if (isRewinding) return;
 
             if (!yaprakDiv.classList.contains("cevirdi")) {
-                // İLERİ SAYFA ÇEVİRME
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
                     yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
-                    let yeniGelenSayfaNo = onSayfaNo; 
-                    if (yeniGelenSayfaNo > maksimumOkunanSayfa) {
-                        maksimumOkunanSayfa = yeniGelenSayfaNo;
-                    }
+                    // Sayfa açıldığında (çevrildiğinde) tıklandığı gibi daktilo ile yazıyı yazdır
+                    setTimeout(() => {
+                        const yaziOn = document.getElementById(`yazi-on-${i}`);
+                        if (yaziOn && i === 0) {
+                            daktiloBaslat(yaziOn, sagSayfaMetni, 25);
+                        }
+                    }, 400);
 
-                    // Tıklama Kuralı: Eğer daha önce okunmamışsa (maksimum okunan sayfadan büyükse) ilk açılışta boş kalır,
-                    // sonraki tıklamada veya zaten okunmuşsa yazı görünür. 
-                    // Kullanıcı yeni bir sayfaya geldiğinde boş görmek istiyor, sonra tıklayınca dolacak:
-                    // Sayfa açıldıktan hemen sonra yazıyı göstermiyoruz; kullanıcı bu sayfaya tekrar tıkladığında yazı belirecek.
+                    if (i === toplamYaprak - 1) {
+                        otomatikGeriyeSar();
+                    }
                 }
             } else {
-                // GERİ SAYFA ÇEVİRME (Sayfalar silinmez, hafızada kalır)
                 let cevrilmisYapraklar = yaprakElementleri.filter(y => y.classList.contains("cevirdi"));
                 let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
                 
@@ -483,55 +463,53 @@ Baban.`;
             }
         });
 
-        // Sayfa içi yazılara tıklandığında yazıların belirme efekti (Boş gelen sayfayı doldurma)
-        const yaziOnElement = yaprakDiv.querySelector(`#yazi-on-${i}`);
-        yaziOnElement.addEventListener("click", function(e) {
-            e.stopPropagation();
-            if (!yaziOnElement.classList.contains("goster")) {
-                yaziOnElement.classList.add("goster");
-            }
-        });
-
-        const yaziArkaElement = yaprakDiv.querySelector(`#yazi-arka-${i}`);
-        yaziArkaElement.addEventListener("click", function(e) {
-            e.stopPropagation();
-            if (!yaziArkaElement.classList.contains("goster")) {
-                yaziArkaElement.classList.add("goster");
-            }
-        });
-
         sayfalarKapsayici.appendChild(yaprakDiv);
         yaprakElementleri.push(yaprakDiv);
     }
 
-    // 1. Sayfa (Sol kanat) yazı alanına tıklandığında yazı belirsin
-    solKanatYazi.addEventListener("click", function(e) {
-        e.stopPropagation();
-        if (!solKanatYazi.classList.contains("goster")) {
-            solKanatYazi.classList.add("goster");
-        }
-    });
+    function otomatikGeriyeSar() {
+        isRewinding = true;
+        let index = yaprakElementleri.length - 1;
+
+        let rewindInterval = setInterval(function () {
+            if (index >= 0) {
+                yaprakElementleri[index].style.zIndex = 100;
+                yaprakElementleri[index].classList.remove("cevirdi");
+                yaprakElementleri[index].style.zIndex = toplamYaprak - index;
+                index--;
+            } else {
+                clearInterval(rewindInterval);
+
+                setTimeout(function () {
+                    kapsayici.classList.remove("acildi");
+                    kapakAlan.classList.remove("dondu");
+                    solKanatYazi.innerHTML = "";
+                    isRewinding = false;
+                }, 400);
+            }
+        }, 100);
+    }
 
     kapakAlan.addEventListener("click", function () {
         if (isRewinding) return;
 
         if (kapsayici.classList.contains("acildi")) {
-            // Kitabı kapatırken durumları sıfırla
-            solKanatYazi.classList.remove("goster");
+            aktifDaktiloZamanasimlari.forEach(id => clearTimeout(id));
+            solKanatYazi.innerHTML = "";
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
                 y.style.zIndex = toplamYaprak - index;
-                let onY = y.querySelector('.sayfa-yazi');
-                let arkaY = y.querySelectorAll('.sayfa-yazi')[1];
-                if(onY) onY.classList.remove("goster");
-                if(arkaY) arkaY.classList.remove("goster");
             });
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
         } else {
-            // Kitabı aç (Kapak kalktı, 1. sayfa sol kanatta boş görünüyor)
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
+
+            // Kapak açıldığı anda sol kanattaki yazıyı daktilo efektiyle başlat
+            setTimeout(() => {
+                daktiloBaslat(solKanatYazi, tamSolMetin, 25);
+            }, 1200);
         }
     });
 });
