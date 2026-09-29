@@ -143,6 +143,31 @@ body {
     letter-spacing: 2px;
 }
 
+/* 4. SAYFA ÖZEL FOTOĞRAF ALANI (GERÇEKLİĞİNİ BOZMADAN ORTALI) */
+.sayfa-fotograf {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 2.2cm);
+    height: calc(100% - 2.2cm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    pointer-events: none;
+    backface-visibility: hidden;
+}
+
+.sayfa-fotograf img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Fotoğrafın en-boy oranını ve gerçekliğini korur */
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* Hafif derinlik hissi */
+}
+
 /* ÇOKLU SAYFA KONTEYNERİ */
 .sayfalar-kapsayici {
     position: absolute;
@@ -215,7 +240,7 @@ body {
     top: 0.3cm;
     left: 0.3cm;
     width: calc(100% - 0.6cm);
-    height: calc(100% - 1.1cm); /* Alttaki sayfa numarasına yer bırakmak için */
+    height: calc(100% - 1.1cm);
     font-family: 'Dancing Script', cursive, serif;
     line-height: 1.35;
     color: #1a4b82;
@@ -481,21 +506,31 @@ Baban.`;
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
 
-        // Ön yüz tek sayfa numaraları (2, 4, 6...), Arka yüz tek/çift devamı (3, 5, 7...)
-        // Sabit sol sayfa 1 olduğu için, ilk yaprağın ön yüzü 2, çevrilen arka yüzü 3 olur.
         let onSayfaNo = (i * 2) + 2;
         let arkaSayfaNo = (i * 2) + 3;
+
+        // 4. sayfaya (i = 1'in arka yüzü, yani arkaSayfaNo === 4 olduğunda) fotoğrafı yerleştiriyoruz
+        let icerikOn = `<div class="sayfa-yazi" id="yazi-on-${i}"></div>`;
+        let icerikArka = `<div class="sayfa-yazi" id="yazi-arka-${i}"></div>`;
+
+        if (arkaSayfaNo === 4) {
+            icerikArka = `
+                <div class="sayfa-fotograf">
+                    <img src="kizim.jpg" alt="Şiir">
+                </div>
+            `;
+        }
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
                     <img src="sag_sayfa.png" alt="Sayfa Ön">
-                    <div class="sayfa-yazi" id="yazi-on-${i}"></div>
+                    ${icerikOn}
                     <div class="sayfa-numara">🪶 ${onSayfaNo} 🪶</div>
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
-                    <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
+                    ${icerikArka}
                     <div class="sayfa-numara">🪶 ${arkaSayfaNo} 🪶</div>
                 </div>
             </div>
