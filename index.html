@@ -128,6 +128,21 @@ body {
     margin-bottom: 0.3em;
 }
 
+/* SAYFA NUMARASI STİLİ (Tüyler Kaldırıldı) */
+.sayfa-numara {
+    position: absolute;
+    bottom: 0.4cm;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Dancing Script', cursive, serif;
+    font-size: 10pt;
+    color: #1a4b82;
+    text-shadow: 0 0 2px rgba(26, 75, 130, 0.3);
+    pointer-events: none;
+    letter-spacing: 2px;
+}
+
 /* ÇOKLU SAYFA KONTEYNERİ */
 .sayfalar-kapsayici {
     position: absolute;
@@ -296,6 +311,8 @@ body {
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
         <!-- Sabit Sol Kanat Yazı Alanı -->
         <div class="sol-kanat-yazi" id="solKanatYazi"></div>
+        <!-- Sabit Sol Sayfa Numarası (Sayfa 1) -->
+        <div class="sayfa-numara">1</div>
     </div>
 
     <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
@@ -367,7 +384,6 @@ Baban.`;
     let isRewinding = false;
     let aktifDaktiloTimeout = null;
     let daktiloDevamEdiyor = false;
-    let ilkOnSaniyeKilidi = true;
 
     let baslikKarakterler = baslikMetni.split("");
     let solKarakterler = solSayfaMetni.split("");
@@ -380,11 +396,8 @@ Baban.`;
         karakterIndex: 0
     };
 
-    let aktifYazilanElement = null;
-
     function solMetniYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
-        aktifYazilanElement = element;
 
         let baslikSpan = document.createElement("span");
         baslikSpan.className = "sayfa-baslik";
@@ -424,7 +437,6 @@ Baban.`;
                 aktifDaktiloTimeout = setTimeout(solGovdeYazdirAdim, 85);
             } else {
                 daktiloDevamEdiyor = false;
-                aktifYazilanElement = null;
                 if (callback) callback();
             }
         }
@@ -434,7 +446,6 @@ Baban.`;
 
     function sagMetniYazdirKademeli(element, durumObj, callback = null) {
         daktiloDevamEdiyor = true;
-        aktifYazilanElement = element;
 
         function adimla() {
             if (!daktiloDevamEdiyor) return;
@@ -450,7 +461,6 @@ Baban.`;
                 if (element.scrollHeight > element.clientHeight) {
                     element.innerHTML = element.innerHTML.slice(0, -1);
                     daktiloDevamEdiyor = false;
-                    aktifYazilanElement = null;
                     if (callback) callback(false);
                     return;
                 }
@@ -459,7 +469,6 @@ Baban.`;
                 aktifDaktiloTimeout = setTimeout(adimla, 85);
             } else {
                 daktiloDevamEdiyor = false;
-                aktifYazilanElement = null;
                 if (callback) callback(true);
             }
         }
@@ -467,84 +476,35 @@ Baban.`;
         adimla();
     }
 
-    // Sol yazı alanına tıklandığında yazıyı anında tamamlama (Skip)
-    solKanatYazi.addEventListener("click", function(e) {
-        e.stopPropagation();
-        if (ilkOnSaniyeKilidi) return;
-
-        if (daktiloDevamEdiyor && globalSolIndex < solKarakterler.length) {
-            if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
-            globalBaslikIndex = baslikKarakterler.length;
-            globalSolIndex = solKarakterler.length;
-            
-            solKanatYazi.innerHTML = "";
-            let baslikSpan = document.createElement("span");
-            baslikSpan.className = "sayfa-baslik";
-            baslikSpan.textContent = baslikMetni;
-            solKanatYazi.appendChild(baslikSpan);
-            solKanatYazi.innerHTML += solSayfaMetni.replace(/\n/g, "<br>");
-
-            daktiloDevamEdiyor = false;
-            aktifYazilanElement = null;
-
-            // Sol bitince hemen sağ sayfa yazılarına geçişi tetikle
-            const ilkSagSayfaYazi = document.getElementById("yazi-on-0");
-            if (sagMetinDurumu.karakterIndex < sagKarakterler.length && ilkSagSayfaYazi) {
-                setTimeout(() => {
-                    sagMetniYazdirKademeli(ilkSagSayfaYazi, sagMetinDurumu);
-                }, 300);
-            }
-        }
-    });
-
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
         yaprakDiv.style.zIndex = toplamYaprak - i;
+
+        let onSayfaNo = (i * 2) + 2;
+        let arkaSayfaNo = (i * 2) + 3;
 
         yaprakDiv.innerHTML = `
             <div class="sayfa-icerik">
                 <div class="sayfa-on">
                     <img src="sag_sayfa.png" alt="Sayfa Ön">
                     <div class="sayfa-yazi" id="yazi-on-${i}"></div>
+                    <div class="sayfa-numara">${onSayfaNo}</div>
                 </div>
                 <div class="sayfa-arka">
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
                     <div class="sayfa-yazi" id="yazi-arka-${i}"></div>
+                    <div class="sayfa-numara">${arkaSayfaNo}</div>
                 </div>
             </div>
         `;
 
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
-            if (ilkOnSaniyeKilidi) return;
 
-            // Yazı yazılırken herhangi bir yere tıklandığında o anki yazıyı anında bitir
-            if (daktiloDevamEdiyor) {
-                if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
-                if (aktifYazilanElement) {
-                    while (sagMetinDurumu.karakterIndex < sagKarakterler.length) {
-                        let karakter = sagKarakterler[sagMetinDurumu.karakterIndex];
-                        if (karakter === "\n") {
-                            aktifYazilanElement.innerHTML += "<br>";
-                        } else {
-                            aktifYazilanElement.innerHTML += karakter;
-                        }
-                        if (aktifYazilanElement.scrollHeight > aktifYazilanElement.clientHeight) {
-                            aktifYazilanElement.innerHTML = aktifYazilanElement.innerHTML.slice(0, -1);
-                            break;
-                        }
-                        sagMetinDurumu.karakterIndex++;
-                    }
-                }
-                daktiloDevamEdiyor = false;
-                aktifYazilanElement = null;
-                return;
-            }
-
+            if (daktiloDevamEdiyor) return; 
             if (isRewinding) return;
 
-            // Yazı bittiyse normal sayfa çevirme
             if (!yaprakDiv.classList.contains("cevirdi")) {
                 let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                 if (aktifSagYaprak === yaprakDiv) {
@@ -609,7 +569,6 @@ Baban.`;
                     kapsayici.classList.remove("acildi");
                     kapakAlan.classList.remove("dondu");
                     isRewinding = false;
-                    ilkOnSaniyeKilidi = true;
                 }, 400);
             }
         }, 100);
@@ -623,11 +582,9 @@ Baban.`;
         if (kapsayici.classList.contains("acildi")) {
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
-            aktifYazilanElement = null;
             globalBaslikIndex = 0;
             globalSolIndex = 0;
             sagMetinDurumu.karakterIndex = 0;
-            ilkOnSaniyeKilidi = true;
             if (solKanatYazi) solKanatYazi.innerHTML = "";
             if (ilkSagSayfaYazi) ilkSagSayfaYazi.innerHTML = "";
 
@@ -644,11 +601,6 @@ Baban.`;
             globalBaslikIndex = 0;
             globalSolIndex = 0;
             sagMetinDurumu.karakterIndex = 0;
-            ilkOnSaniyeKilidi = true;
-
-            setTimeout(() => {
-                ilkOnSaniyeKilidi = false;
-            }, 10000);
 
             setTimeout(() => {
                 if (solKanatYazi) {
