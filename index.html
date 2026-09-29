@@ -333,14 +333,15 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
-    const hamGovdeMetni = 
+    const solSayfaMetni = 
 `Sevgili Şiir,
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
 belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
-Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.
+Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
-Bilmeni isterim ki;
+    const sagSayfaMetni = 
+`Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
 içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
 Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.
@@ -367,6 +368,8 @@ Baban.`;
     let daktiloDevamEdiyor = false;
 
     let baslikKarakterler = baslikMetni.split("");
+    let solParcalar = Array.from(metniHTMLParcala(solSayfaMetni));
+    let sagParcalar = Array.from(metniHTMLParcala(sagSayfaMetni));
     
     function metniHTMLParcala(htmlStr) {
         let tempDiv = document.createElement('div');
@@ -374,14 +377,13 @@ Baban.`;
         return tempDiv.childNodes;
     }
 
-    let govdeParcalar = Array.from(metniHTMLParcala(hamGovdeMetni));
-
     let globalBaslikIndex = 0;
-    let globalGovdeParcaIndex = 0;
-    let globalGovdeKarakterIndex = 0;
+    let globalSolParcaIndex = 0;
+    let globalSolKarakterIndex = 0;
     let aktifEklenenOzelSpan = null;
 
-    function metinYazdirKademeli(element, callback = null) {
+    // Sol sayfa (ve başlık) yazdırma fonksiyonu
+    function solMetniYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
 
         let baslikSpan = document.createElement("span");
@@ -402,72 +404,33 @@ Baban.`;
                 aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 50);
             } else {
                 setTimeout(() => {
-                    govdeYazdirAdim();
+                    solGovdeYazdirAdim();
                 }, 1000);
             }
         }
 
-        function govdeYazdirAdim() {
+        function solGovdeYazdirAdim() {
             if (!daktiloDevamEdiyor) return;
 
-            if (globalGovdeParcaIndex < govdeParcalar.length) {
-                let parca = govdeParcalar[globalGovdeParcaIndex];
+            if (globalSolParcaIndex < solParcalar.length) {
+                let parca = solParcalar[globalSolParcaIndex];
 
                 if (parca.nodeType === Node.TEXT_NODE) {
                     let text = parca.textContent;
-                    if (globalGovdeKarakterIndex < text.length) {
-                        let karakter = text[globalGovdeKarakterIndex];
+                    if (globalSolKarakterIndex < text.length) {
+                        let karakter = text[globalSolKarakterIndex];
                         if (karakter === "\n") {
                             element.innerHTML += "<br>";
                         } else {
                             element.innerHTML += karakter;
                         }
 
-                        if (element.scrollHeight > element.clientHeight) {
-                            element.innerHTML = element.innerHTML.slice(0, -1);
-                            daktiloDevamEdiyor = false;
-                            if (callback) callback();
-                            return;
-                        }
-
-                        globalGovdeKarakterIndex++;
-                        aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                        globalSolKarakterIndex++;
+                        aktifDaktiloTimeout = setTimeout(solGovdeYazdirAdim, 85);
                     } else {
-                        globalGovdeKarakterIndex = 0;
-                        globalGovdeParcaIndex++;
-                        aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
-                    }
-                } else if (parca.nodeType === Node.ELEMENT_NODE) {
-                    if (!aktifEklenenOzelSpan) {
-                        aktifEklenenOzelSpan = document.createElement("span");
-                        aktifEklenenOzelSpan.className = parca.className;
-                        element.appendChild(aktifEklenenOzelSpan);
-                    }
-
-                    let innerText = parca.textContent;
-                    if (globalGovdeKarakterIndex < innerText.length) {
-                        let karakter = innerText[globalGovdeKarakterIndex];
-                        if (karakter === "\n") {
-                            aktifEklenenOzelSpan.innerHTML += "<br>";
-                        } else {
-                            aktifEklenenOzelSpan.textContent += karakter;
-                        }
-
-                        if (element.scrollHeight > element.clientHeight) {
-                            element.removeChild(aktifEklenenOzelSpan);
-                            aktifEklenenOzelSpan = null;
-                            daktiloDevamEdiyor = false;
-                            if (callback) callback();
-                            return;
-                        }
-
-                        globalGovdeKarakterIndex++;
-                        aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
-                    } else {
-                        globalGovdeKarakterIndex = 0;
-                        aktifEklenenOzelSpan = null;
-                        globalGovdeParcaIndex++;
-                        aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                        globalSolKarakterIndex = 0;
+                        globalSolParcaIndex++;
+                        aktifDaktiloTimeout = setTimeout(solGovdeYazdirAdim, 85);
                     }
                 }
             } else {
@@ -478,6 +441,56 @@ Baban.`;
 
         baslikYazdirAdim();
     }
+
+    // Sağ sayfa (ve diğer yapraklar) için genel metin yazdırma fonksiyonu
+    function genelMetinYazdir(element, parcalarDizisi, indexTakipObjesi, callback = null) {
+        daktiloDevamEdiyor = true;
+
+        functionadimla();
+
+        function fonksiyonadimla() {
+            if (!daktiloDevamEdiyor) return;
+
+            if (indexTakipObjesi.parcaIndex < parcalarDizisi.length) {
+                let parca = parcalarDizisi[indexTakipObjesi.parcaIndex];
+
+                if (parca.nodeType === Node.TEXT_NODE) {
+                    let text = parca.textContent;
+                    if (indexTakipObjesi.karakterIndex < text.length) {
+                        let karakter = text[indexTakipObjesi.karakterIndex];
+                        if (karakter === "\n") {
+                            element.innerHTML += "<br>";
+                        } else {
+                            element.innerHTML += karakter;
+                        }
+
+                        if (element.scrollHeight > element.clientHeight) {
+                            element.innerHTML = element.innerHTML.slice(0, -1);
+                            daktiloDevamEdiyor = false;
+                            if (callback) callback(false); // Sayfa doldu, sonraki sayfaya geçilecek
+                            return;
+                        }
+
+                        indexTakipObjesi.karakterIndex++;
+                        aktifDaktiloTimeout = setTimeout(fonksiyonadimla, 85);
+                    } else {
+                        indexTakipObjesi.karakterIndex = 0;
+                        indexTakipObjesi.parcaIndex++;
+                        aktifDaktiloTimeout = setTimeout(fonksiyonadimla, 85);
+                    }
+                }
+            } else {
+                daktiloDevamEdiyor = false;
+                if (callback) callback(true); // Metin bitti
+            }
+        }
+    }
+
+    // Sağ sayfa metin takibi için objeler
+    let sagMetinDurumu = {
+        parcaIndex: 0,
+        karakterIndex: 0
+    };
 
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
@@ -512,13 +525,13 @@ Baban.`;
                     setTimeout(() => {
                         const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
                         
-                        if ((globalGovdeParcaIndex < govdeParcalar.length) && arkaYaziElementi) {
-                            metinYazdirKademeli(arkaYaziElementi, () => {
+                        if ((sagMetinDurumu.parcaIndex < sagParcalar.length) && arkaYaziElementi) {
+                            genelMetinYazdir(arkaYaziElementi, sagParcalar, sagMetinDurumu, (bittiMi) => {
                                 let sonrakiIndex = i + 1;
-                                if (sonrakiIndex < toplamYaprak && globalGovdeParcaIndex < govdeParcalar.length) {
+                                if (!bittiMi && sonrakiIndex < toplamYaprak && sagMetinDurumu.parcaIndex < sagParcalar.length) {
                                     const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
                                     if (sonrakiOnYaziElementi) {
-                                        metinYazdirKademeli(sonrakiOnYaziElementi);
+                                        genelMetinYazdir(sonrakiOnYaziElementi, sagParcalar, sagMetinDurumu);
                                     }
                                 }
                             });
@@ -581,8 +594,10 @@ Baban.`;
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
             globalBaslikIndex = 0;
-            globalGovdeParcaIndex = 0;
-            globalGovdeKarakterIndex = 0;
+            globalSolParcaIndex = 0;
+            globalSolKarakterIndex = 0;
+            sagMetinDurumu.parcaIndex = 0;
+            sagMetinDurumu.karakterIndex = 0;
             aktifEklenenOzelSpan = null;
             if (solKanatYazi) solKanatYazi.innerHTML = "";
             if (ilkSagSayfaYazi) ilkSagSayfaYazi.innerHTML = "";
@@ -598,15 +613,18 @@ Baban.`;
             kapakAlan.classList.add("dondu");
 
             globalBaslikIndex = 0;
-            globalGovdeParcaIndex = 0;
-            globalGovdeKarakterIndex = 0;
+            globalSolParcaIndex = 0;
+            globalSolKarakterIndex = 0;
+            sagMetinDurumu.parcaIndex = 0;
+            sagMetinDurumu.karakterIndex = 0;
             aktifEklenenOzelSpan = null;
 
             setTimeout(() => {
                 if (solKanatYazi) {
-                    metinYazdirKademeli(solKanatYazi, () => {
-                        if (globalGovdeParcaIndex < govdeParcalar.length && ilkSagSayfaYazi) {
-                            metinYazdirKademeli(ilkSagSayfaYazi);
+                    solMetniYazdirKademeli(solKanatYazi, () => {
+                        // Sol sayfa bitince ilk sağ sayfayı başlat
+                        if (sagMetinDurumu.parcaIndex < sagParcalar.length && ilkSagSayfaYazi) {
+                            genelMetinYazdir(ilkSagSayfaYazi, sagParcalar, sagMetinDurumu);
                         }
                     });
                 }
