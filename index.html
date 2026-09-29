@@ -115,6 +115,16 @@ body {
     transition: opacity 0.3s ease-in-out 1.1s;
 }
 
+/* SOL KANAT VEYA SAYFA İÇİ BAŞLIKLARIN ORTALANMASI */
+.sol-kanat-yazi .sayfa-baslik,
+.sayfa-yazi .sayfa-baslik {
+    text-align: center;
+    display: block;
+    width: 100%;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+}
+
 /* ÇOKLU SAYFA KONTEYNERİ */
 .sayfalar-kapsayici {
     position: absolute;
@@ -317,7 +327,7 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // Metni BAŞLIK (Önce çıkacak) ve GÖVDE (Sonra yavaşça akacak) olarak ayırıyoruz
+    // Başlık ve gövde metinleri ayrı ayrı tanımlandı (İleride diğer şiirler için de bu şablonu kullanabilirsiniz)
     const baslikMetni = "Kızıma…\n\n";
     const govdeMetni = 
 `Sevgili Şiir,
@@ -347,45 +357,54 @@ Baban.`;
     let globalBaslikIndex = 0;
     let globalGovdeIndex = 0;
 
-    // Başlık ve Gövdeyi sırayla yazdıran akıllı fonksiyon
+    // Kademeli daktilo fonksiyonu: Önce ortalanmış başlık (20ms), sonra gövde (2ms)
     function metinYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
 
-        // 1. AŞAMA: Önce Başlık (40ms hızla)
+        // Önce başlık için span oluşturuyoruz (Ortalanması ve tasarımı için)
+        let baslikSpan = document.createElement("span");
+        baslikSpan.className = "sayfa-baslik";
+        element.appendChild(baslikSpan);
+
         function baslikYazdirAdim() {
             if (!daktiloDevamEdiyor) return;
 
             if (globalBaslikIndex < baslikKarakterler.length) {
                 let karakter = baslikKarakterler[globalBaslikIndex];
-                element.textContent += karakter;
+                if (karakter === "\n") {
+                    baslikSpan.innerHTML += "<br>";
+                } else {
+                    baslikSpan.textContent += karakter;
+                }
                 globalBaslikIndex++;
-                aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 40);
+                aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 20); // Başlık hızı: 20ms
             } else {
-                // Başlık bitti, kısa bir duraksama (nefes payı) verip gövdeye geçelim
+                // Başlık bittikten sonra kısa bir nefes payı ve gövdeye geçiş
                 setTimeout(() => {
                     govdeYazdirAdim();
-                }, 300);
+                }, 200);
             }
         }
 
-        // 2. AŞAMA: Sonra Gövde/Dizeler (20ms hızla)
         function govdeYazdirAdim() {
             if (!daktiloDevamEdiyor) return;
 
             if (globalGovdeIndex < govdeKarakterler.length) {
                 let karakter = govdeKarakterler[globalGovdeIndex];
-                element.textContent += karakter;
+                
+                // Normal metni elemente ekliyoruz (başlık span'inden sonra)
+                element.innerHTML += karakter === "\n" ? "<br>" : karakter;
 
-                // Alan taştıysa karakteri geri al ve bu sayfayı tamamla
+                // Alan taştıysa son karakteri geri al ve bu sayfayı tamamla
                 if (element.scrollHeight > element.clientHeight) {
-                    element.textContent = element.textContent.slice(0, -1);
+                    element.innerHTML = element.innerHTML.slice(0, -1);
                     daktiloDevamEdiyor = false;
                     if (callback) callback();
                     return;
                 }
 
                 globalGovdeIndex++;
-                aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 20);
+                aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 2); // Gövde hızı: 2ms
             } else {
                 daktiloDevamEdiyor = false;
                 if (callback) callback();
@@ -502,8 +521,8 @@ Baban.`;
             daktiloDevamEdiyor = false;
             globalBaslikIndex = 0;
             globalGovdeIndex = 0;
-            if (solKanatYazi) solKanatYazi.textContent = "";
-            if (ilkSagSayfaYazi) ilkSagSayfaYazi.textContent = "";
+            if (solKanatYazi) solKanatYazi.innerHTML = "";
+            if (ilkSagSayfaYazi) ilkSagSayfaYazi.innerHTML = "";
 
             yaprakElementleri.forEach((y, index) => {
                 y.classList.remove("cevirdi");
