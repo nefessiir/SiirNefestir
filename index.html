@@ -329,14 +329,15 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "Kızıma…\n\n";
     
-    // Sizin istediğiniz vurgulara ve enter boşluklarına tam sadık kalan metin:
-    const govdeMetni = 
+    // Kod editöründeki girinti boşluklarını temizleyen, 
+    // ancak sizin koyduğunuz enter'ları koruyan akıllı temizleme:
+    const hamGovdeMetni = 
 `Sevgili Şiir,
 Bu satırları okuduğunda belki ben yanında olacağım, belki de
 hayat bizi birbirimizden uzaklaştırmış olacak.
-Ama şunu bilmeni isterim ; ben bu şiirleri insanlara bir şey
-anlatmak için değil, içimde kopan fırtınaları , bir yağmur 
-misali kağıda dökmek için yazdım.
+Ama şunu bilmeni isterim ;
+Ben bu şiirleri insanlara bir şey anlatmak için değil,
+içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
  
 Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben
 buldum.
@@ -345,10 +346,8 @@ Sana bırakabileceğim hatıralar arasından birinin de , bu şiirlerim
 ve bu şiirleri benim sesimden duyman olacağını düşündüm.. belki de en güzeli..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.
-
 Çünkü sen , bu kocaman gövdenin altındaki çelimsiz çocuğun
 beklediği yaşama sebebiydin.
-
 Sen benim , yazdığım en güzel şiirsin…
 
 Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple
@@ -356,6 +355,12 @@ hatırla…
  
  
 Baban.`;
+
+    // Her satırın başındaki kod boşlukları temizleniyor, boş satırlar korunuyor
+    const govdeMetni = hamGovdeMetni
+        .split('\n')
+        .map(satir => satir.trim())
+        .join('\n');
 
     const toplamYaprak = 25;
     let yaprakElementleri = [];
@@ -402,7 +407,6 @@ Baban.`;
             if (globalGovdeIndex < govdeKarakterler.length) {
                 let karakter = govdeKarakterler[globalGovdeIndex];
                 
-                // Klavyedeki Enter (\n) karakterlerini doğrudan alt alta satır kırığına çeviriyoruz
                 if (karakter === "\n") {
                     element.innerHTML += "<br>";
                 } else {
