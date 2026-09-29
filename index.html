@@ -327,8 +327,9 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // Güncellenmiş Yeni Önsöz Metni ve Başlığı
     const baslikMetni = "Kızıma…\n\n";
+    
+    // Sizin istediğiniz vurgulara ve enter boşluklarına tam sadık kalan metin:
     const govdeMetni = 
 `Sevgili Şiir,
 Bu satırları okuduğunda belki ben yanında olacağım, belki de
@@ -399,7 +400,12 @@ Baban.`;
             if (globalGovdeIndex < govdeKarakterler.length) {
                 let karakter = govdeKarakterler[globalGovdeIndex];
                 
-                element.innerHTML += karakter === "\n" ? "<br>" : karakter;
+                // Klavyedeki Enter (\n) karakterlerini doğrudan alt alta satır kırığına çeviriyoruz
+                if (karakter === "\n") {
+                    element.innerHTML += "<br>";
+                } else {
+                    element.innerHTML += karakter;
+                }
 
                 if (element.scrollHeight > element.clientHeight) {
                     element.innerHTML = element.innerHTML.slice(0, -1);
