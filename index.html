@@ -327,21 +327,32 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
+    // Yeni güncellenen başlık ve yeni önsöz metni
     const baslikMetni = "Kızıma…\n\n";
     const govdeMetni = 
 `Sevgili Şiir,
+Bu satırları okuduğunda belki ben yanında olacağım, belki de
+hayat bizi birbirimizden uzaklaştırmış olacak.
+Ama şunu bilmeni isterim ;
+Ben bu şiirleri insanlara bir şey anlatmak için değil,
+içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
+Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben
+buldum.
+Sana bırakabileceğim hatıralar arasından birinin , benim
+dünyamı anlatan bu kelimeler olduğunu düşündüm.. belki de en güzeli
+Ve bu kelimeleri benim sesimden duy istedim.
 
-Belki bu satırları okuduğunda ben yanında olacağım, belki de hayat bizi birbirimizden uzaklaştırmış olacak.
+Çünkü ben o sesi duymak için her şeyimi verirdim.
+Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
+o şiir senden önce yazılmış olsa bile, sana aittir.
+Çünkü sen , bu kocaman gövdenin altındaki çelimsiz çocuğun
+beklediği yaşama sebebiydin.
+ 
+Sen benim , yazdığım en güzel şiirsin…
 
-Ama şunu bilmeni isterim:
-Ben bu şiirleri insanlara bir şey anlatmak için değil, içimde birikenleri kaybetmemek için yazdım. Ve bazılarını yıllar sonra sen bul diye sakladım.
-
-Çünkü sana bırakabileceğim en güzel şeylerden birinin, benim dünyamı anlatan kelimeler olduğunu düşündüm.
-
-Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki, o şiir senden önce yazılmış olsa bile, sana da aittir.
-
-Çünkü sen benim hayatıma girdikten sonra yazdığım hiçbir şey eskisi gibi olmadı.
-
+Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
+ 
+ 
 Baban.`;
 
     const toplamYaprak = 25;
@@ -356,7 +367,7 @@ Baban.`;
     let globalBaslikIndex = 0;
     let globalGovdeIndex = 0;
 
-    // Kademeli daktilo fonksiyonu: Başlık hızı 30ms, Gövde hızı 80ms
+    // Kademeli daktilo fonksiyonu: Başlık hızı 30ms, Gövde/Diğer metinlerin hızı 85ms
     function metinYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
 
@@ -399,7 +410,7 @@ Baban.`;
                 }
 
                 globalGovdeIndex++;
-                aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 80); // Gövde hızı: 80ms
+                aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85); // Gövde hızı: 85ms
             } else {
                 daktiloDevamEdiyor = false;
                 if (callback) callback();
