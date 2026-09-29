@@ -128,7 +128,12 @@ body {
     margin-bottom: 0.4em;
 }
 
-/* ÖZEL CÜMLE YUKARI ÇEKME SINIFI */
+/* ÖZEL CÜMLE YUKARI ÇEKME SINIFLARI */
+.ozel-ilk-yukari {
+    display: inline-block;
+    margin-top: -0.1cm;
+}
+
 .ozel-yukari-cek {
     display: inline-block;
     margin-top: -0.2cm;
@@ -339,14 +344,15 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
-    // "Ve bazılarını..." cümlesini HTML etiketiyle yukarı çekebilmek için yapı güncellendi
+    // "Sevgili Şiir..." ile "...buldum" arası yukarı çekildi ve "Ve bazılarını..." cümlesi tamamen karaktere bölündü
     const hamGovdeMetni = 
-`Sevgili Şiir,
+`<span class="ozel-ilk-yukari">Sevgili Şiir,
 Bu satırları okuduğunda belki ben yanında olacağım, belki de
 hayat bizi birbirimizden uzaklaştırmış olacak.
 Ama şunu bilmeni isterim ;
 Ben bu şiirleri insanlara bir şey anlatmak için değil,
-içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
+içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.</span>
+ 
 <span class="ozel-yukari-cek">Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben</span>
 buldum.
  
@@ -358,8 +364,8 @@ o şiir senden önce yazılmış olsa bile, sana aittir.
 beklediği yaşama sebebiydin.
 Sen benim , yazdığım en güzel şiirsin…
 
-Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple
-hatırla…
+Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
+ 
  
 Baban.`;
 
@@ -369,9 +375,9 @@ Baban.`;
     let aktifDaktiloTimeout = null;
     let daktiloDevamEdiyor = false;
 
-    let baslikKarakterler = baslikMetni.split("");
+    let baslikKarterler = baslikMetni.split("");
     
-    // HTML etiketlerini bozmadan karakter bazlı daktilo için metin parçalama mantığı
+    // HTML etiketlerini ve içerisindeki düz metinleri harf harf işleyebilmek için yapı güncellendi
     function metniHTMLParcala(htmlStr) {
         let tempDiv = document.createElement('div');
         tempDiv.innerHTML = htmlStr;
@@ -383,6 +389,7 @@ Baban.`;
     let globalBaslikIndex = 0;
     let globalGovdeParcaIndex = 0;
     let globalGovdeKarakterIndex = 0;
+    let aktifEklenenOzelSpan = null;
 
     function metinYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
@@ -394,8 +401,8 @@ Baban.`;
         function baslikYazdirAdim() {
             if (!daktiloDevamEdiyor) return;
 
-            if (globalBaslikIndex < baslikKarakterler.length) {
-                let karakter = baslikKarakterler[globalBaslikIndex];
+            if (globalBaslikIndex < baslikKarterler.length) {
+                let karakter = baslikKarterler[globalBaslikIndex];
                 if (karakter === "\n") {
                     baslikSpan.innerHTML += "<br>";
                 } else {
@@ -441,22 +448,38 @@ Baban.`;
                         aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
                     }
                 } else if (parca.nodeType === Node.ELEMENT_NODE) {
-                    // Özel HTML elemanları (örneğin ozel-yukari-cek sınıfı)
-                    let elementHTML = parca.outerHTML;
-                    // Basitçe elementi ekleyip sığıp sığmadığını kontrol edelim
-                    let testSpan = document.createElement("span");
-                    testSpan.innerHTML = elementHTML;
-                    element.appendChild(testSpan);
-
-                    if (element.scrollHeight > element.clientHeight) {
-                        element.removeChild(testSpan);
-                        daktiloDevamEdiyor = false;
-                        if (callback) callback();
-                        return;
+                    // Özel HTML elemanları (örn. ozel-ilk-yukari veya ozel-yukari-cek sınıflı spanler) harf harf daktilo ediliyor
+                    if (!aktifEklenenOzelSpan) {
+                        aktifEklenenOzelSpan = document.createElement("span");
+                        aktifEklenenOzelSpan.className = parca.className;
+                        element.appendChild(aktifEklenenOzelSpan);
                     }
 
-                    globalGovdeParcaIndex++;
-                    aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                    let innerText = parca.textContent;
+                    if (globalGovdeKarakterIndex < innerText.length) {
+                        let karakter = innerText[globalGovdeKarakterIndex];
+                        if (karakter === "\n") {
+                            aktifEklenenOzelSpan.innerHTML += "<br>";
+                        } else {
+                            aktifEklenenOzelSpan.textContent += karakter;
+                        }
+
+                        if (element.scrollHeight > element.clientHeight) {
+                            element.removeChild(aktifEklenenOzelSpan);
+                            aktifEklenenOzelSpan = null;
+                            daktiloDevamEdiyor = false;
+                            if (callback) callback();
+                            return;
+                        }
+
+                        globalGovdeKarakterIndex++;
+                        aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                    } else {
+                        globalGovdeKarakterIndex = 0;
+                        aktifEklenenOzelSpan = null;
+                        globalGovdeParcaIndex++;
+                        aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 85);
+                    }
                 }
             } else {
                 daktiloDevamEdiyor = false;
@@ -571,6 +594,7 @@ Baban.`;
             globalBaslikIndex = 0;
             globalGovdeParcaIndex = 0;
             globalGovdeKarakterIndex = 0;
+            aktifEklenenOzelSpan = null;
             if (solKanatYazi) solKanatYazi.innerHTML = "";
             if (ilkSagSayfaYazi) ilkSagSayfaYazi.innerHTML = "";
 
@@ -587,6 +611,7 @@ Baban.`;
             globalBaslikIndex = 0;
             globalGovdeParcaIndex = 0;
             globalGovdeKarakterIndex = 0;
+            aktifEklenenOzelSpan = null;
 
             setTimeout(() => {
                 if (solKanatYazi) {
