@@ -317,10 +317,10 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    const onsozMetni = 
-`Kızıma…
-
-Sevgili Şiir,
+    // Metni BAŞLIK (Önce çıkacak) ve GÖVDE (Sonra yavaşça akacak) olarak ayırıyoruz
+    const baslikMetni = "Kızıma…\n\n";
+    const govdeMetni = 
+`Sevgili Şiir,
 
 Belki bu satırları okuduğunda ben yanında olacağım, belki de hayat bizi birbirimizden uzaklaştırmış olacak.
 
@@ -341,19 +341,39 @@ Baban.`;
     let aktifDaktiloTimeout = null;
     let daktiloDevamEdiyor = false;
 
-    // Metni tekli karakterler halinde diziye çeviriyoruz
-    let karakterDizisi = onsozMetni.split("");
-    let globalKarakterIndex = 0;
+    let baslikKarakterler = baslikMetni.split("");
+    let govdeKarakterler = govdeMetni.split("");
 
-    // Karakter karakter daktilo ile element dolduran fonksiyon (İstediğiniz hızlar eklendi)
-    function metinYazdir(karakterler, element, callback = null) {
+    let globalBaslikIndex = 0;
+    let globalGovdeIndex = 0;
+
+    // Başlık ve Gövdeyi sırayla yazdıran akıllı fonksiyon
+    function metinYazdirKademeli(element, callback = null) {
         daktiloDevamEdiyor = true;
 
-        function yazdirAdim() {
+        // 1. AŞAMA: Önce Başlık (40ms hızla)
+        function baslikYazdirAdim() {
             if (!daktiloDevamEdiyor) return;
 
-            if (globalKarakterIndex < karakterler.length) {
-                let karakter = karakterler[globalKarakterIndex];
+            if (globalBaslikIndex < baslikKarakterler.length) {
+                let karakter = baslikKarakterler[globalBaslikIndex];
+                element.textContent += karakter;
+                globalBaslikIndex++;
+                aktifDaktiloTimeout = setTimeout(baslikYazdirAdim, 40);
+            } else {
+                // Başlık bitti, kısa bir duraksama (nefes payı) verip gövdeye geçelim
+                setTimeout(() => {
+                    govdeYazdirAdim();
+                }, 300);
+            }
+        }
+
+        // 2. AŞAMA: Sonra Gövde/Dizeler (20ms hızla)
+        function govdeYazdirAdim() {
+            if (!daktiloDevamEdiyor) return;
+
+            if (globalGovdeIndex < govdeKarakterler.length) {
+                let karakter = govdeKarakterler[globalGovdeIndex];
                 element.textContent += karakter;
 
                 // Alan taştıysa karakteri geri al ve bu sayfayı tamamla
@@ -364,19 +384,15 @@ Baban.`;
                     return;
                 }
 
-                globalKarakterIndex++;
-                
-                // "Kızıma..." kelimesi (ilk 7 karakter) bitene kadar hız 40ms, sonrakiler 25ms
-                let guncelHiz = globalKarakterIndex <= 7 ? 40 : 25;
-
-                aktifDaktiloTimeout = setTimeout(yazdirAdim, guncelHiz);
+                globalGovdeIndex++;
+                aktifDaktiloTimeout = setTimeout(govdeYazdirAdim, 20);
             } else {
                 daktiloDevamEdiyor = false;
                 if (callback) callback();
             }
         }
 
-        yazdirAdim();
+        baslikYazdirAdim();
     }
 
     // Sağ taraf dinamik sayfalarını oluşturma
@@ -411,17 +427,17 @@ Baban.`;
                     yaprakDiv.style.zIndex = 50 + i;
                     yaprakDiv.classList.add("cevirdi");
 
-                    // Sayfa dönüş animasyonu (1.0 saniye) TAMAMLANDIKTAN ANDA çalışır
+                    // Sayfa dönüş animasyonu tamamlandıktan sonra yazma başlar
                     setTimeout(() => {
                         const arkaYaziElementi = document.getElementById(`yazi-arka-${i}`);
                         
-                        if (globalKarakterIndex < karakterDizisi.length && arkaYaziElementi) {
-                            metinYazdir(karakterDizisi, arkaYaziElementi, () => {
+                        if (globalGovdeIndex < govdeKarakterler.length && arkaYaziElementi) {
+                            metinYazdirKademeli(arkaYaziElementi, () => {
                                 let sonrakiIndex = i + 1;
-                                if (sonrakiIndex < toplamYaprak && globalKarakterIndex < karakterDizisi.length) {
+                                if (sonrakiIndex < toplamYaprak && globalGovdeIndex < govdeKarakterler.length) {
                                     const sonrakiOnYaziElementi = document.getElementById(`yazi-on-${sonrakiIndex}`);
                                     if (sonrakiOnYaziElementi) {
-                                        metinYazdir(karakterDizisi, sonrakiOnYaziElementi);
+                                        metinYazdirKademeli(sonrakiOnYaziElementi);
                                     }
                                 }
                             });
@@ -484,7 +500,8 @@ Baban.`;
         if (kapsayici.classList.contains("acildi")) {
             if (aktifDaktiloTimeout) clearTimeout(aktifDaktiloTimeout);
             daktiloDevamEdiyor = false;
-            globalKarakterIndex = 0;
+            globalBaslikIndex = 0;
+            globalGovdeIndex = 0;
             if (solKanatYazi) solKanatYazi.textContent = "";
             if (ilkSagSayfaYazi) ilkSagSayfaYazi.textContent = "";
 
@@ -498,14 +515,16 @@ Baban.`;
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
 
-            globalKarakterIndex = 0;
+            globalBaslikIndex = 0;
+            globalGovdeIndex = 0;
+
             // Kitap açıldıktan 3.8 saniye sonra önce SOL KANAT başlar
             setTimeout(() => {
                 if (solKanatYazi) {
-                    metinYazdir(karakterDizisi, solKanatYazi, () => {
-                        // Sol kanat dolunca, kalan karakterler otomatik olarak 1. SAĞ SAYFAYA yazılmaya başlar!
-                        if (globalKarakterIndex < karakterDizisi.length && ilkSagSayfaYazi) {
-                            metinYazdir(karakterDizisi, ilkSagSayfaYazi);
+                    metinYazdirKademeli(solKanatYazi, () => {
+                        // Sol kanat dolunca, kalan metin otomatik olarak 1. SAĞ SAYFAYA yazılmaya başlar!
+                        if (globalGovdeIndex < govdeKarakterler.length && ilkSagSayfaYazi) {
+                            metinYazdirKademeli(ilkSagSayfaYazi);
                         }
                     });
                 }
