@@ -40,7 +40,7 @@ body {
     z-index: 2;
 }
 
-/* 1. SAĞDA SABİT DURAN ALT KAPAK */
+/* 1. SAĞda SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -86,7 +86,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1. Sayfa - 11pt, hizalı) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1. Sayfa) */
 .sol-kanat-yazi {
     position: absolute;
     top: 0.8cm;
@@ -95,7 +95,7 @@ body {
     height: calc(100% - 1.5cm);
     font-family: 'Dancing Script', cursive, serif;
     font-size: 11pt;
-    line-height: 1.4;
+    line-height: 1.35;
     color: #1a4b82;
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
@@ -123,8 +123,8 @@ body {
     width: 100%;
     font-weight: 700;
     font-size: 1.2em;
-    margin-top: 0.4em; 
-    margin-bottom: 0.3em;
+    margin-top: 0.3em; 
+    margin-bottom: 0.2em;
 }
 
 /* SAYFA NUMARASI STİLİ */
@@ -208,7 +208,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR (2. Sayfa ve Sonrası - 12pt) */
+/* SAYFA İÇİ YAZILAR (2. Sayfa ve Sonrası - Kompakt Satır Aralığı) */
 .sayfa-yazi {
     position: absolute;
     top: 0.6cm;
@@ -216,7 +216,7 @@ body {
     width: calc(100% - 1cm);
     height: calc(100% - 1.4cm);
     font-family: 'Dancing Script', cursive, serif;
-    line-height: 1.4;
+    line-height: 1.3; /* Sığdırma için biraz geri çekildi */
     color: #1a4b82;
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
@@ -227,7 +227,7 @@ body {
     overflow-wrap: break-word;
     hyphens: none;
     white-space: pre-wrap;
-    font-size: 12pt; 
+    font-size: 11.5pt; /* Çok az optimize edildi */
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -292,12 +292,66 @@ body {
     display: block;
     transform: translate(0.3cm, 1.7em);
 }
+
+/* KİTAP KENARI GEÇİŞ OKLARI (PARLAYAN TASARIM) */
+.kitap-ok {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 70px;
+    background: rgba(25, 15, 5, 0.55);
+    border: 1px solid rgba(214, 173, 56, 0.4);
+    color: #d6ad38;
+    font-family: Georgia, serif;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    user-select: none;
+}
+
+.kitap-kapsayici.acildi .kitap-ok {
+    opacity: 0.85;
+    pointer-events: auto;
+    transition: opacity 0.5s ease-in-out 1.2s, background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.sol-ok {
+    left: calc(-100% - 1.8cm);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.sag-ok {
+    right: -1.8cm;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.kitap-ok:hover {
+    opacity: 1;
+    background: rgba(50, 30, 10, 0.85);
+    color: #fff2b0;
+    border-color: #f5c641;
+    box-shadow: 0 0 18px rgba(245, 198, 65, 0.7), inset 0 0 10px rgba(245, 198, 65, 0.4);
+    transform: translateY(-50%) scale(1.08);
+}
 </style>
 </head>
 
 <body>
 
 <div class="kitap-kapsayici" id="kitapKapsayici" style="cursor: pointer;">
+
+    <!-- SOL KENAR OKU (GERİ) -->
+    <div class="kitap-ok sol-ok" id="geriBtn" title="Önceki Sayfa">‹</div>
 
     <!-- 1. ALT KAPAK -->
     <div class="sag-kapak">
@@ -330,6 +384,9 @@ body {
         <img src="kapak.jpg" class="kapak-arka-kapak" alt="Arka Kapak">
     </div>
 
+    <!-- SAĞ KENAR OKU (İLERİ) -->
+    <div class="kitap-ok sag-ok" id="ileriBtn" title="Sonraki Sayfa">›</div>
+
 </div>
 
 <script>
@@ -339,6 +396,8 @@ window.addEventListener("load", function () {
     const sayfalarKapsayici = document.getElementById("sayfalarKapsayici");
     const solKanatYazi = document.getElementById("solKanatYazi");
     const kapakImg = document.querySelector(".kapak");
+    const ileriBtn = document.getElementById("ileriBtn");
+    const geriBtn = document.getElementById("geriBtn");
 
     const yukseklik = kapakImg.getBoundingClientRect().height;
     const ikiCm = 2 * 96 / 2.54;
@@ -347,7 +406,7 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
-    // 1. Sayfa (Sol Kanat) - 11pt
+    // 1. Sayfa (Sol Kanat)
     const solSayfaMetni = 
 `Sevgili Şiir,
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
@@ -355,7 +414,7 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
-    // Sonraki Sayfalar - 12pt (Dengeli Dağılım)
+    // Sonraki Sayfalar
     const sayfaMetinleri = [
         // Sayfa 2 (1. Yaprak Ön)
         `Bilmeni isterim ki;
@@ -366,7 +425,7 @@ Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..`,
 
-        // Sayfa 3 (1. Yaprak Arka - İstediğiniz duygusal kapanış buraya taşındı)
+        // Sayfa 3 (1. Yaprak Arka)
         `Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.
 
@@ -375,7 +434,7 @@ beklediği yaşama sebebisin.
 
 Çünkü sen benim , yazdığım en güzel şiirsin...`,
 
-        // Sayfa 4 (2. Yaprak Ön)
+        // Sayfa 4 (2. Yaprak Ön) - Bahsettiğiniz satırlar buraya rahatça sığıyor
         `Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
 
 Hasretle gamzelerinden ve o küçük çenenden öperim.
@@ -513,17 +572,19 @@ Baban.`
         temizleZamanasimlari();
         mevcutYazmaDurumu.element = null;
 
-        if (akisAsamasi >= 11) {
+        if (akisAsamasi === 11) {
             yaprakElementleri[1].classList.remove("cevirdi");
             yaprakElementleri[1].style.zIndex = toplamYaprak - 1;
             akisAsamasi = 10;
-        } else if (akisAsamasi >= 6) {
+        } else if (akisAsamasi === 10 || akisAsamasi === 9 || akisAsamasi === 8) {
+            akisAsamasi = 8;
+        } else if (akisAsamasi === 7 || akisAsamasi === 6) {
             yaprakElementleri[0].classList.remove("cevirdi");
             yaprakElementleri[0].style.zIndex = toplamYaprak;
-            akisAsamasi = 5; 
-        } else if (akisAsamasi >= 3) {
-            akisAsamasi = 3; 
-        } else if (akisAsamasi === 2 || akisAsamasi === 1) {
+            akisAsamasi = 5;
+        } else if (akisAsamasi === 5 || akisAsamasi === 4) {
+            akisAsamasi = 3;
+        } else if (akisAsamasi === 3 || akisAsamasi === 2 || akisAsamasi === 1) {
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
             akisAsamasi = 0;
@@ -559,6 +620,7 @@ Baban.`
     }
 
     kapsayici.addEventListener("click", function (e) {
+        if (e.target.closest('.kitap-ok')) return;
         e.stopPropagation();
 
         if (!kapsayici.classList.contains("acildi")) {
@@ -571,6 +633,24 @@ Baban.`
         } else {
             ileriGit();
         }
+    });
+
+    ileriBtn.addEventListener("click", function(e) {
+        e.stopPropagation();
+        if (!kapsayici.classList.contains("acildi")) {
+            kapsayici.classList.add("acildi");
+            kapakAlan.classList.add("dondu");
+            temizleZamanasimlari();
+            solKanatYazi.innerHTML = "";
+            akisAsamasi = 1;
+        } else {
+            ileriGit();
+        }
+    });
+
+    geriBtn.addEventListener("click", function(e) {
+        e.stopPropagation();
+        geriGit();
     });
 
     window.addEventListener("contextmenu", function(e) {
