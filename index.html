@@ -86,7 +86,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (2 harf kadar içeri alındı ve hizalandı) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1. Sayfa - 11pt, hizalı) */
 .sol-kanat-yazi {
     position: absolute;
     top: 0.8cm;
@@ -355,27 +355,28 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
-    // Sonraki Sayfa Metinleri
+    // Sonraki Sayfa Metinleri (Sayfa 2, 3, 4 eksiksiz dolduruldu)
     const sayfaMetinleri = [
         // Sayfa 2 (1. Yaprak Ön)
         `Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
 içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
-Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.`,
-
-`Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
+Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.
+Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
-Ben çok isterdim..
-Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
-o şiir senden önce yazılmış olsa bile, sana aittir.`,
+Ben çok isterdim..`,
 
-        // Sayfa 4 (2. Yaprak Ön)
-        `Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+        // Sayfa 3 (1. Yaprak Arka)
+        `Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
+o şiir senden önce yazılmış olsa bile, sana aittir.
+
+Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
 
-Çünkü sen benim , yazdığım en güzel şiirsin...
+Çünkü sen benim , yazdığım en güzel şiirsin...`,
 
-Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
+        // Sayfa 4 (2. Yaprak Ön)
+        `Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
 
 Hasretle gamzelerinden ve o küçük çenenden öperim.
 
@@ -386,12 +387,14 @@ Baban.`
     let yaprakElementleri = [];
     let aktifTimeouts = [];
     
+    // Aşama Takip Sistemi
     let akisAsamasi = 0;
     
     let mevcutYazmaDurumu = {
         element: null,
         metin: "",
-        index: 0
+        index: 0,
+        hedefAsama: 0
     };
 
     function temizleZamanasimlari() {
@@ -399,6 +402,7 @@ Baban.`
         aktifTimeouts = [];
     }
 
+    // Yazı devam ederken tıklandığında yazıyı anında tamamlar ve aşamayı günceller
     function aktifSayfayiHemenBitir() {
         if (!mevcutYazmaDurumu.element) return false;
         temizleZamanasimlari();
@@ -407,13 +411,17 @@ Baban.`
         kalanMetin = kalanMetin.replace(/\n/g, "<br>");
         mevcutYazmaDurumu.element.innerHTML += kalanMetin;
         mevcutYazmaDurumu.element = null;
+        
+        akisAsamasi = mevcutYazmaDurumu.hedefAsama;
         return true;
     }
 
-    function metinYazdirKademeli(element, tamMetin, callback) {
+    // Metin Yazdırma (Hız: 85ms)
+    function metinYazdirKademeli(element, tamMetin, hedefAsama, callback) {
         mevcutYazmaDurumu.element = element;
         mevcutYazmaDurumu.metin = tamMetin;
         mevcutYazmaDurumu.index = 0;
+        mevcutYazmaDurumu.hedefAsama = hedefAsama;
 
         function adim() {
             if (mevcutYazmaDurumu.index < tamMetin.length) {
@@ -424,13 +432,14 @@ Baban.`
                 aktifTimeouts.push(t);
             } else {
                 mevcutYazmaDurumu.element = null;
+                akisAsamasi = hedefAsama;
                 if (callback) callback();
             }
         }
         adim();
     }
 
-    // Başlık bittikten sonra 1.8 saniye (duygusal duraklama/vurgu payı) bekleyip metne geçen fonksiyon
+    // Başlık Yazdırma (Hız: 35ms) + 1.8 saniye duygu duraklaması
     function solSayfayiBaslat() {
         solKanatYazi.innerHTML = "";
         let baslikSpan = document.createElement("span");
@@ -448,10 +457,11 @@ Baban.`
                 let t = setTimeout(baslikYaz, 35);
                 aktifTimeouts.push(t);
             } else {
-                // Başlık bitti: "KIZIM'a..." vurgusu için 1.8 saniye bekletme
-                mevcutYazmaDurumu.element = solKanatYazi; // Bekleme esnasında tıklanırsa hemen metne geçebilsin
+                mevcutYazmaDurumu.element = solKanatYazi;
+                mevcutYazmaDurumu.hedefAsama = 3;
+                
                 let beklemeT = setTimeout(() => {
-                    metinYazdirKademeli(solKanatYazi, solSayfaMetni);
+                    metinYazdirKademeli(solKanatYazi, solSayfaMetni, 3);
                 }, 1800);
                 aktifTimeouts.push(beklemeT);
             }
@@ -459,6 +469,7 @@ Baban.`
         baslikYaz();
     }
 
+    // İLERİ AKIŞ (Tek Tıklama Kuralı)
     function ileriGit() {
         if (aktifSayfayiHemenBitir()) {
             return;
@@ -468,18 +479,12 @@ Baban.`
             akisAsamasi = 2;
             solSayfayiBaslat();
         }
-        else if (akisAsamasi === 2) {
-            akisAsamasi = 3;
-        }
         else if (akisAsamasi === 3) {
             akisAsamasi = 4;
             let yOn0 = document.getElementById("yazi-on-0");
             if (yOn0 && sayfaMetinleri[0]) {
-                metinYazdirKademeli(yOn0, sayfaMetinleri[0]);
+                metinYazdirKademeli(yOn0, sayfaMetinleri[0], 5);
             }
-        }
-        else if (akisAsamasi === 4) {
-            akisAsamasi = 5;
         }
         else if (akisAsamasi === 5) {
             akisAsamasi = 6;
@@ -490,21 +495,15 @@ Baban.`
             akisAsamasi = 7;
             let yArka0 = document.getElementById("yazi-arka-0");
             if (yArka0 && sayfaMetinleri[1]) {
-                metinYazdirKademeli(yArka0, sayfaMetinleri[1]);
+                metinYazdirKademeli(yArka0, sayfaMetinleri[1], 8);
             }
-        }
-        else if (akisAsamasi === 7) {
-            akisAsamasi = 8;
         }
         else if (akisAsamasi === 8) {
             akisAsamasi = 9;
             let yOn1 = document.getElementById("yazi-on-1");
             if (yOn1 && sayfaMetinleri[2]) {
-                metinYazdirKademeli(yOn1, sayfaMetinleri[2]);
+                metinYazdirKademeli(yOn1, sayfaMetinleri[2], 10);
             }
-        }
-        else if (akisAsamasi === 9) {
-            akisAsamasi = 10;
         }
         else if (akisAsamasi === 10) {
             akisAsamasi = 11;
@@ -513,6 +512,7 @@ Baban.`
         }
     }
 
+    // GERİ AKIŞ
     function geriGit() {
         temizleZamanasimlari();
         mevcutYazmaDurumu.element = null;
@@ -526,7 +526,7 @@ Baban.`
             yaprakElementleri[0].style.zIndex = toplamYaprak;
             akisAsamasi = 5; 
         } else if (akisAsamasi >= 3) {
-            akisAsamasi = 2; 
+            akisAsamasi = 3; 
         } else if (akisAsamasi === 2 || akisAsamasi === 1) {
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
@@ -534,6 +534,7 @@ Baban.`
         }
     }
 
+    // Yaprakları Oluştur
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
