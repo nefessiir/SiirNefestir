@@ -347,7 +347,7 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
-    // 1. Sayfa (Sol Kanat)
+    // 1. Sayfa (Sol Kanat) - 11pt
     const solSayfaMetni = 
 `Sevgili Şiir,
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
@@ -355,7 +355,7 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
-    // Sonraki Sayfa Metinleri (Sayfa 2, 3, 4 eksiksiz dolduruldu)
+    // Sonraki Sayfalar - 12pt (Dengeli Dağılım)
     const sayfaMetinleri = [
         // Sayfa 2 (1. Yaprak Ön)
         `Bilmeni isterim ki;
@@ -366,7 +366,7 @@ Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..`,
 
-        // Sayfa 3 (1. Yaprak Arka)
+        // Sayfa 3 (1. Yaprak Arka - İstediğiniz duygusal kapanış buraya taşındı)
         `Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.
 
@@ -387,7 +387,6 @@ Baban.`
     let yaprakElementleri = [];
     let aktifTimeouts = [];
     
-    // Aşama Takip Sistemi
     let akisAsamasi = 0;
     
     let mevcutYazmaDurumu = {
@@ -402,7 +401,6 @@ Baban.`
         aktifTimeouts = [];
     }
 
-    // Yazı devam ederken tıklandığında yazıyı anında tamamlar ve aşamayı günceller
     function aktifSayfayiHemenBitir() {
         if (!mevcutYazmaDurumu.element) return false;
         temizleZamanasimlari();
@@ -416,7 +414,7 @@ Baban.`
         return true;
     }
 
-    // Metin Yazdırma (Hız: 85ms)
+    // Yazı Hızı: 85ms
     function metinYazdirKademeli(element, tamMetin, hedefAsama, callback) {
         mevcutYazmaDurumu.element = element;
         mevcutYazmaDurumu.metin = tamMetin;
@@ -439,7 +437,7 @@ Baban.`
         adim();
     }
 
-    // Başlık Yazdırma (Hız: 35ms) + 1.8 saniye duygu duraklaması
+    // Başlık Hızı: 35ms + 1.8 sn duygu duraklaması
     function solSayfayiBaslat() {
         solKanatYazi.innerHTML = "";
         let baslikSpan = document.createElement("span");
@@ -469,7 +467,6 @@ Baban.`
         baslikYaz();
     }
 
-    // İLERİ AKIŞ (Tek Tıklama Kuralı)
     function ileriGit() {
         if (aktifSayfayiHemenBitir()) {
             return;
@@ -512,7 +509,6 @@ Baban.`
         }
     }
 
-    // GERİ AKIŞ
     function geriGit() {
         temizleZamanasimlari();
         mevcutYazmaDurumu.element = null;
