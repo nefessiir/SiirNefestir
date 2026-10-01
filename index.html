@@ -148,7 +148,7 @@ body {
     opacity: 1;
 }
 
-/* SAYFA NUMARASI STİLİ (Artık sayfalatla beraber doğal dönecek) */
+/* SAYFA NUMARASI STİLİ */
 .sayfa-numara {
     position: absolute;
     bottom: 0.8cm;
@@ -164,7 +164,6 @@ body {
     z-index: 5;
 }
 
-/* Sağdaki 2 rakamı ile tam aynı yatay hizada */
 .sol-kanat-numara {
     bottom: 1.55cm;
     transform: translateX(1cm);
@@ -175,7 +174,6 @@ body {
     left: 0;
 }
 
-/* Tüylerin rengini beyaz yapan stil */
 .tuy {
     color: #ffffff;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
@@ -251,7 +249,6 @@ body {
     transform: rotateY(-180deg);
 }
 
-/* Sayfa İçerik Boyutu */
 .sayfa-icerik {
     position: absolute;
     top: 0;
@@ -281,7 +278,6 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAĞ VE SOL SAYFA YAZI ALANLARI */
 .sayfa-yazi {
     position: absolute;
     top: 0.8cm;
@@ -450,7 +446,7 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    const toplamYaprak = 25; // 25 yaprak = son sayfa 51 (25 * 2 + 1)
+    const toplamYaprak = 25; 
     let yaprakElementleri = [];
     let aktifZamanAsimlari = [];
     let mevcutAdimIndex = 0; 
@@ -476,6 +472,18 @@ Baban.`;
                 aktifZamanAsimlari.push(t2);
             }, 1000);
             aktifZamanAsimlari.push(t1);
+
+            // 2. sayfanın (yaprak 0 ön yüzü) metninin otomatik açılmasını sağla
+            let yaprak0 = yaprakElementleri[0];
+            if (yaprak0) {
+                let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
+                if (sagGovde0) {
+                    let t3 = setTimeout(() => {
+                        sagGovde0.classList.add("acildi");
+                    }, 1200);
+                    aktifZamanAsimlari.push(t3);
+                }
+            }
         } 
         else {
             let yaprakIndex = adim - 2;
@@ -534,11 +542,10 @@ Baban.`;
 
                     mevcutAdimIndex++;
                     
-                    // Son yaprak çevrildiğinde (yani sol sayfada son sayfa belirdiğinde) tıklama beklemeden otomatik kapanışı tetikle
                     if (mevcutAdimIndex > toplamYaprak) {
                         setTimeout(() => {
                             otomatikGeriyeSar();
-                        }, 1200); // Son sayfanın okunması için küçük bir bekleme payı
+                        }, 1200); 
                         return;
                     }
 
@@ -570,6 +577,7 @@ Baban.`;
                 sayfaIcerikleriniGoster(mevcutAdimIndex);
             }, 1000);
         } else if (mevcutAdimIndex === 1) {
+            // 1. adımdan da geriye (veya sol tarafa tıklayarak) ilk kapalı konuma dön
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
             mevcutAdimIndex = 0;
@@ -697,6 +705,7 @@ Baban.`;
             const rect = this.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
             if (tikX < rect.width / 2) {
+                // Sol kanada (1. sayfaya) tıklandığında kapak kapansın
                 kapsayici.classList.remove("acildi");
                 kapakAlan.classList.remove("dondu");
                 mevcutAdimIndex = 0;
