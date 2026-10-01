@@ -423,7 +423,7 @@ Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..`,
 
-        // Sayfa 3 (1. Yaprak Arka)
+        // Sayfa 3 (1. Yaprak Arka - Son Sayfa)
         `Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki , o şiir senden önce yazılmış olsa bile, sana aittir.
 Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun , beklediği yaşama sebebisin.
 Çünkü sen benim , yazdığım en güzel şiirsin...
@@ -432,7 +432,7 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 Baban.`
     ];
 
-    const toplamYaprak = 2; 
+    const toplamYaprak = 1; // 3 sayfalık yapı için tek yaprak yeterli (Sol sabit: 1, Ön: 2, Arka: 3)
     let yaprakElementleri = [];
     let aktifTimeouts = [];
     
@@ -468,7 +468,6 @@ Baban.`
     // Yazı Hızı: 85ms
     function metinYazdirKademeli(element, tamMetin, hedefAsama, callback) {
         islemde = true;
-        // Eğer zaten yazı yazılmışsa tekrar baştan yazma, koru
         if (!element.innerHTML || element.innerHTML.trim() === "") {
             element.innerHTML = "";
             mevcutYazmaDurumu.element = element;
@@ -569,16 +568,6 @@ Baban.`
                 metinYazdirKademeli(yArka0, sayfaMetinleri[1], 9);
             }
         }
-        else if (akisAsamasi === 9) {
-            islemde = true;
-            akisAsamasi = 10;
-            yaprakElementleri[1].style.zIndex = 51;
-            yaprakElementleri[1].classList.add("cevirdi");
-            setTimeout(() => { 
-                akisAsamasi = 11; 
-                islemde = false;
-            }, 1000);
-        }
     }
 
     function geriGit() {
@@ -586,12 +575,7 @@ Baban.`
         mevcutYazmaDurumu.element = null;
         islemde = false;
 
-        if (akisAsamasi >= 9) {
-            yaprakElementleri[1].classList.remove("cevirdi");
-            yaprakElementleri[1].style.zIndex = toplamYaprak - 1;
-            akisAsamasi = 7;
-        } 
-        else if (akisAsamasi >= 5) {
+        if (akisAsamasi >= 5) {
             yaprakElementleri[0].classList.remove("cevirdi");
             yaprakElementleri[0].style.zIndex = toplamYaprak;
             akisAsamasi = 3;
@@ -606,7 +590,7 @@ Baban.`
         }
     }
 
-    // Yaprakları Oluştur
+    // Yaprakları Oluştur (3 Sayfalık Kitap: Sol=1, Ön=2, Arka=3)
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
