@@ -429,10 +429,7 @@ Ben çok isterdim..`,
 Çünkü sen benim , yazdığım en güzel şiirsin...
 Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
 Hasretle gamzelerinden ve o küçük çenenden öperim.
-Baban.`,
-
-        // Sayfa 4 (2. Yaprak Ön) - Boş
-        ``
+Baban.`
     ];
 
     const toplamYaprak = 2; 
@@ -440,7 +437,7 @@ Baban.`,
     let aktifTimeouts = [];
     
     let akisAsamasi = 0;
-    let islemde = false; // Çift tıklama ve mükerrer yazmaları önlemek için kilit bayrağı
+    let islemde = false;
     
     let mevcutYazmaDurumu = {
         element: null,
@@ -471,58 +468,70 @@ Baban.`,
     // Yazı Hızı: 85ms
     function metinYazdirKademeli(element, tamMetin, hedefAsama, callback) {
         islemde = true;
-        element.innerHTML = ""; // Mükerrer yazmayı önlemek için alanı önce temizle
-        mevcutYazmaDurumu.element = element;
-        mevcutYazmaDurumu.metin = tamMetin;
-        mevcutYazmaDurumu.index = 0;
-        mevcutYazmaDurumu.hedefAsama = hedefAsama;
+        // Eğer zaten yazı yazılmışsa tekrar baştan yazma, koru
+        if (!element.innerHTML || element.innerHTML.trim() === "") {
+            element.innerHTML = "";
+            mevcutYazmaDurumu.element = element;
+            mevcutYazmaDurumu.metin = tamMetin;
+            mevcutYazmaDurumu.index = 0;
+            mevcutYazmaDurumu.hedefAsama = hedefAsama;
 
-        function adim() {
-            if (mevcutYazmaDurumu.index < tamMetin.length) {
-                let k = tamMetin[mevcutYazmaDurumu.index];
-                element.innerHTML += (k === "\n") ? "<br>" : k;
-                mevcutYazmaDurumu.index++;
-                let t = setTimeout(adim, 85);
-                aktifTimeouts.push(t);
-            } else {
-                mevcutYazmaDurumu.element = null;
-                akisAsamasi = hedefAsama;
-                islemde = false;
-                if (callback) callback();
+            function adim() {
+                if (mevcutYazmaDurumu.index < tamMetin.length) {
+                    let k = tamMetin[mevcutYazmaDurumu.index];
+                    element.innerHTML += (k === "\n") ? "<br>" : k;
+                    mevcutYazmaDurumu.index++;
+                    let t = setTimeout(adim, 85);
+                    aktifTimeouts.push(t);
+                } else {
+                    mevcutYazmaDurumu.element = null;
+                    akisAsamasi = hedefAsama;
+                    islemde = false;
+                    if (callback) callback();
+                }
             }
+            adim();
+        } else {
+            islemde = false;
+            akisAsamasi = hedefAsama;
+            if (callback) callback();
         }
-        adim();
     }
 
-    // Başlık Hızı: 35ms + 1.8 sn duygu duraklaması
+    // Başlık ve Sol Sayfa Yazısı
     function solSayfayiBaslat() {
         islemde = true;
-        solKanatYazi.innerHTML = "";
-        let baslikSpan = document.createElement("span");
-        baslikSpan.className = "sayfa-baslik";
-        solKanatYazi.appendChild(baslikSpan);
+        if (!solKanatYazi.innerHTML || solKanatYazi.innerHTML.trim() === "") {
+            solKanatYazi.innerHTML = "";
+            let baslikSpan = document.createElement("span");
+            baslikSpan.className = "sayfa-baslik";
+            solKanatYazi.appendChild(baslikSpan);
 
-        let bK = baslikMetni.split("");
-        let bIdx = 0;
-        
-        function baslikYaz() {
-            if (bIdx < bK.length) {
-                let k = bK[bIdx];
-                baslikSpan.innerHTML += (k === "\n") ? "<br>" : k;
-                bIdx++;
-                let t = setTimeout(baslikYaz, 35);
-                aktifTimeouts.push(t);
-            } else {
-                mevcutYazmaDurumu.element = solKanatYazi;
-                mevcutYazmaDurumu.hedefAsama = 3;
-                
-                let beklemeT = setTimeout(() => {
-                    metinYazdirKademeli(solKanatYazi, solSayfaMetni, 3);
-                }, 1800);
-                aktifTimeouts.push(beklemeT);
+            let bK = baslikMetni.split("");
+            let bIdx = 0;
+            
+            function baslikYaz() {
+                if (bIdx < bK.length) {
+                    let k = bK[bIdx];
+                    baslikSpan.innerHTML += (k === "\n") ? "<br>" : k;
+                    bIdx++;
+                    let t = setTimeout(baslikYaz, 35);
+                    aktifTimeouts.push(t);
+                } else {
+                    mevcutYazmaDurumu.element = solKanatYazi;
+                    mevcutYazmaDurumu.hedefAsama = 3;
+                    
+                    let beklemeT = setTimeout(() => {
+                        metinYazdirKademeli(solKanatYazi, solSayfaMetni, 3);
+                    }, 1800);
+                    aktifTimeouts.push(beklemeT);
+                }
             }
+            baslikYaz();
+        } else {
+            islemde = false;
+            akisAsamasi = 3;
         }
-        baslikYaz();
     }
 
     function ileriGit() {
@@ -577,22 +586,20 @@ Baban.`,
         mevcutYazmaDurumu.element = null;
         islemde = false;
 
-        if (akisAsamasi >= 7) {
+        if (akisAsamasi >= 9) {
             yaprakElementleri[1].classList.remove("cevirdi");
             yaprakElementleri[1].style.zIndex = toplamYaprak - 1;
-            let yArka0 = document.getElementById("yazi-arka-0");
-            if(yArka0) yArka0.innerHTML = "";
             akisAsamasi = 7;
         } 
         else if (akisAsamasi >= 5) {
             yaprakElementleri[0].classList.remove("cevirdi");
             yaprakElementleri[0].style.zIndex = toplamYaprak;
-            let yOn0 = document.getElementById("yazi-on-0");
-            if(yOn0) yOn0.innerHTML = "";
             akisAsamasi = 3;
         } 
         else if (akisAsamasi >= 1) {
-            solKanatYazi.innerHTML = "";
+            akisAsamasi = 1;
+        }
+        else if (akisAsamasi === 0 || kapsayici.classList.contains("acildi")) {
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
             akisAsamasi = 0;
@@ -637,7 +644,6 @@ Baban.`,
             kapakAlan.classList.add("dondu");
             
             temizleZamanasimlari();
-            solKanatYazi.innerHTML = "";
             akisAsamasi = 1; 
         } else {
             ileriGit();
@@ -652,7 +658,6 @@ Baban.`,
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
             temizleZamanasimlari();
-            solKanatYazi.innerHTML = "";
             akisAsamasi = 1;
         } else {
             ileriGit();
