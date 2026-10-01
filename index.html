@@ -86,7 +86,7 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1 cm yukarı alındı: top: -0.85cm yapıldı) */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1 cm yukarı alındı) */
 .sol-kanat-yazi {
     position: absolute;
     top: -0.85cm;
@@ -431,11 +431,16 @@ Baban.`;
     const toplamYaprak = 25;
     let yaprakElementleri = [];
     let aktifZamanAsimlari = [];
+    let otomatikGecisTimer = null;
     let mevcutAdimIndex = 0; 
 
     function temizleZamanAsimlari() {
         aktifZamanAsimlari.forEach(id => clearTimeout(id));
         aktifZamanAsimlari = [];
+        if (otomatikGecisTimer) {
+            clearTimeout(otomatikGecisTimer);
+            otomatikGecisTimer = null;
+        }
     }
 
     function sayfaIcerikleriniGoster(adim) {
@@ -448,9 +453,13 @@ Baban.`;
                 const g = document.getElementById("solGovde");
                 if (b) b.classList.add("acildi");
                 
-                // Başlıktan 3 saniye sonra alt yazılar görünmeye başlar
+                // Başlıktan 3 saniye sonra alt yazılar görünmeye başlarken 10 sn saymaya başla -> sonraki sayfaya geç
                 let t2 = setTimeout(() => {
                     if (g) g.classList.add("acildi");
+
+                    otomatikGecisTimer = setTimeout(() => {
+                        sonrakiSayfayaGec();
+                    }, 10000);
                 }, 3000);
                 aktifZamanAsimlari.push(t2);
             }, 3000);
@@ -480,6 +489,11 @@ Baban.`;
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
                         if (arkaFoto) arkaFoto.classList.add("acildi");
+
+                        // Alt yazılar/fotoğraf görünmeye başlarken 10 sn saymaya başla -> sonraki sayfaya geç
+                        otomatikGecisTimer = setTimeout(() => {
+                            sonrakiSayfayaGec();
+                        }, 10000);
                     }, delayYazilar);
                     aktifZamanAsimlari.push(t2);
 
