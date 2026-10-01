@@ -148,7 +148,7 @@ body {
     opacity: 1;
 }
 
-/* SAYFA NUMARASI STİLİ */
+/* SAYFA NUMARASI STİLİ (Artık sayfalatla beraber doğal dönecek) */
 .sayfa-numara {
     position: absolute;
     bottom: 0.8cm;
@@ -162,19 +162,9 @@ body {
     pointer-events: none;
     letter-spacing: 2px;
     z-index: 5;
-    opacity: 1;
-    transition: opacity 0.2s ease-in-out;
 }
 
-/* Sayfa dönerken arkadaki numaranın erken görünmesini engellemek için */
-.sayfa-yaprak:not(.cevirdi) .sayfa-arka .sayfa-numara {
-    opacity: 0;
-}
-.sayfa-yaprak.cevirdi .sayfa-on .sayfa-numara {
-    opacity: 0;
-}
-
-/* Sağdaki 2 rakamı ile tam aynı yatay hizada (sağa sola oynamadan yukarı kaldırıldı) */
+/* Sağdaki 2 rakamı ile tam aynı yatay hizada */
 .sol-kanat-numara {
     bottom: 1.55cm;
     transform: translateX(1cm);
@@ -460,7 +450,7 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    const toplamYaprak = 25; 
+    const toplamYaprak = 25; // 25 yaprak = son sayfa 51 (25 * 2 + 1)
     let yaprakElementleri = [];
     let aktifZamanAsimlari = [];
     let mevcutAdimIndex = 0; 
@@ -536,12 +526,6 @@ Baban.`;
                 if (sagGovde0) sagGovde0.classList.add("acildi");
             }
 
-            let tumuCevrildi = yaprakElementleri.every(y => y.classList.contains("cevirdi"));
-            if (tumuCevrildi || yaprakIndexGercek >= toplamYaprak) {
-                otomatikGeriyeSar();
-                return;
-            }
-
             if (yaprakIndexGercek < toplamYaprak) {
                 let yaprak = yaprakElementleri[yaprakIndexGercek];
                 if (!yaprak.classList.contains("cevirdi")) {
@@ -550,12 +534,22 @@ Baban.`;
 
                     mevcutAdimIndex++;
                     
+                    // Son yaprak çevrildiğinde (yani sol sayfada son sayfa belirdiğinde) tıklama beklemeden otomatik kapanışı tetikle
+                    if (mevcutAdimIndex > toplamYaprak) {
+                        setTimeout(() => {
+                            otomatikGeriyeSar();
+                        }, 1200); // Son sayfanın okunması için küçük bir bekleme payı
+                        return;
+                    }
+
                     setTimeout(() => {
                         sayfaIcerikleriniGoster(mevcutAdimIndex);
                     }, 1000); 
                 } else {
                     otomatikGeriyeSar();
                 }
+            } else {
+                otomatikGeriyeSar();
             }
         }
     }
