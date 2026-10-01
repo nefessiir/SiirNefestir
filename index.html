@@ -86,10 +86,10 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1 cm yukarı alındı: top: -0.85cm yapıldı) */
 .sol-kanat-yazi {
     position: absolute;
-    top: 0.15cm;
+    top: -0.85cm;
     left: calc(0.75cm + 0.3cm + 1cm);
     width: calc(50% - 2.5cm);
     height: calc(100% - 0.7cm);
@@ -431,16 +431,11 @@ Baban.`;
     const toplamYaprak = 25;
     let yaprakElementleri = [];
     let aktifZamanAsimlari = [];
-    let otomatikGecisTimer = null;
     let mevcutAdimIndex = 0; 
 
     function temizleZamanAsimlari() {
         aktifZamanAsimlari.forEach(id => clearTimeout(id));
         aktifZamanAsimlari = [];
-        if (otomatikGecisTimer) {
-            clearTimeout(otomatikGecisTimer);
-            otomatikGecisTimer = null;
-        }
     }
 
     function sayfaIcerikleriniGoster(adim) {
@@ -453,13 +448,9 @@ Baban.`;
                 const g = document.getElementById("solGovde");
                 if (b) b.classList.add("acildi");
                 
-                // Başlıktan 3 saniye sonra alt yazılar görünmeye başlarken saymaya başla (10 sn sonra sonraki sayfaya geç)
+                // Başlıktan 3 saniye sonra alt yazılar görünmeye başlar
                 let t2 = setTimeout(() => {
                     if (g) g.classList.add("acildi");
-
-                    otomatikGecisTimer = setTimeout(() => {
-                        sonrakiSayfayaGec();
-                    }, 10000);
                 }, 3000);
                 aktifZamanAsimlari.push(t2);
             }, 3000);
@@ -489,11 +480,6 @@ Baban.`;
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
                         if (arkaFoto) arkaFoto.classList.add("acildi");
-
-                        // Alt yazılar görünmeye başlarken 10 saniye saymaya başla -> 10. sn'de sonraki sayfaya geç
-                        otomatikGecisTimer = setTimeout(() => {
-                            sonrakiSayfayaGec();
-                        }, 10000);
                     }, delayYazilar);
                     aktifZamanAsimlari.push(t2);
 
@@ -511,7 +497,6 @@ Baban.`;
             kapakAlan.classList.add("dondu");
             mevcutAdimIndex = 1;
             
-            // Kapak açılma animasyonundan (1.2 sn) sonra içerik akışını başlat
             setTimeout(() => {
                 sayfaIcerikleriniGoster(1);
             }, 1200);
@@ -525,7 +510,6 @@ Baban.`;
 
                     mevcutAdimIndex++;
                     
-                    // Yaprak çevrilme animasyonundan (1 sn) sonra yeni sayfanın boş gelme sürecini başlat
                     setTimeout(() => {
                         sayfaIcerikleriniGoster(mevcutAdimIndex);
                     }, 1000); 
@@ -592,7 +576,6 @@ Baban.`;
         let icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni}</span></div>`;
         let icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
 
-        // Örnek: Başlığı olan bir sayfa (5. sayfa)
         if (arkaSayfaNo === 5) {
             icerikArka = `
                 <div class="sayfa-yazi">
@@ -602,7 +585,6 @@ Baban.`;
             `;
         }
 
-        // Örnek: Başlığı olmayan fotoğraf sayfası (4. sayfa)
         if (arkaSayfaNo === 4) {
             icerikArka = `
                 <div class="sayfa-fotograf">
