@@ -108,6 +108,7 @@ body {
     z-index: 4;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .kitap-kapsayici.acildi .sol-kanat-yazi {
@@ -167,6 +168,8 @@ body {
 .sol-kanat-numara {
     bottom: 1.55cm;
     transform: translateX(1cm);
+    cursor: pointer;
+    pointer-events: auto;
 }
 
 .sayfa-on .sayfa-numara, .sayfa-arka .sayfa-numara {
@@ -386,7 +389,7 @@ ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.</span>
         </div>
         <!-- Sol Kanattaki Sayfa 1 -->
-        <div class="sayfa-numara sol-kanat-numara"><span class="tuy">🪶</span> 1 <span class="tuy">🪶</span></div>
+        <div class="sayfa-numara sol-kanat-numara" id="solSayfaNumara"><span class="tuy">🪶</span> 1 <span class="tuy">🪶</span></div>
     </div>
 
     <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
@@ -698,15 +701,30 @@ Baban.`;
         }
     });
 
+    // SOL SAYFAYA (1. sayfaya) TIKLANDIĞINDA KAPATMA KONTROLÜ
+    document.getElementById("solKanatYazi").addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (isTidyingUp) return;
+        if (mevcutAdimIndex === 1) {
+            oncekiSayfayaGec();
+        }
+    });
+
+    document.getElementById("solSayfaNumara").addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (isTidyingUp) return;
+        if (mevcutAdimIndex === 1) {
+            oncekiSayfayaGec();
+        }
+    });
+
     document.getElementById("acikKitapAlan").addEventListener("click", function (e) {
         if (isTidyingUp) return;
         if (mevcutAdimIndex === 1) {
             const rect = this.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
             if (tikX < rect.width / 2) {
-                kapsayici.classList.remove("acildi");
-                kapakAlan.classList.remove("dondu");
-                mevcutAdimIndex = 0;
+                oncekiSayfayaGec();
             } else {
                 sonrakiSayfayaGec();
             }
