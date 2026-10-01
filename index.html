@@ -86,13 +86,13 @@ body {
     display: block;
 }
 
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI (1 satır yukarı çekildi) */
 .sol-kanat-yazi {
     position: absolute;
-    top: 0.5cm;
+    top: 0.15cm;
     left: calc(0.75cm + 0.3cm + 1cm);
     width: calc(50% - 2.5cm);
-    height: calc(100% - 1.0cm);
+    height: calc(100% - 0.7cm);
     font-family: 'Dancing Script', cursive, serif;
     font-size: 11pt;
     line-height: 1.35;
@@ -131,7 +131,7 @@ body {
 }
 
 .sol-baslik.acildi, .sayfa-baslik.acildi {
-    max-height: 200px; /* Başlığın sığabileceği yükseklik */
+    max-height: 200px;
     opacity: 1;
 }
 
@@ -144,7 +144,7 @@ body {
 }
 
 .sol-govde.acildi, .sayfa-govde.acildi {
-    max-height: 800px; /* Metin alanının tamamı */
+    max-height: 800px;
     opacity: 1;
 }
 
@@ -263,13 +263,13 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAYFA İÇİ YAZILAR */
+/* SAĞ SAYFA YAZI ALANI (1 satır aşağı çekildi) */
 .sayfa-yazi {
     position: absolute;
-    top: 0.3cm;
+    top: 0.8cm;
     left: 0.3cm;
     width: calc(100% - 0.6cm);
-    height: calc(100% - 1.1cm);
+    height: calc(100% - 1.4cm);
     font-family: 'Dancing Script', cursive, serif;
     line-height: 1.35;
     color: #1a4b82;
@@ -453,12 +453,12 @@ Baban.`;
             
             let t1 = setTimeout(() => {
                 if (g) g.classList.add("acildi");
-            }, 2000); // Başlıktan 2 saniye sonra alt metin rulo gibi açılır
+            }, 2000);
             aktifZamanAsimlari.push(t1);
 
             otomatikGecisTimer = setTimeout(() => {
                 sonrakiSayfayaGec();
-            }, 12000); // Metin açıldıktan sonra 10 saniye okuma süresi
+            }, 12000);
         } 
         else {
             let yaprakIndex = adim - 2;
@@ -568,9 +568,9 @@ Baban.`;
         let arkaSayfaNo = (i * 2) + 3;
 
         let icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde acildi">${sagSayfaMetni}</span></div>`;
-        let icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">Devam eden metin veya şiirler buraya gelebilir...</span></div>`;
+        let icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
 
-        // Örnek: Belirli sayfalara başlık veya fotoğraf ekleme
+        // İstediğiniz diğer sayfalara buraya başlık veya içerik ekleyebilirsiniz
         if (arkaSayfaNo === 5) {
             icerikArka = `
                 <div class="sayfa-yazi">
