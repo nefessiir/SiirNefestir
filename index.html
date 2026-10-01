@@ -179,7 +179,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* 4. SAYFA İÇİN ÖZEL SİLÜET / FİLİGRAN FOTOĞRAF STİLİ */
+/* 4. SAYFA İÇİN ÖZEL FOTOĞRAF STİLİ (Görünürlük Artırıldı) */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -210,11 +210,11 @@ body {
     object-fit: contain;
     display: block;
     border-radius: 4px;
-    /* Belirgin olmayan, nostaljik silüet filigran etkisi */
-    opacity: 0.30;
-    filter: sepia(0.5) contrast(1.1) brightness(0.95);
-    mix-blend-mode: multiply;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    /* Görünürlük artırıldı ve normal blend moduna alındı */
+    opacity: 0.70;
+    filter: sepia(0.3) contrast(1.2) brightness(1.0);
+    mix-blend-mode: normal;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -627,7 +627,7 @@ Baban.`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
-        // 4. SAYFAYA (arkaSayfaNo === 4 olduğunda, yani i === 1 indeksli 2. yaprağın arkasında) KIZININ FOTOĞRAFINI KOYUYORUZ
+        // 4. SAYFA (2. yaprağın arkası)
         if (arkaSayfaNo === 4) {
             icerikArka = `
                 <div class="sayfa-fotograf">
