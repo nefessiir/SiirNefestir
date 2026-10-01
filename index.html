@@ -431,43 +431,45 @@ Baban.`;
     const toplamYaprak = 25;
     let yaprakElementleri = [];
     let aktifZamanAsimlari = [];
-    let otomatikGecisTimer = null;
     let mevcutAdimIndex = 0; 
 
     function temizleZamanAsimlari() {
         aktifZamanAsimlari.forEach(id => clearTimeout(id));
         aktifZamanAsimlari = [];
-        if (otomatikGecisTimer) {
-            clearTimeout(otomatikGecisTimer);
-            otomatikGecisTimer = null;
-        }
     }
 
+    // Belirli bir sayfa açıldığında içeriklerin sırayla (3sn - 10sn kuralıyla) açılması
     function sayfaIcerikleriniGoster(adim) {
         temizleZamanAsimlari();
 
         if (adim === 1) {
-            // 1. Kitap açıldığında: Önce her iki sayfa boştur.
-            // 3 sn sonra sol başlık görünür.
+            // Kitap açıldığında: Sol tarafta başlık 3 sn sonra görünür
             let t1 = setTimeout(() => {
                 const b = document.getElementById("solBaslik");
                 const g = document.getElementById("solGovde");
                 if (b) b.classList.add("acildi");
                 
-                // Başlıktan 3 sn sonra sol gövde yazısı görünür.
+                // Başlıktan 3 sn sonra gövde yazısı görünür
                 let t2 = setTimeout(() => {
                     if (g) g.classList.add("acildi");
 
-                    // Sol gövde yazısının görünümü bittikten (animasyon tamamlandıktan) 10 sn sonra sağ taraf (2. sayfa) görünür/açılır.
-                    otomatikGecisTimer = setTimeout(() => {
-                        sonrakiSayfayaGec();
-                    }, 12000); // 2 sn animasyon süresi + 10 sn okuma süresi
+                    // Gövde bittikten 10 sn sonra SAĞ TARAFTAKİ (2. sayfa) metin görünür (Kendi kendine sayfa DEĞİŞMEZ, sadece yazı belirir)
+                    let t3 = setTimeout(() => {
+                        let yaprak0 = yaprakElementleri[0];
+                        if (yaprak0) {
+                            let sagGovde = yaprak0.querySelector(".sayfa-govde");
+                            if (sagGovde) sagGovde.classList.add("acildi");
+                        }
+                    }, 12000); // 2 sn animasyon + 10 sn okuma süresi
+                    aktifZamanAsimlari.push(t3);
+
                 }, 3000);
                 aktifZamanAsimlari.push(t2);
             }, 3000);
             aktifZamanAsimlari.push(t1);
         } 
         else {
+            // Diğer sayfalar açıldığında (Tıklandıkça): Önce boş gelir, 3 sn sonra başlık/yazı görünür
             let yaprakIndex = adim - 2;
             if (yaprakIndex >= 0 && yaprakIndex < yaprakElementleri.length) {
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
@@ -475,26 +477,24 @@ Baban.`;
                 let arkaGovde = aktifYaprak.querySelector(".sayfa-govde");
                 let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf");
 
-                // Sayfalar çevrildiğinde önce boş gelir, 3 sn sonra varsa başlık/yazı görünür
                 let t1 = setTimeout(() => {
                     let delayYazilar = 0;
 
                     if (arkaBaslik) {
                         arkaBaslik.classList.add("acildi");
                         delayYazilar = 3000; 
-                    } else {
-                        delayYazilar = 0;
                     }
 
-                    // Yazının görünmesi bittikten 10 sn sonra varsa diğer içerik / otomatik sonraki sayfaya geçiş silsilesi
+                    // Başlıktan veya ilk andan 3 sn sonra ana metin veya fotoğraf görünür
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
                         if (arkaFoto) arkaFoto.classList.add("acildi");
 
-                        // İçerik tamamen göründükten sonra 10 sn bekleyip sonraki sayfaya geçiş tetiklenebilir (İsteğe bağlı akış)
-                        otomatikGecisTimer = setTimeout(() => {
-                            sonrakiSayfayaGec();
+                        // Metin görünmesi bittikten 10 sn sonra varsa diğer içerik görünür
+                        let t3 = setTimeout(() => {
+                            // Buraya sonraki sayfa içi içerik tetiklemeleri eklenebilir
                         }, 12000);
+                        aktifZamanAsimlari.push(t3);
 
                     }, delayYazilar);
                     aktifZamanAsimlari.push(t2);
@@ -526,6 +526,7 @@ Baban.`;
 
                     mevcutAdimIndex++;
                     
+                    // Sayfa çevrildikten sonra yeni sayfanın içeriklerinin açılma silsilesi başlar
                     setTimeout(() => {
                         sayfaIcerikleriniGoster(mevcutAdimIndex);
                     }, 1000); 
@@ -591,7 +592,7 @@ Baban.`;
 
         let icerikOn = "";
         if (i === 0) {
-            // 2. Sayfa (İlk açılan sağ sayfa) metni dolu başlar ancak .acildi sınıfı sonradan zamanla eklenir (önce boş görünür)
+            // 2. Sayfa (İlk açılan sağ sayfa): Başlangıçta boştur, 10 saniye sonra içerik açılır
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni}</span></div>`;
         } else {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
@@ -631,7 +632,7 @@ Baban.`;
             </div>
         `;
 
-        // Tıklama Kontrolü
+        // Yalnızca Tıklama ile Sayfa Çevrilir (Asla kendi kendine dönmez)
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
             const rect = yaprakDiv.getBoundingClientRect();
