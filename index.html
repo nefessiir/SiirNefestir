@@ -531,15 +531,14 @@ Baban.`;
                 sayfaIcerikleriniGoster(1);
             }, 1200);
         } else {
-            let yaprakIndex = mevcudAdimKontrolEtGetir(mevcutAdimIndex);
-            
+            let yaprakIndexGercek = mevcutAdimIndex - 1;
+
             if (mevcutAdimIndex === 1) {
                 let yaprak0 = yaprakElementleri[0];
                 let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
                 if (sagGovde0) sagGovde0.classList.add("acildi");
             }
 
-            let yaprakIndexGercek = mevcutAdimIndex - 1;
             if (yaprakIndexGercek < toplamYaprak) {
                 let yaprak = yaprakElementleri[yaprakIndexGercek];
                 if (!yaprak.classList.contains("cevirdi")) {
@@ -551,17 +550,13 @@ Baban.`;
                     setTimeout(() => {
                         sayfaIcerikleriniGoster(mevcutAdimIndex);
                     }, 1000); 
-                } else if (yaprakIndexGercek === toplamYaprak - 1) {
+                } else {
                     otomatikGeriyeSar();
                 }
             } else {
                 otomatikGeriyeSar();
             }
         }
-    }
-
-    function mevcudAdimKontrolEtGetir(val) {
-        return val - 1;
     }
 
     function oncekiSayfayaGec() {
@@ -691,7 +686,7 @@ Baban.`;
     });
 
     document.getElementById("acikKitapAlan").addEventListener("click", function (e) {
-        if (mevcutAdimIndex === 1) {
+        if (mevcurrentAdimIndex === 1) {
             const rect = this.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
             if (tikX < rect.width / 2) {
