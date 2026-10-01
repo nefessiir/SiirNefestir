@@ -216,7 +216,7 @@ body {
     width: calc(100% - 1cm);
     height: calc(100% - 1.4cm);
     font-family: 'Dancing Script', cursive, serif;
-    line-height: 1.3; /* Sığdırma için biraz geri çekildi */
+    line-height: 1.3;
     color: #1a4b82;
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
@@ -227,7 +227,7 @@ body {
     overflow-wrap: break-word;
     hyphens: none;
     white-space: pre-wrap;
-    font-size: 11.5pt; /* Çok az optimize edildi */
+    font-size: 11pt; /* Metin yoğunlaştığı için hafifçe optimize edildi */
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -414,7 +414,7 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
-    // Sonraki Sayfalar
+    // Sonraki Sayfalar (3. sayfada birleştirildi, 4. sayfa boş bırakıldı)
     const sayfaMetinleri = [
         // Sayfa 2 (1. Yaprak Ön)
         `Bilmeni isterim ki;
@@ -425,21 +425,16 @@ Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..`,
 
-        // Sayfa 3 (1. Yaprak Arka)
-        `Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
-o şiir senden önce yazılmış olsa bile, sana aittir.
-
-Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
-beklediği yaşama sebebisin.
-
-Çünkü sen benim , yazdığım en güzel şiirsin...`,
-
-        // Sayfa 4 (2. Yaprak Ön) - Bahsettiğiniz satırlar buraya rahatça sığıyor
-        `Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
-
+        // Sayfa 3 (1. Yaprak Arka) - 3 ve 4. sayfanın metinleri boşluklar temizlenerek birleştirildi
+        `Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki , o şiir senden önce yazılmış olsa bile, sana aittir.
+Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun , beklediği yaşama sebebisin.
+Çünkü sen benim , yazdığım en güzel şiirsin...
+Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
 Hasretle gamzelerinden ve o küçük çenenden öperim.
+Baban.`,
 
-Baban.`
+        // Sayfa 4 (2. Yaprak Ön) - Boş bırakıldı
+        ``
     ];
 
     const toplamYaprak = 2; 
