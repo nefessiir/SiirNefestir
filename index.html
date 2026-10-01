@@ -115,7 +115,7 @@ body {
     transition: opacity 0.3s ease-in-out 1.1s;
 }
 
-/* YAZILARIN YAVAŞÇA BELİRME (FADE-IN) ANİMASYONLARI */
+/* YUKARIDAN AŞAĞIYA RULO / HALI GİBİ AÇILMA ANİMASYONU */
 .sol-baslik, .sayfa-baslik {
     text-align: center;
     display: block;
@@ -124,20 +124,27 @@ body {
     font-size: 1.25em;
     margin-top: 1.2em; 
     margin-bottom: 0.4em;
+    max-height: 0;
     opacity: 0;
-    transition: opacity 1.2s ease-in-out;
+    overflow: hidden;
+    transition: max-height 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease-in-out;
 }
 
-.sol-baslik.goster, .sayfa-baslik.goster {
+.sol-baslik.acildi, .sayfa-baslik.acildi {
+    max-height: 200px; /* Başlığın sığabileceği yükseklik */
     opacity: 1;
 }
 
 .sol-govde, .sayfa-govde {
+    display: block;
+    max-height: 0;
     opacity: 0;
-    transition: opacity 1.2s ease-in-out;
+    overflow: hidden;
+    transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
 }
 
-.sol-govde.goster, .sayfa-govde.goster {
+.sol-govde.acildi, .sayfa-govde.acildi {
+    max-height: 800px; /* Metin alanının tamamı */
     opacity: 1;
 }
 
@@ -170,6 +177,15 @@ body {
     box-sizing: border-box;
     pointer-events: none;
     backface-visibility: hidden;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 1.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
+}
+
+.sayfa-fotograf.acildi {
+    max-height: 800px;
+    opacity: 1;
 }
 
 .sayfa-fotograf img {
@@ -416,7 +432,7 @@ Baban.`;
     let yaprakElementleri = [];
     let aktifZamanAsimlari = [];
     let otomatikGecisTimer = null;
-    let mevcutAdimIndex = 0; // 0: Kapak kapalı, 1: Sayfa 1-2 açık, 2: Sayfa 3-4 açık vb.
+    let mevcutAdimIndex = 0; 
 
     function temizleZamanAsimlari() {
         aktifZamanAsimlari.forEach(id => clearTimeout(id));
@@ -431,34 +447,37 @@ Baban.`;
         temizleZamanAsimlari();
 
         if (adim === 1) {
-            // 1. Sayfa (Sol kanat) görünümü
             const b = document.getElementById("solBaslik");
             const g = document.getElementById("solGovde");
-            if (b) b.classList.add("goster");
+            if (b) b.classList.add("acildi");
             
             let t1 = setTimeout(() => {
-                if (g) g.classList.add("goster");
-            }, 2000);
+                if (g) g.classList.add("acildi");
+            }, 2000); // Başlıktan 2 saniye sonra alt metin rulo gibi açılır
             aktifZamanAsimlari.push(t1);
 
-            // 10 saniye sonra otomatik sonraki sayfaya geçiş
             otomatikGecisTimer = setTimeout(() => {
                 sonrakiSayfayaGec();
-            }, 12000); // Başlık görünümü (2sn) + 10sn bekleme
+            }, 12000); // Metin açıldıktan sonra 10 saniye okuma süresi
         } 
         else {
-            // Yapraklara ait sayfalar (Örn: adim 2 -> sayfa 2 ve 3, adim 3 -> sayfa 4 ve 5 vb.)
             let yaprakIndex = adim - 2;
             if (yaprakIndex >= 0 && yaprakIndex < yaprakElementleri.length) {
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
                 let arkaBaslik = aktifYaprak.querySelector(".sayfa-baslik");
                 let arkaGovde = aktifYaprak.querySelector(".sayfa-govde");
+                let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf");
 
-                if (arkaBaslik) arkaBaslik.classList.add("goster");
+                let delay = 0;
 
-                let delay = arkaBaslik ? 2000 : 0;
+                if (arkaBaslik) {
+                    arkaBaslik.classList.add("acildi");
+                    delay = 2000;
+                }
+
                 let t2 = setTimeout(() => {
-                    if (arkaGovde) arkaGovde.classList.add("goster");
+                    if (arkaGovde) arkaGovde.classList.add("acildi");
+                    if (arkaFoto) arkaFoto.classList.add("acildi");
                 }, delay);
                 aktifZamanAsimlari.push(t2);
 
@@ -474,7 +493,6 @@ Baban.`;
         temizleZamanAsimlari();
 
         if (mevcutAdimIndex === 0) {
-            // Kapaktan 1. sayfaya geçiş
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
             mevcutAdimIndex = 1;
@@ -490,9 +508,8 @@ Baban.`;
                     mevcutAdimIndex++;
                     setTimeout(() => {
                         sayfaIcerikleriniGoster(mevcutAdimIndex);
-                    }, 1000); // Sayfa çevrilme animasyonu süresi
+                    }, 1000); 
                 } else if (yaprakIndex === toplamYaprak - 1) {
-                    // Son sayfada otomatik geriye sarma / kapanma
                     otomatikGeriyeSar();
                 }
             } else {
@@ -514,7 +531,6 @@ Baban.`;
 
             sayfaIcerikleriniGoster(mevcutAdimIndex);
         } else if (mevcutAdimIndex === 1) {
-            // Kapalı duruma dön
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
             mevcutAdimIndex = 0;
@@ -551,15 +567,15 @@ Baban.`;
         let onSayfaNo = (i * 2) + 2;
         let arkaSayfaNo = (i * 2) + 3;
 
-        let icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni}</span></div>`;
+        let icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde acildi">${sagSayfaMetni}</span></div>`;
         let icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">Devam eden metin veya şiirler buraya gelebilir...</span></div>`;
 
-        // İstediğiniz herhangi bir sayfaya başlık eklemek isterseniz buraya ekleyebilir veya koşul verebilirsiniz
+        // Örnek: Belirli sayfalara başlık veya fotoğraf ekleme
         if (arkaSayfaNo === 5) {
             icerikArka = `
                 <div class="sayfa-yazi">
                     <span class="sayfa-baslik">Özel Başlık</span>
-                    <span class="sayfa-govde">Bu başlığın altındaki ana metin 2 saniye sonra belirecektir...</span>
+                    <span class="sayfa-govde">Bu başlığın altındaki ana metin rulo gibi aşağıya doğru açılacaktır...</span>
                 </div>
             `;
         }
@@ -587,7 +603,6 @@ Baban.`;
             </div>
         `;
 
-        // Tıklama ile manuel sayfa çevirme
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
             if (!yaprakDiv.classList.contains("cevirdi")) {
@@ -608,14 +623,12 @@ Baban.`;
         yaprakElementleri.push(yaprakDiv);
     }
 
-    // Kapak tıklaması ile kitabı açma
     kapakAlan.addEventListener("click", function () {
         if (mevcutAdimIndex === 0) {
             sonrakiSayfayaGec();
         }
     });
 
-    // Açık kitap gövdesine tıklayınca da sonraki sayfaya geçiş
     document.getElementById("acikKitapAlan").addEventListener("click", function () {
         if (mevcutAdimIndex === 1) {
             sonrakiSayfayaGec();
