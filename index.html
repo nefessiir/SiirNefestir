@@ -473,14 +473,14 @@ Baban.`;
             }, 1000);
             aktifZamanAsimlari.push(t1);
 
-            // 2. sayfanın (yaprak 0 ön yüzü) metninin otomatik açılmasını sağla
+            // 1. sayfa (sol taraf) tamamen belirdikten 10 saniye sonra 2. sayfanın görünmesi (10000ms = 10 saniye)
             let yaprak0 = yaprakElementleri[0];
             if (yaprak0) {
                 let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
                 if (sagGovde0) {
                     let t3 = setTimeout(() => {
                         sagGovde0.classList.add("acildi");
-                    }, 1200);
+                    }, 10000); 
                     aktifZamanAsimlari.push(t3);
                 }
             }
@@ -577,7 +577,6 @@ Baban.`;
                 sayfaIcerikleriniGoster(mevcutAdimIndex);
             }, 1000);
         } else if (mevcutAdimIndex === 1) {
-            // 1. adımdan da geriye (veya sol tarafa tıklayarak) ilk kapalı konuma dön
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
             mevcutAdimIndex = 0;
@@ -705,7 +704,6 @@ Baban.`;
             const rect = this.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
             if (tikX < rect.width / 2) {
-                // Sol kanada (1. sayfaya) tıklandığında kapak kapansın
                 kapsayici.classList.remove("acildi");
                 kapakAlan.classList.remove("dondu");
                 mevcutAdimIndex = 0;
