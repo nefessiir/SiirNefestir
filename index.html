@@ -182,7 +182,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* FOTOĞRAF ALANI VE GÜN BATIMI EFEKTİ */
+/* FOTOĞRAF ALANI VE GÜN BATIMI EFEKTİ (DÜZELTİLDİ) */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -194,17 +194,8 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    pointer-events: none;
     backface-visibility: hidden;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 1.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
-}
-
-.sayfa-fotograf.acildi {
-    max-height: 800px;
-    opacity: 1;
+    z-index: 10;
 }
 
 .sayfa-fotograf img {
@@ -222,8 +213,7 @@ body {
             hue-rotate(-30deg)
             saturate(1.5);
             
-    mix-blend-mode: multiply; 
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -434,7 +424,6 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // 2. sayfada kalacak ilk kısım
     const sagSayfaMetni1 = 
 `Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
@@ -447,7 +436,6 @@ Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
-    // 3. sayfaya (arkaya) taşınan kısım
     const sagSayfaMetni2 = 
 `Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
@@ -503,7 +491,6 @@ Baban.`;
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
                 let arkaBaslik = aktifYaprak.querySelector(".sayfa-baslik");
                 let arkaGovde = aktifYaprak.querySelector(".sayfa-arka .sayfa-govde");
-                let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf");
 
                 let t1 = setTimeout(() => {
                     let delayYazilar = 0;
@@ -515,7 +502,6 @@ Baban.`;
 
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
-                        if (arkaFoto) arkaFoto.classList.add("acildi");
                     }, delayYazilar);
                     aktifZamanAsimlari.push(t2);
 
@@ -638,15 +624,7 @@ Baban.`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
-        if (arkaSayfaNo === 5) {
-            icerikArka = `
-                <div class="sayfa-yazi">
-                    <span class="sayfa-baslik">Özel Başlık</span>
-                    <span class="sayfa-govde">Bu başlığın altındaki ana metin rulo gibi aşağıya doğru açılacaktır...</span>
-                </div>
-            `;
-        }
-
+        // 4. sayfaya (yani i = 1 iken arka sayfaya) fotoğrafı doğrudan koyuyoruz
         if (arkaSayfaNo === 4) {
             icerikArka = `
                 <div class="sayfa-fotograf">
@@ -727,7 +705,7 @@ Baban.`;
     });
 
     document.getElementById("acikKitapAlan").addEventListener("click", function (e) {
-        if (isTidyingUp) return;
+        if (isTidyingUp, isTidyingUp) return;
         if (mevcutAdimIndex === 1) {
             const rect = this.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
