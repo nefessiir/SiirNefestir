@@ -108,7 +108,6 @@ body {
     z-index: 4;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
-    cursor: pointer;
 }
 
 .kitap-kapsayici.acildi .sol-kanat-yazi {
@@ -168,8 +167,6 @@ body {
 .sol-kanat-numara {
     bottom: 1.55cm;
     transform: translateX(1cm);
-    cursor: pointer;
-    pointer-events: auto;
 }
 
 .sayfa-on .sayfa-numara, .sayfa-arka .sayfa-numara {
@@ -182,7 +179,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* FOTOĞRAF ALANI */
+/* FOTOĞRAF / SİLÜET ALANI (4. SAYFA İÇİN ÖZEL DÜZENLENMİŞTİR) */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -213,7 +210,11 @@ body {
     object-fit: contain;
     display: block;
     border-radius: 4px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    /* Hafif şeffaflık, nostaljik sepia/eskitiş ve yumuşak silüet havası */
+    opacity: 0.35;
+    filter: sepia(0.4) contrast(1.1) brightness(0.95);
+    mix-blend-mode: multiply;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -389,7 +390,7 @@ ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.</span>
         </div>
         <!-- Sol Kanattaki Sayfa 1 -->
-        <div class="sayfa-numara sol-kanat-numara" id="solSayfaNumara"><span class="tuy">🪶</span> 1 <span class="tuy">🪶</span></div>
+        <div class="sayfa-numara sol-kanat-numara"><span class="tuy">🪶</span> 1 <span class="tuy">🪶</span></div>
     </div>
 
     <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
@@ -476,7 +477,6 @@ Baban.`;
             }, 1000);
             aktifZamanAsimlari.push(t1);
 
-            // 1. sayfa (sol taraf) tamamen belirdikten 10 saniye sonra 2. sayfanın görünmesi (10000ms = 10 saniye)
             let yaprak0 = yaprakElementleri[0];
             if (yaprak0) {
                 let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
@@ -638,10 +638,11 @@ Baban.`;
             `;
         }
 
+        // 4. SAYFAYA (arkaSayfaNo === 4 olan yere) KIZININ FOTOĞRAFINI SİLÜET/FİLİGRAN ŞEKLİNDE EKLİYORUZ
         if (arkaSayfaNo === 4) {
             icerikArka = `
                 <div class="sayfa-fotograf">
-                    <img src="kizim.jpg" alt="Şiir">
+                    <img src="kizim.jpg" alt="Nefes Şiir">
                 </div>
             `;
         }
@@ -701,30 +702,15 @@ Baban.`;
         }
     });
 
-    // SOL SAYFAYA (1. sayfaya) TIKLANDIĞINDA KAPATMA KONTROLÜ
-    document.getElementById("solKanatYazi").addEventListener("click", function (e) {
-        e.stopPropagation();
-        if (isTidyingUp) return;
-        if (mevcutAdimIndex === 1) {
-            oncekiSayfayaGec();
-        }
-    });
-
-    document.getElementById("solSayfaNumara").addEventListener("click", function (e) {
-        e.stopPropagation();
-        if (isTidyingUp) return;
-        if (mevcutAdimIndex === 1) {
-            oncekiSayfayaGec();
-        }
-    });
-
     document.getElementById("acikKitapAlan").addEventListener("click", function (e) {
         if (isTidyingUp) return;
         if (mevcutAdimIndex === 1) {
             const rect = this.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
             if (tikX < rect.width / 2) {
-                oncekiSayfayaGec();
+                kapsayici.classList.remove("acildi");
+                kapakAlan.classList.remove("dondu");
+                mevcutAdimIndex = 0;
             } else {
                 sonrakiSayfayaGec();
             }
