@@ -406,7 +406,8 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    const sagSayfaMetni = 
+    // 2. sayfada kalacak ilk kısım
+    const sagSayfaMetni1 = 
 `Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
 içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
@@ -416,9 +417,11 @@ Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
-o şiir senden önce yazılmış olsa bile, sana aittir.
+o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
-Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+    // 3. sayfaya (arkaya) taşınan kısım
+    const sagSayfaMetni2 = 
+`Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
 Çünkü sen benim , yazdığım en güzel şiirsin…
 
@@ -438,29 +441,25 @@ Baban.`;
         aktifZamanAsimlari = [];
     }
 
-    // Belirli bir sayfa açıldığında içeriklerin sırayla (3sn - 10sn kuralıyla) açılması
     function sayfaIcerikleriniGoster(adim) {
         temizleZamanAsimlari();
 
         if (adim === 1) {
-            // Kitap açıldığında: Sol tarafta başlık 3 sn sonra görünür
             let t1 = setTimeout(() => {
                 const b = document.getElementById("solBaslik");
                 const g = document.getElementById("solGovde");
                 if (b) b.classList.add("acildi");
                 
-                // Başlıktan 3 sn sonra gövde yazısı görünür
                 let t2 = setTimeout(() => {
                     if (g) g.classList.add("acildi");
 
-                    // Gövde bittikten 10 sn sonra SAĞ TARAFTAKİ (2. sayfa) metin görünür (Kendi kendine sayfa DEĞİŞMEZ, sadece yazı belirir)
                     let t3 = setTimeout(() => {
                         let yaprak0 = yaprakElementleri[0];
                         if (yaprak0) {
                             let sagGovde = yaprak0.querySelector(".sayfa-govde");
                             if (sagGovde) sagGovde.classList.add("acildi");
                         }
-                    }, 12000); // 2 sn animasyon + 10 sn okuma süresi
+                    }, 12000);
                     aktifZamanAsimlari.push(t3);
 
                 }, 3000);
@@ -469,7 +468,6 @@ Baban.`;
             aktifZamanAsimlari.push(t1);
         } 
         else {
-            // Diğer sayfalar açıldığında (Tıklandıkça): Önce boş gelir, 3 sn sonra başlık/yazı görünür
             let yaprakIndex = adim - 2;
             if (yaprakIndex >= 0 && yaprakIndex < yaprakElementleri.length) {
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
@@ -485,14 +483,11 @@ Baban.`;
                         delayYazilar = 3000; 
                     }
 
-                    // Başlıktan veya ilk andan 3 sn sonra ana metin veya fotoğraf görünür
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
                         if (arkaFoto) arkaFoto.classList.add("acildi");
 
-                        // Metin görünmesi bittikten 10 sn sonra varsa diğer içerik görünür
                         let t3 = setTimeout(() => {
-                            // Buraya sonraki sayfa içi içerik tetiklemeleri eklenebilir
                         }, 12000);
                         aktifZamanAsimlari.push(t3);
 
@@ -526,7 +521,6 @@ Baban.`;
 
                     mevcutAdimIndex++;
                     
-                    // Sayfa çevrildikten sonra yeni sayfanın içeriklerinin açılma silsilesi başlar
                     setTimeout(() => {
                         sayfaIcerikleriniGoster(mevcutAdimIndex);
                     }, 1000); 
@@ -592,13 +586,18 @@ Baban.`;
 
         let icerikOn = "";
         if (i === 0) {
-            // 2. Sayfa (İlk açılan sağ sayfa): Başlangıçta boştur, 10 saniye sonra içerik açılır
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni}</span></div>`;
+            // 2. Sayfa (İlk açılan sağ sayfa): Metnin ilk bölümü
+            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
         } else {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
         let icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+
+        // 3. Sayfa (1. yaprağın arka yüzü): Metnin devamı ("Çünkü sen benim..." ile başlayan kısım ve baban.)
+        if (i === 0) {
+            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
+        }
 
         if (arkaSayfaNo === 5) {
             icerikArka = `
@@ -632,7 +631,6 @@ Baban.`;
             </div>
         `;
 
-        // Yalnızca Tıklama ile Sayfa Çevrilir (Asla kendi kendine dönmez)
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
             const rect = yaprakDiv.getBoundingClientRect();
