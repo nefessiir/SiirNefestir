@@ -29,7 +29,7 @@ body {
     perspective: 1500px;
 }
 
-/* KİTAP KAPSAYICISI */
+/* KİTAP Kapsayıcı */
 .kitap-kapsayici {
     position: relative;
     width: 20%;
@@ -179,7 +179,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* FOTOĞRAF / SİLÜET ALANI (4. SAYFA İÇİN ÖZEL DÜZENLENMİŞTİR) */
+/* 4. SAYFA İÇİN ÖZEL SİLÜET / FİLİGRAN FOTOĞRAF STİLİ */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -210,11 +210,11 @@ body {
     object-fit: contain;
     display: block;
     border-radius: 4px;
-    /* Hafif şeffaflık, nostaljik sepia/eskitiş ve yumuşak silüet havası */
-    opacity: 0.35;
-    filter: sepia(0.4) contrast(1.1) brightness(0.95);
+    /* Belirgin olmayan, nostaljik silüet filigran etkisi */
+    opacity: 0.30;
+    filter: sepia(0.5) contrast(1.1) brightness(0.95);
     mix-blend-mode: multiply;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -425,7 +425,6 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // 2. sayfada kalacak ilk kısım
     const sagSayfaMetni1 = 
 `Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
@@ -438,7 +437,6 @@ Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
-    // 3. sayfaya (arkaya) taşınan kısım
     const sagSayfaMetni2 = 
 `Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
@@ -629,20 +627,11 @@ Baban.`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
-        if (arkaSayfaNo === 5) {
-            icerikArka = `
-                <div class="sayfa-yazi">
-                    <span class="sayfa-baslik">Özel Başlık</span>
-                    <span class="sayfa-govde">Bu başlığın altındaki ana metin rulo gibi aşağıya doğru açılacaktır...</span>
-                </div>
-            `;
-        }
-
-        // 4. SAYFAYA (arkaSayfaNo === 4 olan yere) KIZININ FOTOĞRAFINI SİLÜET/FİLİGRAN ŞEKLİNDE EKLİYORUZ
+        // 4. SAYFAYA (arkaSayfaNo === 4 olduğunda, yani i === 1 indeksli 2. yaprağın arkasında) KIZININ FOTOĞRAFINI KOYUYORUZ
         if (arkaSayfaNo === 4) {
             icerikArka = `
                 <div class="sayfa-fotograf">
-                    <img src="kizim.jpg" alt="Nefes Şiir">
+                    <img src="kızım.jpg" alt="Nefes Şiir">
                 </div>
             `;
         }
