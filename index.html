@@ -40,7 +40,7 @@ body {
     z-index: 2;
 }
 
-/* 1. SAĞda SABİT DURAN ALT KAPAK */
+/* 1. SAĞDA SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -164,7 +164,7 @@ body {
     z-index: 5;
 }
 
-/* Sol kanattaki 1 numarasını toplamda 0,5 cm sağda, 0,5 cm yukarıda tutan ayar */
+/* Sol kanattaki 1 numarasının 0,5 cm sola ve 0,5 cm aşağıya kaydırılmış konumu */
 .sol-kanat-numara {
     bottom: calc(0.8cm + 0.5cm);
     transform: translateX(1cm);
@@ -389,7 +389,7 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.</span>
         </div>
-        <!-- Sol Kanattaki Sayfa 1 (Güncellenen konum) -->
+        <!-- Sol Kanattaki Sayfa 1 -->
         <div class="sayfa-numara sol-kanat-numara"><span class="tuy">🪶</span> 1 <span class="tuy">🪶</span></div>
     </div>
 
@@ -450,7 +450,7 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    const toplamYaprak = 25;
+    const toplamYaprak = 25; // Yaprak sayısını buradan dilediğin gibi (örneğin 50 veya 100) artırabilirsin
     let yaprakElementleri = [];
     let aktifZamanAsimlari = [];
     let mevcutAdimIndex = 0; 
@@ -539,6 +539,7 @@ Baban.`;
                 if (sagGovde0) sagGovde0.classList.add("acildi");
             }
 
+            // Eğer henüz son yaprağa gelinmediyse ileri çevir
             if (yaprakIndexGercek < toplamYaprak) {
                 let yaprak = yaprakElementleri[yaprakIndexGercek];
                 if (!yaprak.classList.contains("cevirdi")) {
@@ -554,6 +555,7 @@ Baban.`;
                     otomatikGeriyeSar();
                 }
             } else {
+                // Zaten en son sayfadaysak, tıklandığında otomatik geri sar
                 otomatikGeriyeSar();
             }
         }
@@ -656,6 +658,13 @@ Baban.`;
             e.stopPropagation();
             const rect = yaprakDiv.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
+
+            // Eğer en son yapraktaysak ve sağ tarafa tıklandıysa (veya son yaprak zaten çevrilmişse) kontrol et
+            let aktifSonYaprak = yaprakElementleri[yaprakElementleri.length - 1];
+            if (yaprakDiv === aktifSonYaprak && tikX >= rect.width / 2 && aktifSonYaprak.classList.contains("cevirdi")) {
+                otomatikGeriyeSar();
+                return;
+            }
 
             if (tikX < rect.width / 2) {
                 oncekiSayfayaGec();
