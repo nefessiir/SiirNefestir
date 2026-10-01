@@ -263,7 +263,7 @@ body {
     transform: rotateY(180deg);
 }
 
-/* SAĞ SAYFA YAZI ALANI */
+/* SAĞ VE SOL SAYFA YAZI ALANLARI */
 .sayfa-yazi {
     position: absolute;
     top: 0.8cm;
@@ -456,7 +456,7 @@ Baban.`;
                     let t3 = setTimeout(() => {
                         let yaprak0 = yaprakElementleri[0];
                         if (yaprak0) {
-                            let sagGovde = yaprak0.querySelector(".sayfa-govde");
+                            let sagGovde = yaprak0.querySelector(".sayfa-on .sayfa-govde");
                             if (sagGovde) sagGovde.classList.add("acildi");
                         }
                     }, 12000);
@@ -472,7 +472,7 @@ Baban.`;
             if (yaprakIndex >= 0 && yaprakIndex < yaprakElementleri.length) {
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
                 let arkaBaslik = aktifYaprak.querySelector(".sayfa-baslik");
-                let arkaGovde = aktifYaprak.querySelector(".sayfa-govde");
+                let arkaGovde = aktifYaprak.querySelector(".sayfa-arka .sayfa-govde");
                 let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf");
 
                 let t1 = setTimeout(() => {
@@ -512,11 +512,20 @@ Baban.`;
                 sayfaIcerikleriniGoster(1);
             }, 1200);
         } else {
-            let yaprakIndex = mevcutAdimIndex - 1;
-            if (yaprakIndex < toplamYaprak) {
-                let yaprak = yaprakElementleri[yaprakIndex];
+            let yaprakIndex = mevcudAdimKontrolEtGetir(mevcutAdimIndex);
+            
+            // Eğer doğrudan sayfa çevriliyorsa 2. sayfaya (1. yaprağın önüne) özel anlık görünürlük tetiklemesi
+            if (mevcutAdimIndex === 1) {
+                let yaprak0 = yaprakElementleri[0];
+                let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
+                if (sagGovde0) sagGovde0.classList.add("acildi");
+            }
+
+            let yaprakIndexGercek = mevcutAdimIndex - 1;
+            if (yaprakIndexGercek < toplamYaprak) {
+                let yaprak = yaprakElementleri[yaprakIndexGercek];
                 if (!yaprak.classList.contains("cevirdi")) {
-                    yaprak.style.zIndex = 50 + yaprakIndex;
+                    yaprak.style.zIndex = 50 + yaprakIndexGercek;
                     yaprak.classList.add("cevirdi");
 
                     mevcutAdimIndex++;
@@ -524,13 +533,17 @@ Baban.`;
                     setTimeout(() => {
                         sayfaIcerikleriniGoster(mevcutAdimIndex);
                     }, 1000); 
-                } else if (yaprakIndex === toplamYaprak - 1) {
+                } else if (yaprakIndexGercek === toplamYaprak - 1) {
                     otomatikGeriyeSar();
                 }
             } else {
                 otomatikGeriyeSar();
             }
         }
+    }
+
+    function mevcudAdimKontrolEtGetir(val) {
+        return val - 1;
     }
 
     function oncekiSayfayaGec() {
@@ -585,18 +598,15 @@ Baban.`;
         let arkaSayfaNo = (i * 2) + 3;
 
         let icerikOn = "";
+        let icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+
         if (i === 0) {
             // 2. Sayfa (İlk açılan sağ sayfa): Metnin ilk bölümü
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
+            // 3. Sayfa (1. yaprağın arka yüzü): Metnin devamı
+            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
         } else {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
-        }
-
-        let icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
-
-        // 3. Sayfa (1. yaprağın arka yüzü): Metnin devamı ("Çünkü sen benim..." ile başlayan kısım ve baban.)
-        if (i === 0) {
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
         }
 
         if (arkaSayfaNo === 5) {
