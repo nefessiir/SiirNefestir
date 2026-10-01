@@ -432,7 +432,7 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 Baban.`
     ];
 
-    const toplamYaprak = 1; // 3 sayfalık yapı için tek yaprak yeterli (Sol sabit: 1, Ön: 2, Arka: 3)
+    const toplamYaprak = 1;
     let yaprakElementleri = [];
     let aktifTimeouts = [];
     
@@ -465,11 +465,10 @@ Baban.`
         return true;
     }
 
-    // Yazı Hızı: 85ms
+    // Genel Kademeli Metin Yazdırma Fonksiyonu
     function metinYazdirKademeli(element, tamMetin, hedefAsama, callback) {
         islemde = true;
-        if (!element.innerHTML || element.innerHTML.trim() === "") {
-            element.innerHTML = "";
+        if (!element.dataset.yazildi) {
             mevcutYazmaDurumu.element = element;
             mevcutYazmaDurumu.metin = tamMetin;
             mevcutYazmaDurumu.index = 0;
@@ -483,6 +482,7 @@ Baban.`
                     let t = setTimeout(adim, 85);
                     aktifTimeouts.push(t);
                 } else {
+                    element.dataset.yazildi = "true";
                     mevcutYazmaDurumu.element = null;
                     akisAsamasi = hedefAsama;
                     islemde = false;
@@ -497,10 +497,10 @@ Baban.`
         }
     }
 
-    // Başlık ve Sol Sayfa Yazısı
+    // Sol Sayfa Başlık + Metin Sıralı Yazdırma
     function solSayfayiBaslat() {
         islemde = true;
-        if (!solKanatYazi.innerHTML || solKanatYazi.innerHTML.trim() === "") {
+        if (!solKanatYazi.dataset.baslangicTamam) {
             solKanatYazi.innerHTML = "";
             let baslikSpan = document.createElement("span");
             baslikSpan.className = "sayfa-baslik";
@@ -517,12 +517,29 @@ Baban.`
                     let t = setTimeout(baslikYaz, 35);
                     aktifTimeouts.push(t);
                 } else {
+                    solKanatYazi.dataset.baslangicTamam = "true";
                     mevcutYazmaDurumu.element = solKanatYazi;
+                    mevcutYazmaDurumu.metin = solSayfaMetni;
+                    mevcutYazmaDurumu.index = 0;
                     mevcutYazmaDurumu.hedefAsama = 3;
                     
                     let beklemeT = setTimeout(() => {
-                        metinYazdirKademeli(solKanatYazi, solSayfaMetni, 3);
-                    }, 1800);
+                        function solMetinAdim() {
+                            if (mevcutYazmaDurumu.index < solSayfaMetni.length) {
+                                let k = solSayfaMetni[mevcutYazmaDurumu.index];
+                                solKanatYazi.innerHTML += (k === "\n") ? "<br>" : k;
+                                mevudIndexArtir: mevcutYazmaDurumu.index++;
+                                let t = setTimeout(solMetinAdim, 85);
+                                aktifTimeouts.push(t);
+                            } else {
+                                solKanatYazi.dataset.yazildi = "true";
+                                mevcutYazmaDurumu.element = null;
+                                akisAsamasi = 3;
+                                islemde = false;
+                            }
+                        }
+                        solMetinAdim();
+                    }, 800);
                     aktifTimeouts.push(beklemeT);
                 }
             }
@@ -568,6 +585,20 @@ Baban.`
                 metinYazdirKademeli(yArka0, sayfaMetinleri[1], 9);
             }
         }
+        else if (akisAsamasi >= 9) {
+            // Son sayfada ileriye tıklandığında otomatik geri kapanma animasyonu
+            islemde = true;
+            akisAsamasi = 10;
+            yaprakElementleri[0].classList.remove("cevirdi");
+            yaprakElementleri[0].style.zIndex = toplamYaprak;
+            
+            setTimeout(() => {
+                kapsayici.classList.remove("acildi");
+                kapakAlan.classList.remove("dondu");
+                akisAsamasi = 0;
+                islemde = false;
+            }, 1000);
+        }
     }
 
     function geriGit() {
@@ -590,7 +621,7 @@ Baban.`
         }
     }
 
-    // Yaprakları Oluştur (3 Sayfalık Kitap: Sol=1, Ön=2, Arka=3)
+    // Yaprakları Oluştur
     for (let i = 0; i < toplamYaprak; i++) {
         const yaprakDiv = document.createElement("div");
         yaprakDiv.className = "sayfa-yaprak";
