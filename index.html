@@ -179,7 +179,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* 4. SAYFA İÇİN DOĞRUDAN ARKA PLAN FOTOĞRAF ALANI */
+/* 4. SAYFA ÖN YÜZÜ İÇİN DOĞRUDAN ARKA PLAN FOTOĞRAF ALANI */
 .sayfa-fotograf-arka {
     position: absolute;
     top: 0;
@@ -196,7 +196,7 @@ body {
 }
 
 .sayfa-fotograf-arka.acildi {
-    opacity: 0.75; /* Net ama kağıtla bütünleşik */
+    opacity: 0.75;
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -474,7 +474,8 @@ Baban.`;
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
                 let arkaBaslik = aktifYaprak.querySelector(".sayfa-baslik");
                 let arkaGovde = aktifYaprak.querySelector(".sayfa-arka .sayfa-govde");
-                let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf-arka");
+                // 4. sayfa için ön yüzdeki fotoğraf animasyon sınıfı
+                let onFoto = aktifYaprak.querySelector(".sayfa-fotograf-arka");
 
                 let t1 = setTimeout(() => {
                     let delayYazilar = 0;
@@ -486,7 +487,7 @@ Baban.`;
 
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
-                        if (arkaFoto) arkaFoto.classList.add("acildi");
+                        if (onFoto) onFoto.classList.add("acildi");
                     }, delayYazilar);
                     aktifZamanAsimlari.push(t2);
 
@@ -609,9 +610,9 @@ Baban.`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
-        // 4. SAYFA (2. yaprağın arkası) - Arka plan resmi olarak ekledik
-        if (arkaSayfaNo === 4) {
-            icerikArka = `<div class="sayfa-fotograf-arka"></div>`;
+        // 4. SAYFA ÖN YÜZÜ (2. yaprağın ön yüzü, yani i === 1)
+        if (onSayfaNo === 4) {
+            icerikOn = `<div class="sayfa-fotograf-arka"></div>`;
         }
 
         yaprakDiv.innerHTML = `
