@@ -182,7 +182,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* İLK RESİM İÇİN DOĞRUDAN KONUMLANDIRMA */
+/* 4. SAYFA İÇİN FOTOĞRAF ALANI (2. YAPRAĞIN ÖN YÜZÜ) */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -624,9 +624,9 @@ Baban.`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
-        // 4. sayfaya (i = 1 iken arka sayfa) o ilk resmi doğrudan gömüyoruz
-        if (arkaSayfaNo === 4) {
-            icerikArka = `
+        // 4. sayfaya denk gelen yer: i = 1 (2. yaprak) ve ön yüzü (onSayfaNo === 4)
+        if (onSayfaNo === 4) {
+            icerikOn = `
                 <div class="sayfa-fotograf">
                     <img src="kizim.jpg" alt="Şiir">
                 </div>
