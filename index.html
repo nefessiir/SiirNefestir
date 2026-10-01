@@ -447,19 +447,21 @@ Baban.`;
         temizleZamanAsimlari();
 
         if (adim === 1) {
-            // Kitap açıldı: 3 sn sonra BAŞLIK görünüyor
+            // 1. Kitap açıldığında: Önce her iki sayfa boştur.
+            // 3 sn sonra sol başlık görünür.
             let t1 = setTimeout(() => {
                 const b = document.getElementById("solBaslik");
                 const g = document.getElementById("solGovde");
                 if (b) b.classList.add("acildi");
                 
-                // Başlıktan 3 saniye sonra sol gövde metni açılır ve 10 sn saymaya başlar -> 10 sn sonra otomatik sonrakine geçer
+                // Başlıktan 3 sn sonra sol gövde yazısı görünür.
                 let t2 = setTimeout(() => {
                     if (g) g.classList.add("acildi");
 
+                    // Sol gövde yazısının görünümü bittikten (animasyon tamamlandıktan) 10 sn sonra sağ taraf (2. sayfa) görünür/açılır.
                     otomatikGecisTimer = setTimeout(() => {
                         sonrakiSayfayaGec();
-                    }, 10000);
+                    }, 12000); // 2 sn animasyon süresi + 10 sn okuma süresi
                 }, 3000);
                 aktifZamanAsimlari.push(t2);
             }, 3000);
@@ -473,7 +475,7 @@ Baban.`;
                 let arkaGovde = aktifYaprak.querySelector(".sayfa-govde");
                 let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf");
 
-                // Sayfalar açıldığında 3 saniye beklenir
+                // Sayfalar çevrildiğinde önce boş gelir, 3 sn sonra varsa başlık/yazı görünür
                 let t1 = setTimeout(() => {
                     let delayYazilar = 0;
 
@@ -484,9 +486,16 @@ Baban.`;
                         delayYazilar = 0;
                     }
 
+                    // Yazının görünmesi bittikten 10 sn sonra varsa diğer içerik / otomatik sonraki sayfaya geçiş silsilesi
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
                         if (arkaFoto) arkaFoto.classList.add("acildi");
+
+                        // İçerik tamamen göründükten sonra 10 sn bekleyip sonraki sayfaya geçiş tetiklenebilir (İsteğe bağlı akış)
+                        otomatikGecisTimer = setTimeout(() => {
+                            sonrakiSayfayaGec();
+                        }, 12000);
+
                     }, delayYazilar);
                     aktifZamanAsimlari.push(t2);
 
@@ -582,8 +591,8 @@ Baban.`;
 
         let icerikOn = "";
         if (i === 0) {
-            // 2. Sayfa (İlk açılan sağ sayfa) metni dolu ve rulo animasyonu için .acildi ekliyoruz
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde acildi">${sagSayfaMetni}</span></div>`;
+            // 2. Sayfa (İlk açılan sağ sayfa) metni dolu başlar ancak .acildi sınıfı sonradan zamanla eklenir (önce boş görünür)
+            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni}</span></div>`;
         } else {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
