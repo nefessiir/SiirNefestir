@@ -406,7 +406,6 @@ window.addEventListener("load", function () {
 
     const baslikMetni = "KIZIM'a…\n\n";
     
-    // 1. Sayfa (Sol Kanat)
     const solSayfaMetni = 
 `Sevgili Şiir,
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
@@ -414,7 +413,6 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.`;
 
-    // Sayfa Metinleri
     const sayfaMetinleri = [
         // Sayfa 2 (1. Yaprak Ön)
         `Bilmeni isterim ki;
@@ -425,7 +423,7 @@ Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..`,
 
-        // Sayfa 3 (1. Yaprak Arka) - 3 ve 4. sayfa birleştirilmişti
+        // Sayfa 3 (1. Yaprak Arka)
         `Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki , o şiir senden önce yazılmış olsa bile, sana aittir.
 Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun , beklediği yaşama sebebisin.
 Çünkü sen benim , yazdığım en güzel şiirsin...
@@ -442,6 +440,7 @@ Baban.`,
     let aktifTimeouts = [];
     
     let akisAsamasi = 0;
+    let islemde = false; // Çift tıklama ve mükerrer yazmaları önlemek için kilit bayrağı
     
     let mevcutYazmaDurumu = {
         element: null,
@@ -465,11 +464,14 @@ Baban.`,
         mevcutYazmaDurumu.element = null;
         
         akisAsamasi = mevcutYazmaDurumu.hedefAsama;
+        islemde = false;
         return true;
     }
 
     // Yazı Hızı: 85ms
     function metinYazdirKademeli(element, tamMetin, hedefAsama, callback) {
+        islemde = true;
+        element.innerHTML = ""; // Mükerrer yazmayı önlemek için alanı önce temizle
         mevcutYazmaDurumu.element = element;
         mevcutYazmaDurumu.metin = tamMetin;
         mevcutYazmaDurumu.index = 0;
@@ -485,6 +487,7 @@ Baban.`,
             } else {
                 mevcutYazmaDurumu.element = null;
                 akisAsamasi = hedefAsama;
+                islemde = false;
                 if (callback) callback();
             }
         }
@@ -493,6 +496,7 @@ Baban.`,
 
     // Başlık Hızı: 35ms + 1.8 sn duygu duraklaması
     function solSayfayiBaslat() {
+        islemde = true;
         solKanatYazi.innerHTML = "";
         let baslikSpan = document.createElement("span");
         baslikSpan.className = "sayfa-baslik";
@@ -522,6 +526,8 @@ Baban.`,
     }
 
     function ileriGit() {
+        if (islemde && !mevcutYazmaDurumu.element) return;
+
         if (aktifSayfayiHemenBitir()) {
             return;
         }
@@ -538,11 +544,14 @@ Baban.`,
             }
         }
         else if (akisAsamasi === 5) {
+            islemde = true;
             akisAsamasi = 6;
             yaprakElementleri[0].style.zIndex = 50;
             yaprakElementleri[0].classList.add("cevirdi");
-            // Çevirme animasyonu bittikten sonra bir sonraki aşamaya geçiş kilidi
-            setTimeout(() => { akisAsamasi = 7; }, 1000);
+            setTimeout(() => { 
+                akisAsamasi = 7; 
+                islemde = false;
+            }, 1000);
         }
         else if (akisAsamasi === 7) {
             akisAsamasi = 8;
@@ -552,28 +561,38 @@ Baban.`,
             }
         }
         else if (akisAsamasi === 9) {
+            islemde = true;
             akisAsamasi = 10;
             yaprakElementleri[1].style.zIndex = 51;
             yaprakElementleri[1].classList.add("cevirdi");
-            setTimeout(() => { akisAsamasi = 11; }, 1000);
+            setTimeout(() => { 
+                akisAsamasi = 11; 
+                islemde = false;
+            }, 1000);
         }
     }
 
     function geriGit() {
         temizleZamanasimlari();
         mevcutYazmaDurumu.element = null;
+        islemde = false;
 
-        if (akisAsamasi === 11 || akisAsamasi === 10 || akisAsamasi === 9) {
+        if (akisAsamasi >= 7) {
             yaprakElementleri[1].classList.remove("cevirdi");
             yaprakElementleri[1].style.zIndex = toplamYaprak - 1;
+            let yArka0 = document.getElementById("yazi-arka-0");
+            if(yArka0) yArka0.innerHTML = "";
             akisAsamasi = 7;
         } 
-        else if (akisAsamasi === 8 || akisAsamasi === 7 || akisAsamasi === 6 || akisAsamasi === 5) {
+        else if (akisAsamasi >= 5) {
             yaprakElementleri[0].classList.remove("cevirdi");
             yaprakElementleri[0].style.zIndex = toplamYaprak;
+            let yOn0 = document.getElementById("yazi-on-0");
+            if(yOn0) yOn0.innerHTML = "";
             akisAsamasi = 3;
         } 
-        else if (akisAsamasi === 4 || akisAsamasi === 3 || akisAsamasi === 2 || akisAsamasi === 1) {
+        else if (akisAsamasi >= 1) {
+            solKanatYazi.innerHTML = "";
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
             akisAsamasi = 0;
@@ -611,6 +630,7 @@ Baban.`,
     kapsayici.addEventListener("click", function (e) {
         if (e.target.closest('.kitap-ok')) return;
         e.stopPropagation();
+        if (islemde && !mevcutYazmaDurumu.element) return;
 
         if (!kapsayici.classList.contains("acildi")) {
             kapsayici.classList.add("acildi");
@@ -626,6 +646,8 @@ Baban.`,
 
     ileriBtn.addEventListener("click", function(e) {
         e.stopPropagation();
+        if (islemde && !mevcutYazmaDurumu.element) return;
+
         if (!kapsayici.classList.contains("acildi")) {
             kapsayici.classList.add("acildi");
             kapakAlan.classList.add("dondu");
