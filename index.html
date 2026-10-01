@@ -473,26 +473,26 @@ Baban.`;
                 let arkaGovde = aktifYaprak.querySelector(".sayfa-govde");
                 let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf");
 
-                // Sayfalar ilk başta tamamen boş gelir. 3 saniye beklenir.
+                // Sayfalar ilk açıldığında tamamen boş gelir. 3 saniye beklenir.
                 let t1 = setTimeout(() => {
                     let delayYazilar = 0;
 
                     if (arkaBaslik) {
                         // Varsa başlık 3 sn sonra görünür
                         arkaBaslik.classList.add("acildi");
-                        delayYazilar = 3000; // Başlıktan 3 sn sonra alt yazılar görünecek
+                        delayYazilar = 3000; 
                     } else {
                         delayYazilar = 0;
                     }
 
-                    // Başlıktan 3 saniye sonra gövde yazısı görünmeye başlar, aynı anda resim de görünür
+                    // Başlıktan 3 saniye sonra gövde yazısı ve fotoğraf aynı anda görünmeye başlar
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
                         if (arkaFoto) arkaFoto.classList.add("acildi");
                     }, delayYazilar);
                     aktifZamanAsimlari.push(t2);
 
-                }, 3000); // Boş gelme süresi (3 sn)
+                }, 3000); 
                 aktifZamanAsimlari.push(t1);
             }
         }
@@ -624,10 +624,8 @@ Baban.`;
             const tikX = e.clientX - rect.left;
 
             if (tikX < rect.width / 2) {
-                // Sol tarafa tıklandı: Geri çevir
                 oncekiSayfayaGec();
             } else {
-                // Sağ tarafa tıklandı: İleri çevir
                 if (!yaprakDiv.classList.contains("cevirdi")) {
                     let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
                     if (aktifSagYaprak === yaprakDiv) {
