@@ -40,7 +40,7 @@ body {
     z-index: 2;
 }
 
-/* 1. SAĞDA SABİT DURAN ALT KAPAK */
+/* 1. SAĞda SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -164,10 +164,10 @@ body {
     z-index: 5;
 }
 
-/* Sol kanattaki 1 numarasını 1 cm yukarı ve 1,5 cm sağa kaydıran özel ayar */
+/* Sol kanattaki 1 numarasını toplamda 0,5 cm sağda, 0,5 cm yukarıda tutan ayar */
 .sol-kanat-numara {
-    bottom: calc(0.8cm + 1cm);
-    transform: translateX(1.5cm);
+    bottom: calc(0.8cm + 0.5cm);
+    transform: translateX(1cm);
 }
 
 .sayfa-on .sayfa-numara, .sayfa-arka .sayfa-numara {
@@ -389,7 +389,7 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Sonuçta yine ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini göreceğim... nerede olduğumun bir önemi yok.</span>
         </div>
-        <!-- Sol Kanattaki Sayfa 1 (1 cm yukarı ve 1,5 cm sağa kaydırılmış haliyle) -->
+        <!-- Sol Kanattaki Sayfa 1 (Güncellenen konum) -->
         <div class="sayfa-numara sol-kanat-numara"><span class="tuy">🪶</span> 1 <span class="tuy">🪶</span></div>
     </div>
 
@@ -686,7 +686,7 @@ Baban.`;
     });
 
     document.getElementById("acikKitapAlan").addEventListener("click", function (e) {
-        if (mevcurrentAdimIndex === 1) {
+        if (mevcutAdimIndex === 1) {
             const rect = this.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
             if (tikX < rect.width / 2) {
