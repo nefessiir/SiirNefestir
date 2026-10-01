@@ -163,7 +163,7 @@ body {
     letter-spacing: 2px;
 }
 
-/* 4. SAYFA ÖZEL FOTOĞRAF ALANI */
+/* FOTOĞRAF ALANI */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -453,7 +453,7 @@ Baban.`;
                 const g = document.getElementById("solGovde");
                 if (b) b.classList.add("acildi");
                 
-                // Başlıktan 3 saniye sonra alt yazılar görünmeye başlarken 10 sn saymaya başla -> sonraki sayfaya geç
+                // Başlıktan 3 saniye sonra alt yazılar görünmeye başlarken 10 sn saymaya başla -> 2. sayfaya otomatik geç
                 let t2 = setTimeout(() => {
                     if (g) g.classList.add("acildi");
 
@@ -482,18 +482,13 @@ Baban.`;
                         arkaBaslik.classList.add("acildi");
                         delayYazilar = 3000; // Başlıktan 3 sn sonra alt yazılar görünecek
                     } else {
-                        // Başlık yoksa doğrudan alt yazılar/fotoğraf görünecek
                         delayYazilar = 0;
                     }
 
+                    // Başlıktan 3 saniye sonra gövde yazısı görünmeye başlar, aynı anda resim de görünür
                     let t2 = setTimeout(() => {
                         if (arkaGovde) arkaGovde.classList.add("acildi");
                         if (arkaFoto) arkaFoto.classList.add("acildi");
-
-                        // Alt yazılar/fotoğraf görünmeye başlarken 10 sn saymaya başla -> sonraki sayfaya geç
-                        otomatikGecisTimer = setTimeout(() => {
-                            sonrakiSayfayaGec();
-                        }, 10000);
                     }, delayYazilar);
                     aktifZamanAsimlari.push(t2);
 
@@ -622,18 +617,28 @@ Baban.`;
             </div>
         `;
 
+        // Tıklama Kontrolü: Sağ tarafa tıklanırsa ileri, Sol tarafa tıklanırsa yazı kalıpları kaybolmadan geri gider
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
-            if (!yaprakDiv.classList.contains("cevirdi")) {
-                let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
-                if (aktifSagYaprak === yaprakDiv) {
-                    sonrakiSayfayaGec();
-                }
+            const rect = yaprakDiv.getBoundingClientRect();
+            const tikX = e.clientX - rect.left;
+
+            if (tikX < rect.width / 2) {
+                // Sol tarafa tıklandı: Geri çevir
+                oncekiSayfayaGec();
             } else {
-                let cevrilmisYapraklar = yaprakElementleri.filter(y => y.classList.contains("cevirdi"));
-                let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
-                if (enUstSolYaprak === yaprakDiv) {
-                    oncekiSayfayaGec();
+                // Sağ tarafa tıklandı: İleri çevir
+                if (!yaprakDiv.classList.contains("cevirdi")) {
+                    let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
+                    if (aktifSagYaprak === yaprakDiv) {
+                        sonrakiSayfayaGec();
+                    }
+                } else {
+                    let cevrilmisYapraklar = yaprakElementleri.filter(y => y.classList.contains("cevirdi"));
+                    let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
+                    if (enUstSolYaprak === yaprakDiv) {
+                        oncekiSayfayaGec();
+                    }
                 }
             }
         });
@@ -642,15 +647,21 @@ Baban.`;
         yaprakElementleri.push(yaprakDiv);
     }
 
-    kapakAlan.addEventListener("click", function () {
+    kapakAlan.addEventListener("click", function (e) {
         if (mevcutAdimIndex === 0) {
             sonrakiSayfayaGec();
         }
     });
 
-    document.getElementById("acikKitapAlan").addEventListener("click", function () {
+    document.getElementById("acikKitapAlan").addEventListener("click", function (e) {
         if (mevcutAdimIndex === 1) {
-            sonrakiSayfayaGec();
+            const rect = this.getBoundingClientRect();
+            const tikX = e.clientX - rect.left;
+            if (tikX < rect.width / 2) {
+                oncekiSayfayaGec();
+            } else {
+                sonrakiSayfayaGec();
+            }
         }
     });
 });
