@@ -164,9 +164,9 @@ body {
     z-index: 5;
 }
 
-/* Sol kanattaki 1 numarasının 0,5 cm sola ve 0,5 cm aşağıya kaydırılmış konumu */
+/* Sol kanattaki 1 numarasının güncel konumu (0,5 cm sola ve 0,3 cm yukarıya kaydırılmış hali) */
 .sol-kanat-numara {
-    bottom: calc(0.8cm + 0.5cm);
+    bottom: calc(0.8cm + 0.3cm);
     transform: translateX(1cm);
 }
 
@@ -450,10 +450,11 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    const toplamYaprak = 25; // Yaprak sayısını buradan dilediğin gibi (örneğin 50 veya 100) artırabilirsin
+    const toplamYaprak = 25; // Yaprak sayısını buradan dilediğin gibi artırabilirsin
     let yaprakElementleri = [];
     let aktifZamanAsimlari = [];
     let mevcutAdimIndex = 0; 
+    let isTidyingUp = false; // Geri sarma animasyonu sırasında çakışmaları önlemek için
 
     function temizleZamanAsimlari() {
         aktifZamanAsimlari.forEach(id => clearTimeout(id));
@@ -520,6 +521,7 @@ Baban.`;
     }
 
     function sonrakiSayfayaGec() {
+        if (isTidyingUp) return;
         temizleZamanAsimlari();
 
         if (mevcutAdimIndex === 0) {
@@ -539,7 +541,13 @@ Baban.`;
                 if (sagGovde0) sagGovde0.classList.add("acildi");
             }
 
-            // Eğer henüz son yaprağa gelinmediyse ileri çevir
+            // Eğer tüm yapraklar çevrildiyse ve tekrar ileriye tıklanırsa otomatik geri sar
+            let tumuCevrildi = yaprakElementleri.every(y => y.classList.contains("cevirdi"));
+            if (tumuCevrildi || yaprakIndexGercek >= toplamYaprak) {
+                otomatikGeriyeSar();
+                return;
+            }
+
             if (yaprakIndexGercek < toplamYaprak) {
                 let yaprak = yaprakElementleri[yaprakIndexGercek];
                 if (!yaprak.classList.contains("cevirdi")) {
@@ -554,14 +562,12 @@ Baban.`;
                 } else {
                     otomatikGeriyeSar();
                 }
-            } else {
-                // Zaten en son sayfadaysak, tıklandığında otomatik geri sar
-                otomatikGeriyeSar();
             }
         }
     }
 
     function oncekiSayfayaGec() {
+        if (isTidyingUp) return;
         temizleZamanAsimlari();
 
         if (mevcutAdimIndex > 1) {
@@ -576,6 +582,7 @@ Baban.`;
                 sayfaIcerikleriniGoster(mevcutAdimIndex);
             }, 1000);
         } else if (mevcutAdimIndex === 1) {
+            // İlk açık sayfadayken sol tarafa tıklanırsa kitap kapansın
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
             mevcutAdimIndex = 0;
@@ -583,6 +590,8 @@ Baban.`;
     }
 
     function otomatikGeriyeSar() {
+        if (isTidyingUp) return;
+        isTidyingUp = true;
         temizleZamanAsimlari();
         let index = yaprakElementleri.length - 1;
 
@@ -598,6 +607,7 @@ Baban.`;
                     kapsayici.classList.remove("acildi");
                     kapakAlan.classList.remove("dondu");
                     mevcutAdimIndex = 0;
+                    isTidyingUp = false;
                 }, 400);
             }
         }, 100);
@@ -656,10 +666,10 @@ Baban.`;
 
         yaprakDiv.addEventListener("click", function (e) {
             e.stopPropagation();
+            if (isTidyingUp) return;
             const rect = yaprakDiv.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
 
-            // Eğer en son yapraktaysak ve sağ tarafa tıklandıysa (veya son yaprak zaten çevrilmişse) kontrol et
             let aktifSonYaprak = yaprakElementleri[yaprakElementleri.length - 1];
             if (yaprakDiv === aktifSonYaprak && tikX >= rect.width / 2 && aktifSonYaprak.classList.contains("cevirdi")) {
                 otomatikGeriyeSar();
@@ -695,11 +705,15 @@ Baban.`;
     });
 
     document.getElementById("acikKitapAlan").addEventListener("click", function (e) {
+        if (isTidyingUp) return;
         if (mevcutAdimIndex === 1) {
             const rect = this.getBoundingClientRect();
             const tikX = e.clientX - rect.left;
             if (tikX < rect.width / 2) {
-                oncekiSayfayaGec();
+                // Sol kanada (1. sayfanın olduğu yere) tıklanınca kitap kapansın
+                kapsayici.classList.remove("acildi");
+                kapakAlan.classList.remove("dondu");
+                mevcutAdimIndex = 0;
             } else {
                 sonrakiSayfayaGec();
             }
