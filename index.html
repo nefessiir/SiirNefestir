@@ -179,42 +179,24 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* 4. SAYFA İÇİN ÖZEL FOTOĞRAF STİLİ (Görünürlük Artırıldı) */
-.sayfa-fotograf {
+/* 4. SAYFA İÇİN DOĞRUDAN ARKA PLAN FOTOĞRAF ALANI */
+.sayfa-fotograf-arka {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: calc(100% - 2.2cm);
-    height: calc(100% - 2.2cm);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    pointer-events: none;
-    backface-visibility: hidden;
-    max-height: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("kızım.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
     opacity: 0;
-    overflow: hidden;
-    transition: max-height 1.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
+    transition: opacity 1.5s ease-in-out;
+    z-index: 2;
 }
 
-.sayfa-fotograf.acildi {
-    max-height: 800px;
-    opacity: 1;
-}
-
-.sayfa-fotograf img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
-    border-radius: 4px;
-    /* Görünürlük artırıldı ve normal blend moduna alındı */
-    opacity: 0.70;
-    filter: sepia(0.3) contrast(1.2) brightness(1.0);
-    mix-blend-mode: normal;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+.sayfa-fotograf-arka.acildi {
+    opacity: 0.75; /* Net ama kağıtla bütünleşik */
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
@@ -492,7 +474,7 @@ Baban.`;
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
                 let arkaBaslik = aktifYaprak.querySelector(".sayfa-baslik");
                 let arkaGovde = aktifYaprak.querySelector(".sayfa-arka .sayfa-govde");
-                let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf");
+                let arkaFoto = aktifYaprak.querySelector(".sayfa-fotograf-arka");
 
                 let t1 = setTimeout(() => {
                     let delayYazilar = 0;
@@ -627,13 +609,9 @@ Baban.`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
-        // 4. SAYFA (2. yaprağın arkası)
+        // 4. SAYFA (2. yaprağın arkası) - Arka plan resmi olarak ekledik
         if (arkaSayfaNo === 4) {
-            icerikArka = `
-                <div class="sayfa-fotograf">
-                    <img src="kızım.jpg" alt="Nefes Şiir">
-                </div>
-            `;
+            icerikArka = `<div class="sayfa-fotograf-arka"></div>`;
         }
 
         yaprakDiv.innerHTML = `
