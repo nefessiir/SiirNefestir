@@ -189,7 +189,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: calc(100% - 2.2cm);
-    height: calc(100% - 3.2cm); /* Yukarıdan ve aşağıdan 0.5cm daha kısaltıldı */
+    height: calc(100% - 3.2cm);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -207,30 +207,32 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
-/* SAMAN KAĞIDI BANT EFEKTLERİ */
+/* SAMAN KAĞIDI ÇAPRAZ BANT EFEKTLERİ */
 .bant {
     position: absolute;
-    width: 35px;
-    height: 16px;
+    width: 38px;
+    height: 15px;
     background-color: #d8c397;
-    background-image: linear-gradient(to bottom, rgba(255,255,255,0.2), rgba(0,0,0,0.1));
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(0,0,0,0.12));
     border-left: 1px dashed #b59d6e;
     border-right: 1px dashed #b59d6e;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.35);
     z-index: 15;
     pointer-events: none;
 }
 
+/* Sol Alt Köşe İçin Çapraz Bant */
 .bant-sol-alt {
-    bottom: -6px;
-    left: -6px;
-    transform: rotate(-35deg);
+    bottom: -8px;
+    left: -8px;
+    transform: rotate(45deg);
 }
 
+/* Sağ Üst Köşe İçin Çapraz Bant */
 .bant-sag-ust {
-    top: -6px;
-    right: -6px;
-    transform: rotate(-35deg);
+    top: -8px;
+    right: -8px;
+    transform: rotate(45deg);
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
