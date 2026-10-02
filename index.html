@@ -14,12 +14,12 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 body {
-    overflow: hidden;
     background-image: url("arka_plan.jpg");
-    background-size: 100% 100%;
+    background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
     background-color: #111;
@@ -29,12 +29,12 @@ body {
     perspective: 1500px;
 }
 
-/* KİTAP KAPSAYICISI */
+/* KİTAP KAPSAYICISI (Varsayılan Bilgisayar Görünümü) */
 .kitap-kapsayici {
     position: relative;
-    width: 20%;
-    height: auto;
-    transform: translateX(8cm);
+    width: 450px;
+    height: 620px;
+    transform: translateX(180px);
     transform-style: preserve-3d;
     transform-origin: right bottom;
     z-index: 2;
@@ -60,14 +60,14 @@ body {
 /* AÇIK KİTAP GÖVDESİ */
 .acik-kitap-alan {
     position: absolute;
-    top: 0.5cm;
-    left: calc(-100% - 0.6cm);
-    width: calc(200% - 1.3cm);
-    height: calc(100% - 1cm);
+    top: 0;
+    left: calc(-100% - 15px);
+    width: calc(200% - 30px);
+    height: 100%;
     z-index: 2;
     opacity: 0;
     pointer-events: none;
-    transform: scale(1.1882);
+    transform: scale(1.05);
     transform-origin: left center;
     clip-path: inset(0 0 0 100%);
     transition: opacity 0.8s ease-in-out, clip-path 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -89,12 +89,12 @@ body {
 /* AÇIK KİTABIN SOL KANAT YAZI ALANI */
 .sol-kanat-yazi {
     position: absolute;
-    top: -1.35cm;
-    left: calc(0.75cm + 0.3cm + 1cm);
-    width: calc(50% - 2.5cm);
-    height: calc(100% - 0.7cm);
+    top: 8%;
+    left: 8%;
+    width: 38%;
+    height: 84%;
     font-family: 'Dancing Script', cursive, serif;
-    font-size: 11pt;
+    font-size: clamp(10px, 1.3vw, 15pt);
     line-height: 1.35;
     color: #1a4b82;
     text-align: left;
@@ -123,7 +123,7 @@ body {
     width: 100%;
     font-weight: 700;
     font-size: 1.25em;
-    margin-top: 2.5em; 
+    margin-top: 1.5em; 
     margin-bottom: 0.2em; 
     max-height: 0;
     opacity: 0;
@@ -137,7 +137,7 @@ body {
     opacity: 0;
     overflow: hidden;
     transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
-    margin-top: -0.8em;
+    margin-top: -0.2em;
 }
 
 .sol-baslik.acildi {
@@ -156,9 +156,9 @@ body {
     display: block;
     width: 100%;
     font-weight: 700;
-    font-size: 1.25em;
-    margin-top: 1.2em; 
-    margin-bottom: 0.4em;
+    font-size: 1.2em;
+    margin-top: 1em; 
+    margin-bottom: 0.3em;
     max-height: 0;
     opacity: 0;
     overflow: hidden;
@@ -182,7 +182,7 @@ body {
 /* SAYFA NUMARASI STİLİ */
 .sayfa-numara {
     position: absolute;
-    bottom: 0.8cm;
+    bottom: 6%;
     left: 0;
     width: 50%;
     text-align: center;
@@ -196,14 +196,16 @@ body {
 }
 
 .sol-kanat-numara {
-    bottom: 1.55cm;
-    transform: translateX(1cm);
+    bottom: 8%;
+    transform: translateX(10px);
     cursor: pointer;
     pointer-events: auto;
+    width: 38%;
+    left: 8%;
 }
 
 .sayfa-on .sayfa-numara, .sayfa-arka .sayfa-numara {
-    width: 100%;
+    width: 50%;
     left: 0;
 }
 
@@ -216,10 +218,10 @@ body {
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 25%;
     transform: translate(-50%, -50%);
-    width: calc(100% - 1.6cm);
-    height: calc(100% - 3.2cm);
+    width: 78%;
+    height: 75%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -266,10 +268,10 @@ body {
 /* ÇOKLU SAYFA KONTEYNERİ */
 .sayfalar-kapsayici {
     position: absolute;
-    top: 0.5cm;
+    top: 0;
     left: 0;
     width: 100%;
-    height: calc(100% - 1cm);
+    height: 100%;
     z-index: 6;
     opacity: 0;
     pointer-events: none;
@@ -303,7 +305,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: calc(100% - 1.5cm);
+    width: 100%;
     height: 100%;
     transform-style: preserve-3d;
 }
@@ -330,10 +332,10 @@ body {
 
 .sayfa-yazi {
     position: absolute;
-    top: 0.8cm;
-    left: 0.3cm;
-    width: calc(100% - 0.6cm);
-    height: calc(100% - 1.4cm);
+    top: 8%;
+    left: 8%;
+    width: 38%;
+    height: 84%;
     font-family: 'Dancing Script', cursive, serif;
     line-height: 1.35;
     color: #1a4b82;
@@ -346,7 +348,16 @@ body {
     overflow-wrap: break-word;
     hyphens: none;
     white-space: pre-wrap;
-    font-size: 11pt; 
+    font-size: clamp(10px, 1.3vw, 15pt); 
+}
+
+/* Sayfa sağ tarafa geçtiğinde yazı konumunu sağ sayfaya sabitle */
+.sayfa-arka .sayfa-yazi,
+.sayfa-arka .sayfa-fotograf {
+    left: 54%;
+}
+.sayfa-arka .sayfa-numara {
+    left: 50%;
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -389,13 +400,13 @@ body {
 .kapak-yazi {
     position: absolute;
     top: 50%;
-    left: calc(50% + 1cm);
+    left: calc(50% + 15px);
     transform: translate(-50%, -50%);
-    width: 85%;
+    width: 80%;
     text-align: left;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(10px, 1.25vw, 22px);
-    line-height: 1.7;
+    font-size: clamp(11px, 1.5vw, 20px);
+    line-height: 1.6;
     color: #d6ad38;
     text-shadow:
         -1px -1px 1px rgba(55, 32, 5, 0.95),
@@ -409,7 +420,29 @@ body {
 .kapak-yazi .imza {
     text-align: center;
     display: block;
-    transform: translate(0.3cm, 1.7em);
+    transform: translate(10px, 1.5em);
+}
+
+/* ==========================================================
+   MOBİL VE TABLET UYUMLULUĞU (RESPONSIVE MEDIA QUERIES)
+   ================================================---------- */
+@media screen and (max-width: 900px) {
+    .kitap-kapsayici {
+        width: 92vw;
+        height: 65vw;
+        transform: translateX(0) !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .kitap-kapsayici {
+        width: 96vw;
+        height: 70vw;
+        transform: translateX(0) !important;
+    }
+    .sol-kanat-yazi, .sayfa-yazi {
+        font-size: clamp(8px, 2.2vw, 12pt);
+    }
 }
 </style>
 </head>
@@ -464,12 +497,6 @@ window.addEventListener("load", function () {
     const kapsayici = document.getElementById("kitapKapsayici");
     const kapakAlan = document.getElementById("kapakAlan");
     const sayfalarKapsayici = document.getElementById("sayfalarKapsayici");
-    const kapakImg = document.querySelector(".kapak");
-
-    const yukseklik = kapakImg.getBoundingClientRect().height;
-    const ikiCm = 2 * 96 / 2.54;
-    const oran = (yukseklik + ikiCm) / yukseklik;
-    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
     // İLK 4 SAYFA (Orijinal Metinler ve Fotoğraf)
     const sagSayfaMetni1 = 
@@ -568,7 +595,6 @@ Geliyorum!</span>`;
             if (yaprakIndex >= 0 && yaprakIndex < yaprakElementleri.length) {
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
                 
-                // Geri gelirken doğru yüzü hedeflemek için kontrol
                 let hedefYuz = (!aktifYaprak.classList.contains("cevirdi")) ? 
                     aktifYaprak.querySelector(".sayfa-on") : 
                     aktifYaprak.querySelector(".sayfa-arka");
@@ -701,12 +727,10 @@ Geliyorum!</span>`;
         let icerikOn = "";
         let icerikArka = "";
 
-        // 1. Yaprak (Sayfa 2 ve 3)
         if (i === 0) {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
         } 
-        // 2. Yaprak (Sayfa 4 - Fotoğraf | Arka yüzü Sayfa 5: Şiir 1. ve 2. Kıta)
         else if (i === 1) {
             icerikOn = `
                 <div class="sayfa-fotograf">
@@ -717,7 +741,6 @@ Geliyorum!</span>`;
             `;
             icerikArka = `<div class="sayfa-yazi">${siirSayfa5}</div>`;
         } 
-        // 3. Yaprak (Sayfa 6: Şiir 3. ve 4. Kıta | Arka yüzü Sayfa 7: Boş)
         else if (i === 2) {
             icerikOn = `<div class="sayfa-yazi">${siirSayfa6}</div>`;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
@@ -794,7 +817,7 @@ Geliyorum!</span>`;
         e.stopPropagation();
         if (isTidyingUp) return;
         if (mevcutAdimIndex === 1) {
-            oncekiSayfayaGec.oncekiSayfayaGec(); // Düzelttiğimiz akış fonksiyonu
+            oncekiSayfayaGec();
         }
     });
 
