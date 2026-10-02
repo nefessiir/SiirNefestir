@@ -94,8 +94,8 @@ body {
     width: calc(50% - 2.5cm);
     height: calc(100% - 0.7cm);
     font-family: 'Dancing Script', cursive, serif;
-    font-size: 11pt;
-    line-height: 1.35;
+    font-size: 10.5pt;
+    line-height: 1.3;
     color: #1a4b82;
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
@@ -335,7 +335,7 @@ body {
     width: calc(100% - 0.6cm);
     height: calc(100% - 1.4cm);
     font-family: 'Dancing Script', cursive, serif;
-    line-height: 1.35;
+    line-height: 1.3;
     color: #1a4b82;
     text-align: left;
     text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
@@ -346,7 +346,7 @@ body {
     overflow-wrap: break-word;
     hyphens: none;
     white-space: pre-wrap;
-    font-size: 11pt; 
+    font-size: 10.5pt; 
 }
 
 /* ÜSTTEKİ HAREKETLİ KAPAK */
@@ -471,19 +471,22 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
+    // Önsöz 1. Parça (Sayfa 2 - 1. Yaprağın Ön Yüzü)
     const sagSayfaMetni1 = 
 `Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
 içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
-Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.
+Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.`;
 
-Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
+    // Önsöz 2. Parça (Sayfa 3 - 1. Yaprağın Arka Yüzü)
+    const sagSayfaMetni2 = 
+`Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
-    // 2. Yaprağın Arka Yüzü (Sayfa 5 - GELİYORUM şiiri)
+    // GELİYORUM Şiiri (Sayfa 5 - 2. Yaprağın Arka Yüzü)
     const sagSayfaMetni3 = 
 `GELİYORUM
 
@@ -683,6 +686,7 @@ Geliyorum!`;
 
         if (i === 0) {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
+            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
         } else if (i === 1) {
             // 2. Yaprağın arkası (Sayfa 5) -> GELİYORUM şiiri
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni3}</span></div>`;
