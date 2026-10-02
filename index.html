@@ -6,208 +6,163 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 
 <title>Şiir Nefestir</title>
 
-
-
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
-
-
 
 <style>
 
 html,
-
 body {
-
     width: 100%;
-
     height: 100%;
-
     margin: 0;
-
     padding: 0;
-
 }
 
-
-
 body {
-
     overflow: hidden;
-
     background-image: url("arka_plan.jpg");
-
     background-size: 100% 100%;
-
     background-position: center center;
-
     background-repeat: no-repeat;
-
     background-color: #111;
 
     display: flex;
-
     justify-content: center;
-
     align-items: center;
 
     perspective: 1500px;
-
 }
 
-
-
-/* KİTAP KAPSAYICISI */
+/* ========================================================= */
+/* KİTAP KAPSAYICISI                                         */
+/* ========================================================= */
 
 .kitap-kapsayici {
-
     position: relative;
 
+    /*
+       Kitabın kendi tasarımı burada korunuyor.
+       Ekran boyutuna göre yalnızca JavaScript ile
+       bütün kitap ölçekleniyor.
+    */
     width: 20%;
-
     height: auto;
 
     transform: scale(1);
 
     transform-style: preserve-3d;
-
-    transform-origin: right bottom;
+    transform-origin: center center;
 
     z-index: 2;
-
 }
 
 
-
-/* 1. SAĞDA SABİT DURAN ALT KAPAK */
+/* ========================================================= */
+/* 1. SAĞDA SABİT DURAN ALT KAPAK                            */
+/* ========================================================= */
 
 .sag-kapak {
-
     position: absolute;
-
     top: 0;
-
     left: 0;
 
     width: 100%;
-
     height: 100%;
 
     z-index: 1;
-
 }
 
-
-
 .sag-kapak img {
-
     width: 100%;
-
     height: 100%;
 
     object-fit: fill;
-
     display: block;
-
 }
 
 
-
-/* AÇIK KİTAP GÖVDESİ */
+/* ========================================================= */
+/* AÇIK KİTAP GÖVDESİ                                       */
+/* ========================================================= */
 
 .acik-kitap-alan {
-
     position: absolute;
 
     top: 0.5cm;
-
     left: calc(-100% - 0.6cm);
 
     width: calc(200% - 1.3cm);
-
     height: calc(100% - 1cm);
 
     z-index: 2;
 
     opacity: 0;
-
     pointer-events: none;
 
     transform: scale(1.1882);
-
     transform-origin: left center;
 
     clip-path: inset(0 0 0 100%);
 
-    transition: opacity 0.8s ease-in-out, clip-path 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-
+    transition:
+        opacity 0.8s ease-in-out,
+        clip-path 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-
-
 .kitap-kapsayici.acildi .acik-kitap-alan {
-
     opacity: 1;
 
     clip-path: inset(0 0 0 0);
 
-    transition: opacity 0.4s ease-in-out 0.6s, clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.6s;
-
+    transition:
+        opacity 0.4s ease-in-out 0.6s,
+        clip-path 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) 0.6s;
 }
 
-
-
 .acik-kitap-alan img {
-
     width: 100%;
-
     height: 100%;
 
     object-fit: fill;
-
     display: block;
-
 }
 
 
-
-/* AÇIK KİTABIN SOL KANAT YAZI ALANI */
+/* ========================================================= */
+/* AÇIK KİTABIN SOL KANAT YAZI ALANI                         */
+/* ========================================================= */
 
 .sol-kanat-yazi {
-
     position: absolute;
 
     top: -1.35cm;
-
     left: calc(0.75cm + 0.3cm + 1cm);
 
     width: calc(50% - 2.5cm);
-
     height: calc(100% - 0.7cm);
 
     font-family: 'Dancing Script', cursive, serif;
-
     font-size: 11pt;
-
     line-height: 1.35;
 
     color: #1a4b82;
 
     text-align: left;
 
-    text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
+    text-shadow:
+        0 0 3px rgba(26, 75, 130, 0.35),
+        0 0 1px rgba(26, 75, 130, 0.6);
 
     box-sizing: border-box;
 
     overflow: hidden;
 
     word-break: normal;
-
     overflow-wrap: break-word;
-
     hyphens: none;
 
     white-space: pre-wrap;
@@ -219,37 +174,30 @@ body {
     transition: opacity 0.3s ease-in-out;
 
     cursor: pointer;
-
 }
-
-
 
 .kitap-kapsayici.acildi .sol-kanat-yazi {
-
     opacity: 1;
 
-    transition: opacity 0.3s ease-in-out 1.1s;
-
+    transition:
+        opacity 0.3s ease-in-out 1.1s;
 }
 
 
-
-/* SADECE SOL KANAT (İLK SAYFA) BAŞLIK VE GÖVDE AYARLARI */
+/* ========================================================= */
+/* SADECE SOL KANAT (İLK SAYFA) BAŞLIK VE GÖVDE             */
+/* ========================================================= */
 
 .sol-baslik {
-
     text-align: center;
 
     display: block;
-
     width: 100%;
 
     font-weight: 700;
-
     font-size: 1.25em;
 
     margin-top: 2.5em;
-
     margin-bottom: 0.2em;
 
     max-height: 0;
@@ -258,14 +206,12 @@ body {
 
     overflow: hidden;
 
-    transition: max-height 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease-in-out;
-
+    transition:
+        max-height 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+        opacity 0.8s ease-in-out;
 }
 
-
-
 .sol-govde {
-
     display: block;
 
     max-height: 0;
@@ -274,50 +220,38 @@ body {
 
     overflow: hidden;
 
-    transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
+    transition:
+        max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1),
+        opacity 1.2s ease-in-out;
 
     margin-top: -0.8em;
-
 }
-
-
 
 .sol-baslik.acildi {
-
     max-height: 200px;
-
     opacity: 1;
-
 }
-
-
 
 .sol-govde.acildi {
-
     max-height: 800px;
-
     opacity: 1;
-
 }
 
 
-
-/* DİĞER SAYFALAR İÇİN ORİJİNAL AYARLAR */
+/* ========================================================= */
+/* DİĞER SAYFALAR                                            */
+/* ========================================================= */
 
 .sayfa-baslik {
-
     text-align: center;
 
     display: block;
-
     width: 100%;
 
     font-weight: 700;
-
     font-size: 1.25em;
 
     margin-top: 1.2em;
-
     margin-bottom: 0.4em;
 
     max-height: 0;
@@ -326,14 +260,12 @@ body {
 
     overflow: hidden;
 
-    transition: max-height 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease-in-out;
-
+    transition:
+        max-height 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+        opacity 0.8s ease-in-out;
 }
 
-
-
 .sayfa-govde {
-
     display: block;
 
     max-height: 0;
@@ -342,32 +274,28 @@ body {
 
     overflow: hidden;
 
-    transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
+    transition:
+        max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1),
+        opacity 1.2s ease-in-out;
 
     margin-top: 0;
-
 }
 
-
-
-.sayfa-baslik.acildi, .sayfa-govde.acildi {
-
+.sayfa-baslik.acildi,
+.sayfa-govde.acildi {
     max-height: 800px;
-
     opacity: 1;
-
 }
 
 
-
-/* SAYFA NUMARASI STİLİ */
+/* ========================================================= */
+/* SAYFA NUMARASI                                            */
+/* ========================================================= */
 
 .sayfa-numara {
-
     position: absolute;
 
     bottom: 0.8cm;
-
     left: 0;
 
     width: 50%;
@@ -375,25 +303,21 @@ body {
     text-align: center;
 
     font-family: 'Dancing Script', cursive, serif;
-
     font-size: 10pt;
 
     color: #1a4b82;
 
-    text-shadow: 0 0 2px rgba(26, 75, 130, 0.3);
+    text-shadow:
+        0 0 2px rgba(26, 75, 130, 0.3);
 
     pointer-events: none;
 
     letter-spacing: 2px;
 
     z-index: 5;
-
 }
 
-
-
 .sol-kanat-numara {
-
     bottom: 1.55cm;
 
     transform: translateX(1cm);
@@ -401,51 +325,40 @@ body {
     cursor: pointer;
 
     pointer-events: auto;
-
 }
 
-
-
-.sayfa-on .sayfa-numara, .sayfa-arka .sayfa-numara {
-
+.sayfa-on .sayfa-numara,
+.sayfa-arka .sayfa-numara {
     width: 100%;
-
     left: 0;
-
 }
-
-
 
 .tuy {
-
     color: #ffffff;
 
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
-
+    text-shadow:
+        0 0 3px rgba(0, 0, 0, 0.8);
 }
 
 
-
-/* SAYFA İÇİ FOTOĞRAF ALANI */
+/* ========================================================= */
+/* SAYFA İÇİ FOTOĞRAF                                       */
+/* ========================================================= */
 
 .sayfa-fotograf {
-
     position: absolute;
 
     top: 50%;
-
     left: 50%;
 
     transform: translate(-50%, -50%);
 
     width: calc(100% - 1.6cm);
-
     height: calc(100% - 3.2cm);
 
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     box-sizing: border-box;
@@ -453,15 +366,10 @@ body {
     backface-visibility: hidden;
 
     z-index: 10;
-
 }
 
-
-
 .sayfa-fotograf img {
-
     width: 100%;
-
     height: 100%;
 
     object-fit: cover;
@@ -470,76 +378,67 @@ body {
 
     border-radius: 2px;
 
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-
+    box-shadow:
+        0 2px 6px rgba(0,0,0,0.25);
 }
 
 
-
-/* SAMAN KAĞIDI ÇAPRAZ BANT EFEKTLERİ */
+/* ========================================================= */
+/* SAMAN KAĞIDI BANTLARI                                    */
+/* ========================================================= */
 
 .bant {
-
     position: absolute;
 
     width: 38px;
-
     height: 15px;
 
     background-color: #d8c397;
 
-    background-image: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(0,0,0,0.12));
+    background-image:
+        linear-gradient(
+            to bottom,
+            rgba(255,255,255,0.25),
+            rgba(0,0,0,0.12)
+        );
 
     border-left: 1px dashed #b59d6e;
-
     border-right: 1px dashed #b59d6e;
 
-    box-shadow: 0 1px 3px rgba(0,0,0,0.35);
+    box-shadow:
+        0 1px 3px rgba(0,0,0,0.35);
 
     z-index: 15;
 
     pointer-events: none;
-
 }
 
-
-
 .bant-sol-alt {
-
     bottom: -8px;
-
     left: -8px;
 
     transform: rotate(45deg);
-
 }
 
-
-
 .bant-sag-ust {
-
     top: -8px;
-
     right: -8px;
 
     transform: rotate(45deg);
-
 }
 
 
-
-/* ÇOKLU SAYFA KONTEYNERİ */
+/* ========================================================= */
+/* ÇOKLU SAYFA KONTEYNERİ                                   */
+/* ========================================================= */
 
 .sayfalar-kapsayici {
-
     position: absolute;
 
     top: 0.5cm;
-
     left: 0;
 
     width: 100%;
-
     height: calc(100% - 1cm);
 
     z-index: 6;
@@ -548,126 +447,98 @@ body {
 
     pointer-events: none;
 
-    transition: opacity 0.3s ease-in-out;
-
+    transition:
+        opacity 0.3s ease-in-out;
 }
 
-
-
 .kitap-kapsayici.acildi .sayfalar-kapsayici {
-
     opacity: 1;
 
     pointer-events: auto;
 
-    transition: opacity 0.3s ease-in-out 1.1s;
-
+    transition:
+        opacity 0.3s ease-in-out 1.1s;
 }
 
 
-
-/* HER BİR YAPRAK */
+/* ========================================================= */
+/* HER BİR YAPRAK                                            */
+/* ========================================================= */
 
 .sayfa-yaprak {
-
     position: absolute;
 
     top: 0;
-
     left: 0;
 
     width: 100%;
-
     height: 100%;
 
     transform-style: preserve-3d;
 
     transform-origin: left center;
 
-    transition: transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition:
+        transform 1.0s cubic-bezier(0.645, 0.045, 0.355, 1);
 
     cursor: pointer;
-
 }
-
-
 
 .sayfa-yaprak.cevirdi {
-
     transform: rotateY(-180deg);
-
 }
 
-
-
 .sayfa-icerik {
-
     position: absolute;
 
     top: 0;
-
     left: 0;
 
     width: calc(100% - 1.5cm);
-
     height: 100%;
 
     transform-style: preserve-3d;
-
 }
 
-
-
-.sayfa-on, .sayfa-arka {
-
+.sayfa-on,
+.sayfa-arka {
     position: absolute;
 
     top: 0;
-
     left: 0;
 
     width: 100%;
-
     height: 100%;
 
     backface-visibility: hidden;
-
 }
 
-
-
-.sayfa-on img, .sayfa-arka img {
-
+.sayfa-on img,
+.sayfa-arka img {
     width: 100%;
-
     height: 100%;
 
     object-fit: fill;
 
     display: block;
-
 }
-
-
 
 .sayfa-arka {
-
     transform: rotateY(180deg);
-
 }
 
 
+/* ========================================================= */
+/* SAYFA YAZISI                                              */
+/* ========================================================= */
 
 .sayfa-yazi {
-
     position: absolute;
 
     top: 0.8cm;
-
     left: 0.3cm;
 
     width: calc(100% - 0.6cm);
-
     height: calc(100% - 1.4cm);
 
     font-family: 'Dancing Script', cursive, serif;
@@ -678,7 +549,9 @@ body {
 
     text-align: left;
 
-    text-shadow: 0 0 3px rgba(26, 75, 130, 0.35), 0 0 1px rgba(26, 75, 130, 0.6);
+    text-shadow:
+        0 0 3px rgba(26, 75, 130, 0.35),
+        0 0 1px rgba(26, 75, 130, 0.6);
 
     box-sizing: border-box;
 
@@ -687,27 +560,23 @@ body {
     overflow: hidden;
 
     word-break: normal;
-
     overflow-wrap: break-word;
-
     hyphens: none;
 
     white-space: pre-wrap;
 
     font-size: 11pt;
-
 }
 
 
-
-/* ÜSTTEKİ HAREKETLİ KAPAK */
+/* ========================================================= */
+/* ÜSTTEKİ HAREKETLİ KAPAK                                  */
+/* ========================================================= */
 
 .kapak-alan {
-
     position: relative;
 
     width: 100%;
-
     height: 100%;
 
     transform-style: preserve-3d;
@@ -716,30 +585,21 @@ body {
 
     cursor: pointer;
 
-    transition: transform 2.0s ease-in-out;
+    transition:
+        transform 2.0s ease-in-out;
 
     z-index: 30;
-
 }
 
-
-
 .kapak-alan.dondu {
-
     transform: rotateY(-180deg);
 
     z-index: 1;
-
 }
 
-
-
 .kapak,
-
 .kapak-arka-kapak {
-
     width: 100%;
-
     height: 100%;
 
     object-fit: fill;
@@ -747,39 +607,25 @@ body {
     display: block;
 
     backface-visibility: hidden;
-
 }
-
-
 
 .kapak {
-
     position: relative;
-
 }
 
-
-
 .kapak-arka-kapak {
-
     position: absolute;
 
     top: 0;
-
     left: 0;
 
     transform: rotateY(180deg);
-
 }
 
-
-
 .kapak-yazi {
-
     position: absolute;
 
     top: 50%;
-
     left: calc(50% + 1cm);
 
     transform: translate(-50%, -50%);
@@ -797,101 +643,45 @@ body {
     color: #d6ad38;
 
     text-shadow:
-
         -1px -1px 1px rgba(55, 32, 5, 0.95),
-
         1px 1px 0 rgba(255, 226, 120, 0.75),
-
         0 0 1px rgba(245, 198, 65, 0.8),
-
         0 1px 2px rgba(45, 25, 3, 0.9);
 
     letter-spacing: 0.3px;
 
     backface-visibility: hidden;
-
 }
 
-
-
 .kapak-yazi .imza {
-
     text-align: center;
 
     display: block;
 
-    transform: translate(0.3cm, 1.7em);
-
+    transform:
+        translate(0.3cm, 1.7em);
 }
 
 
+/* ========================================================= */
+/* TELEFON İÇİN AYRI YAZI BOYUTU YOK                        */
+/* ========================================================= */
+/*
+   ÖNEMLİ:
+   Burada artık yazıyı 7pt'ye indiren @media yok.
+   Kitabın tamamı tek parça olarak ölçeklenecek.
+*/
 
-/* ===================================================== */
-
-/* SADECE TELEFON EKRANLARINDA YAZI ÖLÇEKLEME             */
-
-/* PC'DEKİ MEVCUT GÖRÜNÜM DEĞİŞTİRİLMEZ                  */
-
-/* ===================================================== */
-
-@media (max-width: 600px) {
-
-    .sol-kanat-yazi {
-
-        font-size: 7pt;
-
-    }
-
-
-
-    .sayfa-yazi {
-
-        font-size: 7pt;
-
-    }
-
-
-
-    .sayfa-numara {
-
-        font-size: 7pt;
-
-        letter-spacing: 1px;
-
-    }
-
-
-
-    .sol-baslik,
-
-    .sayfa-baslik {
-
-        font-size: 1.15em;
-
-    }
-
-
-
-    .kapak-yazi {
-
-        font-size: clamp(8px, 2.5vw, 14px);
-
-    }
-
-}
 
 </style>
 
 </head>
 
 
-
 <body>
 
 
-
 <div class="kitap-kapsayici" id="kitapKapsayici">
-
 
 
     <!-- 1. ALT KAPAK -->
@@ -903,14 +693,12 @@ body {
     </div>
 
 
-
     <!-- AÇIK KİTAP GÖVDESİ -->
 
     <div class="acik-kitap-alan" id="acikKitapAlan">
 
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
 
-        
 
         <!-- Sabit Sol Kanat Yazı Alanı (Sayfa 1) -->
 
@@ -918,7 +706,9 @@ body {
 
             <span class="sol-baslik" id="solBaslik">KIZIM'a…</span>
 
-            <span class="sol-govde" id="solGovde">Şiir..kızım..alınyazım..yürek sızım..kalp hırsızım..
+            <span class="sol-govde" id="solGovde">
+
+Şiir..kızım..alınyazım..yürek sızım..kalp hırsızım..
 
 Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
 
@@ -926,33 +716,48 @@ belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 
 ama yine de gülümseyerek tek başına okuyacaksın.
 
-Yani ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini yine göreceğim... nerede olduğumun hiç bir önemi yok.</span>
+Yani ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini yine göreceğim... nerede olduğumun hiç bir önemi yok.
+
+            </span>
 
         </div>
 
 
-
         <!-- Sol Kanattaki Sayfa 1 Numarası -->
 
-        <div class="sayfa-numara sol-kanat-numara" id="solSayfaNumara"><span class="tuy">🪶</span> 1 <span class="tuy">🪶</span></div>
+        <div
+            class="sayfa-numara sol-kanat-numara"
+            id="solSayfaNumara"
+        >
+            <span class="tuy">🪶</span>
+            1
+            <span class="tuy">🪶</span>
+        </div>
 
     </div>
 
 
-
     <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
 
-    <div class="sayfalar-kapsayici" id="sayfalarKapsayici"></div>
-
+    <div
+        class="sayfalar-kapsayici"
+        id="sayfalarKapsayici"
+    ></div>
 
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
 
-    <div class="kapak-alan" id="kapakAlan">
+    <div
+        class="kapak-alan"
+        id="kapakAlan"
+    >
 
-        <img src="kapak.jpg" class="kapak" alt="Ön Kapak">
+        <img
+            src="kapak.jpg"
+            class="kapak"
+            alt="Ön Kapak"
+        >
 
-        
 
         <div class="kapak-yazi">
 
@@ -969,110 +774,261 @@ Yani ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamze
         </div>
 
 
-
-        <img src="kapak.jpg" class="kapak-arka-kapak" alt="Arka Kapak">
+        <img
+            src="kapak.jpg"
+            class="kapak-arka-kapak"
+            alt="Arka Kapak"
+        >
 
     </div>
 
 
-
 </div>
-
 
 
 <script>
 
 window.addEventListener("load", function () {
 
-    const kapsayici = document.getElementById("kitapKapsayici");
+    const kapsayici =
+        document.getElementById("kitapKapsayici");
 
-    const kapakAlan = document.getElementById("kapakAlan");
+    const kapakAlan =
+        document.getElementById("kapakAlan");
 
-    const sayfalarKapsayici = document.getElementById("sayfalarKapsayici");
+    const sayfalarKapsayici =
+        document.getElementById("sayfalarKapsayici");
 
-    const kapakImg = document.querySelector(".kapak");
+    const kapakImg =
+        document.querySelector(".kapak");
 
 
+    /* ===================================================== */
+    /* YENİ EKRAN UYUMLU KİTAP ÖLÇEKLEME SİSTEMİ             */
+    /* ===================================================== */
 
-    /*
+    let sonOlcek = 1;
 
-       KİTABI EKRANIN MERKEZİNE OTURTAN SİSTEM
-
-       Eski sistemdeki sabit translateX(8cm) kaldırıldı.
-
-       Kitabın gerçek görsel sınırları hesaplanıyor ve
-
-       ölçek uygulandıktan sonra ekranın merkezine getiriliyor.
-
-    */
 
     function kitabiOrtala() {
 
-        const yukseklik = kapakImg.getBoundingClientRect().height;
+        /*
+           Önce eski transform'u temizliyoruz.
+           Böylece yeni ölçüm bir önceki transformdan
+           etkilenmiyor.
+        */
 
-        const ikiCm = 2 * 96 / 2.54;
+        kapsayici.style.transform = "none";
 
-        const oran = (yukseklik + ikiCm) / yukseklik;
-
-
-
-        /* Önce yalnızca ölçeği uygula */
-
-        kapsayici.style.transform = "scale(" + oran + ")";
-
-
-
-        /* Tarayıcının yeni ölçüyü hesaplamasını bekle */
 
         requestAnimationFrame(function () {
 
-            const rect = kapsayici.getBoundingClientRect();
-
-            const ekranMerkezi = window.innerWidth / 2;
-
-            const kitapMerkezi = rect.left + (rect.width / 2);
-
-
-
-            /* Kitabın merkezi ile ekran merkezi arasındaki fark */
-
-            const fark = ekranMerkezi - kitapMerkezi;
-
+            const rect =
+                kapsayici.getBoundingClientRect();
 
 
             /*
+               Kitabın doğal genişliği ve yüksekliği.
+            */
 
-               Transform listesinde translate önce geldiği için
+            const kitapGenisligi =
+                rect.width;
 
-               düzeltme doğrudan piksel olarak uygulanıyor.
+            const kitapYuksekligi =
+                rect.height;
 
+
+            /*
+               Ekranın kenarlarında biraz güvenlik payı
+               bırakıyoruz.
+
+               Yatayda %94
+               Dikeyde %94
+            */
+
+            const kullanilabilirGenislik =
+                window.innerWidth * 0.94;
+
+            const kullanilabilirYukseklik =
+                window.innerHeight * 0.94;
+
+
+            /*
+               Kitabın ekrana sığması için gereken iki
+               ayrı ölçek hesabı.
+            */
+
+            const yatayOlcek =
+                kullanilabilirGenislik /
+                kitapGenisligi;
+
+            const dikeyOlcek =
+                kullanilabilirYukseklik /
+                kitapYuksekligi;
+
+
+            /*
+               Küçük olan ölçek seçiliyor.
+               Böylece kitap hiçbir cihazda ekrandan
+               taşmıyor.
+            */
+
+            let olcek =
+                Math.min(yatayOlcek, dikeyOlcek);
+
+
+            /*
+               Masaüstünde kitabın aşırı büyümesini
+               engelliyoruz.
+
+               Mevcut tasarımdaki yaklaşık görünümü
+               korumak için üst sınır 1.35.
+            */
+
+            if (window.innerWidth > 900) {
+
+                olcek =
+                    Math.min(olcek, 1.35);
+
+            }
+
+
+            /*
+               Çok küçük cihazlarda bile kitabın
+               kullanılabilir bir boyutta kalması için
+               alt sınır.
+
+               Bu değer kitabı zorla ekrana taşırmaz;
+               kullanıcı isterse telefonun kendi zoom
+               özelliğini de kullanabilir.
+            */
+
+            if (
+                window.innerWidth <= 600 &&
+                window.innerHeight <= 1000
+            ) {
+
+                olcek =
+                    Math.min(olcek, 1.0);
+
+            }
+
+
+            /*
+               Kitabı ekranın tam ortasına getiriyoruz.
             */
 
             kapsayici.style.transform =
+                "scale(" + olcek + ")";
 
-                "translateX(" + fark + "px) scale(" + oran + ")";
+            sonOlcek = olcek;
+
+
+            /*
+               Scale sonrası gerçek görsel sınırı
+               tekrar ölçüyoruz.
+            */
+
+            requestAnimationFrame(function () {
+
+                const yeniRect =
+                    kapsayici.getBoundingClientRect();
+
+
+                const ekranMerkeziX =
+                    window.innerWidth / 2;
+
+                const ekranMerkeziY =
+                    window.innerHeight / 2;
+
+
+                const kitapMerkeziX =
+                    yeniRect.left +
+                    yeniRect.width / 2;
+
+                const kitapMerkeziY =
+                    yeniRect.top +
+                    yeniRect.height / 2;
+
+
+                const farkX =
+                    ekranMerkeziX -
+                    kitapMerkeziX;
+
+                const farkY =
+                    ekranMerkeziY -
+                    kitapMerkeziY;
+
+
+                /*
+                   Hem yatay hem dikey merkezleme.
+                */
+
+                kapsayici.style.transform =
+                    "translate(" +
+                    farkX +
+                    "px, " +
+                    farkY +
+                    "px) scale(" +
+                    olcek +
+                    ")";
+
+            });
 
         });
 
     }
 
 
+    /*
+       İlk açılış.
+    */
 
     kitabiOrtala();
 
 
+    /*
+       Ekran boyutu değiştiğinde tekrar hesapla.
+    */
 
-    /* Pencere boyutu değişirse kitabı tekrar ortala */
+    let resizeZamanlayici;
 
-    window.addEventListener("resize", function () {
+    window.addEventListener(
+        "resize",
+        function () {
 
-        kitabiOrtala();
+            clearTimeout(resizeZamanlayici);
 
-    });
+            resizeZamanlayici =
+                setTimeout(
+                    kitabiOrtala,
+                    100
+                );
+
+        }
+    );
 
 
+    /*
+       Telefon/tablet yön değiştirince.
+    */
 
-    // İLK 4 SAYFA (Orijinal Metinler ve Fotoğraf)
+    window.addEventListener(
+        "orientationchange",
+        function () {
+
+            setTimeout(
+                kitabiOrtala,
+                300
+            );
+
+        }
+    );
+
+
+    /* ===================================================== */
+    /* İLK 4 SAYFA                                            */
+    /* ===================================================== */
 
     const sagSayfaMetni1 =
 
@@ -1097,7 +1053,6 @@ Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
 
-
     const sagSayfaMetni2 =
 
 `Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
@@ -1119,8 +1074,9 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 Baban.`;
 
 
-
-    // 5. SAYFA (1. ve 2. Kıta)
+    /* ===================================================== */
+    /* 5. SAYFA                                              */
+    /* ===================================================== */
 
     const siirSayfa5 =
 
@@ -1149,8 +1105,9 @@ Bir ceylan yavrusu gibi ürkek ve ıslaksan
 Geliyorum!</span>`;
 
 
-
-    // 6. SAYFA (3. ve 4. Kıta)
+    /* ===================================================== */
+    /* 6. SAYFA                                              */
+    /* ===================================================== */
 
     const siirSayfa6 =
 
@@ -1174,10 +1131,9 @@ Sıyrılamamışsan gecenin sisli ve bulanık karanlığından
 
 Ve şefkatli eller bekliyorsan yaşamak için..
 
-Bekle…! 
+Bekle…!
 
 Geliyorum!</span>`;
-
 
 
     const toplamYaprak = 25;
@@ -1191,15 +1147,15 @@ Geliyorum!</span>`;
     let isTidyingUp = false;
 
 
-
     function temizleZamanAsimlari() {
 
-        aktifZamanAsimlari.forEach(id => clearTimeout(id));
+        aktifZamanAsimlari.forEach(
+            id => clearTimeout(id)
+        );
 
         aktifZamanAsimlari = [];
 
     }
-
 
 
     function sayfaIcerikleriniGoster(adim) {
@@ -1207,57 +1163,74 @@ Geliyorum!</span>`;
         temizleZamanAsimlari();
 
 
-
         if (adim === 1) {
 
-            let t1 = setTimeout(() => {
+            let t1 =
+                setTimeout(
+                    () => {
 
-                const b = document.getElementById("solBaslik");
+                        const b =
+                            document.getElementById(
+                                "solBaslik"
+                            );
 
-                const g = document.getElementById("solGovde");
-
-
-
-                if (b) b.classList.add("acildi");
-
-
-
-                let t2 = setTimeout(() => {
-
-                    if (g) g.classList.add("acildi");
-
-                }, 1000);
+                        const g =
+                            document.getElementById(
+                                "solGovde"
+                            );
 
 
+                        if (b)
+                            b.classList.add("acildi");
 
-                aktifZamanAsimlari.push(t2);
 
-            }, 1000);
+                        let t2 =
+                            setTimeout(
+                                () => {
 
+                                    if (g)
+                                        g.classList.add("acildi");
+
+                                },
+                                1000
+                            );
+
+
+                        aktifZamanAsimlari.push(t2);
+
+                    },
+                    1000
+                );
 
 
             aktifZamanAsimlari.push(t1);
 
 
-
-            let yaprak0 = yaprakElementleri[0];
-
+            let yaprak0 =
+                yaprakElementleri[0];
 
 
             if (yaprak0) {
 
-                let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
-
+                let sagGovde0 =
+                    yaprak0.querySelector(
+                        ".sayfa-on .sayfa-govde"
+                    );
 
 
                 if (sagGovde0) {
 
-                    let t3 = setTimeout(() => {
+                    let t3 =
+                        setTimeout(
+                            () => {
 
-                        sagGovde0.classList.add("acildi");
+                                sagGovde0.classList.add(
+                                    "acildi"
+                                );
 
-                    }, 10000);
-
+                            },
+                            10000
+                        );
 
 
                     aktifZamanAsimlari.push(t3);
@@ -1270,60 +1243,71 @@ Geliyorum!</span>`;
 
         else {
 
-            let yaprakIndex = adim - 2;
+            let yaprakIndex =
+                adim - 2;
 
 
+            if (
+                yaprakIndex >= 0 &&
+                yaprakIndex < yaprakElementleri.length
+            ) {
 
-            if (yaprakIndex >= 0 && yaprakIndex < yaprakElementleri.length) {
-
-                let aktifYaprak = yaprakElementleri[yaprakIndex];
-
-
-
-                let hedefYuz = (!aktifYaprak.classList.contains("cevirdi")) ?
-
-                    aktifYaprak.querySelector(".sayfa-on") :
-
-                    aktifYaprak.querySelector(".sayfa-arka");
+                let aktifYaprak =
+                    yaprakElementleri[yaprakIndex];
 
 
-
-                let arkaBaslik = hedefYuz.querySelector(".sayfa-baslik");
-
-                let arkaGovde = hedefYuz.querySelector(".sayfa-govde");
-
-
-
-                let t1 = setTimeout(() => {
-
-                    let delayYazilar = 0;
+                let hedefYuz =
+                    (!aktifYaprak.classList.contains("cevirdi"))
+                        ?
+                        aktifYaprak.querySelector(".sayfa-on")
+                        :
+                        aktifYaprak.querySelector(".sayfa-arka");
 
 
+                let arkaBaslik =
+                    hedefYuz.querySelector(".sayfa-baslik");
 
-                    if (arkaBaslik) {
-
-                        arkaBaslik.classList.add("acildi");
-
-                        delayYazilar = 1000;
-
-                    }
+                let arkaGovde =
+                    hedefYuz.querySelector(".sayfa-govde");
 
 
+                let t1 =
+                    setTimeout(
+                        () => {
 
-                    let t2 = setTimeout(() => {
-
-                        if (arkaGovde) arkaGovde.classList.add("acildi");
-
-                    }, delayYazilar);
-
+                            let delayYazilar = 0;
 
 
-                    aktifZamanAsimlari.push(t2);
+                            if (arkaBaslik) {
+
+                                arkaBaslik.classList.add(
+                                    "acildi"
+                                );
+
+                                delayYazilar = 1000;
+
+                            }
 
 
+                            let t2 =
+                                setTimeout(
+                                    () => {
 
-                }, 1000);
+                                        if (arkaGovde)
+                                            arkaGovde.classList.add(
+                                                "acildi"
+                                            );
 
+                                    },
+                                    delayYazilar
+                                );
+
+
+                            aktifZamanAsimlari.push(t2);
+
+                        },
+                        1000
+                    );
 
 
                 aktifZamanAsimlari.push(t1);
@@ -1335,15 +1319,13 @@ Geliyorum!</span>`;
     }
 
 
-
     function sonrakiSayfayaGec() {
 
-        if (isTidyingUp) return;
-
+        if (isTidyingUp)
+            return;
 
 
         temizleZamanAsimlari();
-
 
 
         if (mevcutAdimIndex === 0) {
@@ -1355,74 +1337,84 @@ Geliyorum!</span>`;
             mevcutAdimIndex = 1;
 
 
+            setTimeout(
+                () => {
 
-            setTimeout(() => {
+                    sayfaIcerikleriniGoster(1);
 
-                sayfaIcerikleriniGoster(1);
-
-            }, 1200);
+                },
+                1200
+            );
 
         }
 
         else {
 
-            let yaprakIndexGercek = mevcutAdimIndex - 1;
-
+            let yaprakIndexGercek =
+                mevcutAdimIndex - 1;
 
 
             if (mevcutAdimIndex === 1) {
 
-                let yaprak0 = yaprakElementleri[0];
+                let yaprak0 =
+                    yaprakElementleri[0];
 
-                let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
+                let sagGovde0 =
+                    yaprak0.querySelector(
+                        ".sayfa-on .sayfa-govde"
+                    );
 
 
-
-                if (sagGovde0) sagGovde0.classList.add("acildi");
+                if (sagGovde0)
+                    sagGovde0.classList.add("acildi");
 
             }
 
 
-
             if (yaprakIndexGercek < toplamYaprak) {
 
-                let yaprak = yaprakElementleri[yaprakIndexGercek];
-
+                let yaprak =
+                    yaprakElementleri[
+                        yaprakIndexGercek
+                    ];
 
 
                 if (!yaprak.classList.contains("cevirdi")) {
 
-                    yaprak.style.zIndex = 50 + yaprakIndexGercek;
+                    yaprak.style.zIndex =
+                        50 + yaprakIndexGercek;
 
                     yaprak.classList.add("cevirdi");
-
-
 
                     mevcutAdimIndex++;
 
 
-
                     if (mevcutAdimIndex > toplamYaprak) {
 
-                        setTimeout(() => {
+                        setTimeout(
+                            () => {
 
-                            otomatikGeriyeSar();
+                                otomatikGeriyeSar();
 
-                        }, 1200);
-
-
+                            },
+                            1200
+                        );
 
                         return;
 
                     }
 
 
+                    setTimeout(
+                        () => {
 
-                    setTimeout(() => {
+                            sayfaIcerikleriniGoster(
+                                mevcutAdimIndex
+                            );
 
-                        sayfaIcerikleriniGoster(mevcutAdimIndex);
-
-                    }, 1000);
+                        },
+                        1000
+                    );
 
                 }
 
@@ -1445,15 +1437,13 @@ Geliyorum!</span>`;
     }
 
 
-
     function oncekiSayfayaGec() {
 
-        if (isTidyingUp) return;
-
+        if (isTidyingUp)
+            return;
 
 
         temizleZamanAsimlari();
-
 
 
         if (mevcutAdimIndex > 1) {
@@ -1461,32 +1451,47 @@ Geliyorum!</span>`;
             mevcutAdimIndex--;
 
 
-
-            let yaprakIndex = mevcutAdimIndex - 1;
-
-            let yaprak = yaprakElementleri[yaprakIndex];
+            let yaprakIndex =
+                mevcutAdimIndex - 1;
 
 
+            let yaprak =
+                yaprakElementleri[
+                    yaprakIndex
+                ];
 
-            yaprak.classList.remove("cevirdi");
 
-            yaprak.style.zIndex = toplamYaprak - yaprakIndex;
+            yaprak.classList.remove(
+                "cevirdi"
+            );
 
 
+            yaprak.style.zIndex =
+                toplamYaprak - yaprakIndex;
 
-            setTimeout(() => {
 
-                sayfaIcerikleriniGoster(mevcutAdimIndex);
+            setTimeout(
+                () => {
 
-            }, 1000);
+                    sayfaIcerikleriniGoster(
+                        mevcutAdimIndex
+                    );
+
+                },
+                1000
+            );
 
         }
 
         else if (mevcutAdimIndex === 1) {
 
-            kapsayici.classList.remove("acildi");
+            kapsayici.classList.remove(
+                "acildi"
+            );
 
-            kapakAlan.classList.remove("dondu");
+            kapakAlan.classList.remove(
+                "dondu"
+            );
 
             mevcutAdimIndex = 0;
 
@@ -1495,11 +1500,10 @@ Geliyorum!</span>`;
     }
 
 
-
     function otomatikGeriyeSar() {
 
-        if (isTidyingUp) return;
-
+        if (isTidyingUp)
+            return;
 
 
         isTidyingUp = true;
@@ -1507,67 +1511,101 @@ Geliyorum!</span>`;
         temizleZamanAsimlari();
 
 
-
-        let index = yaprakElementleri.length - 1;
-
-
-
-        let rewindInterval = setInterval(function () {
-
-            if (index >= 0) {
-
-                yaprakElementleri[index].style.zIndex = 100;
-
-                yaprakElementleri[index].classList.remove("cevirdi");
-
-                yaprakElementleri[index].style.zIndex = toplamYaprak - index;
-
-                index--;
-
-            }
-
-            else {
-
-                clearInterval(rewindInterval);
+        let index =
+            yaprakElementleri.length - 1;
 
 
+        let rewindInterval =
+            setInterval(
+                function () {
 
-                setTimeout(function () {
+                    if (index >= 0) {
 
-                    kapsayici.classList.remove("acildi");
+                        yaprakElementleri[
+                            index
+                        ].style.zIndex = 100;
 
-                    kapakAlan.classList.remove("dondu");
 
-                    mevcutAdimIndex = 0;
+                        yaprakElementleri[
+                            index
+                        ].classList.remove(
+                            "cevirdi"
+                        );
 
-                    isTidyingUp = false;
 
-                }, 400);
+                        yaprakElementleri[
+                            index
+                        ].style.zIndex =
+                            toplamYaprak - index;
 
-            }
 
-        }, 100);
+                        index--;
+
+                    }
+
+                    else {
+
+                        clearInterval(
+                            rewindInterval
+                        );
+
+
+                        setTimeout(
+                            function () {
+
+                                kapsayici.classList.remove(
+                                    "acildi"
+                                );
+
+                                kapakAlan.classList.remove(
+                                    "dondu"
+                                );
+
+                                mevcutAdimIndex = 0;
+
+                                isTidyingUp = false;
+
+                            },
+                            400
+                        );
+
+                    }
+
+                },
+                100
+            );
 
     }
 
 
+    /* ===================================================== */
+    /* YAPRAKLARI OLUŞTURMA                                  */
+    /* ===================================================== */
 
-    // YAPRAKLARI OLUŞTURMA DÖNGÜSÜ
+    for (
+        let i = 0;
+        i < toplamYaprak;
+        i++
+    ) {
 
-    for (let i = 0; i < toplamYaprak; i++) {
-
-        const yaprakDiv = document.createElement("div");
-
-        yaprakDiv.className = "sayfa-yaprak";
-
-        yaprakDiv.style.zIndex = toplamYaprak - i;
-
+        const yaprakDiv =
+            document.createElement("div");
 
 
-        let onSayfaNo = (i * 2) + 2;
+        yaprakDiv.className =
+            "sayfa-yaprak";
 
-        let arkaSayfaNo = (i * 2) + 3;
 
+        yaprakDiv.style.zIndex =
+            toplamYaprak - i;
+
+
+        let onSayfaNo =
+            (i * 2) + 2;
+
+
+        let arkaSayfaNo =
+            (i * 2) + 3;
 
 
         let icerikOn = "";
@@ -1575,20 +1613,29 @@ Geliyorum!</span>`;
         let icerikArka = "";
 
 
-
-        // 1. Yaprak (Sayfa 2 ve 3)
+        /* 1. Yaprak */
 
         if (i === 0) {
 
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
+            icerikOn =
+                `<div class="sayfa-yazi">
+                    <span class="sayfa-govde">
+                        ${sagSayfaMetni1}
+                    </span>
+                </div>`;
 
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
+
+            icerikArka =
+                `<div class="sayfa-yazi">
+                    <span class="sayfa-govde">
+                        ${sagSayfaMetni2}
+                    </span>
+                </div>`;
 
         }
 
 
-
-        // 2. Yaprak (Sayfa 4 - Fotoğraf | Arka yüzü Sayfa 5: Şiir 1. ve 2. Kıta)
+        /* 2. Yaprak */
 
         else if (i === 1) {
 
@@ -1600,40 +1647,56 @@ Geliyorum!</span>`;
 
                     <div class="bant bant-sag-ust"></div>
 
-                    <img src="kizim1.jpg" alt="Şiir">
+                    <img
+                        src="kizim1.jpg"
+                        alt="Şiir"
+                    >
 
                 </div>
 
             `;
 
 
-
-            icerikArka = `<div class="sayfa-yazi">${siirSayfa5}</div>`;
+            icerikArka =
+                `<div class="sayfa-yazi">
+                    ${siirSayfa5}
+                </div>`;
 
         }
 
 
-
-        // 3. Yaprak (Sayfa 6: Şiir 3. ve 4. Kıta | Arka yüzü Sayfa 7: Boş)
+        /* 3. Yaprak */
 
         else if (i === 2) {
 
-            icerikOn = `<div class="sayfa-yazi">${siirSayfa6}</div>`;
+            icerikOn =
+                `<div class="sayfa-yazi">
+                    ${siirSayfa6}
+                </div>`;
 
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+
+            icerikArka =
+                `<div class="sayfa-yazi">
+                    <span class="sayfa-govde"></span>
+                </div>`;
 
         }
-
 
 
         else {
 
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+            icerikOn =
+                `<div class="sayfa-yazi">
+                    <span class="sayfa-govde"></span>
+                </div>`;
 
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+
+            icerikArka =
+                `<div class="sayfa-yazi">
+                    <span class="sayfa-govde"></span>
+                </div>`;
 
         }
-
 
 
         yaprakDiv.innerHTML = `
@@ -1642,23 +1705,44 @@ Geliyorum!</span>`;
 
                 <div class="sayfa-on">
 
-                    <img src="sag_sayfa.png" alt="Sayfa Ön">
+                    <img
+                        src="sag_sayfa.png"
+                        alt="Sayfa Ön"
+                    >
 
                     ${icerikOn}
 
-                    <div class="sayfa-numara"><span class="tuy">🪶</span> ${onSayfaNo} <span class="tuy">🪶</span></div>
+                    <div class="sayfa-numara">
+
+                        <span class="tuy">🪶</span>
+
+                        ${onSayfaNo}
+
+                        <span class="tuy">🪶</span>
+
+                    </div>
 
                 </div>
 
 
-
                 <div class="sayfa-arka">
 
-                    <img src="sol_sayfa.png" alt="Sayfa Arka">
+                    <img
+                        src="sol_sayfa.png"
+                        alt="Sayfa Arka"
+                    >
 
                     ${icerikArka}
 
-                    <div class="sayfa-numara"><span class="tuy">🪶</span> ${arkaSayfaNo} <span class="tuy">🪶</span></div>
+                    <div class="sayfa-numara">
+
+                        <span class="tuy">🪶</span>
+
+                        ${arkaSayfaNo}
+
+                        <span class="tuy">🪶</span>
+
+                    </div>
 
                 </div>
 
@@ -1667,64 +1751,243 @@ Geliyorum!</span>`;
         `;
 
 
+        yaprakDiv.addEventListener(
+            "click",
+            function (e) {
 
-        yaprakDiv.addEventListener("click", function (e) {
-
-            e.stopPropagation();
-
-
-
-            if (isTidyingUp) return;
+                e.stopPropagation();
 
 
-
-            const rect = yaprakDiv.getBoundingClientRect();
-
-            const tikX = e.clientX - rect.left;
+                if (isTidyingUp)
+                    return;
 
 
+                const rect =
+                    yaprakDiv.getBoundingClientRect();
 
-            let aktifSonYaprak = yaprakElementleri[yaprakElementleri.length - 1];
+
+                const tikX =
+                    e.clientX - rect.left;
 
 
+                let aktifSonYaprak =
+                    yaprakElementleri[
+                        yaprakElementleri.length - 1
+                    ];
+
+
+                if (
+
+                    yaprakDiv === aktifSonYaprak &&
+
+                    tikX >= rect.width / 2 &&
+
+                    aktifSonYaprak.classList.contains(
+                        "cevirdi"
+                    )
+
+                ) {
+
+                    otomatikGeriyeSar();
+
+                    return;
+
+                }
+
+
+                if (tikX < rect.width / 2) {
+
+                    oncekiSayfayaGec();
+
+                }
+
+                else {
+
+                    if (
+                        !yaprakDiv.classList.contains(
+                            "cevirdi"
+                        )
+                    ) {
+
+                        let aktifSagYaprak =
+                            yaprakElementleri.find(
+                                y =>
+                                    !y.classList.contains(
+                                        "cevirdi"
+                                    )
+                            );
+
+
+                        if (
+                            aktifSagYaprak ===
+                            yaprakDiv
+                        ) {
+
+                            sonrakiSayfayaGec();
+
+                        }
+
+                    }
+
+                    else {
+
+                        let cevrilmisYapraklar =
+                            yaprakElementleri.filter(
+                                y =>
+                                    y.classList.contains(
+                                        "cevirdi"
+                                    )
+                            );
+
+
+                        let enUstSolYaprak =
+                            cevrilmisYapraklar[
+                                cevrilmisYapraklar.length - 1
+                            ];
+
+
+                        if (
+                            enUstSolYaprak ===
+                            yaprakDiv
+                        ) {
+
+                            oncekiSayfayaGec();
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        sayfalarKapsayici.appendChild(
+            yaprakDiv
+        );
+
+
+        yaprakElementleri.push(
+            yaprakDiv
+        );
+
+    }
+
+
+    /* ===================================================== */
+    /* KAPAK TIKLAMA                                         */
+    /* ===================================================== */
+
+    kapakAlan.addEventListener(
+        "click",
+        function (e) {
 
             if (
-
-                yaprakDiv === aktifSonYaprak &&
-
-                tikX >= rect.width / 2 &&
-
-                aktifSonYaprak.classList.contains("cevirdi")
-
+                mevcutAdimIndex === 0
             ) {
 
-                otomatikGeriyeSar();
-
-                return;
+                sonrakiSayfayaGec();
 
             }
 
+        }
+    );
 
 
-            if (tikX < rect.width / 2) {
+    /* ===================================================== */
+    /* SOL YAZI TIKLAMA                                      */
+    /* ===================================================== */
 
-                oncekiSayfayaGec();
+    document
+        .getElementById("solKanatYazi")
+        .addEventListener(
+            "click",
+            function (e) {
+
+                e.stopPropagation();
+
+
+                if (isTidyingUp)
+                    return;
+
+
+                if (
+                    mevcutAdimIndex === 1
+                ) {
+
+                    oncekiSayfayaGec();
+
+                }
 
             }
-
-            else {
-
-                if (!yaprakDiv.classList.contains("cevirdi")) {
-
-                    let aktifSagYaprak = yaprakElementleri.find(
-
-                        y => !y.classList.contains("cevirdi")
-
-                    );
+        );
 
 
+    /* ===================================================== */
+    /* SOL SAYFA NUMARASI                                    */
+    /* ===================================================== */
 
-                    if (aktifSagYaprak === yaprakDiv) {
+    document
+        .getElementById("solSayfaNumara")
+        .addEventListener(
+            "click",
+            function (e) {
+
+                e.stopPropagation();
+
+
+                if (isTidyingUp)
+                    return;
+
+
+                if (
+                    mevcutAdimIndex === 1
+                ) {
+
+                    oncekiSayfayaGec();
+
+                }
+
+            }
+        );
+
+
+    /* ===================================================== */
+    /* AÇIK KİTAP TIKLAMA                                    */
+    /* ===================================================== */
+
+    document
+        .getElementById("acikKitapAlan")
+        .addEventListener(
+            "click",
+            function (e) {
+
+                if (isTidyingUp)
+                    return;
+
+
+                if (
+                    mevcutAdimIndex === 1
+                ) {
+
+                    const rect =
+                        this.getBoundingClientRect();
+
+
+                    const tikX =
+                        e.clientX - rect.left;
+
+
+                    if (
+                        tikX < rect.width / 2
+                    ) {
+
+                        oncekiSayfayaGec();
+
+                    }
+
+                    else {
 
                         sonrakiSayfayaGec();
 
@@ -1732,130 +1995,12 @@ Geliyorum!</span>`;
 
                 }
 
-                else {
-
-                    let cevrilmisYapraklar = yaprakElementleri.filter(
-
-                        y => y.classList.contains("cevirdi")
-
-                    );
-
-
-
-                    let enUstSolYaprak =
-
-                        cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
-
-
-
-                    if (enUstSolYaprak === yaprakDiv) {
-
-                        oncekiSayfayaGec();
-
-                    }
-
-                }
-
             }
-
-        });
-
-
-
-        sayfalarKapsayici.appendChild(yaprakDiv);
-
-        yaprakElementleri.push(yaprakDiv);
-
-    }
-
-
-
-    kapakAlan.addEventListener("click", function (e) {
-
-        if (mevcutAdimIndex === 0) {
-
-            sonrakiSayfayaGec();
-
-        }
-
-    });
-
-
-
-    document.getElementById("solKanatYazi").addEventListener("click", function (e) {
-
-        e.stopPropagation();
-
-
-
-        if (isTidyingUp) return;
-
-
-
-        if (mevcutAdimIndex === 1) {
-
-            oncekiSayfayaGec();
-
-        }
-
-    });
-
-
-
-    document.getElementById("solSayfaNumara").addEventListener("click", function (e) {
-
-        e.stopPropagation();
-
-
-
-        if (isTidyingUp) return;
-
-
-
-        if (mevcutAdimIndex === 1) {
-
-            oncekiSayfayaGec();
-
-        }
-
-    });
-
-
-
-    document.getElementById("acikKitapAlan").addEventListener("click", function (e) {
-
-        if (isTidyingUp) return;
-
-
-
-        if (mevcutAdimIndex === 1) {
-
-            const rect = this.getBoundingClientRect();
-
-            const tikX = e.clientX - rect.left;
-
-
-
-            if (tikX < rect.width / 2) {
-
-                oncekiSayfayaGec();
-
-            }
-
-            else {
-
-                sonrakiSayfayaGec();
-
-            }
-
-        }
-
-    });
+        );
 
 });
 
 </script>
-
 
 
 </body>
