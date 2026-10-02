@@ -182,7 +182,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* SAYFA İÇİ FOTOĞRAF ALANI (YUMUŞAK / KAĞIT İLE BÜTÜNLEŞİK) */
+/* SAYFA İÇİ FOTOĞRAF ALANI (EFEKTLER ARINDIRILMIŞ) */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -203,20 +203,8 @@ body {
     height: 100%;
     object-fit: cover; 
     display: block;
-    
     border-radius: 2px;
-    box-shadow: inset 0 0 15px rgba(45, 25, 3, 0.4), 0 1px 4px rgba(0,0,0,0.2);
-    
-    /* Sayfa dokusuyla ve nostaljik tonla uyumlu filtreler */
-    filter: sepia(0.4) 
-            contrast(1.1) 
-            brightness(1.02)
-            hue-rotate(-15deg)
-            saturate(1.1);
-            
-    /* Fotoğrafın kağıtla bütünleşmesini sağlayan harmanlama modu */
-    mix-blend-mode: multiply;
-    opacity: 0.92;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
 /* ÇOKLU SAYFA KONTEYNERİ */
