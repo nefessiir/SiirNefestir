@@ -123,7 +123,7 @@ body {
     width: 100%;
     font-weight: 700;
     font-size: 1.25em;
-    margin-top: 2.2em; /* 1 cm aşağı indirmek için margin artırıldı */
+    margin-top: 2.2em; /* 1 cm aşağı inmesi için artırıldı */
     margin-bottom: 0.4em;
     max-height: 0;
     opacity: 0;
@@ -156,6 +156,7 @@ body {
     opacity: 0;
     overflow: hidden;
     transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
+    margin-top: 0; /* Gövde metninin konumu sabit tutuldu */
 }
 
 .sol-govde.acildi, .sayfa-govde.acildi {
@@ -235,14 +236,12 @@ body {
     pointer-events: none;
 }
 
-/* Sol Alt Köşe İçin Çapraz Bant */
 .bant-sol-alt {
     bottom: -8px;
     left: -8px;
     transform: rotate(45deg);
 }
 
-/* Sağ Üst Köşe İçin Çapraz Bant */
 .bant-sag-ust {
     top: -8px;
     right: -8px;
@@ -657,7 +656,6 @@ Baban.`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
-        // 4. sayfaya denk gelen yer: i = 1 (2. yaprak) ve ön yüzü (onSayfaNo === 4)
         if (onSayfaNo === 4) {
             icerikOn = `
                 <div class="sayfa-fotograf">
