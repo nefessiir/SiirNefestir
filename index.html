@@ -497,9 +497,8 @@ Baban.`;
 
     // 5. SAYFA (1. ve 2. Kıta)
     const siirSayfa5 = 
-`GELİYORUM
-
-Yoksam düşlerinde, gecelerinde kayıpsam..
+`<span class="sayfa-baslik">GELİYORUM</span>
+<span class="sayfa-govde">Yoksam düşlerinde, gecelerinde kayıpsam..
 Bakışların hep donuk, gözlerin ıslanıyorsa..
 Soğuksa ellerin, buz gibiyse hala..
 Ve inatçıysan çağrında..sabırsız
@@ -509,13 +508,12 @@ Gecelerin koynunda bir esireysen
 Yanaklarımdan akan yaşlar kadar sessiz
 Yağmurlu gecelerde…
 Bir ceylan yavrusu gibi ürkek ve ıslaksan
-Geliyorum!`;
+Geliyorum!</span>`;
 
     // 6. SAYFA (3. ve 4. Kıta)
     const siirSayfa6 = 
-`GELİYORUM
-
-Denizin koyu maviliğinde kayboluyorsan..
+`<span class="sayfa-baslik">GELİYORUM</span>
+<span class="sayfa-govde">Denizin koyu maviliğinde kayboluyorsan..
 Her kanat çırpışında martıların,
 Yüreğine çaresiz sancılar saplanıyorsa
 Geliyorum!
@@ -525,7 +523,7 @@ Dudaklarını kurutmuşsa serin bir meltem..
 Sıyrılamamışsan gecenin sisli ve bulanık karanlığından
 Ve şefkatli eller bekliyorsan yaşamak için..
 Bekle…! 
-Geliyorum!`;
+Geliyorum!</span>`;
 
     const toplamYaprak = 25; 
     let yaprakElementleri = [];
@@ -569,8 +567,14 @@ Geliyorum!`;
             let yaprakIndex = adim - 2;
             if (yaprakIndex >= 0 && yaprakIndex < yaprakElementleri.length) {
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
-                let arkaBaslik = aktifYaprak.querySelector(".sayfa-baslik");
-                let arkaGovde = aktifYaprak.querySelector(".sayfa-arka .sayfa-govde");
+                
+                // Geri gelirken doğru yüzü hedeflemek için kontrol
+                let hedefYuz = (!aktifYaprak.classList.contains("cevirdi")) ? 
+                    aktifYaprak.querySelector(".sayfa-on") : 
+                    aktifYaprak.querySelector(".sayfa-arka");
+
+                let arkaBaslik = hedefYuz.querySelector(".sayfa-baslik");
+                let arkaGovde = hedefYuz.querySelector(".sayfa-govde");
 
                 let t1 = setTimeout(() => {
                     let delayYazilar = 0;
@@ -695,7 +699,7 @@ Geliyorum!`;
         let arkaSayfaNo = (i * 2) + 3;
 
         let icerikOn = "";
-        let icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+        let icerikArka = "";
 
         // 1. Yaprak (Sayfa 2 ve 3)
         if (i === 0) {
@@ -711,15 +715,16 @@ Geliyorum!`;
                     <img src="kizim1.jpg" alt="Şiir">
                 </div>
             `;
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa5}</span></div>`;
+            icerikArka = `<div class="sayfa-yazi">${siirSayfa5}</div>`;
         } 
         // 3. Yaprak (Sayfa 6: Şiir 3. ve 4. Kıta | Arka yüzü Sayfa 7: Boş)
         else if (i === 2) {
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa6}</span></div>`;
+            icerikOn = `<div class="sayfa-yazi">${siirSayfa6}</div>`;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         } 
         else {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
         yaprakDiv.innerHTML = `
@@ -789,7 +794,7 @@ Geliyorum!`;
         e.stopPropagation();
         if (isTidyingUp) return;
         if (mevcutAdimIndex === 1) {
-            oncekiSayfayaGec();
+            oncekiSayfayaGec.oncekiSayfayaGec(); // Düzelttiğimiz akış fonksiyonu
         }
     });
 
