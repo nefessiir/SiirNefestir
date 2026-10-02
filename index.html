@@ -40,7 +40,7 @@ body {
     z-index: 2;
 }
 
-/* 1. SAĞDA SABİT DURAN ALT KAPAK */
+/* 1. SAĞda SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -137,7 +137,7 @@ body {
     opacity: 0;
     overflow: hidden;
     transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
-    margin-top: -0.8em; /* Sadece sol taraf birbirine yaklaştırıldı */
+    margin-top: -0.8em; 
 }
 
 .sol-baslik.acildi {
@@ -150,7 +150,7 @@ body {
     opacity: 1;
 }
 
-/* DİĞER SAYFALAR İÇİN ORİJİNAL AYARLAR (Kesilmeyi önlemek için ayrıldı) */
+/* DİĞER SAYFALAR İÇİN ORİJİNAL AYARLAR */
 .sayfa-baslik {
     text-align: center;
     display: block;
@@ -171,7 +171,7 @@ body {
     opacity: 0;
     overflow: hidden;
     transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
-    margin-top: 0; /* Diğer sayfalar orijinal konumunda bırakıldı */
+    margin-top: 0; 
 }
 
 .sayfa-baslik.acildi, .sayfa-govde.acildi {
@@ -483,16 +483,33 @@ Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
-    const sagSayfaMetni2 = 
-`Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
-beklediği yaşama sebebisin.
-Çünkü sen benim , yazdığım en güzel şiirsin…
+    // 2. Yaprağın Arka Yüzü (Sayfa 5 - GELİYORUM şiiri)
+    const sagSayfaMetni3 = 
+`GELİYORUM
 
-Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
+Yoksam düşlerinde, gecelerinde kayıpsam..
+Bakışların hep donuk, gözlerin ıslanıyorsa..
+Soğuksa ellerin, buz gibiyse hala..
+Ve inatçıysan çağrında..sabırsız
+Geliyorum!
 
-Hasretle gamzelerinden ve o küçük çenenden öperim.
+Gecelerin koynunda bir esireysen
+Yanaklarımdan akan yaşlar kadar sessiz
+Yağmurlu gecelerde…
+Bir ceylan yavrusu gibi ürkek ve ıslaksan
+Geliyorum!
 
-Baban.`;
+Denizin koyu maviliğinde kayboluyorsan..
+Her kanat çırpışında martıların,
+Yüreğine çaresiz sancılar saplanıyorsa
+Geliyorum!
+
+Bir rüzgar kırmışsa dalını..
+Dudaklarını kurutmuşsa serin bir meltem..
+Sıyrılamamışsan gecenin sisli ve bulanık karanlığından
+Ve şefkatli eller bekliyorsan yaşamak için..
+Bekle…! 
+Geliyorum!`;
 
     const toplamYaprak = 25; 
     let yaprakElementleri = [];
@@ -666,9 +683,9 @@ Baban.`;
 
         if (i === 0) {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
-        } else {
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+        } else if (i === 1) {
+            // 2. Yaprağın arkası (Sayfa 5) -> GELİYORUM şiiri
+            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni3}</span></div>`;
         }
 
         if (onSayfaNo === 4) {
