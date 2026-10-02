@@ -495,20 +495,51 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    // 5. SAYFADAN İTİBARAN EKLENECEK ŞİİR METİNLERİ 
-    // (İstediğin şiiri buradaki değişkenlere satır satır ekleyebilirsin)
-    const siirMetniSayfa5 = 
-`Buraya 5. sayfanın metnini yazabilirsin...
-Dilediğin gibi çoğaltabilir veya düzenleyebilirsin.`;
+    // 5. SAYFADAN İTİBARAN YENİ ŞİİRİN PARÇALARI
+    const siirSayfa5 = 
+`GELİYORUM
 
-    const siirMetniSayfa6 = 
-`Buraya 6. sayfanın metnini yazabilirsin...`;
+Yoksam düşlerinde, gecelerinde kayıpsam..
 
-    const siirMetniSayfa7 = 
-`Buraya 7. sayfanın metnini yazabilirsin...`;
+Bakışların hep donuk, gözlerin ıslanıyorsa..
 
-    const siirMetniSayfa8 = 
-`Buraya 8. sayfanın metnini yazabilirsin...`;
+Soğuksa ellerin, buz gibiyse hala..
+
+Ve inatçıysan çağrında..sabırsız
+
+Geliyorum!`;
+
+    const siirSayfa6 = 
+`Gecelerin koynunda bir esireysen
+
+Yanaklarımdan akan yaşlar kadar sessiz
+
+Yağmurlu gecelerde…
+
+Bir ceylan yavrusu gibi ürkek ve ıslaksan
+
+Geliyorum!`;
+
+    const siirSayfa7 = 
+`Denizin koyu maviliğinde kayboluyorsan..
+
+Her kanat çırpışında martıların,
+
+Yüreğine çaresiz sancılar saplanıyorsa
+
+Geliyorum!`;
+
+    const siirSayfa8 = 
+`Bir rüzgar kırmışsa dalını..
+
+Dudaklarını kurutmuşsa serin bir meltem..
+
+Sıyrılamamışsan gecenin sisli ve bulanık karanlığından
+
+Ve şefkatli eller bekliyorsan yaşamak için..
+
+Bekle…! 
+Geliyorum!`;
 
     const toplamYaprak = 25; 
     let yaprakElementleri = [];
@@ -685,7 +716,7 @@ Dilediğin gibi çoğaltabilir veya düzenleyebilirsin.`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
         } 
-        // 2. Yaprak (Sayfa 4 - Fotoğraf Alanı)
+        // 2. Yaprak (Sayfa 4 - Fotoğraf Alanı | Arka yüzü Sayfa 5: Şiir 1. Kısım)
         else if (i === 1) {
             icerikOn = `
                 <div class="sayfa-fotograf">
@@ -694,16 +725,16 @@ Dilediğin gibi çoğaltabilir veya düzenleyebilirsin.`;
                     <img src="kizim1.jpg" alt="Şiir">
                 </div>
             `;
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirMetniSayfa5}</span></div>`;
+            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa5}</span></div>`;
         } 
-        // 3. Yaprak (Sayfa 6 ve 7)
+        // 3. Yaprak (Sayfa 6 ve 7: Şiir 2. ve 3. Kısımlar)
         else if (i === 2) {
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirMetniSayfa6}</span></div>`;
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirMetniSayfa7}</span></div>`;
+            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa6}</span></div>`;
+            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa7}</span></div>`;
         } 
-        // 4. Yaprak (Sayfa 8 ve Devamı)
+        // 4. Yaprak (Sayfa 8 ve 9: Şiir 4. Kısım ve devamı boş)
         else if (i === 3) {
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirMetniSayfa8}</span></div>`;
+            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa8}</span></div>`;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         } 
         else {
