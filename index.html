@@ -150,7 +150,7 @@ body {
     opacity: 1;
 }
 
-/* DİĞER SAYFALAR İÇİN ORİJİNAL AYARLAR */
+/* DİĞER SAYFALAR */
 .sayfa-baslik {
     text-align: center;
     display: block;
@@ -180,15 +180,16 @@ body {
     opacity: 1;
 }
 
-/* GELİYORUM ŞİİR BAŞLIĞI */
+/* ŞİİR BAŞLIĞI */
 .siir-baslik {
     display: block;
     text-align: center;
     font-weight: 700;
-    margin-bottom: 0.5em;
+    font-size: 1.25em;
+    margin-bottom: 0.6em;
 }
 
-/* SAYFA NUMARASI STİLİ */
+/* SAYFA NUMARASI */
 .sayfa-numara {
     position: absolute;
     bottom: 0.8cm;
@@ -222,7 +223,7 @@ body {
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
 }
 
-/* SAYFA İÇİ FOTOĞRAF ALANI */
+/* SAYFA İÇİ FOTOĞRAF */
 .sayfa-fotograf {
     position: absolute;
     top: 50%;
@@ -247,7 +248,7 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
-/* SAMAN KAĞIDI ÇAPRAZ BANT EFEKTLERİ */
+/* SAMAN KAĞIDI BANTLARI */
 .bant {
     position: absolute;
     width: 38px;
@@ -340,6 +341,7 @@ body {
     transform: rotateY(180deg);
 }
 
+/* SAYFA YAZISI */
 .sayfa-yazi {
     position: absolute;
     top: 0.8cm;
@@ -437,12 +439,10 @@ body {
 
     <!-- AÇIK KİTAP GÖVDESİ -->
     <div class="acik-kitap-alan" id="acikKitapAlan">
-
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
 
-        <!-- Sabit Sol Kanat Yazı Alanı -->
+        <!-- SABİT SOL KANAT YAZI ALANI -->
         <div class="sol-kanat-yazi" id="solKanatYazi">
-
             <span class="sol-baslik" id="solBaslik">KIZIM'a…</span>
 
             <span class="sol-govde" id="solGovde">Şiir..kızım..alınyazım..yürek sızım..kalp hırsızım..
@@ -450,22 +450,19 @@ Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız.
 belki de .. gözlerinden akmamaya inat eden bir damla gözyaşı ile
 ama yine de gülümseyerek tek başına okuyacaksın.
 Yani ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini yine göreceğim... nerede olduğumun hiç bir önemi yok.</span>
-
         </div>
 
-        <!-- Sol Kanattaki Sayfa 1 -->
+        <!-- 1. SAYFA -->
         <div class="sayfa-numara sol-kanat-numara" id="solSayfaNumara">
             <span class="tuy">🪶</span> 1 <span class="tuy">🪶</span>
         </div>
-
     </div>
 
-    <!-- DİNAMİK YAPRAKLAR KONTEYNERİ -->
+    <!-- DİNAMİK YAPRAKLAR -->
     <div class="sayfalar-kapsayici" id="sayfalarKapsayici"></div>
 
     <!-- ÜSTTEKİ AÇILAN KAPAK -->
     <div class="kapak-alan" id="kapakAlan">
-
         <img src="kapak.jpg" class="kapak" alt="Ön Kapak">
 
         <div class="kapak-yazi">
@@ -477,13 +474,11 @@ Yani ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamze
         </div>
 
         <img src="kapak.jpg" class="kapak-arka-kapak" alt="Arka Kapak">
-
     </div>
 
 </div>
 
 <script>
-
 window.addEventListener("load", function () {
 
     const kapsayici = document.getElementById("kitapKapsayici");
@@ -491,15 +486,16 @@ window.addEventListener("load", function () {
     const sayfalarKapsayici = document.getElementById("sayfalarKapsayici");
     const kapakImg = document.querySelector(".kapak");
 
+    /* MEVCUT KAPAK ÖLÇÜSÜ AYNEN KORUNDU */
     const yukseklik = kapakImg.getBoundingClientRect().height;
     const ikiCm = 2 * 96 / 2.54;
     const oran = (yukseklik + ikiCm) / yukseklik;
-
-    kapsayici.style.transform =
-        "translateX(8cm) scale(" + oran + ")";
+    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
 
-    /* 2. SAYFADAKİ ANA METİN */
+    /* =========================================================
+       İLK 4 SAYFAYA DOKUNULMUYOR
+       ========================================================= */
 
     const sagSayfaMetni1 =
 `Bilmeni isterim ki;
@@ -513,9 +509,6 @@ Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
-
-    /* 3. SAYFADAKİ ANA METİN */
-
     const sagSayfaMetni2 =
 `Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 beklediği yaşama sebebisin.
@@ -528,6 +521,289 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 Baban.`;
 
 
+    /* =========================================================
+       5. SAYFADAN BAŞLAYAN ŞİİRLER
+       ========================================================= */
+
+    const siirler = [
+        {
+            baslik: "GELİYORUM",
+            metin:
+`Yoksam düşlerinde, gecelerinde kayıpsam..
+ Bakışların hep donuk, gözlerin ıslanıyorsa..
+ Soğuksa ellerin, buz gibiyse hala..
+ Ve inatçıysan çağrında..sabırsız
+ Geliyorum!
+
+Gecelerin koynunda bir esireysen
+ Yanaklarımdan akan yaşlar kadar sessiz
+ Yağmurlu gecelerde…
+ Bir ceylan yavrusu gibi ürkek ve ıslaksan
+ Geliyorum!
+
+Denizin koyu maviliğinde kayboluyorsan..
+ Her kanat çırpışında martıların,
+ Yüreğine çaresiz sancılar saplanıyorsa
+ Geliyorum!
+
+Bir rüzgar kırmışsa dalını..
+ Dudaklarını kurutmuşsa serin bir meltem..
+ Sıyrılamamışsan gecenin sisli ve bulanık karanlığından
+ Ve şefkatli eller bekliyorsan yaşamak için..
+
+Bekle…!
+
+Geliyorum!`
+        },
+
+        {
+            baslik: "ACI",
+            metin:
+`Nereden bilirdim senin avucumdaki hayat çizgim olduğunu… 
+
+ve hayat çizgimin bu kadar kısa..`
+        },
+
+        {
+            baslik: "AĞLAYAMAZSIN",
+            metin:
+`Seni de terk edip gider bir gün. 
+
+En çok sevdiklerin, inandıkların. 
+
+Bir yağmur yağar düşlerine hasretinden. 
+
+Ve bir bulut çöker anılarına katran gibi. 
+
+Ağlayamazsın. 
+
+Saçlarına rüzgar bir başka eser artık. 
+
+Zaman bir balyoz gibi iner gözlerine. gelir misin deme sakın. 
+
+Boğazında düğümlenir çaresizliğin. 
+
+Ağlayamazsın. 
+
+Daha ne kadar yaşatacaksın ki bu aşkı kalbinde? 
+
+Seni tüketen de zaten bu aşk değil mi? 
+
+Anlıyorum. Sen hayatı yanlış anlamışsın. Gülüyorsun ağlayacak yerde…
+
+Ağlayamıyorsun, değil mi?`
+        },
+
+        {
+            baslik: "BİR ÇİÇEK SEVDİM",
+            metin:
+`Bir çiçek sevdim kimsesizliğimin kıraç topraklarında 
+
+adı bende narindi 
+
+şiir tadında mürekkep okyanusunda 
+
+adı bende elemdi 
+
+Bir çiçek sevdim beyaz kanatlarıyla papatya fallarında 
+
+adı bende sevgiydi
+
+ömrümün baharında içimdeki çiğ tanesiydi
+
+adı bende lale'ydi 
+
+Bir çiçek sevdim uçurum boylarında rüzgarlarla kardeşti 
+
+adı bende iklimdi 
+
+gece karanlığında sedef teni binbir renkti 
+
+adı bende hasretti 
+
+Bir çiçek sevdim annemin kokusunda alnımın yazısında 
+
+adı bende ateşti 
+
+tanrının huzurunda kalbimin ortasında 
+
+unuttum…
+
+adı bende neydi?`
+        }
+    ];
+
+
+    /*
+       ŞİİRLERİ SAYFA ALANINA GÖRE OTOMATİK BÖL.
+       Yazı küçültülmez.
+       Taşan bölüm bir sonraki sayfaya aktarılır.
+    */
+
+    function htmlEscape(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+    }
+
+    function olcumAlaniOlustur() {
+        const ornek = document.createElement("div");
+        const stil = window.getComputedStyle(
+            document.querySelector(".sayfa-yazi")
+        );
+
+        ornek.style.position = "absolute";
+        ornek.style.visibility = "hidden";
+        ornek.style.pointerEvents = "none";
+        ornek.style.left = "-100000px";
+        ornek.style.top = "0";
+        ornek.style.width =
+            document.querySelector(".sayfa-yazi").getBoundingClientRect().width + "px";
+        ornek.style.height =
+            document.querySelector(".sayfa-yazi").getBoundingClientRect().height + "px";
+
+        ornek.style.fontFamily = stil.fontFamily;
+        ornek.style.fontSize = stil.fontSize;
+        ornek.style.fontWeight = stil.fontWeight;
+        ornek.style.lineHeight = stil.lineHeight;
+        ornek.style.letterSpacing = stil.letterSpacing;
+        ornek.style.whiteSpace = "pre-wrap";
+        ornek.style.wordBreak = "normal";
+        ornek.style.overflowWrap = "break-word";
+        ornek.style.boxSizing = "border-box";
+
+        document.body.appendChild(ornek);
+        return ornek;
+    }
+
+    function metniSayfalaraBol(siir) {
+
+        const sayfaOrnegi = document.querySelector(".sayfa-yazi");
+
+        if (!sayfaOrnegi) {
+            return [{
+                baslik: siir.baslik,
+                metin: siir.metin
+            }];
+        }
+
+        const olcum = olcumAlaniOlustur();
+
+        const baslikHTML =
+            `<strong class="siir-baslik">${htmlEscape(siir.baslik)}</strong>`;
+
+        const parcalar = siir.metin.match(/\S+\s*/g) || [];
+
+        let sayfalar = [];
+        let mevcut = "";
+
+        function dene(metin) {
+            olcum.innerHTML =
+                baslikHTML +
+                `<span>${htmlEscape(metin)}</span>`;
+
+            return olcum.scrollHeight <= olcum.clientHeight;
+        }
+
+        for (let i = 0; i < parcalar.length; i++) {
+
+            const aday = mevcut + parcalar[i];
+
+            if (dene(aday)) {
+                mevcut = aday;
+            } else {
+
+                if (mevcut.trim() !== "") {
+                    sayfalar.push({
+                        baslik: siir.baslik,
+                        metin: mevcut
+                    });
+
+                    mevcut = parcalar[i];
+
+                    /*
+                       Tek kelime bile alanı aşarsa zorla bir sonraki
+                       sayfaya aktarılır. Yazı küçültülmez.
+                    */
+                    if (!dene(mevcut)) {
+                        sayfalar.push({
+                            baslik: siir.baslik,
+                            metin: mevcut
+                        });
+                        mevcut = "";
+                    }
+                } else {
+                    sayfalar.push({
+                        baslik: siir.baslik,
+                        metin: parcalar[i]
+                    });
+                    mevcut = "";
+                }
+            }
+        }
+
+        if (mevcut.trim() !== "") {
+            sayfalar.push({
+                baslik: siir.baslik,
+                metin: mevcut
+            });
+        }
+
+        olcum.remove();
+
+        return sayfalar;
+    }
+
+
+    /*
+       BÜTÜN ŞİİRLERİ SIRAYLA SAYFALARA DAĞIT
+       BAŞLANGIÇ = 5. SAYFA
+    */
+
+    let siirSayfalari = [];
+
+    siirler.forEach(function (siir) {
+        const bolunmus = metniSayfalaraBol(siir);
+
+        bolunmus.forEach(function (sayfa) {
+            siirSayfalari.push(sayfa);
+        });
+    });
+
+
+    /*
+       SAYFA NUMARASINA GÖRE İÇERİK GETİR
+    */
+
+    function sayfaIcerigiGetir(sayfaNo) {
+
+        /*
+           Şiir sistemi 5. sayfadan başlıyor.
+        */
+
+        if (sayfaNo < 5) {
+            return "";
+        }
+
+        const index = sayfaNo - 5;
+
+        if (index < 0 || index >= siirSayfalari.length) {
+            return "";
+        }
+
+        const parca = siirSayfalari[index];
+
+        return `
+            <div class="sayfa-yazi">
+                <span class="sayfa-govde">
+                    <strong class="siir-baslik">${htmlEscape(parca.baslik)}</strong>${htmlEscape(parca.metin)}
+                </span>
+            </div>
+        `;
+    }
+
+
     const toplamYaprak = 25;
 
     let yaprakElementleri = [];
@@ -537,10 +813,8 @@ Baban.`;
 
 
     function temizleZamanAsimlari() {
-
         aktifZamanAsimlari.forEach(id => clearTimeout(id));
         aktifZamanAsimlari = [];
-
     }
 
 
@@ -548,6 +822,9 @@ Baban.`;
 
         temizleZamanAsimlari();
 
+        /*
+           İLK SAYFA DAVRANIŞI AYNEN KORUNDU
+        */
 
         if (adim === 1) {
 
@@ -559,9 +836,7 @@ Baban.`;
                 if (b) b.classList.add("acildi");
 
                 let t2 = setTimeout(() => {
-
                     if (g) g.classList.add("acildi");
-
                 }, 1000);
 
                 aktifZamanAsimlari.push(t2);
@@ -570,6 +845,10 @@ Baban.`;
 
             aktifZamanAsimlari.push(t1);
 
+
+            /*
+               2. SAYFANIN MEVCUT GÖSTERİM ZAMANI KORUNDU
+            */
 
             let yaprak0 = yaprakElementleri[0];
 
@@ -581,20 +860,18 @@ Baban.`;
                 if (sagGovde0) {
 
                     let t3 = setTimeout(() => {
-
                         sagGovde0.classList.add("acildi");
-
                     }, 10000);
 
                     aktifZamanAsimlari.push(t3);
-
                 }
-
             }
 
-        }
+        } else {
 
-        else {
+            /*
+               Burada hangi yaprağın açıldığı hesaplanıyor.
+            */
 
             let yaprakIndex = adim - 2;
 
@@ -606,44 +883,43 @@ Baban.`;
                 let aktifYaprak =
                     yaprakElementleri[yaprakIndex];
 
+                /*
+                   SAYFANIN ARKA YÜZÜ
+                */
+
                 let arkaBaslik =
-                    aktifYaprak.querySelector(".sayfa-baslik");
+                    aktifYaprak.querySelector(".sayfa-arka .sayfa-baslik");
 
                 let arkaGovde =
-                    aktifYaprak.querySelector(
-                        ".sayfa-arka .sayfa-govde"
-                    );
+                    aktifYaprak.querySelector(".sayfa-arka .sayfa-govde");
 
+
+                /*
+                   YENİ SAYFA SİSTEMİNDE BAŞLIK DOĞRUDAN
+                   ŞİİR BAŞLIĞI OLARAK SAYFA-GOVDE İÇİNDEDİR.
+                */
 
                 let t1 = setTimeout(() => {
 
-                    let delayYazilar = 0;
-
                     if (arkaBaslik) {
-
                         arkaBaslik.classList.add("acildi");
-                        delayYazilar = 1000;
-
                     }
-
 
                     let t2 = setTimeout(() => {
 
-                        if (arkaGovde)
+                        if (arkaGovde) {
                             arkaGovde.classList.add("acildi");
+                        }
 
-                    }, delayYazilar);
+                    }, 300);
 
                     aktifZamanAsimlari.push(t2);
 
                 }, 1000);
 
                 aktifZamanAsimlari.push(t1);
-
             }
-
         }
-
     }
 
 
@@ -653,7 +929,6 @@ Baban.`;
 
         temizleZamanAsimlari();
 
-
         if (mevcutAdimIndex === 0) {
 
             kapsayici.classList.add("acildi");
@@ -661,20 +936,20 @@ Baban.`;
 
             mevcutAdimIndex = 1;
 
-
             setTimeout(() => {
-
                 sayfaIcerikleriniGoster(1);
-
             }, 1200);
 
-        }
-
-        else {
+        } else {
 
             let yaprakIndexGercek =
                 mevcutAdimIndex - 1;
 
+
+            /*
+               İLK AÇILIŞTA 2. SAYFANIN GÖVDE YAZISI
+               AYNEN KORUNDU.
+            */
 
             if (mevcutAdimIndex === 1) {
 
@@ -682,13 +957,11 @@ Baban.`;
                     yaprakElementleri[0];
 
                 let sagGovde0 =
-                    yaprak0.querySelector(
-                        ".sayfa-on .sayfa-govde"
-                    );
+                    yaprak0.querySelector(".sayfa-on .sayfa-govde");
 
-                if (sagGovde0)
+                if (sagGovde0) {
                     sagGovde0.classList.add("acildi");
-
+                }
             }
 
 
@@ -696,7 +969,6 @@ Baban.`;
 
                 let yaprak =
                     yaprakElementleri[yaprakIndexGercek];
-
 
                 if (!yaprak.classList.contains("cevirdi")) {
 
@@ -711,42 +983,29 @@ Baban.`;
                     if (mevcutAdimIndex > toplamYaprak) {
 
                         setTimeout(() => {
-
                             otomatikGeriyeSar();
-
                         }, 1200);
 
                         return;
-
                     }
 
 
                     setTimeout(() => {
-
                         sayfaIcerikleriniGoster(
                             mevcutAdimIndex
                         );
-
                     }, 1000);
 
-                }
-
-                else {
+                } else {
 
                     otomatikGeriyeSar();
-
                 }
 
-            }
-
-            else {
+            } else {
 
                 otomatikGeriyeSar();
-
             }
-
         }
-
     }
 
 
@@ -755,7 +1014,6 @@ Baban.`;
         if (isTidyingUp) return;
 
         temizleZamanAsimlari();
-
 
         if (mevcutAdimIndex > 1) {
 
@@ -766,7 +1024,6 @@ Baban.`;
 
             let yaprak =
                 yaprakElementleri[yaprakIndex];
-
 
             yaprak.classList.remove("cevirdi");
 
@@ -782,17 +1039,13 @@ Baban.`;
 
             }, 1000);
 
-        }
-
-        else if (mevcutAdimIndex === 1) {
+        } else if (mevcutAdimIndex === 1) {
 
             kapsayici.classList.remove("acildi");
             kapakAlan.classList.remove("dondu");
 
             mevcutAdimIndex = 0;
-
         }
-
     }
 
 
@@ -823,9 +1076,7 @@ Baban.`;
 
                     index--;
 
-                }
-
-                else {
+                } else {
 
                     clearInterval(rewindInterval);
 
@@ -835,19 +1086,18 @@ Baban.`;
                         kapakAlan.classList.remove("dondu");
 
                         mevcutAdimIndex = 0;
-
                         isTidyingUp = false;
 
                     }, 400);
-
                 }
 
             }, 100);
-
     }
 
 
-    /* YAPRAKLARI OLUŞTUR */
+    /* =========================================================
+       YAPRAKLARI OLUŞTUR
+       ========================================================= */
 
     for (let i = 0; i < toplamYaprak; i++) {
 
@@ -861,170 +1111,126 @@ Baban.`;
             toplamYaprak - i;
 
 
-        let onSayfaNo =
+        const onSayfaNo =
             (i * 2) + 2;
 
-        let arkaSayfaNo =
+        const arkaSayfaNo =
             (i * 2) + 3;
 
 
-        let icerikOn = "";
-
-        let icerikArka =
-            `<div class="sayfa-yazi">
+        let icerikOn = `
+            <div class="sayfa-yazi">
                 <span class="sayfa-govde"></span>
-            </div>`;
+            </div>
+        `;
+
+        let icerikArka = `
+            <div class="sayfa-yazi">
+                <span class="sayfa-govde"></span>
+            </div>
+        `;
 
 
         /*
-         * 2 VE 3. SAYFALAR
-         */
+           =====================================================
+           İLK 4 SAYFA
+           =====================================================
+        */
 
         if (i === 0) {
 
-            icerikOn =
-                `<div class="sayfa-yazi">
-                    <span class="sayfa-govde">${sagSayfaMetni1}</span>
-                </div>`;
+            /*
+               SAYFA 2
+            */
 
-            icerikArka =
-                `<div class="sayfa-yazi">
-                    <span class="sayfa-govde">${sagSayfaMetni2}</span>
-                </div>`;
-
-        }
-
-
-        /*
-         * 4. SAYFA
-         * kizim1.jpg burada kalıyor.
-         */
-
-        else if (i === 1) {
-
-            icerikOn =
-                `<div class="sayfa-yazi">
-                    <span class="sayfa-govde"></span>
-                </div>`;
-
-            icerikArka =
-                `<div class="sayfa-yazi">
-                    <span class="sayfa-govde"></span>
-                </div>`;
-
-        }
-
-
-        /*
-         * 5. SAYFA
-         * 4. sayfanın arkasına GELİYORUM şiiri.
-         */
-
-        else if (i === 2) {
-
-            icerikOn =
-                `<div class="sayfa-yazi">
-                    <span class="sayfa-govde"></span>
-                </div>`;
-
-            icerikArka =
-                `
+            icerikOn = `
                 <div class="sayfa-yazi">
-
-                    <span class="sayfa-govde">
-
-                        <strong class="siir-baslik">GELİYORUM</strong>
-
-Yoksam düşlerinde, gecelerinde kayıpsam..
-Bakışların hep donuk, gözlerin ıslanıyorsa..
-Soğuksa ellerin, buz gibiyse hala..
-Ve inatçıysan çağrında..sabırsız
-Geliyorum!
-
-Gecelerin koynunda bir esireysen
-Yanaklarımdan akan yaşlar kadar sessiz
-Yağmurlu gecelerde…
-Bir ceylan yavrusu gibi ürkek ve ıslaksan
-Geliyorum!
-
-Denizin koyu maviliğinde kayboluyorsan..
-Her kanat çırpışında martıların,
-Yüreğine çaresiz sancılar saplanıyorsa
-Geliyorum!
-
-Bir rüzgar kırmışsa dalını..
-Dudaklarını kurutmuşsa serin bir meltem..
-Sıyrılamamışsan gecenin sisli ve bulanık karanlığından
-Ve şefkatli eller bekliyorsan yaşamak için..
-
-Bekle…!
-
-Geliyorum!
-
-                    </span>
-
+                    <span class="sayfa-govde">${sagSayfaMetni1}</span>
                 </div>
-                `;
+            `;
 
+
+            /*
+               SAYFA 3
+            */
+
+            icerikArka = `
+                <div class="sayfa-yazi">
+                    <span class="sayfa-govde">${sagSayfaMetni2}</span>
+                </div>
+            `;
         }
 
 
         /*
-         * DİĞER SAYFALAR BOŞ
-         */
-
-        else {
-
-            icerikOn =
-                `<div class="sayfa-yazi">
-                    <span class="sayfa-govde"></span>
-                </div>`;
-
-        }
-
-
-        /*
-         * 4. SAYFAYA KIZIMIN FOTOĞRAFI
-         */
+           =====================================================
+           4. SAYFA FOTOĞRAFI
+           AYNEN KORUNDU
+           =====================================================
+        */
 
         if (onSayfaNo === 4) {
 
-            icerikOn =
-                `
+            icerikOn = `
                 <div class="sayfa-fotograf">
 
                     <div class="bant bant-sol-alt"></div>
-
                     <div class="bant bant-sag-ust"></div>
 
-                    <img
-                        src="kizim1.jpg"
-                        alt="Şiir">
+                    <img src="kizim1.jpg" alt="Şiir">
 
                 </div>
-                `;
-
+            `;
         }
 
 
-        yaprakDiv.innerHTML =
-            `
+        /*
+           =====================================================
+           5. SAYFA VE SONRASI
+           =====================================================
+
+           ÖNEMLİ:
+
+           Sayfa 5 = yaprak 1'in arka yüzü
+           Sayfa 6 = yaprak 2'nin ön yüzü
+           Sayfa 7 = yaprak 2'nin arka yüzü
+           Sayfa 8 = yaprak 3'ün ön yüzü
+           ...
+
+           Böylece şiirler gerçek sayfa numarasına göre
+           otomatik yerleşiyor.
+        */
+
+        if (onSayfaNo >= 6) {
+
+            icerikOn =
+                sayfaIcerigiGetir(onSayfaNo);
+        }
+
+        if (arkaSayfaNo >= 5) {
+
+            icerikArka =
+                sayfaIcerigiGetir(arkaSayfaNo);
+        }
+
+
+        yaprakDiv.innerHTML = `
+
             <div class="sayfa-icerik">
 
                 <div class="sayfa-on">
 
                     <img
                         src="sag_sayfa.png"
-                        alt="Sayfa Ön">
+                        alt="Sayfa Ön"
+                    >
 
                     ${icerikOn}
 
                     <div class="sayfa-numara">
-
                         <span class="tuy">🪶</span>
                         ${onSayfaNo}
                         <span class="tuy">🪶</span>
-
                     </div>
 
                 </div>
@@ -1034,23 +1240,24 @@ Geliyorum!
 
                     <img
                         src="sol_sayfa.png"
-                        alt="Sayfa Arka">
+                        alt="Sayfa Arka"
+                    >
 
                     ${icerikArka}
 
                     <div class="sayfa-numara">
-
                         <span class="tuy">🪶</span>
                         ${arkaSayfaNo}
                         <span class="tuy">🪶</span>
-
                     </div>
 
                 </div>
 
             </div>
-            `;
+        `;
 
+
+        /* SAYFA TIKLAMA SİSTEMİ */
 
         yaprakDiv.addEventListener(
             "click",
@@ -1081,9 +1288,7 @@ Geliyorum!
                 ) {
 
                     otomatikGeriyeSar();
-
                     return;
-
                 }
 
 
@@ -1091,14 +1296,10 @@ Geliyorum!
 
                     oncekiSayfayaGec();
 
-                }
-
-                else {
+                } else {
 
                     if (
-                        !yaprakDiv.classList.contains(
-                            "cevirdi"
-                        )
+                        !yaprakDiv.classList.contains("cevirdi")
                     ) {
 
                         let aktifSagYaprak =
@@ -1110,15 +1311,14 @@ Geliyorum!
                             );
 
 
-                        if (aktifSagYaprak === yaprakDiv) {
+                        if (
+                            aktifSagYaprak === yaprakDiv
+                        ) {
 
                             sonrakiSayfayaGec();
-
                         }
 
-                    }
-
-                    else {
+                    } else {
 
                         let cevrilmisYapraklar =
                             yaprakElementleri.filter(
@@ -1140,13 +1340,9 @@ Geliyorum!
                         ) {
 
                             oncekiSayfayaGec();
-
                         }
-
                     }
-
                 }
-
             }
         );
 
@@ -1158,27 +1354,23 @@ Geliyorum!
         yaprakElementleri.push(
             yaprakDiv
         );
-
     }
 
 
-    /* KAPAK TIKLAMA */
+    /* KAPAK */
 
     kapakAlan.addEventListener(
         "click",
-        function (e) {
+        function () {
 
             if (mevcutAdimIndex === 0) {
-
                 sonrakiSayfayaGec();
-
             }
-
         }
     );
 
 
-    /* SOL KANAT TIKLAMA */
+    /* SOL KANAT */
 
     document
         .getElementById("solKanatYazi")
@@ -1191,11 +1383,8 @@ Geliyorum!
                 if (isTidyingUp) return;
 
                 if (mevcutAdimIndex === 1) {
-
                     oncekiSayfayaGec();
-
                 }
-
             }
         );
 
@@ -1213,16 +1402,13 @@ Geliyorum!
                 if (isTidyingUp) return;
 
                 if (mevcutAdimIndex === 1) {
-
                     oncekiSayfayaGec();
-
                 }
-
             }
         );
 
 
-    /* AÇIK KİTAP TIKLAMA */
+    /* AÇIK KİTAP ALANI */
 
     document
         .getElementById("acikKitapAlan")
@@ -1241,25 +1427,21 @@ Geliyorum!
                         e.clientX - rect.left;
 
 
-                    if (tikX < rect.width / 2) {
+                    if (
+                        tikX < rect.width / 2
+                    ) {
 
                         oncekiSayfayaGec();
 
-                    }
-
-                    else {
+                    } else {
 
                         sonrakiSayfayaGec();
-
                     }
-
                 }
-
             }
         );
 
 });
-
 </script>
 
 </body>
