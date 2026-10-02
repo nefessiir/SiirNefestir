@@ -116,21 +116,41 @@ body {
     transition: opacity 0.3s ease-in-out 1.1s;
 }
 
-/* RULO / HALİ GİBİ AÇILMA ANİMASYONU */
+/* SADECE SOL KANAT (İLK SAYFA) BAŞLIK VE GÖVDE AYARLARI */
 .sol-baslik {
     text-align: center;
     display: block;
     width: 100%;
     font-weight: 700;
     font-size: 1.25em;
-    margin-top: 2.5em; /* 0.2 cm daha aşağı çekildi */
-    margin-bottom: 0.2em; /* Alt boşluk azaltıldı */
+    margin-top: 2.5em; 
+    margin-bottom: 0.2em; 
     max-height: 0;
     opacity: 0;
     overflow: hidden;
     transition: max-height 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease-in-out;
 }
 
+.sol-govde {
+    display: block;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
+    margin-top: -0.8em; /* Sadece sol taraf birbirine yaklaştırıldı */
+}
+
+.sol-baslik.acildi {
+    max-height: 200px;
+    opacity: 1;
+}
+
+.sol-govde.acildi {
+    max-height: 800px;
+    opacity: 1;
+}
+
+/* DİĞER SAYFALAR İÇİN ORİJİNAL AYARLAR (Kesilmeyi önlemek için ayrıldı) */
 .sayfa-baslik {
     text-align: center;
     display: block;
@@ -145,21 +165,16 @@ body {
     transition: max-height 1.2s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease-in-out;
 }
 
-.sol-baslik.acildi, .sayfa-baslik.acildi {
-    max-height: 200px;
-    opacity: 1;
-}
-
-.sol-govde, .sayfa-govde {
+.sayfa-govde {
     display: block;
     max-height: 0;
     opacity: 0;
     overflow: hidden;
     transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
-    margin-top: -0.8em; /* 1 satır yukarı çekildi */
+    margin-top: 0; /* Diğer sayfalar orijinal konumunda bırakıldı */
 }
 
-.sol-govde.acildi, .sayfa-govde.acildi {
+.sayfa-baslik.acildi, .sayfa-govde.acildi {
     max-height: 800px;
     opacity: 1;
 }
