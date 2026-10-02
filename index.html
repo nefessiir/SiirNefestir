@@ -70,7 +70,7 @@ body {
 
     height: auto;
 
-    transform: translateX(8cm);
+    transform: scale(1);
 
     transform-style: preserve-3d;
 
@@ -248,9 +248,9 @@ body {
 
     font-size: 1.25em;
 
-    margin-top: 2.5em; 
+    margin-top: 2.5em;
 
-    margin-bottom: 0.2em; 
+    margin-bottom: 0.2em;
 
     max-height: 0;
 
@@ -316,7 +316,7 @@ body {
 
     font-size: 1.25em;
 
-    margin-top: 1.2em; 
+    margin-top: 1.2em;
 
     margin-bottom: 0.4em;
 
@@ -464,7 +464,7 @@ body {
 
     height: 100%;
 
-    object-fit: cover; 
+    object-fit: cover;
 
     display: block;
 
@@ -694,7 +694,7 @@ body {
 
     white-space: pre-wrap;
 
-    font-size: 11pt; 
+    font-size: 11pt;
 
 }
 
@@ -854,6 +854,8 @@ body {
 
         <img src="acik_kitap1.png" alt="Açık Kitap Gövdesi">
 
+        
+
         <!-- Sabit Sol Kanat Yazı Alanı (Sayfa 1) -->
 
         <div class="sol-kanat-yazi" id="solKanatYazi">
@@ -871,6 +873,8 @@ ama yine de gülümseyerek tek başına okuyacaksın.
 Yani ,  güldüğünde yanaklarında beliren ve görmeyi en çok sevdiğim gamzelerini yine göreceğim... nerede olduğumun hiç bir önemi yok.</span>
 
         </div>
+
+
 
         <!-- Sol Kanattaki Sayfa 1 Numarası -->
 
@@ -934,19 +938,87 @@ window.addEventListener("load", function () {
 
 
 
-    const yukseklik = kapakImg.getBoundingClientRect().height;
+    /*
 
-    const ikiCm = 2 * 96 / 2.54;
+       KİTABI EKRANIN MERKEZİNE OTURTAN SİSTEM
 
-    const oran = (yukseklik + ikiCm) / yukseklik;
+       Eski sistemdeki sabit translateX(8cm) kaldırıldı.
 
-    kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
+       Kitabın gerçek görsel sınırları hesaplanıyor ve
+
+       ölçek uygulandıktan sonra ekranın merkezine getiriliyor.
+
+    */
+
+    function kitabiOrtala() {
+
+        const yukseklik = kapakImg.getBoundingClientRect().height;
+
+        const ikiCm = 2 * 96 / 2.54;
+
+        const oran = (yukseklik + ikiCm) / yukseklik;
+
+
+
+        /* Önce yalnızca ölçeği uygula */
+
+        kapsayici.style.transform = "scale(" + oran + ")";
+
+
+
+        /* Tarayıcının yeni ölçüyü hesaplamasını bekle */
+
+        requestAnimationFrame(function () {
+
+            const rect = kapsayici.getBoundingClientRect();
+
+            const ekranMerkezi = window.innerWidth / 2;
+
+            const kitapMerkezi = rect.left + (rect.width / 2);
+
+
+
+            /* Kitabın merkezi ile ekran merkezi arasındaki fark */
+
+            const fark = ekranMerkezi - kitapMerkezi;
+
+
+
+            /*
+
+               Transform listesinde translate önce geldiği için
+
+               düzeltme doğrudan piksel olarak uygulanıyor.
+
+            */
+
+            kapsayici.style.transform =
+
+                "translateX(" + fark + "px) scale(" + oran + ")";
+
+        });
+
+    }
+
+
+
+    kitabiOrtala();
+
+
+
+    /* Pencere boyutu değişirse kitabı tekrar ortala */
+
+    window.addEventListener("resize", function () {
+
+        kitabiOrtala();
+
+    });
 
 
 
     // İLK 4 SAYFA (Orijinal Metinler ve Fotoğraf)
 
-    const sagSayfaMetni1 = 
+    const sagSayfaMetni1 =
 
 `Bilmeni isterim ki;
 
@@ -970,7 +1042,7 @@ o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
 
 
-    const sagSayfaMetni2 = 
+    const sagSayfaMetni2 =
 
 `Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
 
@@ -994,7 +1066,7 @@ Baban.`;
 
     // 5. SAYFA (1. ve 2. Kıta)
 
-    const siirSayfa5 = 
+    const siirSayfa5 =
 
 `<span class="sayfa-baslik">GELİYORUM</span>
 
@@ -1024,7 +1096,7 @@ Geliyorum!</span>`;
 
     // 6. SAYFA (3. ve 4. Kıta)
 
-    const siirSayfa6 = 
+    const siirSayfa6 =
 
 `<span class="sayfa-baslik">GELİYORUM</span>
 
@@ -1052,15 +1124,15 @@ Geliyorum!</span>`;
 
 
 
-    const toplamYaprak = 25; 
+    const toplamYaprak = 25;
 
     let yaprakElementleri = [];
 
     let aktifZamanAsimlari = [];
 
-    let mevcutAdimIndex = 0; 
+    let mevcutAdimIndex = 0;
 
-    let isTidyingUp = false; 
+    let isTidyingUp = false;
 
 
 
@@ -1088,9 +1160,11 @@ Geliyorum!</span>`;
 
                 const g = document.getElementById("solGovde");
 
+
+
                 if (b) b.classList.add("acildi");
 
-                
+
 
                 let t2 = setTimeout(() => {
 
@@ -1098,9 +1172,13 @@ Geliyorum!</span>`;
 
                 }, 1000);
 
+
+
                 aktifZamanAsimlari.push(t2);
 
             }, 1000);
+
+
 
             aktifZamanAsimlari.push(t1);
 
@@ -1108,9 +1186,13 @@ Geliyorum!</span>`;
 
             let yaprak0 = yaprakElementleri[0];
 
+
+
             if (yaprak0) {
 
                 let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
+
+
 
                 if (sagGovde0) {
 
@@ -1118,7 +1200,9 @@ Geliyorum!</span>`;
 
                         sagGovde0.classList.add("acildi");
 
-                    }, 10000); 
+                    }, 10000);
+
+
 
                     aktifZamanAsimlari.push(t3);
 
@@ -1126,23 +1210,23 @@ Geliyorum!</span>`;
 
             }
 
-        } 
+        }
 
         else {
 
             let yaprakIndex = adim - 2;
 
+
+
             if (yaprakIndex >= 0 && yaprakIndex < yaprakElementleri.length) {
 
                 let aktifYaprak = yaprakElementleri[yaprakIndex];
 
-                
 
-                // Geri gelirken doğru yüzü hedeflemek için kontrol
 
-                let hedefYuz = (!aktifYaprak.classList.contains("cevirdi")) ? 
+                let hedefYuz = (!aktifYaprak.classList.contains("cevirdi")) ?
 
-                    aktifYaprak.querySelector(".sayfa-on") : 
+                    aktifYaprak.querySelector(".sayfa-on") :
 
                     aktifYaprak.querySelector(".sayfa-arka");
 
@@ -1164,7 +1248,7 @@ Geliyorum!</span>`;
 
                         arkaBaslik.classList.add("acildi");
 
-                        delayYazilar = 1000; 
+                        delayYazilar = 1000;
 
                     }
 
@@ -1176,11 +1260,15 @@ Geliyorum!</span>`;
 
                     }, delayYazilar);
 
+
+
                     aktifZamanAsimlari.push(t2);
 
 
 
-                }, 1000); 
+                }, 1000);
+
+
 
                 aktifZamanAsimlari.push(t1);
 
@@ -1196,6 +1284,8 @@ Geliyorum!</span>`;
 
         if (isTidyingUp) return;
 
+
+
         temizleZamanAsimlari();
 
 
@@ -1208,7 +1298,7 @@ Geliyorum!</span>`;
 
             mevcutAdimIndex = 1;
 
-            
+
 
             setTimeout(() => {
 
@@ -1216,7 +1306,9 @@ Geliyorum!</span>`;
 
             }, 1200);
 
-        } else {
+        }
+
+        else {
 
             let yaprakIndexGercek = mevcutAdimIndex - 1;
 
@@ -1228,6 +1320,8 @@ Geliyorum!</span>`;
 
                 let sagGovde0 = yaprak0.querySelector(".sayfa-on .sayfa-govde");
 
+
+
                 if (sagGovde0) sagGovde0.classList.add("acildi");
 
             }
@@ -1237,6 +1331,8 @@ Geliyorum!</span>`;
             if (yaprakIndexGercek < toplamYaprak) {
 
                 let yaprak = yaprakElementleri[yaprakIndexGercek];
+
+
 
                 if (!yaprak.classList.contains("cevirdi")) {
 
@@ -1248,7 +1344,7 @@ Geliyorum!</span>`;
 
                     mevcutAdimIndex++;
 
-                    
+
 
                     if (mevcutAdimIndex > toplamYaprak) {
 
@@ -1256,7 +1352,9 @@ Geliyorum!</span>`;
 
                             otomatikGeriyeSar();
 
-                        }, 1200); 
+                        }, 1200);
+
+
 
                         return;
 
@@ -1268,15 +1366,19 @@ Geliyorum!</span>`;
 
                         sayfaIcerikleriniGoster(mevcutAdimIndex);
 
-                    }, 1000); 
+                    }, 1000);
 
-                } else {
+                }
+
+                else {
 
                     otomatikGeriyeSar();
 
                 }
 
-            } else {
+            }
+
+            else {
 
                 otomatikGeriyeSar();
 
@@ -1292,6 +1394,8 @@ Geliyorum!</span>`;
 
         if (isTidyingUp) return;
 
+
+
         temizleZamanAsimlari();
 
 
@@ -1300,11 +1404,13 @@ Geliyorum!</span>`;
 
             mevcutAdimIndex--;
 
+
+
             let yaprakIndex = mevcutAdimIndex - 1;
 
             let yaprak = yaprakElementleri[yaprakIndex];
 
-            
+
 
             yaprak.classList.remove("cevirdi");
 
@@ -1318,7 +1424,9 @@ Geliyorum!</span>`;
 
             }, 1000);
 
-        } else if (mevcutAdimIndex === 1) {
+        }
+
+        else if (mevcutAdimIndex === 1) {
 
             kapsayici.classList.remove("acildi");
 
@@ -1336,9 +1444,13 @@ Geliyorum!</span>`;
 
         if (isTidyingUp) return;
 
+
+
         isTidyingUp = true;
 
         temizleZamanAsimlari();
+
+
 
         let index = yaprakElementleri.length - 1;
 
@@ -1356,9 +1468,13 @@ Geliyorum!</span>`;
 
                 index--;
 
-            } else {
+            }
+
+            else {
 
                 clearInterval(rewindInterval);
+
+
 
                 setTimeout(function () {
 
@@ -1412,7 +1528,9 @@ Geliyorum!</span>`;
 
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
 
-        } 
+        }
+
+
 
         // 2. Yaprak (Sayfa 4 - Fotoğraf | Arka yüzü Sayfa 5: Şiir 1. ve 2. Kıta)
 
@@ -1432,9 +1550,13 @@ Geliyorum!</span>`;
 
             `;
 
+
+
             icerikArka = `<div class="sayfa-yazi">${siirSayfa5}</div>`;
 
-        } 
+        }
+
+
 
         // 3. Yaprak (Sayfa 6: Şiir 3. ve 4. Kıta | Arka yüzü Sayfa 7: Boş)
 
@@ -1444,7 +1566,9 @@ Geliyorum!</span>`;
 
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
 
-        } 
+        }
+
+
 
         else {
 
@@ -1470,6 +1594,8 @@ Geliyorum!</span>`;
 
                 </div>
 
+
+
                 <div class="sayfa-arka">
 
                     <img src="sol_sayfa.png" alt="Sayfa Arka">
@@ -1490,7 +1616,11 @@ Geliyorum!</span>`;
 
             e.stopPropagation();
 
+
+
             if (isTidyingUp) return;
+
+
 
             const rect = yaprakDiv.getBoundingClientRect();
 
@@ -1500,7 +1630,17 @@ Geliyorum!</span>`;
 
             let aktifSonYaprak = yaprakElementleri[yaprakElementleri.length - 1];
 
-            if (yaprakDiv === aktifSonYaprak && tikX >= rect.width / 2 && aktifSonYaprak.classList.contains("cevirdi")) {
+
+
+            if (
+
+                yaprakDiv === aktifSonYaprak &&
+
+                tikX >= rect.width / 2 &&
+
+                aktifSonYaprak.classList.contains("cevirdi")
+
+            ) {
 
                 otomatikGeriyeSar();
 
@@ -1514,11 +1654,19 @@ Geliyorum!</span>`;
 
                 oncekiSayfayaGec();
 
-            } else {
+            }
+
+            else {
 
                 if (!yaprakDiv.classList.contains("cevirdi")) {
 
-                    let aktifSagYaprak = yaprakElementleri.find(y => !y.classList.contains("cevirdi"));
+                    let aktifSagYaprak = yaprakElementleri.find(
+
+                        y => !y.classList.contains("cevirdi")
+
+                    );
+
+
 
                     if (aktifSagYaprak === yaprakDiv) {
 
@@ -1526,11 +1674,23 @@ Geliyorum!</span>`;
 
                     }
 
-                } else {
+                }
 
-                    let cevrilmisYapraklar = yaprakElementleri.filter(y => y.classList.contains("cevirdi"));
+                else {
 
-                    let enUstSolYaprak = cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
+                    let cevrilmisYapraklar = yaprakElementleri.filter(
+
+                        y => y.classList.contains("cevirdi")
+
+                    );
+
+
+
+                    let enUstSolYaprak =
+
+                        cevrilmisYapraklar[cevrilmisYapraklar.length - 1];
+
+
 
                     if (enUstSolYaprak === yaprakDiv) {
 
@@ -1570,7 +1730,11 @@ Geliyorum!</span>`;
 
         e.stopPropagation();
 
+
+
         if (isTidyingUp) return;
+
+
 
         if (mevcutAdimIndex === 1) {
 
@@ -1586,11 +1750,15 @@ Geliyorum!</span>`;
 
         e.stopPropagation();
 
+
+
         if (isTidyingUp) return;
+
+
 
         if (mevcutAdimIndex === 1) {
 
-            oncekiSayfayaGec.oncekiSayfayaGec(); // Düzelttiğimiz akış fonksiyonu
+            oncekiSayfayaGec();
 
         }
 
@@ -1602,17 +1770,23 @@ Geliyorum!</span>`;
 
         if (isTidyingUp) return;
 
+
+
         if (mevcutAdimIndex === 1) {
 
             const rect = this.getBoundingClientRect();
 
             const tikX = e.clientX - rect.left;
 
+
+
             if (tikX < rect.width / 2) {
 
                 oncekiSayfayaGec();
 
-            } else {
+            }
+
+            else {
 
                 sonrakiSayfayaGec();
 
@@ -1630,5 +1804,4 @@ Geliyorum!</span>`;
 
 </body>
 
-</html> 
-
+</html>
