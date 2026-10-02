@@ -495,49 +495,32 @@ Hasretle gamzelerinden ve o küçük çenenden öperim.
 
 Baban.`;
 
-    // 5. SAYFADAN İTİBARAN YENİ ŞİİRİN PARÇALARI
+    // 5. SAYFA (1. ve 2. Kıta)
     const siirSayfa5 = 
 `GELİYORUM
-
 Yoksam düşlerinde, gecelerinde kayıpsam..
-
 Bakışların hep donuk, gözlerin ıslanıyorsa..
-
 Soğuksa ellerin, buz gibiyse hala..
-
 Ve inatçıysan çağrında..sabırsız
+Geliyorum!
 
-Geliyorum!`;
-
-    const siirSayfa6 = 
-`Gecelerin koynunda bir esireysen
-
+Gecelerin koynunda bir esireysen
 Yanaklarımdan akan yaşlar kadar sessiz
-
 Yağmurlu gecelerde…
-
 Bir ceylan yavrusu gibi ürkek ve ıslaksan
-
 Geliyorum!`;
 
-    const siirSayfa7 = 
+    // 6. SAYFA (3. ve 4. Kıta)
+    const siirSayfa6 = 
 `Denizin koyu maviliğinde kayboluyorsan..
-
-Her kanat çırpışında martıların,
-
+Her kanat çprpışında martıların,
 Yüreğine çaresiz sancılar saplanıyorsa
+Geliyorum!
 
-Geliyorum!`;
-
-    const siirSayfa8 = 
-`Bir rüzgar kırmışsa dalını..
-
+Bir rüzgar kırmışsa dalını..
 Dudaklarını kurutmuşsa serin bir meltem..
-
 Sıyrılamamışsan gecenin sisli ve bulanık karanlığından
-
 Ve şefkatli eller bekliyorsan yaşamak için..
-
 Bekle…! 
 Geliyorum!`;
 
@@ -716,7 +699,7 @@ Geliyorum!`;
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
         } 
-        // 2. Yaprak (Sayfa 4 - Fotoğraf Alanı | Arka yüzü Sayfa 5: Şiir 1. Kısım)
+        // 2. Yaprak (Sayfa 4 - Fotoğraf | Arka yüzü Sayfa 5: Şiir 1. ve 2. Kıta)
         else if (i === 1) {
             icerikOn = `
                 <div class="sayfa-fotograf">
@@ -727,14 +710,9 @@ Geliyorum!`;
             `;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa5}</span></div>`;
         } 
-        // 3. Yaprak (Sayfa 6 ve 7: Şiir 2. ve 3. Kısımlar)
+        // 3. Yaprak (Sayfa 6: Şiir 3. ve 4. Kıta | Arka yüzü Sayfa 7: Boş)
         else if (i === 2) {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa6}</span></div>`;
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa7}</span></div>`;
-        } 
-        // 4. Yaprak (Sayfa 8 ve 9: Şiir 4. Kısım ve devamı boş)
-        else if (i === 3) {
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${siirSayfa8}</span></div>`;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         } 
         else {
