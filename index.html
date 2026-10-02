@@ -40,7 +40,7 @@ body {
     z-index: 2;
 }
 
-/* 1. SAĞda SABİT DURAN ALT KAPAK */
+/* 1. SAĞDA SABİT DURAN ALT KAPAK */
 .sag-kapak {
     position: absolute;
     top: 0;
@@ -137,7 +137,7 @@ body {
     opacity: 0;
     overflow: hidden;
     transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
-    margin-top: -0.8em; 
+    margin-top: -0.8em; /* Sadece sol taraf birbirine yaklaştırıldı */
 }
 
 .sol-baslik.acildi {
@@ -150,7 +150,7 @@ body {
     opacity: 1;
 }
 
-/* DİĞER SAYFALAR İÇİN ORİJİNAL AYARLAR */
+/* DİĞER SAYFALAR İÇİN ORİJİNAL AYARLAR (Kesilmeyi önlemek için ayrıldı) */
 .sayfa-baslik {
     text-align: center;
     display: block;
@@ -171,7 +171,7 @@ body {
     opacity: 0;
     overflow: hidden;
     transition: max-height 2.0s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.2s ease-in-out;
-    margin-top: 0; 
+    margin-top: 0; /* Diğer sayfalar orijinal konumunda bırakıldı */
 }
 
 .sayfa-baslik.acildi, .sayfa-govde.acildi {
@@ -471,48 +471,28 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
-    // 2. Sayfa Metni (1. Yaprağın Ön Yüzü - Önsöz 1)
     const sagSayfaMetni1 = 
 `Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
 içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
-Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.`;
+Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.
 
-    // 3. Sayfa Metni (1. Yaprağın Arka Yüzü - Önsöz 2)
-    const sagSayfaMetni2 = 
-`Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
+Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
 Ve bu şiirleri benim sesimden duymak isteyebileceğini düşündüm..
 Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
-    // 5. Sayfa Metni (2. Yaprağın Arka Yüzü - GELİYORUM şiiri)
-    const sagSayfaMetni3 = 
-`GELİYORUM
+    const sagSayfaMetni2 = 
+`Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+beklediği yaşama sebebisin.
+Çünkü sen benim , yazdığım en güzel şiirsin…
 
-Yoksam düşlerinde, gecelerinde kayıpsam..
-Bakışların hep donuk, gözlerin ıslanıyorsa..
-Soğuksa ellerin, buz gibiyse hala..
-Ve inatçıysan çağrında..sabırsız
-Geliyorum!
+Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
 
-Gecelerin koynunda bir esireysen
-Yanaklarımdan akan yaşlar kadar sessiz
-Yağmurlu gecelerde…
-Bir ceylan yavrusu gibi ürkek ve ıslaksan
-Geliyorum!
+Hasretle gamzelerinden ve o küçük çenenden öperim.
 
-Denizin koyu maviliğinde kayboluyorsan..
-Her kanat çırpışında martıların,
-Yüreğine çaresiz sancılar saplanıyorsa
-Geliyorum!
-
-Bir rüzgar kırmışsa dalını..
-Dudaklarını kurutmuşsa serin bir meltem..
-Sıyrılamamışsan gecenin sisli ve bulanık karanlığından
-Ve şefkatli eller bekliyorsan yaşamak için..
-Bekle…! 
-Geliyorum!`;
+Baban.`;
 
     const toplamYaprak = 25; 
     let yaprakElementleri = [];
@@ -687,8 +667,8 @@ Geliyorum!`;
         if (i === 0) {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
             icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
-        } else if (i === 1) {
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni3}</span></div>`;
+        } else {
+            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
         }
 
         if (onSayfaNo === 4) {
