@@ -471,6 +471,7 @@ window.addEventListener("load", function () {
     const oran = (yukseklik + ikiCm) / yukseklik;
     kapsayici.style.transform = "translateX(8cm) scale(" + oran + ")";
 
+    // 1. Yaprağın Ön Yüzü (Sayfa 2)
     const sagSayfaMetni1 = 
 `Bilmeni isterim ki;
 Ben bu şiirleri birilerine bir şey anlatmak için değil,
@@ -483,8 +484,8 @@ Ben çok isterdim..
 Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
 o şiir senden önce yazılmış olsa bile, sana aittir.`;
 
-    // 2. Sayfanın Arka Yüzü (GELİYORUM şiiri - boşluklar ve noktalamalar birebir korundu)
-    const sagSayfaMetni2 = 
+    // 2. Yaprağın Arka Yüzü (Sayfa 5 - GELİYORUM şiiri)
+    const sagSayfaMetni3 = 
 `GELİYORUM
 Yoksam düşlerinde, gecelerinde kayıpsam..
 
@@ -693,9 +694,9 @@ Geliyorum!`;
 
         if (i === 0) {
             icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni1}</span></div>`;
-            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni2}</span></div>`;
-        } else {
-            icerikOn = `<div class="sayfa-yazi"><span class="sayfa-govde"></span></div>`;
+        } else if (i === 1) {
+            // 2. Yaprağın arkası (Sayfa 5) -> GELİYORUM şiiri
+            icerikArka = `<div class="sayfa-yazi"><span class="sayfa-govde">${sagSayfaMetni3}</span></div>`;
         }
 
         if (onSayfaNo === 4) {
