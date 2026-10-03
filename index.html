@@ -234,7 +234,7 @@ body{
     z-index:8;
     color:#6d5942;
     font-family:Georgia,"Times New Roman",serif;
-    font-size:clamp(10px,1vw,15px);
+    font-size:clamp(8px,0.75vw,12px);
     line-height:1;
     font-weight:normal;
     text-align:center;
@@ -260,6 +260,7 @@ body{
     text-align:left;
     white-space:normal;
     overflow-wrap:break-word;
+    word-break:normal;
     user-select:text;
     text-shadow:0.3px 0.3px 0 rgba(20,40,80,.35);
 }
@@ -318,15 +319,11 @@ body{
     pointer-events:none;
 }
 
-/* SAĞ ÜST BANT */
-
 .sayfa-fotografi::before{
     top:-3%;
     right:-8%;
     transform:rotate(9deg);
 }
-
-/* SOL ALT BANT */
 
 .sayfa-fotografi::after{
     bottom:-3%;
@@ -338,29 +335,109 @@ body{
 
 @media (max-aspect-ratio:1/1){
 
+    /*
+       MOBİLDE KİTABI BÜYÜTÜYORUZ.
+       Böylece açık kitap ve sayfalar çok küçük kalmıyor.
+    */
     .kitap{
-        width:min(45vw,45vh);
-        transform:translateX(30%);
+        width:min(90vw,70vh);
+        transform:translateX(0);
     }
 
+    /*
+       Açık kitap ile sayfa alanını aynı geometriye getiriyoruz.
+       PC'deki 4cm / 8cm kaydırması mobilde kullanılmıyor.
+    */
+    .sayfa-alani{
+        top:0;
+        left:calc(-100% + 0.2cm);
+        width:200%;
+        height:100%;
+    }
+
+    /*
+       Mobilde metnin sayfadan taşmaması için
+       yazı alanını biraz daha geniş ve kontrollü tutuyoruz.
+    */
     .sayfa-metni{
-        font-size:clamp(7px,1.55vw,13px);
-        line-height:1.38;
+        top:8%;
+        left:9%;
+        right:9%;
+        bottom:8%;
+        font-size:clamp(8px,2.15vw,14px);
+        line-height:1.32;
+    }
+
+    .sayfa-metni p{
+        margin-bottom:.55em;
+    }
+
+    .sayfa-metni .baslik{
+        margin-bottom:.8em;
+    }
+
+    .sayfa-numarasi{
+        font-size:clamp(8px,1.8vw,12px);
+        bottom:3%;
     }
 }
 
-/* KÜÇÜK EKRAN */
+/* KÜÇÜK TELEFON */
 
 @media (max-width:400px){
 
     .kitap{
-        width:min(45vw,45vh);
-        transform:translateX(30%);
+        width:min(94vw,70vh);
+        transform:translateX(0);
+    }
+
+    .sayfa-alani{
+        top:0;
+        left:calc(-100% + 0.2cm);
+        width:200%;
+        height:100%;
     }
 
     .sayfa-metni{
-        font-size:clamp(6px,1.8vw,11px);
-        line-height:1.35;
+        top:8%;
+        left:8%;
+        right:8%;
+        bottom:8%;
+        font-size:clamp(8px,2.45vw,12px);
+        line-height:1.30;
+    }
+
+    .sayfa-metni p{
+        margin-bottom:.5em;
+    }
+
+    .sayfa-metni .baslik{
+        margin-bottom:.7em;
+    }
+
+    .sayfa-numarasi{
+        font-size:clamp(8px,2vw,11px);
+        bottom:3%;
+    }
+}
+
+/*
+   ÇOK DAR / KÜÇÜK TELEFONLAR
+*/
+
+@media (max-width:360px){
+
+    .kitap{
+        width:96vw;
+    }
+
+    .sayfa-metni{
+        top:8%;
+        left:7%;
+        right:7%;
+        bottom:8%;
+        font-size:clamp(7px,2.7vw,11px);
+        line-height:1.28;
     }
 }
 </style>
@@ -614,7 +691,10 @@ function sayfalariBaslat(){
                 maxHeight:
                     Math.round(sayfaYuksekligi),
 
-                drawShadow:true,
+                /*
+                   SAYFA ALTI YANSIMASI / GÖLGESİ KAPATILDI
+                */
+                drawShadow:false,
 
                 flippingTime:1000,
 
@@ -624,7 +704,7 @@ function sayfalariBaslat(){
 
                 autoSize:false,
 
-                maxShadowOpacity:0.35,
+                maxShadowOpacity:0,
 
                 mobileScrollSupport:false,
 
@@ -713,3 +793,4 @@ window.addEventListener(
 
 </body>
 </html>
+
