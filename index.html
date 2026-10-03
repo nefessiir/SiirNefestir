@@ -7,9 +7,7 @@
 
 <style>
 
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 html,body{
     width:100%;
@@ -43,9 +41,6 @@ body{
     transform:translateX(30%);
 }
 
-
-/* ALT KAPAK */
-
 .alt-kapak{
     position:absolute;
     top:0;
@@ -64,9 +59,6 @@ body{
     user-select:none;
     pointer-events:none;
 }
-
-
-/* ÜST KAPAK */
 
 .ust-kapak{
     position:absolute;
@@ -105,9 +97,6 @@ body{
     z-index:0;
 }
 
-
-/* KAPAK YAZISI */
-
 .kapak-yazi{
     position:absolute;
     top:50%;
@@ -119,13 +108,11 @@ body{
     font-size:clamp(14px,2vw,30px);
     line-height:1.5;
     color:#f4d47a;
-
     text-shadow:
         0 1px 0 #8c641c,
         0 2px 1px rgba(60,35,5,.8),
         0 0 3px rgba(255,218,120,.85),
         0 0 7px rgba(255,202,80,.35);
-
     z-index:2;
     user-select:none;
     pointer-events:none;
@@ -138,7 +125,6 @@ body{
 }
 
 @keyframes altinParilti{
-
     0%,100%{
         text-shadow:
             0 1px 0 #8c641c,
@@ -155,9 +141,6 @@ body{
             0 0 10px rgba(255,210,95,.5);
     }
 }
-
-
-/* AÇIK KİTAP */
 
 .acik-kitap{
     position:absolute;
@@ -177,8 +160,10 @@ body{
 }
 
 
-/* PC SAYFA ALANI
-   PC'DEKİ MEVCUT ÖLÇÜ KORUNDU */
+/* =========================================================
+   PC SAYFA ALANI
+   PC ÖLÇÜLERİ KORUNDU
+   ========================================================= */
 
 .sayfa-alani{
     position:absolute;
@@ -197,9 +182,6 @@ body{
     opacity:1;
     pointer-events:auto;
 }
-
-
-/* PAGE FLIP */
 
 #page-flip{
     position:absolute;
@@ -235,9 +217,6 @@ body{
     -webkit-user-drag:none;
 }
 
-
-/* SAYFA NUMARALARI */
-
 .sayfa-numarasi{
     position:absolute;
     left:50%;
@@ -254,9 +233,6 @@ body{
     pointer-events:none;
     text-shadow:0 0.5px 0 rgba(255,255,255,.35);
 }
-
-
-/* SAYFA METNİ */
 
 .sayfa-metni{
     position:absolute;
@@ -289,9 +265,6 @@ body{
 .sayfa-metni .son{
     margin-top:1em;
 }
-
-
-/* FOTOĞRAF */
 
 .sayfa-fotografi{
     position:absolute;
@@ -344,33 +317,17 @@ body{
 
 
 /* =========================================================
-   YATAY TELEFON
+   YATAY MOBİL
+   ŞİMDİLİK DOKUNMUYORUZ.
+   BİR SONRAKİ AŞAMADA SADECE BURAYI YAPACAĞIZ.
    ========================================================= */
 
 @media (orientation:landscape) and (max-width:900px){
-
-    /*
-       KİTABIN KENDİ BOYUTU DEĞİŞTİRİLMİYOR.
-       Önceki sürümdeki büyüme kaldırıldı.
-    */
 
     .kitap{
         width:min(45vw,45vh);
         transform:translateX(30%);
     }
-
-    /*
-       SENİN VERDİĞİN TEST DEĞERLERİ:
-
-       0.2 cm sola
-       2 cm yukarı
-       2 cm aşağı
-       4 cm sola
-       4 cm sağa
-
-       Burada kitabın kendisini büyütmüyoruz.
-       Sadece sayfa alanını düzenliyoruz.
-    */
 
     .sayfa-alani{
         top:-2cm;
@@ -387,52 +344,74 @@ body{
 
 
 /* =========================================================
-   DİKEY TELEFON
+   DİKEY MOBİL
+   SADECE SAYFA ALANI DARALTILIYOR
    ========================================================= */
 
 @media (orientation:portrait) and (max-width:900px){
 
-    /*
-       Dikeyde de kitabın kendisini önceki
-       mantıktan fazla büyütmüyoruz.
-    */
-
     .kitap{
         width:min(45vw,45vh);
         transform:translateX(30%);
     }
 
     /*
-       Dikeyde sayfa alanı açık kitabın
-       kendi alanında kalıyor.
+       "4 K harfi" yaklaşımı.
+
+       Kitabın kendisine dokunmuyoruz.
+       Açık kitap görseline dokunmuyoruz.
+
+       Sadece üstteki gerçek sayfa alanını
+       dört kenardan yaklaşık 0.9 cm içeri alıyoruz.
     */
 
     .sayfa-alani{
-        top:0;
-        left:-100%;
-        width:200%;
-        height:100%;
+        top:0.9cm;
+        left:calc(-100% + 0.9cm);
+        width:calc(200% - 1.8cm);
+        height:calc(100% - 1.8cm);
     }
 
     .sayfa-metni{
+        top:7%;
+        left:9%;
+        right:9%;
+        bottom:7%;
         font-size:clamp(7px,1.55vw,13px);
         line-height:1.35;
+    }
+
+    .sayfa-numarasi{
+        font-size:clamp(8px,2vw,12px);
     }
 }
 
 
-/* KÜÇÜK TELEFON */
+/* =========================================================
+   ÇOK KÜÇÜK DİKEY TELEFON
+   ========================================================= */
 
-@media (max-width:400px){
+@media (max-width:400px) and (orientation:portrait){
 
     .kitap{
         width:min(45vw,45vh);
         transform:translateX(30%);
     }
 
+    .sayfa-alani{
+        top:0.9cm;
+        left:calc(-100% + 0.9cm);
+        width:calc(200% - 1.8cm);
+        height:calc(100% - 1.8cm);
+    }
+
     .sayfa-metni{
+        top:7%;
+        left:8%;
+        right:8%;
+        bottom:7%;
         font-size:clamp(6px,1.8vw,11px);
-        line-height:1.35;
+        line-height:1.32;
     }
 }
 
@@ -446,209 +425,177 @@ body{
 
 <div class="kitap" id="kitap">
 
-    <!-- ALT KAPAK -->
+<div class="alt-kapak">
+<img src="kapak.jpg" alt="">
+</div>
 
-    <div class="alt-kapak">
-        <img src="kapak.jpg" alt="">
-    </div>
+<img
+    class="acik-kitap"
+    src="acik_kitap1.png"
+    alt=""
+>
 
 
-    <!-- AÇIK KİTAP -->
+<div class="sayfa-alani" id="sayfaAlani">
 
-    <img
-        class="acik-kitap"
-        src="acik_kitap1.png"
-        alt=""
-    >
+<div id="page-flip">
 
 
-    <!-- SAYFA ALANI -->
+<div class="page">
 
-    <div class="sayfa-alani" id="sayfaAlani">
+<img src="sol_sayfa.png" alt="">
 
-        <div id="page-flip">
+<div class="sayfa-metni">
 
+<p class="baslik">KIZIM’a..</p>
 
-            <!-- 1 -->
+<p>
+Şiir..kızım..alınyazım..yürek sızım..kalp hırsızım..
+</p>
 
-            <div class="page">
+<p>
+Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
+belki de , gözlerinden akmamaya inat eden bir damla gözyaşı ile ama yine
+de gülümseyerek tek başına okuyacaksın.
+</p>
 
-                <img src="sol_sayfa.png" alt="">
-
-                <div class="sayfa-metni">
-
-                    <p class="baslik">KIZIM’a..</p>
-
-                    <p>
-                        Şiir..kızım..alınyazım..yürek sızım..kalp hırsızım..
-                    </p>
-
-                    <p>
-                        Bu satırları belki bir gün yüzümüzde bir tebessümle beraber
-                        okuyacağız.. belki de , gözlerinden akmamaya inat eden bir
-                        damla gözyaşı ile ama yine de gülümseyerek tek başına okuyacaksın.
-                    </p>
-
-                    <p>
-                        Yani , güzel kızım , güldüğünde yanaklarında beliren ve görmeyi
-                        en çok sevdiğim gamzelerini yine göreceğim... nerede olduğumun
-                        hiç bir önemi yok.
-                    </p>
-
-                </div>
-
-                <div class="sayfa-numarasi">1</div>
-
-            </div>
-
-
-            <!-- 2 -->
-
-            <div class="page">
-
-                <img src="sag_sayfa.png" alt="">
-
-                <div class="sayfa-metni">
-
-                    <p class="baslik">Bilmeni isterim ki;</p>
-
-                    <p>
-                        Ben bu şiirleri birilerine bir şey anlatmak için değil,
-                        içimde kopan fırtınaları , bir yağmur misali kağıda dökmek
-                        için yazdım. Ve bazılarını yıllar sonra sen bul diye sakladım.
-                        Çünkü ben buldum.
-                    </p>
-
-                    <p>
-                        Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
-                        Ve eğer özlersen ve duymak istersen diye bu şiirleri senin için
-                        kendi sesimle okudum. Ben çok isterdim..
-                    </p>
-
-                    <p>
-                        Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki ,
-                        o şiir senden önce yazılmış olsa bile, sana aittir.
-                    </p>
-
-                </div>
-
-                <div class="sayfa-numarasi">2</div>
-
-            </div>
-
-
-            <!-- 3 -->
-
-            <div class="page">
-
-                <img src="sol_sayfa.png" alt="">
-
-                <div class="sayfa-metni">
-
-                    <p>
-                        Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz
-                        çocuğun , beklediği yaşama sebebisin.
-                    </p>
-
-                    <p>
-                        Çünkü sen benim , yazdığım en güzel şiirsin…
-                    </p>
-
-                    <p>
-                        Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
-                    </p>
-
-                    <p>
-                        Hasretle gamzelerinden ve o küçük çenenden öperim.
-                    </p>
-
-                    <p class="son">
-                        Baban.
-                    </p>
-
-                </div>
-
-                <div class="sayfa-numarasi">3</div>
-
-            </div>
-
-
-            <!-- 4 -->
-
-            <div class="page">
-
-                <img src="sag_sayfa.png" alt="">
-
-                <div class="sayfa-fotografi">
-
-                    <img
-                        src="kizim1.jpg"
-                        alt="Şiir"
-                    >
-
-                </div>
-
-                <div class="sayfa-numarasi">4</div>
-
-            </div>
-
-
-            <!-- 5 -->
-
-            <div class="page">
-
-                <img src="sol_sayfa.png" alt="">
-
-                <div class="sayfa-numarasi">5</div>
-
-            </div>
-
-
-            <!-- 6 -->
-
-            <div class="page">
-
-                <img src="sag_sayfa.png" alt="">
-
-                <div class="sayfa-numarasi">6</div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-
-    <!-- ÜST KAPAK -->
-
-    <div class="ust-kapak" id="ustKapak">
-
-        <img
-            class="on-kapak"
-            src="kapak.jpg"
-            alt=""
-        >
-
-        <div class="kapak-yazi">
-
-            <div>Şiir'e hatıra..</div>
-            <div>Kelimelerden..</div>
-            <div>Hayattan..</div>
-            <div>Babasından..</div>
-
-        </div>
-
-        <img
-            class="arka-kapak"
-            src="kapak.jpg"
-            alt=""
-        >
-
-    </div>
+<p>
+Yani , güzel kızım , güldüğünde yanaklarında beliren ve görmeyi en çok
+sevdiğim gamzelerini yine göreceğim... nerede olduğumun hiç bir önemi yok.
+</p>
 
 </div>
 
+<div class="sayfa-numarasi">1</div>
+
+</div>
+
+
+<div class="page">
+
+<img src="sag_sayfa.png" alt="">
+
+<div class="sayfa-metni">
+
+<p class="baslik">Bilmeni isterim ki;</p>
+
+<p>
+Ben bu şiirleri birilerine bir şey anlatmak için değil, içimde kopan
+fırtınaları , bir yağmur misali kağıda dökmek için yazdım. Ve bazılarını
+yıllar sonra sen bul diye sakladım. Çünkü ben buldum.
+</p>
+
+<p>
+Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
+Ve eğer özlersen ve duymak istersen diye bu şiirleri senin için kendi
+sesimle okudum. Ben çok isterdim..
+</p>
+
+<p>
+Bir gün bu sayfalarda kendinden bir parça bulursan, bil ki , o şiir senden
+önce yazılmış olsa bile, sana aittir.
+</p>
+
+</div>
+
+<div class="sayfa-numarasi">2</div>
+
+</div>
+
+
+<div class="page">
+
+<img src="sol_sayfa.png" alt="">
+
+<div class="sayfa-metni">
+
+<p>
+Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+beklediği yaşama sebebisin.
+</p>
+
+<p>
+Çünkü sen benim , yazdığım en güzel şiirsin…
+</p>
+
+<p>
+Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
+</p>
+
+<p>
+Hasretle gamzelerinden ve o küçük çenenden öperim.
+</p>
+
+<p class="son">
+Baban.
+</p>
+
+</div>
+
+<div class="sayfa-numarasi">3</div>
+
+</div>
+
+
+<div class="page">
+
+<img src="sag_sayfa.png" alt="">
+
+<div class="sayfa-fotografi">
+<img src="kizim1.jpg" alt="Şiir">
+</div>
+
+<div class="sayfa-numarasi">4</div>
+
+</div>
+
+
+<div class="page">
+
+<img src="sol_sayfa.png" alt="">
+<div class="sayfa-numarasi">5</div>
+
+</div>
+
+
+<div class="page">
+
+<img src="sag_sayfa.png" alt="">
+<div class="sayfa-numarasi">6</div>
+
+</div>
+
+
+</div>
+</div>
+
+
+<div class="ust-kapak" id="ustKapak">
+
+<img
+    class="on-kapak"
+    src="kapak.jpg"
+    alt=""
+>
+
+<div class="kapak-yazi">
+
+<div>Şiir'e hatıra..</div>
+<div>Kelimelerden..</div>
+<div>Hayattan..</div>
+<div>Babasından..</div>
+
+</div>
+
+<img
+    class="arka-kapak"
+    src="kapak.jpg"
+    alt=""
+>
+
+</div>
+
+</div>
 </div>
 
 
@@ -657,18 +604,18 @@ body{
 <script>
 
 const kitap =
-    document.getElementById("kitap");
+document.getElementById("kitap");
 
 const ustKapak =
-    document.getElementById("ustKapak");
+document.getElementById("ustKapak");
 
 const sayfaAlani =
-    document.getElementById("sayfaAlani");
+document.getElementById("sayfaAlani");
 
 const pageFlipContainer =
-    document.getElementById("page-flip");
+document.getElementById("page-flip");
 
-let pageFlip = null;
+let pageFlip=null;
 
 
 /* =========================================================
@@ -680,91 +627,73 @@ function sayfalariBaslat(){
     if(pageFlip){
 
         pageFlip.destroy();
-
-        pageFlip = null;
+        pageFlip=null;
 
     }
 
-
-    /*
-       Sayfa alanının gerçek ekrandaki ölçüsü.
-    */
-
     const rect =
-        sayfaAlani.getBoundingClientRect();
-
-
-    /*
-       İki sayfalı kitapta tek sayfanın genişliği
-       toplam alanın yarısıdır.
-    */
+    sayfaAlani.getBoundingClientRect();
 
     const sayfaGenisligi =
-        rect.width / 2;
+    rect.width/2;
 
     const sayfaYuksekligi =
-        rect.height;
+    rect.height;
 
-
-    /*
-       PageFlip'e mevcut alanın ölçüsünü veriyoruz.
-
-       "stretch" korunuyor.
-       Çünkü telefon ekranına göre kitabın
-       sayfa oranını bozmasını istemiyoruz.
-
-       PC'deki davranış da böylece korunuyor.
-    */
 
     pageFlip =
-        new St.PageFlip(
-            pageFlipContainer,
-            {
+    new St.PageFlip(
+        pageFlipContainer,
+        {
 
-                width:
-                    Math.max(
-                        100,
-                        Math.round(sayfaGenisligi)
-                    ),
+            width:
+            Math.max(
+                100,
+                Math.round(sayfaGenisligi)
+            ),
 
-                height:
-                    Math.max(
-                        100,
-                        Math.round(sayfaYuksekligi)
-                    ),
+            height:
+            Math.max(
+                100,
+                Math.round(sayfaYuksekligi)
+            ),
 
-                size:"stretch",
+            size:"stretch",
 
-                minWidth:100,
+            minWidth:100,
 
-                maxWidth:
-                    Math.round(sayfaGenisligi),
+            maxWidth:
+            Math.round(sayfaGenisligi),
 
-                minHeight:100,
+            minHeight:100,
 
-                maxHeight:
-                    Math.round(sayfaYuksekligi),
+            maxHeight:
+            Math.round(sayfaYuksekligi),
 
-                drawShadow:true,
+            /*
+               PC'deki yansımayı kaldırıyoruz.
+            */
 
-                flippingTime:1000,
+            drawShadow:false,
 
-                usePortrait:false,
+            flippingTime:1000,
 
-                startPage:0,
+            usePortrait:false,
 
-                autoSize:false,
+            startPage:0,
 
-                maxShadowOpacity:0.35,
+            autoSize:false,
 
-                mobileScrollSupport:false,
+            maxShadowOpacity:0,
 
-                useMouseEvents:true,
+            mobileScrollSupport:false,
 
-                disableFlipByClick:false
+            useMouseEvents:true,
 
-            }
-        );
+            disableFlipByClick:false
+
+        }
+    );
 
 
     pageFlip.loadFromHTML(
@@ -779,84 +708,79 @@ function sayfalariBaslat(){
    ========================================================= */
 
 ustKapak.addEventListener(
-    "click",
-    function(){
+"click",
+function(){
 
-        const acikMi =
-            ustKapak.classList.toggle("acik");
+    const acikMi =
+    ustKapak.classList.toggle("acik");
 
+    kitap.classList.toggle(
+        "acildi",
+        acikMi
+    );
 
-        kitap.classList.toggle(
-            "acildi",
-            acikMi
+    if(acikMi){
+
+        setTimeout(
+        function(){
+
+            sayfalariBaslat();
+
+        },
+        2100
         );
 
-
-        if(acikMi){
-
-            setTimeout(
-                function(){
-
-                    sayfalariBaslat();
-
-                },
-                2100
-            );
-
-        }
-
     }
-);
+
+});
 
 
 /* =========================================================
-   EKRAN BOYUTU DEĞİŞİNCE
+   EKRAN BOYUTU
    ========================================================= */
 
 window.addEventListener(
-    "resize",
+"resize",
+function(){
+
+    if(
+        kitap.classList.contains("acildi")
+    ){
+
+        setTimeout(
+            sayfalariBaslat,
+            100
+        );
+
+    }
+
+});
+
+
+/* =========================================================
+   YÖN DEĞİŞİMİ
+   ========================================================= */
+
+window.addEventListener(
+"orientationchange",
+function(){
+
+    setTimeout(
     function(){
 
         if(
             kitap.classList.contains("acildi")
         ){
 
-            setTimeout(
-                sayfalariBaslat,
-                100
-            );
+            sayfalariBaslat();
 
         }
 
-    }
-);
+    },
+    300
+    );
 
-
-/* =========================================================
-   TELEFON YÖN DEĞİŞİMİ
-   ========================================================= */
-
-window.addEventListener(
-    "orientationchange",
-    function(){
-
-        setTimeout(
-            function(){
-
-                if(
-                    kitap.classList.contains("acildi")
-                ){
-
-                    sayfalariBaslat();
-
-                }
-
-            },
-            300
-        );
-
-    }
-);
+});
 
 </script>
 
