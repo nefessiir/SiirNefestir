@@ -409,26 +409,37 @@ body{
 
 @media (orientation:landscape) and (max-width:900px){
 
-    /* TÜM KİTAP: 1 CM SAĞA */
+    /* KİTAP / AÇIK KİTAP / SAYFALARIN KONUMU DEĞİŞMİYOR */
 
     .kitap{
-        transform:translateX(30%);
+        transform:translateX(calc(30% - 1cm));
     }
-
-    /* SAYFALAR: 1 CM SAĞA */
 
     .sayfa-alani{
         top:calc(1cm - 0.5cm);
         left:calc(-100% + 4cm - 2cm);
         width:calc(200% - 8cm + 4cm);
         height:calc(100% - 2cm + 1cm);
-        transform:translateX(1cm);
+        transform:translateX(0);
     }
 
-    /* AÇIK KİTAP: 1 CM SAĞA */
-
     .acik-kitap{
-        transform:translateX(1.2cm);
+        transform:translateX(0.2cm);
+    }
+
+    /* SADECE KAPAKLARI 0.5 CM SAĞA */
+
+    .alt-kapak{
+        transform:translateX(0.5cm);
+    }
+
+    .ust-kapak{
+        transform:translateX(0.5cm);
+        transform-origin:left center;
+    }
+
+    .ust-kapak.acik{
+        transform:translateX(0.5cm) rotateY(-180deg);
     }
 }
 
@@ -824,8 +835,6 @@ ustKapak.addEventListener(
 
         if(acikMi){
 
-            /* KAPANIŞTA SOL SAYFAYI ANINDA GİZLE */
-
             sayfaAlani.style.transition = "none";
             sayfaAlani.style.opacity = "0";
             sayfaAlani.style.pointerEvents = "none";
@@ -848,8 +857,6 @@ ustKapak.addEventListener(
             return;
         }
 
-
-        /* KAPAK AÇILIYOR */
 
         ustKapak.classList.add("acik");
         kitap.classList.add("acildi");
