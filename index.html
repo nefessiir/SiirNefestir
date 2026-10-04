@@ -576,8 +576,7 @@ let pageFlip = null;
 function sayfalariBaslat(){
 
     if(pageFlip){
-        pageFlip.destroy();
-        pageFlip = null;
+        return;
     }
 
     const rect = sayfaAlani.getBoundingClientRect();
@@ -626,25 +625,8 @@ ustKapak.addEventListener(
             sayfaAlani.style.visibility="hidden";
             sayfaAlani.style.pointerEvents="none";
 
-            if(pageFlip){
-                pageFlip.destroy();
-                pageFlip=null;
-            }
-
             ustKapak.classList.remove("acik");
             kitap.classList.remove("acildi");
-
-            setTimeout(
-                function(){
-
-                    sayfaAlani.style.transition="opacity .5s ease";
-                    sayfaAlani.style.opacity="";
-                    sayfaAlani.style.visibility="";
-                    sayfaAlani.style.pointerEvents="";
-
-                },
-                50
-            );
 
             return;
         }
@@ -665,7 +647,15 @@ ustKapak.addEventListener(
                 sayfaAlani.style.opacity="";
                 sayfaAlani.style.pointerEvents="";
 
-                sayfalariBaslat();
+                if(pageFlip){
+
+                    pageFlip.turnToPage(0);
+
+                }else{
+
+                    sayfalariBaslat();
+
+                }
 
             },
             2100
@@ -679,7 +669,20 @@ window.addEventListener(
     function(){
 
         if(kitap.classList.contains("acildi")){
-            setTimeout(sayfalariBaslat,100);
+
+            setTimeout(
+                function(){
+
+                    if(pageFlip){
+                        pageFlip.turnToPage(0);
+                    }else{
+                        sayfalariBaslat();
+                    }
+
+                },
+                100
+            );
+
         }
 
     }
@@ -694,7 +697,13 @@ window.addEventListener(
             function(){
 
                 if(kitap.classList.contains("acildi")){
-                    sayfalariBaslat();
+
+                    if(pageFlip){
+                        pageFlip.turnToPage(0);
+                    }else{
+                        sayfalariBaslat();
+                    }
+
                 }
 
             },
@@ -741,7 +750,13 @@ document.addEventListener(
             function(){
 
                 if(kitap.classList.contains("acildi")){
-                    sayfalariBaslat();
+
+                    if(pageFlip){
+                        pageFlip.turnToPage(0);
+                    }else{
+                        sayfalariBaslat();
+                    }
+
                 }
 
             },
