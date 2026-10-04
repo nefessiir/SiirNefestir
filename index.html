@@ -915,6 +915,68 @@ const unutSiiri = {
 
 
 /* =========================================================
+   YILDIZLAR
+   24. SAYFADAN BAŞLAR
+   ========================================================= */
+
+const yildizlarSiiri = {
+
+    baslik:"YILDIZLAR",
+
+    satirlar:[
+
+        "Bu gece bir yıldız kaydı sevgili.",
+
+        "Bu gece senin sesinle doldurdum yüreğimi yüreğim yetmedi.",
+
+        "Öylesine yaşanmış bir şiir gibi yazıldı gözlerin gözlerime  , öylesine ,",
+
+        "vurulmuşçasına işte.",
+
+        "Gözlerinin kokusunu sürdüm avuçlarıma.",
+
+        "Artık her sabah uyandığımda gözlerinin üzerine dolduruyorum suyu ve yüzüme çarpıyorum bir çağlayanın çığlığı gibi haykırışla ve sonsuz dağların doruklarından dinmeyen bir serinlikle.",
+
+        "O zaman gözlerinin kokusu dağılıyor yüzüme tüm gece sen kokuyorum..",
+
+        "sen kokuyorum.. sen işte..",
+
+        "Bu gece uykuya darıldı gözlerim uzaklardan gelen bir müzikle.",
+
+        "Derin hayallere dalıp gözlerimin önünden geçiriyorum seni her hareketinin her karesiyle",
+
+        "Gözlerimi alamıyorum seni beynimde çizdiğim gökyüzünün alacakaranlığındaki o parlak çizgilerden.",
+
+        "İşte sen.. işte gülümsüyorsun her zamanki gibi tüm çocukluğunla ve tüm çıplaklığınla.",
+
+        "İşte sen.. işte dağıtıyorsun saçlarını aslı kısa hayalimde Rapunzel'in saçları kadar uzun.",
+
+        "İşte sen.. İşte konuşuyorsun hiçbir sözlükte olmayan kelimeler dökülüyor öpmesini özlediğim o dudaklarının arasından.",
+
+        "İşte sen.. işte sen gidiyorsun bir çocuğu elinde bir kibrit kutusuyla evde tek başına bırakırcasına..",
+
+        "musluğu açık bırakır gibi sel gözyaşlarımla bırakıp beni gidiyorsun.",
+
+        "Gidiyorsun sana ait ne varsa toplayıp bavuluna , ben de sana dair olan her şeyi alır gibi.",
+
+        "Git ! Dört duvar arasında bırak şiirlerimi ışıksız , mavisiz , bomboş bir şekilde.",
+
+        "Git ! Ardına bakma ne olur , hiçbir sızı kalmasın yüreğinde.. yüreğin ağrımasın.",
+
+        "Git ! Gündüzleri koy avuçlarının arasına , beni gecelerimle baş başa bırak git.",
+
+        "Beni avucundaki gözlerinin kokusuyla bırak git.",
+
+        "Beni bırak..",
+
+        "Git !"
+
+    ]
+
+};
+
+
+/* =========================================================
    UZUN ŞİİRLER İÇİN SAYFALAMA
    ========================================================= */
 
@@ -1118,9 +1180,70 @@ function uzunSiiriSayfalaraAyir(
 
 
 /* =========================================================
+   BOŞ SAYFA OLUŞTUR
+   ========================================================= */
+
+function bosSayfaOlustur(sayfaNo){
+
+    const rect =
+        sayfaAlani.getBoundingClientRect();
+
+    const sayfaGenisligi =
+        rect.width / 2;
+
+    const sayfaYuksekligi =
+        rect.height;
+
+    const sayfa =
+        document.createElement("div");
+
+    sayfa.className =
+        "page uzun-siir-sayfasi";
+
+    const arkaPlan =
+        document.createElement("img");
+
+    arkaPlan.src =
+        "sag_sayfa.png";
+
+    arkaPlan.alt = "";
+
+    const numara =
+        document.createElement("div");
+
+    numara.className =
+        "sayfa-numarasi";
+
+    numara.textContent =
+        sayfaNo;
+
+    sayfa.appendChild(
+        arkaPlan
+    );
+
+    sayfa.appendChild(
+        numara
+    );
+
+    sayfa.style.width =
+        sayfaGenisligi + "px";
+
+    sayfa.style.height =
+        sayfaYuksekligi + "px";
+
+    pageFlipContainer.appendChild(
+        sayfa
+    );
+
+}
+
+
+/* =========================================================
    ŞİİRLERİ HAZIRLA
    11 -> TUTULAMAYAN
    20 -> UNUT
+   23 -> BOŞ
+   24 -> YILDIZLAR
    ========================================================= */
 
 function tutulamayaniHazirla(){
@@ -1147,6 +1270,17 @@ function tutulamayaniHazirla(){
     uzunSiiriSayfalaraAyir(
         unutSiiri,
         20
+    );
+
+
+    bosSayfaOlustur(
+        23
+    );
+
+
+    uzunSiiriSayfalaraAyir(
+        yildizlarSiiri,
+        24
     );
 
 }
