@@ -216,6 +216,1633 @@ body{
     position:absolute;
     left:50%;
     bottom:2.8%;
+    transform:translateX(-50%) translateZ(0);
+    z-index:8;
+    color:#6d5942;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(8px,0.75vw,12px);
+    line-height:1;
+    font-weight:normal;
+    text-align:center;
+    user-select:none;
+    pointer-events:none;
+    text-shadow:0 0.5px 0 rgba(255,255,255,.35);
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+}
+
+.sayfa-metni{
+    position:absolute;
+    z-index:5;
+    top:7%;
+    left:9%;
+    right:9%;
+    bottom:7%;
+    overflow:hidden;
+    color:#294d88;
+    font-family:"Segoe Print","Bradley Hand","Comic Sans MS",cursive;
+    font-size:clamp(9px,1.08vw,16px);
+    line-height:1.42;
+    text-align:left;
+    white-space:normal;
+    overflow-wrap:break-word;
+    user-select:text;
+    text-shadow:0.3px 0.3px 0 rgba(20,40,80,.35);
+
+    transform:translateZ(0);
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+}
+
+.sayfa-metni p{
+    margin:0 0 .7em 0;
+}
+
+.sayfa-metni .baslik{
+    font-size:1.12em;
+    margin-bottom:1em;
+}
+
+.sayfa-metni .siir-baslik{
+    font-size:1.35em;
+    font-weight:bold;
+    text-align:center;
+    margin-bottom:1.1em;
+}
+
+.sayfa-metni .son{
+    margin-top:1em;
+}
+
+.aci-metni{
+    margin-top:2em;
+}
+
+.sayfa-fotografi{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:50%;
+    transform:translate(-50%,-50%);
+    z-index:6;
+    line-height:0;
+}
+
+.sayfa-fotografi img{
+    position:relative;
+    inset:auto;
+    display:block;
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+}
+
+.sayfa-fotografi::before,
+.sayfa-fotografi::after{
+    content:"";
+    position:absolute;
+    z-index:8;
+    width:32%;
+    height:9%;
+    background:#c0aa80;
+    opacity:.9;
+    box-shadow:
+        0 1px 2px rgba(60,40,20,.20),
+        inset 0 0 1px rgba(255,255,255,.25);
+    pointer-events:none;
+}
+
+.sayfa-fotografi::before{
+    top:-3%;
+    right:-8%;
+    transform:rotate(9deg);
+}
+
+.sayfa-fotografi::after{
+    bottom:-3%;
+    left:-8%;
+    transform:rotate(-9deg);
+}
+
+.tam-ekran-tusu{
+    display:none;
+    position:fixed;
+    right:14px;
+    bottom:14px;
+    width:42px;
+    height:42px;
+    z-index:9999;
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:8px;
+    background:rgba(30,20,12,.72);
+    color:#f4d47a;
+    font-family:Arial,sans-serif;
+    font-size:24px;
+    line-height:40px;
+    text-align:center;
+    padding:0;
+    cursor:pointer;
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+}
+
+@media (max-aspect-ratio:1/1){
+
+    .kitap{
+        width:min(45vw,45vh);
+        transform:translateX(calc(30% + 1cm));
+    }
+
+    .sayfa-metni{
+        font-size:clamp(6px,1.08vw,13px);
+        line-height:1.42;
+        bottom:5%;
+        top:5%;
+    }
+
+    .sayfa-alani{
+        top:0.2cm;
+        left:calc(-100% + 0.7cm);
+        width:calc(200% - 1.8cm);
+        height:calc(100% - 1.8cm);
+        transform:translateX(0.2cm);
+    }
+
+    .acik-kitap{
+        transform:translateX(0.2cm);
+    }
+}
+
+@media (max-width:400px){
+
+    .kitap{
+        width:min(45vw,45vh);
+        transform:translateX(calc(30% + 1cm));
+    }
+
+    .sayfa-metni{
+        font-size:clamp(5px,1.08vw,11px);
+        line-height:1.42;
+        bottom:5%;
+        top:5%;
+    }
+
+    .sayfa-alani{
+        top:0.2cm;
+        left:calc(-100% + 0.7cm);
+        width:calc(200% - 1.8cm);
+        height:calc(100% - 1.8cm);
+        transform:translateX(0.2cm);
+    }
+
+    .acik-kitap{
+        transform:translateX(0.2cm);
+    }
+}
+
+@media (orientation:landscape) and (max-width:900px){
+
+    .kitap{
+        transform:
+            translateX(calc(30% + 1cm))
+            scale(var(--zoom,1));
+        transform-origin:center center;
+    }
+
+    .sayfa-alani{
+        top:calc(1cm - 0.5cm);
+        left:calc(-100% + 4cm - 2cm);
+        width:calc(200% - 8cm + 4cm);
+        height:calc(100% - 2cm + 1cm);
+        transform:translateX(0);
+    }
+
+    .acik-kitap{
+        transform:translateX(0.2cm);
+    }
+
+    .tam-ekran-tusu{
+        display:block;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="sahne">
+
+    <div class="kitap" id="kitap">
+
+        <div class="alt-kapak">
+            <img src="kapak.jpg" alt="">
+        </div>
+
+        <img class="acik-kitap" src="acik_kitap1.png" alt="">
+
+        <div class="sayfa-alani" id="sayfaAlani">
+
+            <div id="page-flip">
+
+                <!-- 1 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+                        <p class="baslik">KIZIM’a..</p>
+
+                        <p>
+                            Şiir..kızım..alınyazım..yürek sızım..kalp hırsızım..
+                        </p>
+
+                        <p>
+                            Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
+                            belki de , gözlerinden akmamaya inat eden bir damla gözyaşı ile
+                            ama yine de gülümseyerek tek başına okuyacaksın.
+                        </p>
+
+                        <p>
+                            Yani , güzel kızım , güldüğünde yanaklarında beliren ve görmeyi en çok
+                            sevdiğim gamzelerini yine göreceğim... nerede olduğumun hiç bir önemi yok.
+                        </p>
+                    </div>
+
+                    <div class="sayfa-numarasi">1</div>
+                </div>
+
+                <!-- 2 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+                        <p class="baslik">Bilmeni isterim ki;</p>
+
+                        <p>
+                            Ben bu şiirleri birilerine bir şey anlatmak için değil,
+                            içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
+                            Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.
+                        </p>
+
+                        <p>
+                            Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
+                            Ve eğer özlersen ve duymak istersen diye bu şiirleri senin için
+                            kendi sesimle okudum. Ben çok isterdim..
+                        </p>
+
+                        <p>
+                            Bir gün bu sayfalarda kendinden bir parça bulursan,
+                            bil ki , o şiir senden önce yazılmış olsa bile, sana aittir.
+                        </p>
+                    </div>
+
+                    <div class="sayfa-numarasi">2</div>
+                </div>
+
+                <!-- 3 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+                        <p>
+                            Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+                            beklediği yaşama sebebisin.
+                        </p>
+
+                        <p>
+                            Çünkü sen benim , yazdığım en güzel şiirsin…
+                        </p>
+
+                        <p>
+                            Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
+                        </p>
+
+                        <p>
+                            Hasretle gamzelerinden ve o küçük çenenden öperim.
+                        </p>
+
+                        <p class="son">Baban.</p>
+                    </div>
+
+                    <div class="sayfa-numarasi">3</div>
+                </div>
+
+                <!-- 4 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+
+                    <div class="sayfa-fotografi">
+                        <img src="kizim1.jpg" alt="Şiir">
+                    </div>
+
+                    <div class="sayfa-numarasi">4</div>
+                </div>
+
+                <!-- 5 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+
+                        <p class="siir-baslik">GELİYORUM</p>
+
+                        <p>
+                            Yoksam düşlerinde, gecelerinde kayıpsam..<br>
+                            Bakışların hep donuk, gözlerin ıslanıyorsa..<br>
+                            Soğuksa ellerin, buz gibiyse hala..<br>
+                            Ve inatçıysan çağrında..sabırsız<br>
+                            Geliyorum!
+                        </p>
+
+                        <p>
+                            Gecelerin koynunda bir esireysen<br>
+                            Yanaklarımdan akan yaşlar kadar sessiz<br>
+                            Yağmurlu gecelerde…<br>
+                            Bir ceylan yavrusu gibi ürkek ve ıslaksan<br>
+                            Geliyorum!
+                        </p>
+
+                    </div>
+
+                    <div class="sayfa-numarasi">5</div>
+                </div>
+
+                <!-- 6 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+
+                        <p>
+                            Denizin koyu maviliğinde kayboluyorsan..<br>
+                            Her kanat çırpışında martıların,<br>
+                            Yüreğine çaresiz sancılar saplanıyorsa<br>
+                            Geliyorum!
+                        </p>
+
+                        <p>
+                            Bir rüzgar kırmışsa dalını..<br>
+                            Dudaklarını kurutmuşsa serin bir meltem..<br>
+                            Sıyrılamamışsan gecenin sisli ve bulanık karanlığından<br>
+                            Ve şefkatli eller bekliyorsan yaşamak için..
+                        </p>
+
+                        <p class="son">
+                            Bekle…!
+                        </p>
+
+                        <p>
+                            Geliyorum!
+                        </p>
+
+                    </div>
+
+                    <div class="sayfa-numarasi">6</div>
+                </div>
+
+                <!-- 7 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+
+                        <p class="siir-baslik">AĞLAYAMAZSIN</p>
+
+                        <p>
+                            Seni de terk edip gider bir gün.<br>
+                            En çok sevdiklerin, inandıkların.<br>
+                            Bir yağmur yağar düşlerine hasretinden<br>
+                            ve bir bulut çöker anılarına katran gibi. Ağlayamazsın…
+                        </p>
+
+                        <p>
+                            Saçlarına rüzgar bir başka eser artık.<br>
+                            Zaman bir balyoz gibi iner gözlerine.<br>
+                            Gelir misin ? deme sakın.<br>
+                            Boğazında düğümlenir çaresizliğin. Ağlayamazsın.
+                        </p>
+
+                    </div>
+
+                    <div class="sayfa-numarasi">7</div>
+                </div>
+
+                <!-- 8 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+
+                        <p>
+                            Daha ne kadar yaşatacaksın ki bu aşkı kalbinde?<br>
+                            Seni tüketen de zaten bu aşk değil mi?<br>
+                            Anlıyorum.. sen hayatı yanlış anlamışsın.<br>
+                            Gülüyorsun ağlayacak yerde ağlayamıyorsun, değil mi?
+                        </p>
+
+                        <div class="aci-metni">
+
+                            <p class="siir-baslik">ACI</p>
+
+                            <p>
+                                Nereden bilirdim senin avucumdaki hayat çizgim olduğunu…<br>
+                                ve hayat çizgimin bu kadar kısa..
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="sayfa-numarasi">8</div>
+                </div>
+
+                <!-- 9 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+
+                        <p class="siir-baslik">BİR ÇİÇEK SEVDİM</p>
+
+                        <p>
+                            Bir çiçek sevdim , kimsesizliğimin kıraç topraklarında adı bende narindi<br>
+                            şiir tadında mürekkep okyanusunda adı bende elemdi
+                        </p>
+
+                        <p>
+                            Bir çiçek sevdim , beyaz kanatlarıyla papatya fallarında adı bende sevgiydi<br>
+                            ömrümün baharında içimdeki çiğ tanesiydi adı bende lale'ydi
+                        </p>
+
+                    </div>
+
+                    <div class="sayfa-numarasi">9</div>
+                </div>
+
+                <!-- 10 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+
+                        <p>
+                            Bir çiçek sevdim uçurum boylarında rüzgarlarla kardeşti adı bende iklimdi<br>
+                            gece karanlığında sedef teni binbir renkti adı bende hasretti&nbsp;
+                        </p>
+
+                        <p>
+                            Bir çiçek sevdim annemin kokusunda alnımın yazısında adı bende ateşti<br>
+                            tanrının huzurunda kalbimin ortasında<br>
+                            unuttum..adı bende neydi?
+                        </p>
+
+                    </div>
+
+                    <div class="sayfa-numarasi">10</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="ust-kapak" id="ustKapak">
+
+            <img class="on-kapak" src="kapak.jpg" alt="">
+
+            <div class="kapak-yazi">
+                <div>Şiir'e hatıra..</div>
+                <div>Kelimelerden..</div>
+                <div>Hayattan..</div>
+                <div>Babasından..</div>
+            </div>
+
+            <img class="arka-kapak" src="kapak.jpg" alt="">
+
+        </div>
+
+    </div>
+
+</div>
+
+<button
+    class="tam-ekran-tusu"
+    id="tamEkranTusu"
+    aria-label="Tam ekran"
+    title="Tam ekran">
+    ⛶
+</button>
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+
+<script>
+
+const kitap =
+    document.getElementById("kitap");
+
+const ustKapak =
+    document.getElementById("ustKapak");
+
+const sayfaAlani =
+    document.getElementById("sayfaAlani");
+
+const pageFlipContainer =
+    document.getElementById("page-flip");
+
+const tamEkranTusu =
+    document.getElementById("tamEkranTusu");
+
+let pageFlip = null;
+
+
+/* =========================================================
+   TUTULAMAYAN
+   ========================================================= */
+
+const tutulamayanSiiri = {
+
+    baslik:"TUTULAMAYAN",
+
+    satirlar:[
+
+        "Söz verdim..",
+
+        "Örselenmiş sevdalarımdan bahsetmeyeceğim bir daha",
+
+        "Yabani çiçeklerin , yabani kokusunu hatırlamayacağım tenimde",
+
+        "Uzun yolculuklarda saydığım beyaz yol çizgilerine yoldaş olmayacağım",
+
+        "Tren sirenlerinde sesini aramayacağım gittiğin gecelerin ardından",
+
+        "Gittiğin gecelerin ardından…sana el sallamayacağım",
+
+        "Söz verdim..",
+
+        "Sırılsıklam caddelerde sensizken yanım başım dolaşmayacağım",
+
+        "Bir çocuğun çığlığı gibi haykırarak , bir savaşçının sıcak yarası gibi kanayarak ,",
+
+        "ve bir anka kuşu gibi yeniden varolarak ,",
+
+        "bir mendilci çocuğun gözlerindeki gibi Tanrıya yalvararak ,",
+
+        "ağır ağır ve utanmadan yorulmadan sırtlarında bir zamanlar nasıl taşıdılarsa mavzerleri memleket kadınları…",
+
+        "seni içime koyup öylece taşıyacağım sonsuza kadar.",
+
+        "Söz verdim..",
+
+        "Yılmadan bu bedenim amansızlıklara , daha doğmamışken ana karnındaki bebek",
+
+        "ve bir köşe başında bileklerini keserken tinerci çocuk",
+
+        "aç kurt saldırırken koyun sürüsüne ayazda",
+
+        "işçi her sabah işe gitme telaşındayken",
+
+        "ve biraz da",
+
+        "salaş bir barda şarkı söylerken saçları dağınık kadın",
+
+        "hani annem gibi severken seni bu anlamsız mısralarımın arasında",
+
+        "kasımda… yağmur yağmaya hazırlanırken üşürken bu kalemi tutan parmaklarım",
+
+        "öksürürken ciğerlerim parçalanarak",
+
+        "ve uzanıp kibrit kutusuna ısınmaya çalışırken bir kibritin alevinde",
+
+        "ve bir de sigara yakarken…artık babaannem yaşamıyorken",
+
+        "dururken resmin cüzdanımda , gözlerimde yorgunluk dudaklarımda tadın varken…",
+
+        "seni unutmayacağım",
+
+        "Söz verdim.. Uzak kentlerdeki dostlarımı düşüneceğim biraz da",
+
+        "biraz da iç çekeceğim hep özlemini duyduğum anılara",
+
+        "76'lı yıllarda eski bir kasette ağlarken çocuk sırf yakınları duysun diye sesini",
+
+        "sonradan tanıdığı bir ses söylerken o hazin türküyü ; \"demedim mi nazlı yarim ben sana çok muhabbet tek ayrılık getirir\" ken",
+
+        "karla kaplıyken Başkale kahretsin ki ben orayı henüz görmemişken",
+
+        "dışarıda yağmur çiselerken toprağın üstüne.. toprak olmayı düşlerken bir adama kavuşmak ümidiyle",
+
+        "annem evde yalnızken ve şiirlerim hep -ken ile biterken.. ağlamayacağım",
+
+        "Söz verdim..",
+
+        "Bu gece de dün geceki gibi seni düşleyeceğim ey sevgili",
+
+        "bin parçaya bölüp yüreğimi içine kaç insan sığdırabilirsem",
+
+        "o kadar çok bir çocuklukla avutacağım kendimi",
+
+        "kendimi bir martıya benzetip bazen , bazen bir yelkenli olup sonsuzluğa açılacağım",
+
+        "bir kıyıda bırakmak yok anıları onları hep ben de taşıyacağım",
+
+        "Ve çiseleyen yağmur damlalarını biriktirip gözlerimde",
+
+        "çölde serap göreceğim içinde seninle gökyüzüne yükselip kaybolduğum…",
+
+        "__YENI_SAYFA__",
+
+        "kavrulurken ellerinin teri ellerimde sensiz yanmayacağım…",
+
+        "söz verdim bir daha asla…",
+
+        "asla…",
+
+        "asla aşık olmayacağım"
+
+    ]
+
+};
+
+
+/* =========================================================
+   UNUT
+   21. SAYFADAN BAŞLAR
+   ========================================================= */
+
+const unutSiiri = {
+
+    baslik:"UNUT",
+
+    satirlar:[
+
+        "Ne olur öldüğümde hissetme beni",
+
+        "bir yudumluk yağmur suyu yakar genzimi geceleri",
+
+        "içimdeki yılanın çıngırak sesiydi o kalbimin değil",
+
+        "unut geçmişin kalın ve beyaz sayfalarına kuş tüyü kalemlerle yazdıklarımı",
+
+        "unut çünkü ;",
+
+        "virgülü yanlış yerde koymuşum ey.... bu cümle gibi bu sevda da devam etmemeli",
+
+        "ve ne olur öldüğümde hissetme beni",
+
+        "gözlerimin bendeki ışıltısı yanıltmasın seni o sadece bir mum ışığıdır",
+
+        "geçtikçe zaman Ömür geçtikçe ahh bitmeyecek sandığın o büyük aşkım",
+
+        "bir mum gibi bak bitti işte",
+
+        "Bir Türk filmi senaryosu değil bu, anla.  Ne sen zengin kız ne ben fakir gencim.",
+
+        "Bir sis bulutu arkasına sakladığım o dağları delen direncim",
+
+        "şimdi kendini rüzgarın koynunda savurmaktadır acı acı , ağır ağır",
+
+        "Ne olur öldüğümde hissetme beni",
+
+        "Öldüğümde.. odamda.. sessizce.. beni hissetme",
+
+        "sen daha çocuksun ne olur unut beni",
+
+        "unut acı çekme !"
+
+    ]
+
+};
+
+
+/* =========================================================
+   UZUN ŞİİRLER İÇİN KALICI SAYFALAMA SİSTEMİ
+   ========================================================= */
+
+function uzunSiiriSayfalaraAyir(siir,startPage){
+
+    const rect =
+        sayfaAlani.getBoundingClientRect();
+
+    const sayfaGenisligi =
+        rect.width / 2;
+
+    const sayfaYuksekligi =
+        rect.height;
+
+    let sayfaNo =
+        startPage;
+
+    let solMu =
+        true;
+
+    let mevcutSayfa =
+        null;
+
+    let mevcutMetin =
+        null;
+
+
+    function sayfaOlustur(){
+
+        const sayfa =
+            document.createElement("div");
+
+        sayfa.className =
+            "page uzun-siir-sayfasi";
+
+        const arkaPlan =
+            document.createElement("img");
+
+        arkaPlan.src =
+            solMu
+            ? "sol_sayfa.png"
+            : "sag_sayfa.png";
+
+        arkaPlan.alt = "";
+
+        const metin =
+            document.createElement("div");
+
+        metin.className =
+            "sayfa-metni";
+
+        const numara =
+            document.createElement("div");
+
+        numara.className =
+            "sayfa-numarasi";
+
+        numara.textContent =
+            sayfaNo;
+
+        sayfa.appendChild(arkaPlan);
+        sayfa.appendChild(metin);
+        sayfa.appendChild(numara);
+
+        sayfa.style.width =
+            sayfaGenisligi + "px";
+
+        sayfa.style.height =
+            sayfaYuksekligi + "px";
+
+        pageFlipContainer.appendChild(
+            sayfa
+        );
+
+        mevcutSayfa =
+            sayfa;
+
+        mevcutMetin =
+            metin;
+
+        sayfaNo++;
+
+        solMu =
+            !solMu;
+    }
+
+
+    function tasmaVar(){
+
+        return (
+            mevcutMetin.scrollHeight >
+            mevcutMetin.clientHeight + 1
+        );
+    }
+
+
+    sayfaOlustur();
+
+
+    const baslik =
+        document.createElement("p");
+
+    baslik.className =
+        "siir-baslik";
+
+    baslik.textContent =
+        siir.baslik;
+
+    mevcutMetin.appendChild(
+        baslik
+    );
+
+
+    for(
+        let i=0;
+        i<siir.satirlar.length;
+        i++
+    ){
+
+        const satir =
+            siir.satirlar[i];
+
+
+        if(satir === "__YENI_SAYFA__"){
+
+            sayfaOlustur();
+
+            continue;
+
+        }
+
+
+        const p =
+            document.createElement("p");
+
+        p.textContent =
+            satir;
+
+        mevcutMetin.appendChild(
+            p
+        );
+
+
+        if(tasmaVar()){
+
+            mevcutMetin.removeChild(
+                p
+            );
+
+            sayfaOlustur();
+
+            mevcutMetin.appendChild(
+                p
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   20. SAYFA BOŞ
+   ========================================================= */
+
+function bosSayfaOlustur(){
+
+    const sayfa =
+        document.createElement("div");
+
+    sayfa.className =
+        "page uzun-siir-sayfasi";
+
+    const arkaPlan =
+        document.createElement("img");
+
+    arkaPlan.src =
+        "sag_sayfa.png";
+
+    arkaPlan.alt = "";
+
+    const numara =
+        document.createElement("div");
+
+    numara.className =
+        "sayfa-numarasi";
+
+    numara.textContent =
+        "20";
+
+    sayfa.appendChild(
+        arkaPlan
+    );
+
+    sayfa.appendChild(
+        numara
+    );
+
+    const rect =
+        sayfaAlani.getBoundingClientRect();
+
+    sayfa.style.width =
+        (rect.width / 2) + "px";
+
+    sayfa.style.height =
+        rect.height + "px";
+
+    pageFlipContainer.appendChild(
+        sayfa
+    );
+
+}
+
+
+/* =========================================================
+   ŞİİRLERİ HAZIRLA
+   11 -> TUTULAMAYAN
+   20 -> BOŞ
+   21 -> UNUT
+   ========================================================= */
+
+function tutulamayaniHazirla(){
+
+    const eski =
+        pageFlipContainer.querySelectorAll(
+            ".uzun-siir-sayfasi"
+        );
+
+    eski.forEach(
+        function(sayfa){
+            sayfa.remove();
+        }
+    );
+
+    uzunSiiriSayfalaraAyir(
+        tutulamayanSiiri,
+        11
+    );
+
+    bosSayfaOlustur();
+
+    uzunSiiriSayfalaraAyir(
+        unutSiiri,
+        21
+    );
+}
+
+
+function sayfalariBaslat(){
+
+    if(pageFlip){
+        return;
+    }
+
+    const rect =
+        sayfaAlani.getBoundingClientRect();
+
+    const sayfaGenisligi =
+        rect.width / 2;
+
+    const sayfaYuksekligi =
+        rect.height;
+
+    pageFlip =
+        new St.PageFlip(
+            pageFlipContainer,
+            {
+                width:
+                    Math.max(
+                        100,
+                        Math.round(
+                            sayfaGenisligi
+                        )
+                    ),
+
+                height:
+                    Math.max(
+                        100,
+                        Math.round(
+                            sayfaYuksekligi
+                        )
+                    ),
+
+                size:"stretch",
+
+                minWidth:100,
+
+                maxWidth:
+                    Math.round(
+                        sayfaGenisligi
+                    ),
+
+                minHeight:100,
+
+                maxHeight:
+                    Math.round(
+                        sayfaYuksekligi
+                    ),
+
+                drawShadow:false,
+
+                flippingTime:1000,
+
+                usePortrait:false,
+
+                startPage:0,
+
+                autoSize:false,
+
+                maxShadowOpacity:0,
+
+                mobileScrollSupport:false,
+
+                useMouseEvents:true,
+
+                disableFlipByClick:false
+            }
+        );
+
+    pageFlip.loadFromHTML(
+        pageFlipContainer.querySelectorAll(
+            ".page"
+        )
+    );
+}
+
+
+ustKapak.addEventListener(
+    "click",
+    function(){
+
+        const acikMi =
+            ustKapak.classList.contains(
+                "acik"
+            );
+
+
+        if(acikMi){
+
+            sayfaAlani.style.transition =
+                "none";
+
+            sayfaAlani.style.opacity =
+                "0";
+
+            sayfaAlani.style.visibility =
+                "hidden";
+
+            sayfaAlani.style.pointerEvents =
+                "none";
+
+            ustKapak.classList.remove(
+                "acik"
+            );
+
+            kitap.classList.remove(
+                "acildi"
+            );
+
+            return;
+        }
+
+
+        sayfaAlani.style.transition =
+            "none";
+
+        sayfaAlani.style.opacity =
+            "0";
+
+        sayfaAlani.style.visibility =
+            "hidden";
+
+        sayfaAlani.style.pointerEvents =
+            "none";
+
+
+        ustKapak.classList.add(
+            "acik"
+        );
+
+        kitap.classList.add(
+            "acildi"
+        );
+
+
+        setTimeout(
+            function(){
+
+                sayfaAlani.style.visibility =
+                    "visible";
+
+                sayfaAlani.style.transition =
+                    "opacity .5s ease";
+
+                sayfaAlani.style.opacity =
+                    "";
+
+                sayfaAlani.style.pointerEvents =
+                    "";
+
+
+                tutulamayaniHazirla();
+
+                sayfalariBaslat();
+
+            },
+            2100
+        );
+
+    }
+);
+
+
+window.addEventListener(
+    "resize",
+    function(){
+
+        if(
+            kitap.classList.contains(
+                "acildi"
+            )
+        ){
+
+            setTimeout(
+                function(){
+
+                    if(pageFlip){
+
+                        pageFlip.turnToPage(
+                            0
+                        );
+
+                    }
+
+                },
+                100
+            );
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "orientationchange",
+    function(){
+
+        setTimeout(
+            function(){
+
+                if(
+                    kitap.classList.contains(
+                        "acildi"
+                    )
+                ){
+
+                    if(pageFlip){
+
+                        pageFlip.turnToPage(
+                            0
+                        );
+
+                    }
+
+                }
+
+            },
+            200
+        );
+
+    }
+);
+
+
+tamEkranTusu.addEventListener(
+    "click",
+    async function(){
+
+        try{
+
+            if(
+                !document.fullscreenElement
+            ){
+
+                await document.documentElement
+                    .requestFullscreen();
+
+            }else{
+
+                await document.exitFullscreen();
+
+            }
+
+        }catch(hata){
+
+            console.log(
+                "Tam ekran açılamadı:",
+                hata
+            );
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function(){
+
+        setTimeout(
+            function(){
+
+                if(
+                    kitap.classList.contains(
+                        "acildi"
+                    )
+                ){
+
+                    if(pageFlip){
+
+                        pageFlip.turnToPage(
+                            0
+                        );
+
+                    }
+
+                }
+
+            },
+            150
+        );
+
+    }
+);
+
+
+let zoomBaslangic = 1;
+let zoomMesafe = 0;
+let zoomAktif = false;
+
+
+function yatayMobil(){
+
+    return (
+        window.innerWidth >
+        window.innerHeight &&
+        window.innerWidth <= 900
+    );
+
+}
+
+
+function ikiParmakMesafesi(touches){
+
+    const dx =
+        touches[0].clientX -
+        touches[1].clientX;
+
+    const dy =
+        touches[0].clientY -
+        touches[1].clientY;
+
+    return Math.sqrt(
+        dx * dx +
+        dy * dy
+    );
+
+}
+
+
+document.addEventListener(
+    "touchstart",
+    function(e){
+
+        if(!yatayMobil()){
+            return;
+        }
+
+        if(e.touches.length === 2){
+
+            zoomAktif = true;
+
+            zoomMesafe =
+                ikiParmakMesafesi(
+                    e.touches
+                );
+
+            zoomBaslangic =
+                parseFloat(
+                    kitap.style.getPropertyValue(
+                        "--zoom"
+                    )
+                ) || 1;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+        }
+
+    },
+    {
+        passive:false,
+        capture:true
+    }
+);
+
+
+document.addEventListener(
+    "touchmove",
+    function(e){
+
+        if(!yatayMobil()){
+            return;
+        }
+
+        if(
+            zoomAktif &&
+            e.touches.length === 2
+        ){
+
+            const yeniMesafe =
+                ikiParmakMesafesi(
+                    e.touches
+                );
+
+            if(zoomMesafe <= 0){
+                return;
+            }
+
+            const oran =
+                yeniMesafe /
+                zoomMesafe;
+
+            let yeniZoom =
+                zoomBaslangic *
+                oran;
+
+            yeniZoom =
+                Math.max(
+                    1,
+                    Math.min(
+                        2.5,
+                        yeniZoom
+                    )
+                );
+
+            kitap.style.setProperty(
+                "--zoom",
+                yeniZoom
+            );
+
+            e.preventDefault();
+            e.stopPropagation();
+
+        }
+
+    },
+    {
+        passive:false,
+        capture:true
+    }
+);
+
+
+document.addEventListener(
+    "touchend",
+    function(e){
+
+        if(!yatayMobil()){
+
+            zoomAktif = false;
+
+            return;
+        }
+
+        if(e.touches.length < 2){
+
+            zoomAktif = false;
+            zoomMesafe = 0;
+
+        }
+
+    },
+    {
+        passive:false,
+        capture:true
+    }
+);
+
+
+document.addEventListener(
+    "touchcancel",
+    function(){
+
+        zoomAktif = false;
+        zoomMesafe = 0;
+
+    },
+    {
+        passive:false,
+        capture:true
+    }
+);
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Şiir Nefestir</title>
+
+<style>
+*{box-sizing:border-box;}
+
+html,body{
+    width:100%;
+    height:100%;
+    margin:0;
+    overflow:hidden;
+}
+
+body{
+    background:radial-gradient(circle at center,#5d4630 0%,#2b1b10 100%);
+    font-family:Georgia,"Times New Roman",serif;
+}
+
+.sahne{
+    position:relative;
+    width:100vw;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:visible;
+    perspective:1800px;
+}
+
+.kitap{
+    position:relative;
+    width:min(45vw,1000px);
+    aspect-ratio:1.5/1;
+    flex-shrink:0;
+    transform-style:preserve-3d;
+    transform:translateX(calc(30% + 4cm));
+}
+
+.alt-kapak{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+    overflow:visible;
+}
+
+.alt-kapak img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:fill;
+    user-select:none;
+    pointer-events:none;
+}
+
+.ust-kapak{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:10;
+    transform-style:preserve-3d;
+    transform-origin:left center;
+    transition:transform 2s ease-in-out;
+    cursor:pointer;
+    overflow:visible;
+}
+
+.on-kapak,
+.arka-kapak{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:fill;
+    backface-visibility:hidden;
+    user-select:none;
+    pointer-events:none;
+}
+
+.arka-kapak{
+    transform:rotateY(180deg);
+}
+
+.ust-kapak.acik{
+    transform:rotateY(-180deg);
+    z-index:0;
+}
+
+.kapak-yazi{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:80%;
+    text-align:center;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(14px,2vw,30px);
+    line-height:1.5;
+    color:#f4d47a;
+    text-shadow:
+        0 1px 0 #8c641c,
+        0 2px 1px rgba(60,35,5,.8),
+        0 0 3px rgba(255,218,120,.85),
+        0 0 7px rgba(255,202,80,.35);
+    z-index:2;
+    user-select:none;
+    pointer-events:none;
+    backface-visibility:hidden;
+    animation:altinParilti 4s ease-in-out infinite;
+}
+
+.kapak-yazi div{
+    white-space:nowrap;
+}
+
+@keyframes altinParilti{
+    0%,100%{
+        text-shadow:
+            0 1px 0 #8c641c,
+            0 2px 1px rgba(60,35,5,.8),
+            0 0 3px rgba(255,218,120,.75),
+            0 0 6px rgba(255,202,80,.25);
+    }
+
+    50%{
+        text-shadow:
+            0 1px 0 #8c641c,
+            0 2px 1px rgba(60,35,5,.8),
+            0 0 4px rgba(255,225,145,1),
+            0 0 10px rgba(255,210,95,.5);
+    }
+}
+
+.acik-kitap{
+    position:absolute;
+    top:0;
+    right:0.2cm;
+    width:200%;
+    height:100%;
+    z-index:2;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .5s ease;
+}
+
+.kitap.acildi .acik-kitap{
+    opacity:1;
+    transition-delay:2s;
+}
+
+.sayfa-alani{
+    position:absolute;
+    top:1cm;
+    left:calc(-100% + 4cm);
+    width:calc(200% - 8cm);
+    height:calc(100% - 2cm);
+    z-index:4;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .5s ease;
+    transition-delay:2s;
+}
+
+.kitap.acildi .sayfa-alani{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+#page-flip{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+}
+
+.page{
+    position:relative;
+    width:100%;
+    height:100%;
+    background:transparent;
+    overflow:hidden;
+    user-select:none;
+    -webkit-user-select:none;
+    touch-action:none;
+    cursor:grab;
+}
+
+.page:active{
+    cursor:grabbing;
+}
+
+.page > img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:fill;
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+}
+
+.sayfa-numarasi{
+    position:absolute;
+    left:50%;
+    bottom:2.8%;
     transform:translateX(-50%);
     z-index:8;
     color:#6d5942;
