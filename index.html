@@ -418,10 +418,13 @@ body{
 
 @media (orientation:landscape) and (max-width:900px){
 
-    /* TÜM KİTABI 1 CM SOLA KAYDIR */
+    /*
+       KİTABIN TAMAMI TEK GRUP OLARAK
+       1 CM SAĞA ALINDI
+    */
 
     .kitap{
-        transform:translateX(calc(30% - 1cm));
+        transform:translateX(calc(30%));
     }
 
     /* SAYFALAR: SON KABUL EDİLEN GENİŞLETİLMİŞ HALİ */
@@ -738,8 +741,6 @@ ustKapak.addEventListener(
 
         if(acikMi){
 
-            /* KAPANIŞTA SOL SAYFAYI ANINDA GİZLE */
-
             sayfaAlani.style.transition = "none";
             sayfaAlani.style.opacity = "0";
             sayfaAlani.style.pointerEvents = "none";
@@ -843,7 +844,10 @@ tamEkranTusu.addEventListener(
 
         }catch(hata){
 
-            console.log("Tam ekran açılamadı:",hata);
+            console.log(
+                "Tam ekran açılamadı:",
+                hata
+            );
 
         }
     }
