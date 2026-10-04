@@ -350,7 +350,6 @@ body{
 }
 
 @media (max-aspect-ratio:1/1){
-
     .kitap{
         width:min(45vw,45vh);
         transform:translateX(calc(30% + 1cm));
@@ -377,7 +376,6 @@ body{
 }
 
 @media (max-width:400px){
-
     .kitap{
         width:min(45vw,45vh);
         transform:translateX(calc(30% + 1cm));
@@ -404,7 +402,6 @@ body{
 }
 
 @media (orientation:landscape) and (max-width:900px){
-
     .kitap{
         transform:
             translateX(calc(30% + 1cm))
@@ -438,277 +435,16 @@ body{
     <div class="kitap" id="kitap">
 
         <div class="alt-kapak">
-            <img src="kapak.jpg" alt="">
-        </div>
-
-        <img class="acik-kitap" src="acik_kitap1.png" alt="">
-
-        <div class="sayfa-alani" id="sayfaAlani">
-
-            <div id="page-flip">
-
-                <!-- 1 -->
-                <div class="page">
-                    <img src="sol_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-                        <p class="baslik">KIZIM’a..</p>
-
-                        <p>
-                            Şiir..kızım..alınyazım..yürek sızım..kalp hırsızım..
-                        </p>
-
-                        <p>
-                            Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
-                            belki de , gözlerinden akmamaya inat eden bir damla gözyaşı ile
-                            ama yine de gülümseyerek tek başına okuyacaksın.
-                        </p>
-
-                        <p>
-                            Yani , güzel kızım , güldüğünde yanaklarında beliren ve görmeyi en çok
-                            sevdiğim gamzelerini yine göreceğim... nerede olduğumun hiç bir önemi yok.
-                        </p>
-                    </div>
-
-                    <div class="sayfa-numarasi">1</div>
-                </div>
-
-                <!-- 2 -->
-                <div class="page">
-                    <img src="sag_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-                        <p class="baslik">Bilmeni isterim ki;</p>
-
-                        <p>
-                            Ben bu şiirleri birilerine bir şey anlatmak için değil,
-                            içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
-                            Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.
-                        </p>
-
-                        <p>
-                            Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
-                            Ve eğer özlersen ve duymak istersen diye bu şiirleri senin için
-                            kendi sesimle okudum. Ben çok isterdim..
-                        </p>
-
-                        <p>
-                            Bir gün bu sayfalarda kendinden bir parça bulursan,
-                            bil ki , o şiir senden önce yazılmış olsa bile, sana aittir.
-                        </p>
-                    </div>
-
-                    <div class="sayfa-numarasi">2</div>
-                </div>
-
-                <!-- 3 -->
-                <div class="page">
-                    <img src="sol_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-                        <p>
-                            Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
-                            beklediği yaşama sebebisin.
-                        </p>
-
-                        <p>
-                            Çünkü sen benim , yazdığım en güzel şiirsin…
-                        </p>
-
-                        <p>
-                            Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…
-                        </p>
-
-                        <p>
-                            Hasretle gamzelerinden ve o küçük çenenden öperim.
-                        </p>
-
-                        <p class="son">Baban.</p>
-                    </div>
-
-                    <div class="sayfa-numarasi">3</div>
-                </div>
-
-                <!-- 4 -->
-                <div class="page">
-                    <img src="sag_sayfa.png" alt="">
-
-                    <div class="sayfa-fotografi">
-                        <img src="kizim1.jpg" alt="Şiir">
-                    </div>
-
-                    <div class="sayfa-numarasi">4</div>
-                </div>
-
-                <!-- 5 -->
-                <div class="page">
-                    <img src="sol_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-
-                        <p class="siir-baslik">GELİYORUM</p>
-
-                        <p>
-                            Yoksam düşlerinde, gecelerinde kayıpsam..<br>
-                            Bakışların hep donuk, gözlerin ıslanıyorsa..<br>
-                            Soğuksa ellerin, buz gibiyse hala..<br>
-                            Ve inatçıysan çağrında..sabırsız<br>
-                            Geliyorum!
-                        </p>
-
-                        <p>
-                            Gecelerin koynunda bir esireysen<br>
-                            Yanaklarımdan akan yaşlar kadar sessiz<br>
-                            Yağmurlu gecelerde…<br>
-                            Bir ceylan yavrusu gibi ürkek ve ıslaksan<br>
-                            Geliyorum!
-                        </p>
-
-                    </div>
-
-                    <div class="sayfa-numarasi">5</div>
-                </div>
-
-                <!-- 6 -->
-                <div class="page">
-                    <img src="sag_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-
-                        <p>
-                            Denizin koyu maviliğinde kayboluyorsan..<br>
-                            Her kanat çırpışında martıların,<br>
-                            Yüreğine çaresiz sancılar saplanıyorsa<br>
-                            Geliyorum!
-                        </p>
-
-                        <p>
-                            Bir rüzgar kırmışsa dalını..<br>
-                            Dudaklarını kurutmuşsa serin bir meltem..<br>
-                            Sıyrılamamışsan gecenin sisli ve bulanık karanlığından<br>
-                            Ve şefkatli eller bekliyorsan yaşamak için..
-                        </p>
-
-                        <p class="son">
-                            Bekle…!
-                        </p>
-
-                        <p>
-                            Geliyorum!
-                        </p>
-
-                    </div>
-
-                    <div class="sayfa-numarasi">6</div>
-                </div>
-
-                <!-- 7 -->
-                <div class="page">
-                    <img src="sol_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-
-                        <p class="siir-baslik">AĞLAYAMAZSIN</p>
-
-                        <p>
-                            Seni de terk edip gider bir gün.<br>
-                            En çok sevdiklerin, inandıkların.<br>
-                            Bir yağmur yağar düşlerine hasretinden<br>
-                            ve bir bulut çöker anılarına katran gibi. Ağlayamazsın…
-                        </p>
-
-                        <p>
-                            Saçlarına rüzgar bir başka eser artık.<br>
-                            Zaman bir balyoz gibi iner gözlerine.<br>
-                            Gelir misin ? deme sakın.<br>
-                            Boğazında düğümlenir çaresizliğin. Ağlayamazsın.
-                        </p>
-
-                    </div>
-
-                    <div class="sayfa-numarasi">7</div>
-                </div>
-
-                <!-- 8 -->
-                <div class="page">
-                    <img src="sag_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-
-                        <p>
-                            Daha ne kadar yaşatacaksın ki bu aşkı kalbinde?<br>
-                            Seni tüketen de zaten bu aşk değil mi?<br>
-                            Anlıyorum.. sen hayatı yanlış anlamışsın.<br>
-                            Gülüyorsun ağlayacak yerde ağlayamıyorsun, değil mi?
-                        </p>
-
-                        <div class="aci-metni">
-
-                            <p class="siir-baslik">ACI</p>
-
-                            <p>
-                                Nereden bilirdim senin avucumdaki hayat çizgim olduğunu…<br>
-                                ve hayat çizgimin bu kadar kısa..
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <div class="sayfa-numarasi">8</div>
-                </div>
-
-                <!-- 9 -->
-                <div class="page">
-                    <img src="sol_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-
-                        <p class="siir-baslik">BİR ÇİÇEK SEVDİM</p>
-
-                        <p>
-                            Bir çiçek sevdim , kimsesizliğimin kıraç topraklarında adı bende narindi<br>
-                            şiir tadında mürekkep okyanusunda adı bende elemdi
-                        </p>
-
-                        <p>
-                            Bir çiçek sevdim , beyaz kanatlarıyla papatya fallarında adı bende sevgiydi<br>
-                            ömrümün baharında içimdeki çiğ tanesiydi adı bende lale'ydi
-                        </p>
-
-                    </div>
-
-                    <div class="sayfa-numarasi">9</div>
-                </div>
-
-                <!-- 10 -->
-                <div class="page">
-                    <img src="sag_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
-
-                        <p>
-                            Bir çiçek sevdim uçurum boylarında rüzgarlarla kardeşti adı bende iklimdi<br>
-                            gece karanlığında sedef teni binbir renkti adı bende hasretti&nbsp;
-                        </p>
-
-                        <p>
-                            Bir çiçek sevdim annemin kokusunda alnımın yazısında adı bende ateşti<br>
-                            tanrının huzurunda kalbimin ortasında<br>
-                            unuttum..adı bende neydi?
-                        </p>
-
-                    </div>
-
-                    <div class="sayfa-numarasi">10</div>
-                </div>
-
-            </div>
+            <img src="acik_kitap1.png" alt="">
         </div>
 
         <div class="ust-kapak" id="ustKapak">
 
-            <img class="on-kapak" src="kapak.jpg" alt="">
+            <img
+                class="on-kapak"
+                src="kapak.jpg"
+                alt=""
+            >
 
             <div class="kapak-yazi">
                 <div>Şiir'e hatıra..</div>
@@ -717,7 +453,177 @@ body{
                 <div>Babasından..</div>
             </div>
 
-            <img class="arka-kapak" src="kapak.jpg" alt="">
+            <img
+                class="arka-kapak"
+                src="kapak.jpg"
+                alt=""
+            >
+
+        </div>
+
+        <img
+            class="acik-kitap"
+            src="acik_kitap1.png"
+            alt=""
+        >
+
+        <div class="sayfa-alani" id="sayfaAlani">
+
+            <div id="page-flip">
+
+                <!-- 1 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p class="baslik">KIZIM’a..</p>
+                        <p>Şiir..kızım..alınyazım..yürek sızım..kalp hırsızım..</p>
+                        <p>Bu satırları belki bir gün yüzümüzde bir tebessümle beraber okuyacağız..
+                            belki de , gözlerinden akmamaya inat eden bir damla gözyaşı ile
+                            ama yine de gülümseyerek tek başına okuyacaksın.</p>
+                        <p>Yani , güzel kızım , güldüğünde yanaklarında beliren ve görmeyi en çok
+                            sevdiğim gamzelerini yine göreceğim... nerede olduğumun hiç bir önemi yok.</p>
+                    </div>
+                    <div class="sayfa-numarasi">1</div>
+                </div>
+
+                <!-- 2 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p class="baslik">Bilmeni isterim ki;</p>
+                        <p>Ben bu şiirleri birilerine bir şey anlatmak için değil,
+                            içimde kopan fırtınaları , bir yağmur misali kağıda dökmek için yazdım.
+                            Ve bazılarını yıllar sonra sen bul diye sakladım. Çünkü ben buldum.</p>
+                        <p>Sana bırakabileceğim hatıralar arasından biri de , bu şiirlerim.
+                            Ve eğer özlersen ve duymak istersen diye bu şiirleri senin için
+                            kendi sesimle okudum. Ben çok isterdim..</p>
+                        <p>Bir gün bu sayfalarda kendinden bir parça bulursan,
+                            bil ki , o şiir senden önce yazılmış olsa bile, sana aittir.</p>
+                    </div>
+                    <div class="sayfa-numarasi">2</div>
+                </div>
+
+                <!-- 3 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p>Çünkü sen benim , yani bu kocaman gövdenin altındaki çelimsiz çocuğun ,
+                            beklediği yaşama sebebisin.</p>
+                        <p>Çünkü sen benim , yazdığım en güzel şiirsin…</p>
+                        <p>Beni hep gülen gözlerle ve sana deliler gibi aşık bir kalple hatırla…</p>
+                        <p>Hasretle gamzelerinden ve o küçük çenenden öperim.</p>
+                        <p class="son">Baban.</p>
+                    </div>
+                    <div class="sayfa-numarasi">3</div>
+                </div>
+
+                <!-- 4 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+                    <div class="sayfa-fotografi">
+                        <img src="kizim1.jpg" alt="Şiir">
+                    </div>
+                    <div class="sayfa-numarasi">4</div>
+                </div>
+
+                <!-- 5 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p class="siir-baslik">GELİYORUM</p>
+                        <p>Yoksam düşlerinde, gecelerinde kayıpsam..<br>
+                            Bakışların hep donuk, gözlerin ıslanıyorsa..<br>
+                            Soğuksa ellerin, buz gibiyse hala..<br>
+                            Ve inatçıysan çağrında..sabırsız<br>
+                            Geliyorum!</p>
+                        <p>Gecelerin koynunda bir esireysen<br>
+                            Yanaklarımdan akan yaşlar kadar sessiz<br>
+                            Yağmurlu gecelerde…<br>
+                            Bir ceylan yavrusu gibi ürkek ve ıslaksan<br>
+                            Geliyorum!</p>
+                    </div>
+                    <div class="sayfa-numarasi">5</div>
+                </div>
+
+                <!-- 6 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p>Denizin koyu maviliğinde kayboluyorsan..<br>
+                            Her kanat çırpışında martıların,<br>
+                            Yüreğine çaresiz sancılar saplanıyorsa<br>
+                            Geliyorum!</p>
+                        <p>Bir rüzgar kırmışsa dalını..<br>
+                            Dudaklarını kurutmuşsa serin bir meltem..<br>
+                            Sıyrılamamışsan gecenin sisli ve bulanık karanlığından<br>
+                            Ve şefkatli eller bekliyorsan yaşamak için..</p>
+                        <p class="son">Bekle…!</p>
+                        <p>Geliyorum!</p>
+                    </div>
+                    <div class="sayfa-numarasi">6</div>
+                </div>
+
+                <!-- 7 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p class="siir-baslik">AĞLAYAMAZSIN</p>
+                        <p>Seni de terk edip gider bir gün.<br>
+                            En çok sevdiklerin, inandıkların.<br>
+                            Bir yağmur yağar düşlerine hasretinden<br>
+                            ve bir bulut çöker anılarına katran gibi. Ağlayamazsın…</p>
+                        <p>Saçlarına rüzgar bir başka eser artık.<br>
+                            Zaman bir balyoz gibi iner gözlerine.<br>
+                            Gelir misin ? deme sakın.<br>
+                            Boğazında düğümlenir çaresizliğin. Ağlayamazsın.</p>
+                    </div>
+                    <div class="sayfa-numarasi">7</div>
+                </div>
+
+                <!-- 8 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p>Daha ne kadar yaşatacaksın ki bu aşkı kalbinde?<br>
+                            Seni tüketen de zaten bu aşk değil mi?<br>
+                            Anlıyorum.. sen hayatı yanlış anlamışsın.<br>
+                            Gülüyorsun ağlayacak yerde ağlayamıyorsun, değil mi?</p>
+                        <div class="aci-metni">
+                            <p class="siir-baslik">ACI</p>
+                            <p>Nereden bilirdim senin avucumdaki hayat çizgim olduğunu…<br>
+                                ve hayat çizgimin bu kadar kısa..</p>
+                        </div>
+                    </div>
+                    <div class="sayfa-numarasi">8</div>
+                </div>
+
+                <!-- 9 -->
+                <div class="page">
+                    <img src="sol_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p class="siir-baslik">BİR ÇİÇEK SEVDİM</p>
+                        <p>Bir çiçek sevdim , kimsesizliğimin kıraç topraklarında adı bende narindi<br>
+                            şiir tadında mürekkep okyanusunda adı bende elemdi</p>
+                        <p>Bir çiçek sevdim , beyaz kanatlarıyla papatya fallarında adı bende sevgiydi<br>
+                            ömrümün baharında içimdeki çiğ tanesiydi adı bende lale'ydi</p>
+                    </div>
+                    <div class="sayfa-numarasi">9</div>
+                </div>
+
+                <!-- 10 -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+                    <div class="sayfa-metni">
+                        <p>Bir çiçek sevdim uçurum boylarında rüzgarlarla kardeşti adı bende iklimdi<br>
+                            gece karanlığında sedef teni binbir renkti adı bende hasretti&nbsp;</p>
+                        <p>Bir çiçek sevdim annemin kokusunda alnımın yazısında adı bende ateşti<br>
+                            tanrının huzurunda kalbimin ortasında<br>
+                            unuttum..adı bende neydi?</p>
+                    </div>
+                    <div class="sayfa-numarasi">10</div>
+                </div>
+
+            </div>
 
         </div>
 
@@ -728,12 +634,11 @@ body{
 <button
     class="tam-ekran-tusu"
     id="tamEkranTusu"
+    type="button"
     aria-label="Tam ekran"
-    title="Tam ekran">
-    ⛶
-</button>
+>⛶</button>
 
-<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
 
 <script>
 
@@ -755,562 +660,280 @@ const tamEkranTusu =
 let pageFlip = null;
 
 
-/* =========================================================
-   TUTULAMAYAN
-   ========================================================= */
-
 const tutulamayanSiiri = {
-
     baslik:"TUTULAMAYAN",
-
     satirlar:[
-
         "Söz verdim..",
-
         "Örselenmiş sevdalarımdan bahsetmeyeceğim bir daha",
-
         "Yabani çiçeklerin , yabani kokusunu hatırlamayacağım tenimde",
-
         "Uzun yolculuklarda saydığım beyaz yol çizgilerine yoldaş olmayacağım",
-
         "Tren sirenlerinde sesini aramayacağım gittiğin gecelerin ardından",
-
         "Gittiğin gecelerin ardından…sana el sallamayacağım",
-
         "Söz verdim..",
-
         "Sırılsıklam caddelerde sensizken yanım başım dolaşmayacağım",
-
         "Bir çocuğun çığlığı gibi haykırarak , bir savaşçının sıcak yarası gibi kanayarak ,",
-
         "ve bir anka kuşu gibi yeniden varolarak ,",
-
         "bir mendilci çocuğun gözlerindeki gibi Tanrıya yalvararak ,",
-
         "ağır ağır ve utanmadan yorulmadan sırtlarında bir zamanlar nasıl taşıdılarsa mavzerleri memleket kadınları…",
-
         "seni içime koyup öylece taşıyacağım sonsuza kadar.",
-
         "Söz verdim..",
-
         "Yılmadan bu bedenim amansızlıklara , daha doğmamışken ana karnındaki bebek",
-
         "ve bir köşe başında bileklerini keserken tinerci çocuk",
-
         "aç kurt saldırırken koyun sürüsüne ayazda",
-
         "işçi her sabah işe gitme telaşındayken",
-
         "ve biraz da",
-
         "salaş bir barda şarkı söylerken saçları dağınık kadın",
-
         "hani annem gibi severken seni bu anlamsız mısralarımın arasında",
-
         "kasımda… yağmur yağmaya hazırlanırken üşürken bu kalemi tutan parmaklarım",
-
         "öksürürken ciğerlerim parçalanarak",
-
         "ve uzanıp kibrit kutusuna ısınmaya çalışırken bir kibritin alevinde",
-
         "ve bir de sigara yakarken…artık babaannem yaşamıyorken",
-
         "dururken resmin cüzdanımda , gözlerimde yorgunluk dudaklarımda tadın varken…",
-
         "seni unutmayacağım",
-
         "Söz verdim.. Uzak kentlerdeki dostlarımı düşüneceğim biraz da",
-
         "biraz da iç çekeceğim hep özlemini duyduğum anılara",
-
         "76'lı yıllarda eski bir kasette ağlarken çocuk sırf yakınları duysun diye sesini",
-
         "sonradan tanıdığı bir ses söylerken o hazin türküyü ; \"demedim mi nazlı yarim ben sana çok muhabbet tek ayrılık getirir\" ken",
-
         "karla kaplıyken Başkale kahretsin ki ben orayı henüz görmemişken",
-
         "dışarıda yağmur çiselerken toprağın üstüne.. toprak olmayı düşlerken bir adama kavuşmak ümidiyle",
-
         "annem evde yalnızken ve şiirlerim hep -ken ile biterken.. ağlamayacağım",
-
         "Söz verdim..",
-
         "Bu gece de dün geceki gibi seni düşleyeceğim ey sevgili",
-
         "bin parçaya bölüp yüreğimi içine kaç insan sığdırabilirsem",
-
         "o kadar çok bir çocuklukla avutacağım kendimi",
-
         "kendimi bir martıya benzetip bazen , bazen bir yelkenli olup sonsuzluğa açılacağım",
-
         "bir kıyıda bırakmak yok anıları onları hep ben de taşıyacağım",
-
         "Ve çiseleyen yağmur damlalarını biriktirip gözlerimde",
-
         "çölde serap göreceğim içinde seninle gökyüzüne yükselip kaybolduğum…",
-
         "__YENI_SAYFA__",
-
         "kavrulurken ellerinin teri ellerimde sensiz yanmayacağım…",
-
         "söz verdim bir daha asla…",
-
         "asla…",
-
         "asla aşık olmayacağım"
-
     ]
-
 };
 
-
-/* =========================================================
-   UNUT
-   20. SAYFADAN BAŞLAR
-   ========================================================= */
 
 const unutSiiri = {
-
     baslik:"UNUT",
-
     satirlar:[
-
         "Ne olur öldüğümde hissetme beni",
-
         "bir yudumluk yağmur suyu yakar genzimi geceleri",
-
         "içimdeki yılanın çıngırak sesiydi o kalbimin değil",
-
         "unut geçmişin kalın ve beyaz sayfalarına kuş tüyü kalemlerle yazdıklarımı",
-
         "unut çünkü ;",
-
         "virgülü yanlış yerde koymuşum ey.... bu cümle gibi bu sevda da devam etmemeli",
-
         "ve ne olur öldüğümde hissetme beni",
-
         "gözlerimin bendeki ışıltısı yanıltmasın seni o sadece bir mum ışığıdır",
-
         "geçtikçe zaman Ömür geçtikçe ahh bitmeyecek sandığın o büyük aşkım",
-
         "bir mum gibi bak bitti işte",
-
         "Bir Türk filmi senaryosu değil bu, anla. Ne sen zengin kız ne ben fakir gencim.",
-
         "Bir sis bulutu arkasına sakladığım o dağları delen direncim",
-
         "şimdi kendini rüzgarın koynunda savurmaktadır acı acı , ağır ağır",
-
         "Ne olur öldüğümde hissetme beni",
-
         "Öldüğümde.. odamda.. sessizce.. beni hissetme",
-
         "sen daha çocuksun ne olur unut beni",
-
         "unut acı çekme !"
-
     ]
-
 };
 
-
-/* =========================================================
-   YILDIZLAR
-   24. SAYFADAN BAŞLAR
-   ========================================================= */
 
 const yildizlarSiiri = {
-
     baslik:"YILDIZLAR",
-
     satirlar:[
-
         "Bu gece bir yıldız kaydı sevgili.",
-
         "Bu gece senin sesinle doldurdum yüreğimi yüreğim yetmedi.",
-
         "Öylesine yaşanmış bir şiir gibi yazıldı gözlerin gözlerime  , öylesine ,",
-
         "vurulmuşçasına işte.",
-
         "Gözlerinin kokusunu sürdüm avuçlarıma.",
-
         "Artık her sabah uyandığımda gözlerinin üzerine dolduruyorum suyu ve yüzüme çarpıyorum bir çağlayanın çığlığı gibi haykırışla ve sonsuz dağların doruklarından dinmeyen bir serinlikle.",
-
         "O zaman gözlerinin kokusu dağılıyor yüzüme tüm gece sen kokuyorum..",
-
         "sen kokuyorum.. sen işte..",
-
         "Bu gece uykuya darıldı gözlerim uzaklardan gelen bir müzikle.",
-
         "Derin hayallere dalıp gözlerimin önünden geçiriyorum seni her hareketinin her karesiyle",
-
         "Gözlerimi alamıyorum seni beynimde çizdiğim gökyüzünün alacakaranlığındaki o parlak çizgilerden.",
-
         "İşte sen.. işte gülümsüyorsun her zamanki gibi tüm çocukluğunla ve tüm çıplaklığınla.",
-
         "İşte sen.. işte dağıtıyorsun saçlarını aslı kısa hayalimde Rapunzel'in saçları kadar uzun.",
-
         "İşte sen.. İşte konuşuyorsun hiçbir sözlükte olmayan kelimeler dökülüyor öpmesini özlediğim o dudaklarının arasından.",
-
         "İşte sen.. işte sen gidiyorsun bir çocuğu elinde bir kibrit kutusuyla evde tek başına bırakırcasına..",
-
         "musluğu açık bırakır gibi sel gözyaşlarımla bırakıp beni gidiyorsun.",
-
         "Gidiyorsun sana ait ne varsa toplayıp bavuluna , ben de sana dair olan her şeyi alır gibi.",
-
         "Git ! Dört duvar arasında bırak şiirlerimi ışıksız , mavisiz , bomboş bir şekilde.",
-
         "Git ! Ardına bakma ne olur , hiçbir sızı kalmasın yüreğinde.. yüreğin ağrımasın.",
-
         "Git ! Gündüzleri koy avuçlarının arasına , beni gecelerimle baş başa bırak git.",
-
         "Beni avucundaki gözlerinin kokusuyla bırak git.",
-
         "Beni bırak..",
-
         "Git !"
-
     ]
-
 };
 
-
-/* =========================================================
-   MEVSİMLER
-   29. SAYFADAN BAŞLAR
-   ========================================================= */
 
 const mevsimlerSiiri = {
-
     baslik:"MEVSİMLER",
-
     satirlar:[
-
         "Ne zaman derinden birine ağlarsa , içimde inceden bir yara sızlar.",
-
         "Ne zaman şarkılar seni anlatsa , gözlerimde yaşlar sel olur çağlar.",
-
         "Ne zaman içimde bir bahar olsa , seni özler seni arar sorarım.",
-
         "Derinlerde sızlayan bu yaranın , tek şifasını ben senden umarım.",
-
         "Ne zaman bu kuşlar bu kentten göçse , O zaman aklıma ölümün gelir.",
-
         "Ne zaman yapraklar böyle sararsa , mevsimlere tek tek küsesim gelir."
-
     ]
-
 };
 
 
-/* =========================================================
-   TUTULAMAYAN II
-   31. SAYFADAN BAŞLAR
-   ========================================================= */
-
-const tutulamayanIISiiri = {
-
+const tutulamayaniIISiiri = {
     baslik:"TUTULAMAYAN II",
-
     satirlar:[
-
         "Yine yalnızım işte , bomboş dünyam , hayallerim , düşüncem.",
-
         "Bir umut ışığı gibi doğmuştu gözlerin oysa , ne bir bulut kalmıştı havada ne gözlerimde nem",
-
         "Şimdi ise sensizliğine çıldırıyorum , ellerine , o zümrüt gözlerine.",
-
         "O umut ışığı da kayboldu birden ; ne ıslaklığın kaldı dudaklarımda..",
-
         "ne bedenimde sen.",
-
         "Kayboldu anılar şimdi , kayboldu birer birer.",
-
         "Hayallerinle geçer yalnız geceler.",
-
         "Ne yok biliyor musun ? Sen yoksun , sen !",
-
         "Ne mezarında gözyaşı dökeceğim..",
-
         "Ne seveceğim ebediyen."
-
     ]
-
 };
 
 
-/* =========================================================
-   UZUN ŞİİRLER İÇİN SAYFALAMA
-   ========================================================= */
+const yirmiYasSiiri = {
+    baslik:"20 YAŞ",
+    satirlar:[
+        "Şimdi seni yaşıyorum evrenin erişilmez sonsuzluğunda ,",
+        "minik bir serçenin korku dolu yüreğinde",
+        "ve yeni doğan güneşin aydınlığında",
+        "ve mehtap'ta",
+        "ve sonsuz okyanuslarda",
+        "ve yakamozda",
+        "ve dalgalarda.",
+        "Ve artık senin olan kalbimde seni yaşıyorum yudum yudum kana kana pınarlarda",
+        "ve nefes nefes sigaramda ve buram buram aşk kokan şiirlerimin feryatlarında",
+        "ve gözyaşlarımda sonsuz ve sabırlı",
+        "kucak kucak alev alev tutkularımda",
+        "ve seni seviyorum henüz 20 yaşında"
+    ]
+};
+
 
 function uzunSiiriSayfalaraAyir(
     siir,
     startPage,
     sonSayfa = Infinity
 ){
+    const rect = sayfaAlani.getBoundingClientRect();
+    const sayfaGenisligi = rect.width / 2;
+    const sayfaYuksekligi = rect.height;
 
-    const rect =
-        sayfaAlani.getBoundingClientRect();
-
-    const sayfaGenisligi =
-        rect.width / 2;
-
-    const sayfaYuksekligi =
-        rect.height;
-
-    let sayfaNo =
-        startPage;
-
-    let solMu =
-        true;
-
-    let mevcutSayfa =
-        null;
-
-    let mevcutMetin =
-        null;
-
+    let sayfaNo = startPage;
+    let solMu = true;
+    let mevcutSayfa = null;
+    let mevcutMetin = null;
 
     function sayfaOlustur(){
-
         if(sayfaNo > sonSayfa){
-
             return false;
-
         }
 
+        const sayfa = document.createElement("div");
+        sayfa.className = "page uzun-siir-sayfasi";
 
-        const sayfa =
-            document.createElement("div");
-
-        sayfa.className =
-            "page uzun-siir-sayfasi";
-
-        const arkaPlan =
-            document.createElement("img");
-
-        arkaPlan.src =
-            solMu
-            ? "sol_sayfa.png"
-            : "sag_sayfa.png";
-
+        const arkaPlan = document.createElement("img");
+        arkaPlan.src = solMu ? "sol_sayfa.png" : "sag_sayfa.png";
         arkaPlan.alt = "";
 
-        const metin =
-            document.createElement("div");
+        const metin = document.createElement("div");
+        metin.className = "sayfa-metni";
 
-        metin.className =
-            "sayfa-metni";
+        const numara = document.createElement("div");
+        numara.className = "sayfa-numarasi";
+        numara.textContent = sayfaNo;
 
-        const numara =
-            document.createElement("div");
+        sayfa.appendChild(arkaPlan);
+        sayfa.appendChild(metin);
+        sayfa.appendChild(numara);
 
-        numara.className =
-            "sayfa-numarasi";
+        sayfa.style.width = sayfaGenisligi + "px";
+        sayfa.style.height = sayfaYuksekligi + "px";
 
-        numara.textContent =
-            sayfaNo;
+        pageFlipContainer.appendChild(sayfa);
 
-        sayfa.appendChild(
-            arkaPlan
-        );
-
-        sayfa.appendChild(
-            metin
-        );
-
-        sayfa.appendChild(
-            numara
-        );
-
-        sayfa.style.width =
-            sayfaGenisligi + "px";
-
-        sayfa.style.height =
-            sayfaYuksekligi + "px";
-
-        pageFlipContainer.appendChild(
-            sayfa
-        );
-
-        mevcutSayfa =
-            sayfa;
-
-        mevcutMetin =
-            metin;
-
+        mevcutSayfa = sayfa;
+        mevcutMetin = metin;
         sayfaNo++;
-
-        solMu =
-            !solMu;
-
+        solMu = !solMu;
         return true;
     }
 
-
     function tasmaVar(){
-
         return (
             mevcutMetin.scrollHeight >
             mevcutMetin.clientHeight + 1
         );
-
     }
-
 
     if(!sayfaOlustur()){
-
         return;
-
     }
 
+    const baslik = document.createElement("p");
+    baslik.className = "siir-baslik";
+    baslik.textContent = siir.baslik;
+    mevcutMetin.appendChild(baslik);
 
-    const baslik =
-        document.createElement("p");
-
-    baslik.className =
-        "siir-baslik";
-
-    baslik.textContent =
-        siir.baslik;
-
-    mevcutMetin.appendChild(
-        baslik
-    );
-
-
-    for(
-        let i=0;
-        i<siir.satirlar.length;
-        i++
-    ){
-
-        const satir =
-            siir.satirlar[i];
-
+    for(let i=0;i<siir.satirlar.length;i++){
+        const satir = siir.satirlar[i];
 
         if(satir === "__YENI_SAYFA__"){
-
-            if(
-                !sayfaOlustur()
-            ){
-
+            if(!sayfaOlustur()){
                 break;
-
             }
-
             continue;
-
         }
 
-
-        const p =
-            document.createElement("p");
-
-        p.textContent =
-            satir;
-
-        mevcutMetin.appendChild(
-            p
-        );
-
+        const p = document.createElement("p");
+        p.textContent = satir;
+        mevcutMetin.appendChild(p);
 
         if(tasmaVar()){
+            mevcutMetin.removeChild(p);
 
-            mevcutMetin.removeChild(
-                p
-            );
-
-
-            if(
-                !sayfaOlustur()
-            ){
-
+            if(!sayfaOlustur()){
                 break;
-
             }
 
-
-            mevcutMetin.appendChild(
-                p
-            );
-
+            mevcutMetin.appendChild(p);
         }
-
     }
-
 }
 
-
-/* =========================================================
-   BOŞ SAYFA OLUŞTUR
-   ========================================================= */
 
 function bosSayfaOlustur(sayfaNo){
+    const rect = sayfaAlani.getBoundingClientRect();
+    const sayfaGenisligi = rect.width / 2;
+    const sayfaYuksekligi = rect.height;
 
-    const rect =
-        sayfaAlani.getBoundingClientRect();
+    const sayfa = document.createElement("div");
+    sayfa.className = "page uzun-siir-sayfasi";
 
-    const sayfaGenisligi =
-        rect.width / 2;
-
-    const sayfaYuksekligi =
-        rect.height;
-
-    const sayfa =
-        document.createElement("div");
-
-    sayfa.className =
-        "page uzun-siir-sayfasi";
-
-    const arkaPlan =
-        document.createElement("img");
-
-    arkaPlan.src =
-        "sag_sayfa.png";
-
+    const arkaPlan = document.createElement("img");
+    arkaPlan.src = "sag_sayfa.png";
     arkaPlan.alt = "";
 
-    const numara =
-        document.createElement("div");
+    const numara = document.createElement("div");
+    numara.className = "sayfa-numarasi";
+    numara.textContent = sayfaNo;
 
-    numara.className =
-        "sayfa-numarasi";
+    sayfa.appendChild(arkaPlan);
+    sayfa.appendChild(numara);
 
-    numara.textContent =
-        sayfaNo;
+    sayfa.style.width = sayfaGenisligi + "px";
+    sayfa.style.height = sayfaYuksekligi + "px";
 
-    sayfa.appendChild(
-        arkaPlan
-    );
-
-    sayfa.appendChild(
-        numara
-    );
-
-    sayfa.style.width =
-        sayfaGenisligi + "px";
-
-    sayfa.style.height =
-        sayfaYuksekligi + "px";
-
-    pageFlipContainer.appendChild(
-        sayfa
-    );
-
+    pageFlipContainer.appendChild(sayfa);
 }
 
-
-/* =========================================================
-   ŞİİRLERİ HAZIRLA
-   11 -> TUTULAMAYAN
-   20 -> UNUT
-   23 -> BOŞ
-   24 -> YILDIZLAR
-   29 -> MEVSİMLER
-   31 -> TUTULAMAYAN II
-   ========================================================= */
 
 function tutulamayaniHazirla(){
 
@@ -1357,8 +980,20 @@ function tutulamayaniHazirla(){
 
 
     uzunSiiriSayfalaraAyir(
-        tutulamayanIISiiri,
-        31
+        tutulamayaniIISiiri,
+        31,
+        32
+    );
+
+
+    bosSayfaOlustur(
+        33
+    );
+
+
+    uzunSiiriSayfalaraAyir(
+        yirmiYasSiiri,
+        34
     );
 
 }
