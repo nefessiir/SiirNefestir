@@ -166,6 +166,7 @@ body{
     height:calc(100% - 2cm);
     z-index:4;
     opacity:0;
+    visibility:hidden;
     pointer-events:none;
     transition:opacity .5s ease;
     transition-delay:2s;
@@ -173,6 +174,7 @@ body{
 
 .kitap.acildi .sayfa-alani{
     opacity:1;
+    visibility:visible;
     pointer-events:auto;
 }
 
@@ -621,7 +623,13 @@ ustKapak.addEventListener(
 
             sayfaAlani.style.transition="none";
             sayfaAlani.style.opacity="0";
+            sayfaAlani.style.visibility="hidden";
             sayfaAlani.style.pointerEvents="none";
+
+            if(pageFlip){
+                pageFlip.destroy();
+                pageFlip=null;
+            }
 
             ustKapak.classList.remove("acik");
             kitap.classList.remove("acildi");
@@ -631,6 +639,7 @@ ustKapak.addEventListener(
 
                     sayfaAlani.style.transition="opacity .5s ease";
                     sayfaAlani.style.opacity="";
+                    sayfaAlani.style.visibility="";
                     sayfaAlani.style.pointerEvents="";
 
                 },
@@ -640,12 +649,18 @@ ustKapak.addEventListener(
             return;
         }
 
+        sayfaAlani.style.transition="none";
+        sayfaAlani.style.opacity="0";
+        sayfaAlani.style.visibility="hidden";
+        sayfaAlani.style.pointerEvents="none";
+
         ustKapak.classList.add("acik");
         kitap.classList.add("acildi");
 
         setTimeout(
             function(){
 
+                sayfaAlani.style.visibility="visible";
                 sayfaAlani.style.transition="opacity .5s ease";
                 sayfaAlani.style.opacity="";
                 sayfaAlani.style.pointerEvents="";
@@ -691,7 +706,8 @@ window.addEventListener(
 
 tamEkranTusu.addEventListener(
     "click",
-    async function(){
+    async
+    function(){
 
         try{
 
