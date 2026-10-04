@@ -977,6 +977,34 @@ const yildizlarSiiri = {
 
 
 /* =========================================================
+   MEVSİMLER
+   29. SAYFADAN BAŞLAR
+   ========================================================= */
+
+const mevsimlerSiiri = {
+
+    baslik:"MEVSİMLER",
+
+    satirlar:[
+
+        "Ne zaman derinden birine ağlarsa , içimde inceden bir yara sızlar.",
+
+        "Ne zaman şarkılar seni anlatsa , gözlerimde yaşlar sel olur çağlar.",
+
+        "Ne zaman içimde bir bahar olsa , seni özler seni arar sorarım.",
+
+        "Derinlerde sızlayan bu yaranın , tek şifasını ben senden umarım.",
+
+        "Ne zaman bu kuşlar bu kentten göçse , O zaman aklıma ölümün gelir.",
+
+        "Ne zaman yapraklar böyle sararsa , mevsimlere tek tek küsesim gelir."
+
+    ]
+
+};
+
+
+/* =========================================================
    UZUN ŞİİRLER İÇİN SAYFALAMA
    ========================================================= */
 
@@ -1244,6 +1272,7 @@ function bosSayfaOlustur(sayfaNo){
    20 -> UNUT
    23 -> BOŞ
    24 -> YILDIZLAR
+   29 -> MEVSİMLER
    ========================================================= */
 
 function tutulamayaniHazirla(){
@@ -1281,6 +1310,12 @@ function tutulamayaniHazirla(){
     uzunSiiriSayfalaraAyir(
         yildizlarSiiri,
         24
+    );
+
+
+    uzunSiiriSayfalaraAyir(
+        mevsimlerSiiri,
+        29
     );
 
 }
