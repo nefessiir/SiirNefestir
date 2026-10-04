@@ -257,15 +257,15 @@ body{
     margin-bottom:1em;
 }
 
-.sayfa-metni .son{
-    margin-top:1em;
-}
-
 .sayfa-metni .siir-baslik{
     font-size:1.35em;
     font-weight:bold;
     text-align:center;
     margin-bottom:1.1em;
+}
+
+.sayfa-metni .son{
+    margin-top:1em;
 }
 
 .sayfa-fotografi{
@@ -458,7 +458,6 @@ body{
                     <div class="sayfa-numarasi">1</div>
                 </div>
 
-
                 <div class="page">
                     <img src="sag_sayfa.png" alt="">
 
@@ -485,7 +484,6 @@ body{
 
                     <div class="sayfa-numarasi">2</div>
                 </div>
-
 
                 <div class="page">
                     <img src="sol_sayfa.png" alt="">
@@ -514,7 +512,6 @@ body{
                     <div class="sayfa-numarasi">3</div>
                 </div>
 
-
                 <div class="page">
                     <img src="sag_sayfa.png" alt="">
 
@@ -525,7 +522,7 @@ body{
                     <div class="sayfa-numarasi">4</div>
                 </div>
 
-
+                <!-- GELİYORUM - SOL SAYFA -->
                 <div class="page">
                     <img src="sol_sayfa.png" alt="">
 
@@ -549,23 +546,23 @@ body{
                             Geliyorum!
                         </p>
 
+                    </div>
+
+                    <div class="sayfa-numarasi">5</div>
+                </div>
+
+                <!-- GELİYORUM - SAĞ SAYFA -->
+                <div class="page">
+                    <img src="sag_sayfa.png" alt="">
+
+                    <div class="sayfa-metni">
+
                         <p>
                             Denizin koyu maviliğinde kayboluyorsan..<br>
                             Her kanat çırpışında martıların,<br>
                             Yüreğine çaresiz sancılar saplanıyorsa<br>
                             Geliyorum!
                         </p>
-
-                    </div>
-
-                    <div class="sayfa-numarasi">5</div>
-                </div>
-
-
-                <div class="page">
-                    <img src="sag_sayfa.png" alt="">
-
-                    <div class="sayfa-metni">
 
                         <p>
                             Bir rüzgar kırmışsa dalını..<br>
@@ -574,7 +571,7 @@ body{
                             Ve şefkatli eller bekliyorsan yaşamak için..
                         </p>
 
-                        <p>
+                        <p class="son">
                             Bekle…!
                         </p>
 
@@ -589,7 +586,6 @@ body{
 
             </div>
         </div>
-
 
         <div class="ust-kapak" id="ustKapak">
 
@@ -610,7 +606,6 @@ body{
 
 </div>
 
-
 <button
     class="tam-ekran-tusu"
     id="tamEkranTusu"
@@ -618,7 +613,6 @@ body{
     title="Tam ekran">
     ⛶
 </button>
-
 
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
@@ -631,7 +625,6 @@ const pageFlipContainer = document.getElementById("page-flip");
 const tamEkranTusu = document.getElementById("tamEkranTusu");
 
 let pageFlip = null;
-
 
 function sayfalariBaslat(){
 
@@ -670,7 +663,6 @@ function sayfalariBaslat(){
         pageFlipContainer.querySelectorAll(".page")
     );
 }
-
 
 ustKapak.addEventListener(
     "click",
@@ -723,7 +715,6 @@ ustKapak.addEventListener(
     }
 );
 
-
 window.addEventListener(
     "resize",
     function(){
@@ -748,7 +739,6 @@ window.addEventListener(
     }
 );
 
-
 window.addEventListener(
     "orientationchange",
     function(){
@@ -771,7 +761,6 @@ window.addEventListener(
         );
     }
 );
-
 
 tamEkranTusu.addEventListener(
     "click",
@@ -800,7 +789,6 @@ tamEkranTusu.addEventListener(
 
     }
 );
-
 
 document.addEventListener(
     "fullscreenchange",
@@ -833,7 +821,6 @@ let zoomBaslangic = 1;
 let zoomMesafe = 0;
 let zoomAktif = false;
 
-
 function yatayMobil(){
 
     return (
@@ -842,7 +829,6 @@ function yatayMobil(){
     );
 
 }
-
 
 function ikiParmakMesafesi(touches){
 
@@ -859,7 +845,6 @@ function ikiParmakMesafesi(touches){
     );
 
 }
-
 
 document.addEventListener(
     "touchstart",
@@ -892,7 +877,6 @@ document.addEventListener(
         capture:true
     }
 );
-
 
 document.addEventListener(
     "touchmove",
@@ -946,7 +930,6 @@ document.addEventListener(
     }
 );
 
-
 document.addEventListener(
     "touchend",
     function(e){
@@ -969,7 +952,6 @@ document.addEventListener(
         capture:true
     }
 );
-
 
 document.addEventListener(
     "touchcancel",
