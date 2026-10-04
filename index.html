@@ -1005,6 +1005,42 @@ const mevsimlerSiiri = {
 
 
 /* =========================================================
+   TUTULAMAYAN II
+   31. SAYFADAN BAŞLAR
+   ========================================================= */
+
+const tutulamayanIISiiri = {
+
+    baslik:"TUTULAMAYAN II",
+
+    satirlar:[
+
+        "Yine yalnızım işte , bomboş dünyam , hayallerim , düşüncem.",
+
+        "Bir umut ışığı gibi doğmuştu gözlerin oysa , ne bir bulut kalmıştı havada ne gözlerimde nem",
+
+        "Şimdi ise sensizliğine çıldırıyorum , ellerine , o zümrüt gözlerine.",
+
+        "O umut ışığı da kayboldu birden ; ne ıslaklığın kaldı dudaklarımda..",
+
+        "ne bedenimde sen.",
+
+        "Kayboldu anılar şimdi , kayboldu birer birer.",
+
+        "Hayallerinle geçer yalnız geceler.",
+
+        "Ne yok biliyor musun ? Sen yoksun , sen !",
+
+        "Ne mezarında gözyaşı dökeceğim..",
+
+        "Ne seveceğim ebediyen."
+
+    ]
+
+};
+
+
+/* =========================================================
    UZUN ŞİİRLER İÇİN SAYFALAMA
    ========================================================= */
 
@@ -1273,6 +1309,7 @@ function bosSayfaOlustur(sayfaNo){
    23 -> BOŞ
    24 -> YILDIZLAR
    29 -> MEVSİMLER
+   31 -> TUTULAMAYAN II
    ========================================================= */
 
 function tutulamayaniHazirla(){
@@ -1316,6 +1353,12 @@ function tutulamayaniHazirla(){
     uzunSiiriSayfalaraAyir(
         mevsimlerSiiri,
         29
+    );
+
+
+    uzunSiiriSayfalaraAyir(
+        tutulamayanIISiiri,
+        31
     );
 
 }
