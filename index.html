@@ -196,16 +196,6 @@ body{
 }
 
 
-/* KAPAK KAPANIRKEN SAYFALAR DA BİRLİKTE KAPANSIN */
-
-.kitap:not(.acildi) .sayfa-alani{
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .1s ease;
-    transition-delay:1.9s;
-}
-
-
 /* PAGEFLIP */
 
 #page-flip{
@@ -792,7 +782,7 @@ function sayfalariBaslat(){
 }
 
 
-/* KAPAK AÇMA */
+/* KAPAK AÇMA / KAPATMA */
 
 ustKapak.addEventListener(
 
@@ -801,32 +791,103 @@ ustKapak.addEventListener(
     function(){
 
         const acikMi =
-            ustKapak.classList.toggle(
+            ustKapak.classList.contains(
                 "acik"
             );
 
 
-        kitap.classList.toggle(
-            "acildi",
-            acikMi
-        );
-
+        /* KAPAK KAPATILIYOR */
 
         if(acikMi){
+
+            /*
+             * Sol sayfa ve diğer sayfalar
+             * tıklama anında tamamen gizleniyor.
+             */
+
+            sayfaAlani.style.transition =
+                "none";
+
+            sayfaAlani.style.opacity =
+                "0";
+
+            sayfaAlani.style.pointerEvents =
+                "none";
+
+            sayfaAlani.style.zIndex =
+                "0";
+
+
+            /*
+             * Aynı anda kapak kapanmaya başlıyor.
+             */
+
+            ustKapak.classList.remove(
+                "acik"
+            );
+
+            kitap.classList.remove(
+                "acildi"
+            );
+
+
+            /*
+             * Bir sonraki açılışta normal
+             * geçiş ayarlarını geri getiriyoruz.
+             */
 
             setTimeout(
 
                 function(){
 
-                    sayfalariBaslat();
+                    sayfaAlani.style.transition =
+                        "opacity .5s ease";
 
                 },
 
-                2100
+                50
 
             );
 
+
+            return;
         }
+
+
+        /* KAPAK AÇILIYOR */
+
+        ustKapak.classList.add(
+            "acik"
+        );
+
+        kitap.classList.add(
+            "acildi"
+        );
+
+
+        setTimeout(
+
+            function(){
+
+                sayfaAlani.style.zIndex =
+                    "4";
+
+                sayfaAlani.style.opacity =
+                    "1";
+
+                sayfaAlani.style.pointerEvents =
+                    "auto";
+
+                sayfaAlani.style.transition =
+                    "opacity .5s ease";
+
+                sayfalariBaslat();
+
+            },
+
+            2100
+
+        );
 
     }
 
