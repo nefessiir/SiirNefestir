@@ -40,7 +40,7 @@ body{
     aspect-ratio:1.5/1;
     flex-shrink:0;
     transform-style:preserve-3d;
-    transform:translateX(30%);
+    transform:translateX(calc(30% + 4cm));
 }
 
 
@@ -355,7 +355,7 @@ body{
 
     .kitap{
         width:min(45vw,45vh);
-        transform:translateX(30%);
+        transform:translateX(calc(30% + 1cm));
     }
 
     .sayfa-metni{
@@ -364,10 +364,15 @@ body{
     }
 
     .sayfa-alani{
-        top:-0.1cm;
-        left:calc(-100% + 0.8cm);
+        top:0.2cm;
+        left:calc(-100% + 0.7cm);
         width:calc(200% - 1.8cm);
         height:calc(100% - 1.8cm);
+        transform:translateX(0.2cm);
+    }
+
+    .acik-kitap{
+        transform:translateX(0.2cm);
     }
 }
 
@@ -378,7 +383,7 @@ body{
 
     .kitap{
         width:min(45vw,45vh);
-        transform:translateX(30%);
+        transform:translateX(calc(30% + 1cm));
     }
 
     .sayfa-metni{
@@ -387,10 +392,15 @@ body{
     }
 
     .sayfa-alani{
-        top:-0.1cm;
-        left:calc(-100% + 0.8cm);
+        top:0.2cm;
+        left:calc(-100% + 0.7cm);
         width:calc(200% - 1.8cm);
         height:calc(100% - 1.8cm);
+        transform:translateX(0.2cm);
+    }
+
+    .acik-kitap{
+        transform:translateX(0.2cm);
     }
 }
 
@@ -399,10 +409,12 @@ body{
 
 @media (orientation:landscape) and (max-width:900px){
 
+    /* TÜM KİTABI 1 CM SOLA KAYDIR */
     .kitap{
-        transform:translateX(calc(30% - 0.5cm));
+        transform:translateX(calc(30% - 1cm));
     }
 
+    /* SAYFALAR: SON KABUL EDİLEN GENİŞLETİLMİŞ HALİ */
     .sayfa-alani{
         top:calc(1cm - 0.5cm);
         left:calc(-100% + 4cm - 2cm);
@@ -411,6 +423,7 @@ body{
         transform:translateX(0);
     }
 
+    /* AÇIK KİTAP: SON KABUL EDİLEN KONUM */
     .acik-kitap{
         transform:translateX(0.2cm);
     }
@@ -794,7 +807,7 @@ function sayfalariBaslat(){
 }
 
 
-/* KAPAK AÇMA */
+/* KAPAK AÇMA / KAPATMA */
 
 ustKapak.addEventListener(
 
@@ -803,32 +816,53 @@ ustKapak.addEventListener(
     function(){
 
         const acikMi =
-            ustKapak.classList.toggle(
-                "acik"
-            );
-
-
-        kitap.classList.toggle(
-            "acildi",
-            acikMi
-        );
+            ustKapak.classList.contains("acik");
 
 
         if(acikMi){
 
-            setTimeout(
+            /* KAPANIŞTA SOL SAYFAYI ANINDA GİZLE */
 
-                function(){
+            sayfaAlani.style.transition = "none";
+            sayfaAlani.style.opacity = "0";
+            sayfaAlani.style.pointerEvents = "none";
 
-                    sayfalariBaslat();
 
-                },
+            ustKapak.classList.remove("acik");
+            kitap.classList.remove("acildi");
 
-                2100
 
-            );
+            setTimeout(function(){
 
+                sayfaAlani.style.transition =
+                    "opacity .5s ease";
+
+                sayfaAlani.style.opacity = "";
+                sayfaAlani.style.pointerEvents = "";
+
+            },50);
+
+            return;
         }
+
+
+        /* KAPAK AÇILIYOR */
+
+        ustKapak.classList.add("acik");
+        kitap.classList.add("acildi");
+
+
+        setTimeout(function(){
+
+            sayfaAlani.style.transition =
+                "opacity .5s ease";
+
+            sayfaAlani.style.opacity = "";
+            sayfaAlani.style.pointerEvents = "";
+
+            sayfalariBaslat();
+
+        },2100);
 
     }
 
