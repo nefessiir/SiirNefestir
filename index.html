@@ -409,23 +409,26 @@ body{
 
 @media (orientation:landscape) and (max-width:900px){
 
-    /* TÜM KİTABI 1 CM SOLA KAYDIR */
+    /* TÜM KİTAP: 1 CM SAĞA */
+
     .kitap{
-        transform:translateX(calc(30% - 1cm));
+        transform:translateX(30%);
     }
 
-    /* SAYFALAR: SON KABUL EDİLEN GENİŞLETİLMİŞ HALİ */
+    /* SAYFALAR: 1 CM SAĞA */
+
     .sayfa-alani{
         top:calc(1cm - 0.5cm);
         left:calc(-100% + 4cm - 2cm);
         width:calc(200% - 8cm + 4cm);
         height:calc(100% - 2cm + 1cm);
-        transform:translateX(0);
+        transform:translateX(1cm);
     }
 
-    /* AÇIK KİTAP: SON KABUL EDİLEN KONUM */
+    /* AÇIK KİTAP: 1 CM SAĞA */
+
     .acik-kitap{
-        transform:translateX(0.2cm);
+        transform:translateX(1.2cm);
     }
 }
 
