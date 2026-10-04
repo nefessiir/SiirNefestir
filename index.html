@@ -196,6 +196,16 @@ body{
 }
 
 
+/* KAPAK KAPANIRKEN SAYFALAR DA BİRLİKTE KAPANSIN */
+
+.kitap:not(.acildi) .sayfa-alani{
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .1s ease;
+    transition-delay:1.9s;
+}
+
+
 /* PAGEFLIP */
 
 #page-flip{
