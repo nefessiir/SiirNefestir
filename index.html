@@ -866,7 +866,7 @@ const tutulamayanSiiri = {
 
 /* =========================================================
    UNUT
-   21. SAYFADAN BAŞLAR
+   20. SAYFADAN BAŞLAR
    ========================================================= */
 
 const unutSiiri = {
@@ -895,7 +895,7 @@ const unutSiiri = {
 
         "bir mum gibi bak bitti işte",
 
-        "Bir Türk filmi senaryosu değil bu, anla.  Ne sen zengin kız ne ben fakir gencim.",
+        "Bir Türk filmi senaryosu değil bu, anla. Ne sen zengin kız ne ben fakir gencim.",
 
         "Bir sis bulutu arkasına sakladığım o dağları delen direncim",
 
@@ -915,10 +915,14 @@ const unutSiiri = {
 
 
 /* =========================================================
-   UZUN ŞİİRLER İÇİN KALICI SAYFALAMA SİSTEMİ
+   UZUN ŞİİRLER İÇİN SAYFALAMA
    ========================================================= */
 
-function uzunSiiriSayfalaraAyir(siir,startPage){
+function uzunSiiriSayfalaraAyir(
+    siir,
+    startPage,
+    sonSayfa = Infinity
+){
 
     const rect =
         sayfaAlani.getBoundingClientRect();
@@ -943,6 +947,13 @@ function uzunSiiriSayfalaraAyir(siir,startPage){
 
 
     function sayfaOlustur(){
+
+        if(sayfaNo > sonSayfa){
+
+            return false;
+
+        }
+
 
         const sayfa =
             document.createElement("div");
@@ -975,9 +986,17 @@ function uzunSiiriSayfalaraAyir(siir,startPage){
         numara.textContent =
             sayfaNo;
 
-        sayfa.appendChild(arkaPlan);
-        sayfa.appendChild(metin);
-        sayfa.appendChild(numara);
+        sayfa.appendChild(
+            arkaPlan
+        );
+
+        sayfa.appendChild(
+            metin
+        );
+
+        sayfa.appendChild(
+            numara
+        );
 
         sayfa.style.width =
             sayfaGenisligi + "px";
@@ -999,6 +1018,8 @@ function uzunSiiriSayfalaraAyir(siir,startPage){
 
         solMu =
             !solMu;
+
+        return true;
     }
 
 
@@ -1008,10 +1029,15 @@ function uzunSiiriSayfalaraAyir(siir,startPage){
             mevcutMetin.scrollHeight >
             mevcutMetin.clientHeight + 1
         );
+
     }
 
 
-    sayfaOlustur();
+    if(!sayfaOlustur()){
+
+        return;
+
+    }
 
 
     const baslik =
@@ -1040,7 +1066,13 @@ function uzunSiiriSayfalaraAyir(siir,startPage){
 
         if(satir === "__YENI_SAYFA__"){
 
-            sayfaOlustur();
+            if(
+                !sayfaOlustur()
+            ){
+
+                break;
+
+            }
 
             continue;
 
@@ -1064,7 +1096,15 @@ function uzunSiiriSayfalaraAyir(siir,startPage){
                 p
             );
 
-            sayfaOlustur();
+
+            if(
+                !sayfaOlustur()
+            ){
+
+                break;
+
+            }
+
 
             mevcutMetin.appendChild(
                 p
@@ -1078,63 +1118,9 @@ function uzunSiiriSayfalaraAyir(siir,startPage){
 
 
 /* =========================================================
-   20. SAYFA BOŞ
-   ========================================================= */
-
-function bosSayfaOlustur(){
-
-    const sayfa =
-        document.createElement("div");
-
-    sayfa.className =
-        "page uzun-siir-sayfasi";
-
-    const arkaPlan =
-        document.createElement("img");
-
-    arkaPlan.src =
-        "sag_sayfa.png";
-
-    arkaPlan.alt = "";
-
-    const numara =
-        document.createElement("div");
-
-    numara.className =
-        "sayfa-numarasi";
-
-    numara.textContent =
-        "20";
-
-    sayfa.appendChild(
-        arkaPlan
-    );
-
-    sayfa.appendChild(
-        numara
-    );
-
-    const rect =
-        sayfaAlani.getBoundingClientRect();
-
-    sayfa.style.width =
-        (rect.width / 2) + "px";
-
-    sayfa.style.height =
-        rect.height + "px";
-
-    pageFlipContainer.appendChild(
-        sayfa
-    );
-
-}
-
-
-/* =========================================================
    ŞİİRLERİ HAZIRLA
    11 -> TUTULAMAYAN
-   20 -> BOŞ
-   21 -> UNUT
+   20 -> UNUT
    ========================================================= */
 
 function tutulamayaniHazirla(){
@@ -1150,17 +1136,19 @@ function tutulamayaniHazirla(){
         }
     );
 
+
     uzunSiiriSayfalaraAyir(
         tutulamayanSiiri,
-        11
+        11,
+        19
     );
 
-    bosSayfaOlustur();
 
     uzunSiiriSayfalaraAyir(
         unutSiiri,
-        21
+        20
     );
+
 }
 
 
