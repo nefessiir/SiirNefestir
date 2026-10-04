@@ -385,7 +385,9 @@ body{
 @media (orientation:landscape) and (max-width:900px){
 
     .kitap{
-        transform:translateX(calc(30% + 1cm)) scale(var(--zoom,1));
+        transform:
+            translateX(calc(30% + 1cm))
+            scale(var(--zoom,1));
         transform-origin:center center;
     }
 
@@ -768,27 +770,39 @@ document.addEventListener(
 );
 
 
-/* SADECE YATAY MOBİLDE İKİ PARMAKLA ZOOM */
+/* SADECE YATAY MOBİLDE PINCH-TO-ZOOM */
 
 let zoomBaslangic = 1;
 let zoomMesafe = 0;
 let zoomAktif = false;
 
+
 function yatayMobil(){
 
-    return window.innerWidth > window.innerHeight &&
-           window.innerWidth <= 900;
+    return (
+        window.innerWidth > window.innerHeight &&
+        window.innerWidth <= 900
+    );
+
 }
+
 
 function ikiParmakMesafesi(touches){
 
-    const dx = touches[0].clientX - touches[1].clientX;
-    const dy = touches[0].clientY - touches[1].clientY;
+    const dx =
+        touches[0].clientX -
+        touches[1].clientX;
+
+    const dy =
+        touches[0].clientY -
+        touches[1].clientY;
 
     return Math.sqrt(
         dx * dx + dy * dy
     );
+
 }
+
 
 document.addEventListener(
     "touchstart",
@@ -802,22 +816,25 @@ document.addEventListener(
 
             zoomAktif = true;
 
-            zoomMesafe = ikiParmakMesafesi(e.touches);
-
-            const mevcutZoom =
-                parseFloat(
-                    getComputedStyle(kitap)
-                        .getPropertyValue("--zoom")
-                );
+            zoomMesafe =
+                ikiParmakMesafesi(e.touches);
 
             zoomBaslangic =
-                isNaN(mevcutZoom) ? 1 : mevcutZoom;
+                parseFloat(
+                    kitap.style.getPropertyValue("--zoom")
+                ) || 1;
 
             e.preventDefault();
+
+            e.stopPropagation();
+
         }
 
     },
-    {passive:false}
+    {
+        passive:false,
+        capture:true
+    }
 );
 
 
@@ -850,7 +867,10 @@ document.addEventListener(
             yeniZoom =
                 Math.max(
                     1,
-                    Math.min(2.5,newZoom)
+                    Math.min(
+                        2.5,
+                        yeniZoom
+                    )
                 );
 
             kitap.style.setProperty(
@@ -859,10 +879,15 @@ document.addEventListener(
             );
 
             e.preventDefault();
+            e.stopPropagation();
+
         }
 
     },
-    {passive:false}
+    {
+        passive:false,
+        capture:true
+    }
 );
 
 
@@ -871,16 +896,22 @@ document.addEventListener(
     function(e){
 
         if(!yatayMobil()){
-            zoomAktif = false;
+            zoomAktif=false;
             return;
         }
 
         if(e.touches.length < 2){
-            zoomAktif = false;
+
+            zoomAktif=false;
+            zoomMesafe=0;
+
         }
 
     },
-    {passive:false}
+    {
+        passive:false,
+        capture:true
+    }
 );
 
 
@@ -888,10 +919,14 @@ document.addEventListener(
     "touchcancel",
     function(){
 
-        zoomAktif = false;
+        zoomAktif=false;
+        zoomMesafe=0;
 
     },
-    {passive:false}
+    {
+        passive:false,
+        capture:true
+    }
 );
 
 </script>
