@@ -133,6 +133,7 @@ body{
 }
 
 @keyframes altinParilti{
+
     0%,100%{
         text-shadow:
             0 1px 0 #8c641c,
@@ -335,6 +336,30 @@ body{
     transform:rotate(-9deg);
 }
 
+/* EKRAN BÜYÜTME TUŞU */
+
+.tam-ekran-tusu{
+    display:none;
+    position:fixed;
+    right:14px;
+    bottom:14px;
+    width:42px;
+    height:42px;
+    z-index:9999;
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:8px;
+    background:rgba(30,20,12,.72);
+    color:#f4d47a;
+    font-family:Arial,sans-serif;
+    font-size:24px;
+    line-height:40px;
+    text-align:center;
+    padding:0;
+    cursor:pointer;
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+}
+
 /* DİKEY EKRAN */
 
 @media (max-aspect-ratio:1/1){
@@ -393,15 +418,10 @@ body{
 
 @media (orientation:landscape) and (max-width:900px){
 
-    /* KAPALI HALDEKİ MEVCUT KONUM */
+    /* TÜM KİTABI 1 CM SOLA KAYDIR */
+
     .kitap{
         transform:translateX(calc(30% - 1cm));
-    }
-
-    /* AÇILDIĞINDA TÜM KİTABI TEK GRUP OLARAK
-       0,5 CM SAĞA AL */
-    .kitap.acildi{
-        transform:translateX(calc(30% - 0.5cm));
     }
 
     /* SAYFALAR: SON KABUL EDİLEN GENİŞLETİLMİŞ HALİ */
@@ -418,6 +438,12 @@ body{
 
     .acik-kitap{
         transform:translateX(0.2cm);
+    }
+
+    /* YATAYDA SAĞ ALTTA GÖSTER */
+
+    .tam-ekran-tusu{
+        display:block;
     }
 }
 
@@ -613,6 +639,16 @@ Baban.
 </div>
 </div>
 
+<!-- EKRAN BÜYÜTME TUŞU -->
+
+<button
+    class="tam-ekran-tusu"
+    id="tamEkranTusu"
+    aria-label="Tam ekran"
+    title="Tam ekran">
+    ⛶
+</button>
+
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
 <script>
@@ -621,6 +657,7 @@ const kitap = document.getElementById("kitap");
 const ustKapak = document.getElementById("ustKapak");
 const sayfaAlani = document.getElementById("sayfaAlani");
 const pageFlipContainer = document.getElementById("page-flip");
+const tamEkranTusu = document.getElementById("tamEkranTusu");
 
 let pageFlip = null;
 
@@ -782,6 +819,53 @@ window.addEventListener(
 
             },
             200
+        );
+    }
+);
+
+/* TAM EKRAN */
+
+tamEkranTusu.addEventListener(
+    "click",
+    async function(){
+
+        try{
+
+            if(!document.fullscreenElement){
+
+                await document.documentElement.requestFullscreen();
+
+            }else{
+
+                await document.exitFullscreen();
+
+            }
+
+        }catch(hata){
+
+            console.log("Tam ekran açılamadı:",hata);
+
+        }
+    }
+);
+
+/* TAM EKRANDAN ÇIKILDIĞINDA SAYFALARI YENİLE */
+
+document.addEventListener(
+    "fullscreenchange",
+    function(){
+
+        setTimeout(
+            function(){
+
+                if(
+                    kitap.classList.contains("acildi")
+                ){
+                    sayfalariBaslat();
+                }
+
+            },
+            150
         );
     }
 );
