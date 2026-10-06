@@ -246,6 +246,32 @@ body.yakin .sahne{touch-action:auto;}
 
 .yaprak.cevrildi{transform:rotateY(-180deg);}
 
+.egri{
+    position:absolute;
+    top:var(--pt);
+    left:var(--hinge);
+    width:var(--pw);
+    height:var(--ph);
+    transform-style:preserve-3d;
+    pointer-events:none;
+}
+.serit{
+    position:absolute;
+    top:0;
+    height:100%;
+    transform-origin:left center;
+    transform-style:preserve-3d;
+}
+.egri-g{
+    position:absolute;
+    inset:0;
+    background:#2a1604;
+    opacity:0;
+    pointer-events:none;
+}
+.yaprak.aniz{transition:none !important;}
+
+
 .yuz{
     position:absolute;
     top:0;
@@ -496,7 +522,6 @@ body.yakin .sahne{touch-action:auto;}
             <button id="btnGeri" aria-label="Önceki sayfa">‹</button>
             <span class="bilgi" id="bilgi"></span>
             <button id="btnIleri" aria-label="Sonraki sayfa">›</button>
-            <button id="btnKapat" class="yazili" aria-label="Kitabı kapat">Kapat</button>
         </div>
 
         <button id="btnTamEkran" aria-label="Tam ekran" title="Tam ekran">⛶</button>
@@ -522,7 +547,6 @@ const olcerMetin = $("olcerMetin");
 const kontroller = $("kontroller");
 const btnGeri    = $("btnGeri");
 const btnIleri   = $("btnIleri");
-const btnKapat   = $("btnKapat");
 const btnTamEkran= $("btnTamEkran");
 const bilgi      = $("bilgi");
 const acikImg    = $("acikImg");
@@ -1162,6 +1186,8 @@ function yaprakOlustur(onVeri, onIdx, onTur, arkaVeri, arkaIdx, arkaTur){
 
 function kur(){
 
+    egriIptal();
+
     yer = yerlesimHesapla();
     cols = yer.cols;
 
@@ -1276,7 +1302,7 @@ function bilgiGuncelle(){
         bilgi.textContent = (k + 1) + " / " + toplam;
     }
 
-    btnGeri.disabled  = !acik || animasyon || k <= 0;
+    btnGeri.disabled  = !acik || animasyon;
     btnIleri.disabled = !acik || animasyon || k >= L;
 }
 
@@ -1285,50 +1311,167 @@ function bilgiGuncelle(){
    SAYFA ÇEVİRME
    ========================================================= */
 
-function cevir(j, ileriMi){
+/* ---- kıvrılan sayfa: yaprak, dik şeritlere bölünüp her şerit biraz
+        daha döndürülerek gerçek bir kağıt gibi eğilir ---- */
+
+const SERIT = 12;
+let egri = null;
+let egriRaf = 0;
+
+function egriKur(j, ileriMi){
 
     const y = yaprakEls[j];
-    if(!y){ return; }
+    const pw = yer.pw, pwl = yer.pwl;
+    const w = pw / SERIT;
 
-    animasyon = true;
+    const onS  = y.querySelector(".yuz.on .sayfa");
+    const arkaS = y.querySelector(".yuz.arka .sayfa");
+
+    const kap = document.createElement("div");
+    kap.className = "egri";
+    kap.style.zIndex = "1000";
+
+    let ebeveyn = kap;
+    const seritler = [];
+
+    for(let i = 0; i < SERIT; i++){
+
+        const st = document.createElement("div");
+        st.className = "serit";
+        st.style.left = (i === 0 ? 0 : w) + "px";
+        st.style.width = (w + (i < SERIT - 1 ? 1 : 0)) + "px";
+
+        const on = document.createElement("div");
+        on.className = "yuz on";
+        on.style.width = "100%";
+        const c1 = onS.cloneNode(true);
+        c1.style.cssText = "inset:auto;top:0;left:" + (-i * w) + "px;width:" + pw + "px;height:100%;";
+        on.appendChild(c1);
+        const g1 = document.createElement("div");
+        g1.className = "egri-g";
+        on.appendChild(g1);
+        st.appendChild(on);
+
+        let g2 = null;
+        if(arkaS){
+            const ar = document.createElement("div");
+            ar.className = "yuz arka";
+            ar.style.width = "100%";
+            const c2 = arkaS.cloneNode(true);
+            c2.style.cssText = "inset:auto;top:0;left:" + (-(pwl - (i + 1) * w)) + "px;width:" + pwl + "px;height:100%;";
+            ar.appendChild(c2);
+            g2 = document.createElement("div");
+            g2.className = "egri-g";
+            ar.appendChild(g2);
+            st.appendChild(ar);
+        }
+
+        ebeveyn.appendChild(st);
+        seritler.push({el:st, g1:g1, g2:g2});
+        ebeveyn = st;
+    }
+
+    icerik.appendChild(kap);
+    y.style.visibility = "hidden";
+
+    egri = {j:j, ileriMi:ileriMi, y:y, kap:kap, seritler:seritler, phi:ileriMi ? 0 : 180};
+    egriCiz(egri.phi);
+}
+
+function egriCiz(phi){
+
+    egri.phi = phi;
+    const rad = phi * Math.PI / 180;
+    const B = 55 * Math.sin(rad);
+    const a0 = phi - B / 2;
+    const d = B / (SERIT - 1);
+
+    let onceki = 0;
+    for(let i = 0; i < SERIT; i++){
+
+        let A = a0 + i * d;
+        A = Math.max(0, Math.min(180, A));
+        const rel = A - onceki;
+        onceki = A;
+
+        const sr = egri.seritler[i];
+        sr.el.style.transform = "rotateY(" + (-rel) + "deg)";
+
+        const sh = Math.sin(A * Math.PI / 180);
+        sr.g1.style.opacity = String(0.38 * sh);
+        if(sr.g2){ sr.g2.style.opacity = String(0.30 * sh); }
+    }
+}
+
+function egriBitir(tamam){
+
+    const e = egri;
+    if(!e){ return; }
+
+    const y = e.y, j = e.j;
+
+    e.kap.remove();
+    egri = null;
+
+    y.classList.add("aniz");
+    if(tamam){
+        y.classList.toggle("cevrildi", e.ileriMi);
+        y.style.zIndex = String(e.ileriMi ? (j + 1) : (L - j));
+        k = e.ileriMi ? (j + 1) : j;
+    }else{
+        y.classList.toggle("cevrildi", !e.ileriMi);
+        y.style.zIndex = String(e.ileriMi ? (L - j) : (j + 1));
+    }
+    y.style.visibility = "";
+    void y.offsetWidth;
+    y.classList.remove("aniz");
+
+    animasyon = false;
+    ankrajGuncelle();
     bilgiGuncelle();
+}
 
-    y.style.zIndex = "1000";
-    y.classList.toggle("cevrildi", ileriMi);
+function egriIptal(){
+    cancelAnimationFrame(egriRaf);
+    if(egri){ egri.kap.remove(); egri.y.style.visibility = ""; egri = null; }
+}
 
-    let bitti = false;
+/* phi değerini hedefe doğru yumuşakça götürür */
+function egriAnimasyon(hedef, tamam, sure){
 
-    function bitir(){
-        if(bitti){ return; }
-        bitti = true;
-        y.removeEventListener("transitionend", sonu);
-        y.style.zIndex = String(ileriMi ? (j + 1) : (L - j));
-        animasyon = false;
-        bilgiGuncelle();
+    cancelAnimationFrame(egriRaf);
+
+    const bas = egri.phi;
+    const t0 = performance.now();
+    const dur = Math.max(160, (sure || 650) * Math.abs(hedef - bas) / 180);
+    const kayit = egri;
+
+    function adim(t){
+        if(egri !== kayit){ return; }
+        let u = Math.min(1, (t - t0) / dur);
+        const e = (u < .5) ? 2*u*u : 1 - Math.pow(-2*u + 2, 2) / 2;
+        egriCiz(bas + (hedef - bas) * e);
+        if(u < 1){ egriRaf = requestAnimationFrame(adim); }
+        else{ egriBitir(tamam); }
     }
-
-    function sonu(e){
-        if(e.target === y && e.propertyName === "transform"){ bitir(); }
-    }
-
-    y.addEventListener("transitionend", sonu);
-    setTimeout(bitir, 1000);
+    egriRaf = requestAnimationFrame(adim);
 }
 
 function ileri(){
     if(!acik || animasyon || k >= L){ return; }
-    cevir(k, true);
-    k++;
-    ankrajGuncelle();
+    animasyon = true;
     bilgiGuncelle();
+    egriKur(k, true);
+    egriAnimasyon(180, true, 800);
 }
 
 function geri(){
-    if(!acik || animasyon || k <= 0){ return; }
-    k--;
-    cevir(k, false);
-    ankrajGuncelle();
+    if(!acik || animasyon){ return; }
+    if(k <= 0){ kapat(); return; }
+    animasyon = true;
     bilgiGuncelle();
+    egriKur(k - 1, false);
+    egriAnimasyon(0, true, 800);
 }
 
 
@@ -1396,7 +1539,6 @@ kapak.addEventListener("keydown", function(e){
 
 btnGeri.addEventListener("click", geri);
 btnIleri.addEventListener("click", ileri);
-btnKapat.addEventListener("click", kapat);
 
 
 /* =========================================================
@@ -1409,12 +1551,78 @@ function yakinlastirildi(){
     return !!(window.visualViewport && window.visualViewport.scale > 1.02);
 }
 
+function kitapX(e){
+    return e.clientX - kitap.getBoundingClientRect().left;
+}
+
 sahne.addEventListener("pointerdown", function(e){
+
     if(e.target.closest(".kontroller")){ basla = null; return; }
-    basla = {x:e.clientX, y:e.clientY, t:Date.now()};
+    if(!acik || animasyon || yakinlastirildi()){ basla = null; return; }
+    if(e.pointerType === "mouse" && e.button !== 0){ basla = null; return; }
+
+    const r = kitap.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const sol = (cols === 2) ? (x < yer.hinge) : (x < r.width * 0.3);
+
+    basla = {x:e.clientX, y:e.clientY, t:Date.now(), sol:sol,
+             egri:false, id:e.pointerId, sx:e.clientX, st:Date.now(), vx:0};
 });
 
-sahne.addEventListener("pointercancel", function(){ basla = null; });
+sahne.addEventListener("pointermove", function(e){
+
+    if(!basla){ return; }
+
+    const dx = e.clientX - basla.x;
+    const dy = e.clientY - basla.y;
+
+    if(!basla.egri){
+
+        if(Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy)){ return; }
+
+        /* yön sayfa tarafıyla uyuşmuyorsa sürükleme başlatma */
+        if(basla.sol && dx < 0){ return; }
+        if(!basla.sol && dx > 0){ return; }
+
+        if(basla.sol){
+            if(k <= 0){ return; }       /* ilk sayfa: bırakınca kapanır */
+            egriKur(k - 1, false);
+        }else{
+            if(k >= L){ return; }
+            egriKur(k, true);
+        }
+
+        animasyon = true;
+        bilgiGuncelle();
+        basla.egri = true;
+        basla.hx = basla.x;
+        try{ sahne.setPointerCapture(basla.id); }catch(_){}
+
+        const x0 = basla.x - sahne.getBoundingClientRect().left;
+        const kr = kitap.getBoundingClientRect().left - sahne.getBoundingClientRect().left;
+        let g = Math.abs((x0 - kr) - yer.hinge) / yer.pw;
+        basla.g = Math.max(0.3, Math.min(1, g));
+    }
+
+    if(!egri){ return; }
+
+    const dt = Math.max(1, Date.now() - basla.st);
+    basla.vx = (e.clientX - basla.sx) / dt;
+    basla.sx = e.clientX; basla.st = Date.now();
+
+    const den = basla.g * yer.pw / 1.3;
+    let c;
+    if(egri.ileriMi){ c = 1 - (basla.x - e.clientX) / den; }
+    else{             c = -1 + (e.clientX - basla.x) / den; }
+    c = Math.max(-1, Math.min(1, c));
+
+    egriCiz(Math.acos(c) * 180 / Math.PI);
+});
+
+sahne.addEventListener("pointercancel", function(){
+    if(basla && basla.egri && egri){ egriAnimasyon(egri.ileriMi ? 0 : 180, false, 450); }
+    basla = null;
+});
 
 sahne.addEventListener("pointerup", function(e){
 
@@ -1423,25 +1631,31 @@ sahne.addEventListener("pointerup", function(e){
     const a = basla;
     basla = null;
 
-    if(!acik || yakinlastirildi()){ return; }
+    if(a.egri && egri){
+
+        const phi = egri.phi;
+        const v = a.vx;               /* px/ms, sola negatif */
+
+        if(egri.ileriMi){
+            const tamam = (phi > 80 && v > -0.6) || (v < -0.5 && phi > 15);
+            egriAnimasyon(tamam ? 180 : 0, tamam, 550);
+        }else{
+            const tamam = (phi < 100 && v < 0.6) || (v > 0.5 && phi < 165);
+            egriAnimasyon(tamam ? 0 : 180, tamam, 550);
+        }
+        return;
+    }
+
+    if(!acik || animasyon || yakinlastirildi()){ return; }
 
     const dx = e.clientX - a.x;
     const dy = e.clientY - a.y;
 
-    if(Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3){
-        if(dx < 0){ ileri(); }else{ geri(); }
-        return;
-    }
+    /* ilk sayfada sağa çekmek kitabı kapatır */
+    if(dx > 45 && Math.abs(dx) > Math.abs(dy) * 1.3 && a.sol && k <= 0){ kapat(); return; }
 
     if(Math.abs(dx) < 12 && Math.abs(dy) < 12 && Date.now() - a.t < 600){
-
-        const r = kitap.getBoundingClientRect();
-
-        if(cols === 2){
-            if(e.clientX < r.left + r.width / 2){ geri(); }else{ ileri(); }
-        }else{
-            if(e.clientX < r.left + r.width * 0.3){ geri(); }else{ ileri(); }
-        }
+        if(a.sol){ geri(); }else{ ileri(); }
     }
 });
 
