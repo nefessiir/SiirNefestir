@@ -101,9 +101,9 @@ body.yakin .sahne{touch-action:auto;}
     transition:opacity .25s ease 0s;
 }
 
-/* kapak22 */
+/* kapak2 */
 
-.kapak22{
+.kapak2{
     position:absolute;
     top:0;
     left:var(--spine);
@@ -117,15 +117,15 @@ body.yakin .sahne{touch-action:auto;}
     box-shadow:0 10px 30px rgba(0,0,0,.55);
 }
 
-.kitap.acik .kapak22{
+.kitap.acik .kapak2{
     transform:rotateY(-180deg);
     opacity:0;
     transition:transform 1.1s ease-in-out, opacity .2s linear .62s;
 }
 
-.kapak22 .yuz{width:100%;}
+.kapak2 .yuz{width:100%;}
 
-.kapak22 .yuz img{
+.kapak2 .yuz img{
     display:block;
     width:100%;
     height:100%;
@@ -134,9 +134,9 @@ body.yakin .sahne{touch-action:auto;}
     -webkit-user-drag:none;
 }
 
-.kitap.tek .kapak22 .arka{display:none;}
+.kitap.tek .kapak2 .arka{display:none;}
 
-.kapak22-yazi{
+.kapak2-yazi{
     position:absolute;
     top:50%;
     left:50%;
@@ -155,7 +155,7 @@ body.yakin .sahne{touch-action:auto;}
     animation:altinParilti 4s ease-in-out infinite;
 }
 
-.kapak22-yazi div{white-space:nowrap;}
+.kapak2-yazi div{white-space:nowrap;}
 
 @keyframes altinParilti{
     0%,100%{
@@ -416,8 +416,8 @@ body.yakin .sahne{touch-action:auto;}
 .kontroller.acik .ipucu{display:none;}
 
 @media (prefers-reduced-motion:reduce){
-    .yaprak,.kapak22,.kitap{transition-duration:.01s !important;}
-    .kapak22-yazi{animation:none;}
+    .yaprak,.kapak2,.kitap{transition-duration:.01s !important;}
+    .kapak2-yazi{animation:none;}
 }
 </style>
 </head>
@@ -437,11 +437,11 @@ body.yakin .sahne{touch-action:auto;}
                 <div class="taban" id="tabanSag"></div>
             </div>
 
-            <div class="kapak22" id="kapak22" tabindex="0" role="button" aria-label="Kitabı aç">
+            <div class="kapak2" id="kapak2" tabindex="0" role="button" aria-label="Kitabı aç">
 
                 <div class="yuz on">
                     <img alt="">
-                    <div class="kapak22-yazi">
+                    <div class="kapak2-yazi">
                         <div>Şiir'e hatıra..</div>
                         <div>Kelimelerden..</div>
                         <div>Hayattan..</div>
