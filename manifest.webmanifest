@@ -1,0 +1,17 @@
+{
+  "name": "Şiir Nefestir",
+  "short_name": "Nefes Şiir",
+  "description": "Bir babanın kızına bıraktığı şiirler, sesler ve anılar.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#1a1208",
+  "theme_color": "#1a1208",
+  "lang": "tr",
+  "icons": [
+    {"src": "ikon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "ikon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "ikon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
